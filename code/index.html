@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Voice & Gift Room</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#f5c15a;--gold2:#b8802a;--ink:#07060a;--glass:rgba(20,14,12,.62);--cy:#3fb4ff}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0;background:var(--ink);color:#fff;font-family:Nunito,system-ui,sans-serif;font-weight:800}
+body{background:
+ radial-gradient(ellipse 80% 22% at 50% 52%,rgba(245,193,90,.22),transparent 70%),
+ radial-gradient(circle at 15% 12%,rgba(255,170,60,.16) 0 2px,transparent 3px) 0 0/46px 52px,
+ radial-gradient(circle at 70% 30%,rgba(255,220,150,.12) 0 2px,transparent 3px) 0 0/61px 47px,
+ linear-gradient(#050405,#0c0806 55%,#1b1007)}
+.scr{max-width:520px;margin:0 auto;height:100dvh;padding:env(safe-area-inset-top) 12px env(safe-area-inset-bottom)}
+.hidden{display:none!important}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+.inp{width:100%;background:rgba(255,255,255,.07);border:1.5px solid rgba(245,193,90,.35);border-radius:14px;padding:12px 14px;color:#fff;font:inherit;outline:none}
+.inp:focus{border-color:var(--gold)}
+.btn{display:block;width:100%;text-align:center;padding:13px;border-radius:999px;background:linear-gradient(#ffd886,#d9962f);color:#2a1700;font-weight:900;text-decoration:none}
+/* setup */
+.avg{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:14px 0}
+.avg button{padding:0;border-radius:50%;aspect-ratio:1;overflow:hidden;border:3px solid transparent;background:#1c1410}
+.avg button.on{border-color:var(--gold);box-shadow:0 0 14px var(--gold)}
+.avg img{width:100%;height:100%;object-fit:cover}
+/* header */
+.top{display:flex;align-items:center;gap:8px;padding:10px 2px 6px}
+.top .t{flex:1;min-width:0}.top .t b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top .t small{color:#9a8f86;font-weight:700}
+.ib{width:38px;height:38px;border-radius:50%;background:var(--glass);font-size:18px;display:grid;place-items:center}
+.ib.plus{background:#5b4ff0}
+.chips{display:flex;align-items:center;gap:8px;margin:4px 0 8px}
+.chip{background:var(--glass);border:1px solid rgba(245,193,90,.35);border-radius:999px;padding:3px 10px;font-size:13px}
+.mini{display:flex}.mini img{width:26px;height:26px;border-radius:50%;border:2px solid var(--gold);margin-left:-6px;background:#1c1410}
+/* seats */
+#grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px 6px;padding:8px 0 10px;border-bottom:1px solid rgba(245,193,90,.12)}
+.seat{display:flex;flex-direction:column;align-items:center;min-width:0;cursor:pointer}
+.ring{position:relative;width:min(15.5vw,76px);aspect-ratio:1;border-radius:50%;padding:4px;
+ background:conic-gradient(#5ec8ff,#2b6dff,#b8e6ff,#5ec8ff)}
+.ring img{width:100%;height:100%;border-radius:50%;object-fit:cover;background:#1c1410;border:2px solid #0a0706;display:block}
+.r1{background:conic-gradient(#ffd886,#8a4bff,#ff8ad8,#ffd886)}
+.r2{background:conic-gradient(#ff9a1f,#ff3c1f,#ffd24a,#ff9a1f);box-shadow:0 0 12px #ff6a1f88}
+.r3{background:conic-gradient(#fff,#9aa3b2,#e8edf5,#fff)}
+.r4{background:conic-gradient(#d78bff,#6a4bff,#ffd886,#d78bff)}
+.ring.empty{background:none;border:2px dashed rgba(245,193,90,.35);display:grid;place-items:center;color:rgba(245,193,90,.6);font-size:22px}
+.ring.talk{animation:pulse .7s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(245,193,90,.7)}50%{box-shadow:0 0 0 9px rgba(245,193,90,0)}}
+.mic{position:absolute;right:-4px;bottom:-2px;font-size:13px;background:#000a;border-radius:50%;width:20px;height:20px;display:grid;place-items:center}
+.nm{max-width:100%;margin-top:5px;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nm.dim{color:#7d7066}
+.pill{margin-top:3px;min-width:58px;text-align:center;font-size:12px;border:2px solid var(--cy);border-radius:999px;background:rgba(8,18,38,.75);padding:0 10px}
+.listen{display:flex;align-items:center;gap:6px;padding:10px 0;overflow:hidden}
+.listen .ring{width:38px;padding:2px;flex:none}.listen b{margin-left:auto;color:#cfc6bd}
+/* chat */
+#chat{flex:1;overflow-y:auto;padding:8px 2px;display:flex;flex-direction:column;gap:8px;
+ -webkit-mask-image:linear-gradient(transparent,#000 14%);mask-image:linear-gradient(transparent,#000 14%);scrollbar-width:none}
+.row{display:flex;gap:8px;align-items:flex-start;max-width:88%}
+.row .av{width:34px;height:34px;border-radius:50%;object-fit:cover;background:#1c1410;flex:none}
+.bub{background:var(--glass);border-radius:18px;padding:7px 14px;font-size:15px;word-break:break-word}
+.meta{font-size:12px;color:#d6b98a;margin:0 0 3px 4px}
+.bdg{font-style:normal;font-size:10px;background:linear-gradient(#ffd886,#d9962f);color:#2a1700;border-radius:8px;padding:1px 7px;margin-right:4px}
+.gbub{display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#7a2630,#4a1219);border:2px solid #e0646b;border-radius:18px;padding:6px 16px}
+.gbub .x{color:var(--gold);font-size:22px;font-style:italic}
+.gbub .e{font-size:30px}
+.bar{display:flex;align-items:center;gap:8px;padding:8px 0 10px}
+.bar .inp{border-radius:999px;border-color:rgba(255,255,255,.1);background:rgba(20,14,12,.7)}
+.bar .ib{width:46px;height:46px;flex:none;font-size:22px}
+.micb{background:linear-gradient(#a98bff,#6a4bff)}.giftb{background:linear-gradient(#ffb36b,#ff6a3c)}
+/* sheet / fx */
+#sheet{position:fixed;inset:0;background:#000a;display:flex;align-items:flex-end;justify-content:center;z-index:30}
+#sheet>div{width:100%;max-width:520px;max-height:82dvh;overflow:auto;background:#150f0b;border:1.5px solid var(--gold2);border-bottom:0;border-radius:24px 24px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom))}
+#sheet h3{margin:0 0 4px;font-size:20px;color:var(--gold)}.sub{color:#a99d92;margin:0 0 12px;font-size:14px}
+.gg{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.gi{background:rgba(255,255,255,.06);border:1.5px solid rgba(245,193,90,.25);border-radius:16px;padding:10px 4px;position:relative}
+.gi .e{font-size:38px;display:block}.gi img{height:46px;margin:auto}.gi.lk>*{opacity:.35;filter:blur(1px)}.gi.lk::after{content:'🔒';position:absolute;inset:0;display:grid;place-items:center;font-size:24px}
+.mrow{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid #ffffff14}
+.mrow img{width:34px;height:34px;border-radius:50%}.mrow span{flex:1}
+.sm{background:var(--gold);color:#2a1700;border-radius:999px;padding:5px 12px;font-size:13px}
+.sm.o{background:#ffffff18;color:#fff}
+.cnt{display:flex;align-items:center;gap:16px;margin:8px 0 14px}.cnt button{width:40px;height:40px;border-radius:50%;background:#ffffff18;font-size:22px}
+#fx{position:fixed;inset:0;z-index:40;display:grid;place-items:center;pointer-events:none}
+#fx .g{text-align:center;animation:fl 4s ease-in-out forwards}
+#fx .big{font-size:min(55vw,260px);line-height:1;filter:drop-shadow(0 0 30px var(--gold))}#fx img{width:min(70vw,320px)}
+#fx .ban{display:inline-block;margin-top:10px;padding:8px 20px;border-radius:999px;background:linear-gradient(135deg,#7a2630,#4a1219);border:2px solid #e0646b;font-size:17px}
+@keyframes fl{0%{transform:translateY(40vh) scale(.4);opacity:0}12%{transform:translateY(0) scale(1.1);opacity:1}20%{transform:scale(1)}85%{transform:translateY(-6vh);opacity:1}100%{transform:translateY(-14vh);opacity:0}}
+#toast{position:fixed;left:50%;top:calc(14px + env(safe-area-inset-top));transform:translateX(-50%);z-index:50;background:#000d;border:1px solid var(--gold);border-radius:999px;padding:8px 18px;font-size:14px;opacity:0;transition:.25s;pointer-events:none;text-align:center}
+#toast.on{opacity:1}
+@media(prefers-reduced-motion:reduce){.ring.talk,#fx .g{animation-duration:.01s}}
+</style>
+</head>
+<body>
+
+<!-- ================= SETUP PROFIL ================= -->
+<section id="setup" class="scr" style="display:flex;flex-direction:column;justify-content:center">
+  <button class="ib" style="position:absolute;right:14px;top:calc(12px + env(safe-area-inset-top))" onclick="H.hostLogin()" title="Login Host">👑</button>
+  <h1 style="font-size:30px;margin:0;color:var(--gold)">Voice & Gift Room</h1>
+  <p class="sub" style="margin-top:4px">Pilih avatar dan nama panggilanmu.</p>
+  <input id="nm" class="inp" maxlength="16" placeholder="Nama panggilan">
+  <div class="avg" id="avs"></div>
+  <input id="url" class="inp" placeholder="atau tempel URL gambar avatar">
+  <button class="btn" style="margin-top:16px" onclick="H.enter()">Masuk Room</button>
+</section>
+
+<!-- ================= ROOM ================= -->
+<section id="room" class="scr hidden" style="flex-direction:column">
+  <div class="top">
+    <div class="t"><b id="ttl"></b><small id="sub"></small></div>
+    <button class="ib" onclick="H.panel()" title="Panel Host">👑</button>
+    <button class="ib" onclick="H.exit()" title="Keluar / ubah profil">⏏</button>
+  </div>
+  <div class="chips"><span class="chip">🏆 No.5</span><span class="mini" id="mini"></span><span class="chip" id="onl" style="margin-left:auto"></span></div>
+  <div id="grid"></div>
+  <div class="listen" id="listen"></div>
+  <div id="chat"></div>
+  <div class="bar">
+    <input id="msg" class="inp" maxlength="200" placeholder="Katakan sesuatu" autocomplete="off">
+    <button class="ib micb" id="micb" onclick="H.mic()">🎙️</button>
+    <button class="ib giftb" onclick="H.gift()">🎁</button>
+  </div>
+</section>
+
+<div id="sheet" class="hidden"></div><div id="fx"></div><div id="toast"></div>
+
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+/* =====================================================================
+   KONFIGURASI — ISI DENGAN MILIKMU
+   Supabase Dashboard > Project Settings > API
+   ===================================================================== */
+const SUPABASE_URL = 'https://rojdbucohxpvgnygceie.supabase.co';
+const SUPABASE_KEY = 'sb_publishable__KXfm9Yv6VRXStTap-DFyQ_sNOPCLrG';
+/* Nomor WhatsApp owner (format internasional, tanpa + atau 0 di depan) */
+const OWNER_WA = '6281234567890';
+/* Gift: isi `img` dengan URL GIF publik (mis. dari GIPHY). Kosong = pakai emoji animasi. */
+const GIFTS = [
+  {name:'Api Cinta',e:'🔥',img:''},{name:'Mahkota',e:'👑',img:''},{name:'Roket',e:'🚀',img:''},
+  {name:'Hati',e:'💖',img:''},{name:'Peti Harta',e:'🎁',img:''},{name:'Bintang',e:'🌟',img:''}];
+/* Sandi host ada di server: lihat tabel host_secret di schema.sql */
+
+const $ = s => document.querySelector(s);
+const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const hash = id => [...id].reduce((a, c) => a + c.charCodeAt(0), 0);
+const AV = ['Felix','Aneka','Luna','Milo','Zoe','Kai','Nova','Rio'].map(s => `https://api.dicebear.com/9.x/adventurer/svg?seed=${s}`);
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+const H = window.H = {};
+let uid, me, avatar = AV[0], settings = {title:'Voice & Gift Room', seat_count:15};
+let seats = {}, prof = {}, online = {}, mySeat = null, stream = null, muted = false, room, inRoom = false;
+const pcs = {}, early = {};
+
+function toast(t) { const e = $('#toast'); e.textContent = t; e.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(() => e.classList.remove('on'), 2600) }
+function sheet(h) { const s = $('#sheet'); s.innerHTML = `<div>${h}</div>`; s.classList.remove('hidden'); s.onclick = e => e.target === s && H.close() }
+H.close = () => $('#sheet').classList.add('hidden');
+function showFx(g, who) {
+  $('#fx').innerHTML = `<div class="g">${g.img ? `<img src="${esc(g.img)}">` : `<div class="big">${g.e}</div>`}<br><span class="ban">${esc(who)} mengirim hadiah!</span></div>`;
+  clearTimeout(showFx.t); showFx.t = setTimeout(() => $('#fx').innerHTML = '', 4000);
+}
+
+/* ---------- 1. Auth anonim + setup profil ---------- */
+const { data: { session } } = await sb.auth.getSession();
+uid = session?.user?.id || (await sb.auth.signInAnonymously()).data?.user?.id;
+if (!uid) toast('Gagal login anonim. Aktifkan Anonymous Sign-Ins di Supabase.');
+const { data: old } = await sb.from('profiles').select('*').eq('id', uid).maybeSingle();
+if (old) { $('#nm').value = old.name; avatar = old.avatar || AV[0]; me = old }
+function drawAv() {
+  $('#avs').innerHTML = AV.map(a => `<button class="${a === avatar ? 'on' : ''}" data-a="${a}"><img src="${a}"></button>`).join('');
+  $('#avs').querySelectorAll('button').forEach(b => b.onclick = () => { avatar = b.dataset.a; $('#url').value = ''; drawAv() });
+}
+drawAv();
+async function ensureProfile() {
+  const name = ($('#nm').value.trim() || 'Anon').slice(0, 16), av = $('#url').value.trim() || avatar;
+  const { error } = await sb.from('profiles').upsert({ id: uid, name, avatar: av });
+  if (error) return toast(error.message);
+  me = (await sb.from('profiles').select('*').eq('id', uid).single()).data; return me;
+}
+H.enter = async () => { if (await ensureProfile()) startRoom() };
+H.exit = async () => { await sb.from('seats').delete().eq('user_id', uid); location.reload() };
+
+/* ---------- 2. Host ---------- */
+H.hostLogin = () => sheet(`<h3>Login Host</h3><p class="sub">Masukkan sandi host.</p>
+  <input id="pw" type="password" class="inp" placeholder="Sandi Host" style="margin-bottom:12px"><button class="btn" onclick="H.doHost()">Masuk Host</button>`);
+H.doHost = async () => {
+  if (!me && !(await ensureProfile())) return;
+  const { data } = await sb.rpc('claim_host', { pw: $('#pw').value });
+  if (!data) return toast('Sandi salah');
+  me.is_host = true; toast('Mode Host aktif 👑'); H.close(); if (inRoom) H.panel();
+};
+H.panel = async () => {
+  if (!me.is_host) return H.hostLogin();
+  const ids = Object.keys(online);
+  const { data } = ids.length ? await sb.from('profiles').select('id,name,avatar,gift_tickets').in('id', ids) : { data: [] };
+  sheet(`<h3>Panel Host</h3><p class="sub">Jumlah kursi</p>
+   <div class="cnt"><button onclick="H.seatN(-1)">−</button><b id="sc" style="font-size:24px">${settings.seat_count}</b><button onclick="H.seatN(1)">+</button></div>
+   <p class="sub">Anggota online</p>
+   ${(data || []).map(u => `<div class="mrow"><img src="${esc(u.avatar)}"><span>${esc(u.name)} <small style="color:#a99d92">🎟️${u.gift_tickets}</small></span><button class="sm" onclick="H.tix('${u.id}')">+1 Tiket Gift</button></div>`).join('')}
+   <div style="display:flex;gap:8px;margin-top:14px"><button class="sm o" onclick="H.reset()">Kosongkan kursi</button><button class="sm o" onclick="H.clear()">Bersihkan chat</button></div>`);
+};
+H.seatN = async d => { const n = Math.min(30, Math.max(4, settings.seat_count + d)); settings.seat_count = n; $('#sc').textContent = n; renderSeats(); await sb.from('room_settings').update({ seat_count: n }).eq('id', 1) };
+H.tix = async id => { const { error } = await sb.rpc('give_ticket', { target: id }); toast(error ? error.message : '+1 tiket terkirim 🎟️') };
+H.reset = async () => { await sb.from('seats').delete().neq('seat_no', 0); toast('Semua kursi dikosongkan') };
+H.clear = async () => { await sb.from('messages').delete().neq('id', 0); $('#chat').innerHTML = ''; toast('Chat dibersihkan') };
+
+/* ---------- 3. Room ---------- */
+async function startRoom() {
+  $('#setup').classList.add('hidden'); $('#room').classList.remove('hidden'); $('#room').style.display = 'flex'; inRoom = true;
+  settings = (await sb.from('room_settings').select('*').single()).data || settings;
+  await loadSeats();
+  const { data: ms } = await sb.from('messages').select('*').order('id', { ascending: false }).limit(50);
+  (ms || []).reverse().forEach(m => addMsg(m, false));
+
+  sb.channel('db')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'seats' }, loadSeats)
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, p => addMsg(p.new, true))
+    .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'messages' }, () => $('#chat').innerHTML = '')
+    .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'room_settings' }, p => { settings = p.new; renderSeats(); renderTop() })
+    .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'profiles' }, p => {
+      prof[p.new.id] = p.new;
+      if (p.new.id === uid) { if (p.new.gift_tickets > me.gift_tickets) showFx({ e: '🎉' }, 'Kamu dapat +1 Tiket Gift! 🎟️ dari Host'); me = { ...me, ...p.new } }
+      renderSeats();
+    }).subscribe();
+
+  /* Presence = pengganti onDisconnect: saat tab ditutup, kursi otomatis kosong */
+  room = sb.channel('room', { config: { presence: { key: uid }, broadcast: { self: false } } })
+    .on('presence', { event: 'sync' }, () => { online = room.presenceState(); renderTop() })
+    .on('presence', { event: 'leave' }, ({ key }) => { if (key !== uid) sb.from('seats').delete().eq('user_id', key).then(() => {}) })
+    .on('broadcast', { event: 'sig' }, ({ payload }) => onSig(payload))
+    .subscribe(async s => {
+      if (s !== 'SUBSCRIBED') return;
+      await room.track({ name: me.name, avatar: me.avatar });
+      await sb.from('messages').insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'join' });
+    });
+  $('#msg').onkeydown = async e => {
+    if (e.key !== 'Enter' || !e.target.value.trim()) return;
+    const body = e.target.value.trim(); e.target.value = '';
+    await sb.from('messages').insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'chat', body });
+  };
+}
+
+async function loadSeats() {
+  const { data } = (await sb.from('seats').select('*')) ; seats = {};
+  (data || []).forEach(s => seats[s.seat_no] = s);
+  mySeat = (data || []).find(s => s.user_id === uid)?.seat_no || null;
+  if (!mySeat && stream) stopMic();
+  const ids = (data || []).map(s => s.user_id);
+  if (ids.length) (await sb.from('profiles').select('id,points').in('id', ids)).data.forEach(x => prof[x.id] = x);
+  renderSeats(); renderTop(); syncPeers();
+}
+
+function renderSeats() {
+  const g = $('#grid'); g.innerHTML = '';
+  for (let i = 1; i <= settings.seat_count; i++) {
+    const s = seats[i], d = document.createElement('div'); d.className = 'seat';
+    d.innerHTML = s
+      ? `<div class="ring r${hash(s.user_id) % 5}" data-uid="${s.user_id}"><img src="${esc(s.avatar)}"><span class="mic">${s.muted ? '🔇' : '🎙️'}</span></div><div class="nm">${esc(s.name)}</div><div class="pill">${prof[s.user_id]?.points ?? 0}</div>`
+      : `<div class="ring empty">＋</div><div class="nm dim">${i}</div>`;
+    d.onclick = () => s ? (s.user_id === uid && leaveSeat()) : sit(i);
+    g.append(d);
+  }
+}
+function renderTop() {
+  $('#ttl').textContent = settings.title; const n = Object.keys(online).length;
+  $('#sub').textContent = `${n} online`; $('#onl').textContent = `👥 ${n}`;
+  const seated = new Set(Object.values(seats).map(s => s.user_id));
+  const L = Object.entries(online).filter(([k]) => !seated.has(k)).map(([k, v]) => ({ k, ...v[0] }));
+  $('#mini').innerHTML = L.slice(0, 3).map(u => `<img src="${esc(u.avatar)}">`).join('');
+  $('#listen').innerHTML = L.slice(0, 7).map(u => `<div class="ring r${hash(u.k) % 5}"><img src="${esc(u.avatar)}"></div>`).join('') + `<b>${L.length || ''}</b>`;
+}
+
+async function sit(n) {
+  await sb.from('seats').delete().eq('user_id', uid);
+  stopMic();
+  try { stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } }); muted = false; watch(stream, uid) }
+  catch { toast('Mikrofon ditolak. Kamu duduk tanpa suara.') }
+  const { error } = await sb.from('seats').insert({ seat_no: n, user_id: uid, name: me.name, avatar: me.avatar });
+  if (error) { stopMic(); return toast('Kursi sudah terisi') }
+  closeAll(); await loadSeats();
+}
+async function leaveSeat() { await sb.from('seats').delete().eq('user_id', uid); stopMic(); closeAll(); await loadSeats() }
+function stopMic() { stream?.getTracks().forEach(t => t.stop()); stream = null }
+H.mic = async () => {
+  if (!mySeat) return toast('Duduk di kursi dulu untuk bicara');
+  muted = !muted; stream?.getAudioTracks().forEach(t => t.enabled = !muted);
+  $('#micb').textContent = muted ? '🔇' : '🎙️';
+  await sb.from('seats').update({ muted }).eq('user_id', uid);
+};
+
+/* ---------- 4. Chat & gift ---------- */
+function addMsg(m, live) {
+  const c = $('#chat'), d = document.createElement('div'), hb = m.is_host ? '<i class="bdg">👑 HOST</i>' : '';
+  const head = `<img class="av" src="${esc(m.avatar)}">`, meta = `<div class="meta">${hb}${esc(m.name)}</div>`;
+  d.className = 'row';
+  if (m.type === 'join') d.innerHTML = `<div class="bub">${hb}<b>${esc(m.name)}</b> sedang bergabung</div>`;
+  else if (m.type === 'gift') {
+    const g = GIFTS[m.gift] || GIFTS[0];
+    d.innerHTML = `${head}<div>${meta}<div class="gbub"><span>Kirim ${esc(g.name)}</span><span class="e">${g.e}</span><b class="x">x1</b></div></div>`;
+    if (live) showFx(g, m.name);
+  } else d.innerHTML = `${head}<div>${meta}<div class="bub">${esc(m.body)}</div></div>`;
+  c.append(d); while (c.children.length > 80) c.firstChild.remove(); c.scrollTop = c.scrollHeight;
+}
+H.gift = () => {
+  const lock = !me.is_host && me.gift_tickets < 1;
+  sheet(`<h3>Kirim Gift</h3><p class="sub">${me.is_host ? '👑 Host: unlimited gratis' : `🎟️ Tiket kamu: ${me.gift_tickets}`}</p>
+   <div class="gg">${GIFTS.map((g, i) => `<button class="gi ${lock ? 'lk' : ''}" onclick="H.send(${i})">${g.img ? `<img src="${esc(g.img)}">` : `<span class="e">${g.e}</span>`}<small>${g.name}</small></button>`).join('')}</div>
+   ${lock ? `<a class="btn" target="_blank" href="https://wa.me/${OWNER_WA}?text=${encodeURIComponent('Hay Host, mau buka gift dong!')}">Buka 1 Gift (Chat Owner)</a>` : ''}`);
+};
+H.send = async i => {
+  if (!me.is_host && me.gift_tickets < 1) return toast('Gift terkunci. Chat owner dulu 🔒');
+  const { error } = await sb.rpc('send_gift', { g: i });
+  error ? toast(error.message) : H.close();
+};
+
+/* ---------- 5. Suara: deteksi bicara + WebRTC (signaling via Supabase Broadcast) ---------- */
+function watch(st, id) {
+  const ac = new (window.AudioContext || window.webkitAudioContext)(), an = ac.createAnalyser(); an.fftSize = 256;
+  ac.createMediaStreamSource(st).connect(an); const b = new Uint8Array(an.frequencyBinCount);
+  const iv = setInterval(() => {
+    if (!st.active) { clearInterval(iv); return ac.close() }
+    an.getByteFrequencyData(b); const v = b.reduce((a, c) => a + c, 0) / b.length;
+    document.querySelectorAll(`[data-uid="${id}"]`).forEach(e => e.classList.toggle('talk', v > 12));
+  }, 150);
+}
+const sig = (to, p) => room.send({ type: 'broadcast', event: 'sig', payload: { to, from: uid, ...p } });
+function mkpc(id, init) {
+  pcs[id]?.pc.close();
+  const pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
+  const o = pcs[id] = { pc, init, q: early[id] || [] }; early[id] = [];
+  pc.onicecandidate = e => e.candidate && sig(id, { c: e.candidate });
+  pc.ontrack = e => {
+    let a = document.getElementById('a' + id);
+    if (!a) { a = document.createElement('audio'); a.id = 'a' + id; a.autoplay = true; document.body.append(a) }
+    a.srcObject = e.streams[0]; watch(e.streams[0], id);
+  };
+  if (stream) stream.getTracks().forEach(t => pc.addTrack(t, stream)); else if (init) pc.addTransceiver('audio', { direction: 'recvonly' });
+  return o;
+}
+async function connect(id) { const o = mkpc(id, true); await o.pc.setLocalDescription(await o.pc.createOffer()); sig(id, { d: o.pc.localDescription }) }
+const flush = o => o.q.splice(0).forEach(c => o.pc.addIceCandidate(c).catch(() => {}));
+async function onSig({ to, from, d, c }) {
+  if (to !== uid) return;
+  if (d?.type === 'offer') { const o = mkpc(from, false); await o.pc.setRemoteDescription(d); flush(o); await o.pc.setLocalDescription(await o.pc.createAnswer()); sig(from, { d: o.pc.localDescription }) }
+  else if (d?.type === 'answer') { const o = pcs[from]; if (o) { await o.pc.setRemoteDescription(d); flush(o) } }
+  else if (c) { const o = pcs[from]; if (!o) (early[from] ??= []).push(c); else o.pc.remoteDescription ? o.pc.addIceCandidate(c).catch(() => {}) : o.q.push(c) }
+}
+function closeAll() { Object.keys(pcs).forEach(k => { pcs[k].pc.close(); delete pcs[k]; document.getElementById('a' + k)?.remove() }) }
+/* Pendengar selalu menyambung ke penghuni kursi; antar penghuni kursi, uid lebih kecil yang memulai */
+function syncPeers() {
+  if (!room) return;
+  const ids = Object.values(seats).map(s => s.user_id).filter(i => i !== uid);
+  Object.keys(pcs).forEach(k => { if (!ids.includes(k)) { pcs[k].pc.close(); delete pcs[k]; document.getElementById('a' + k)?.remove() } });
+  ids.forEach(id => {
+    const init = !mySeat || uid < id;
+    if (pcs[id] && pcs[id].init !== init) { pcs[id].pc.close(); delete pcs[id] }
+    if (init && !pcs[id]) connect(id);
+  });
+}
+</script>
+</body>
+</html>
