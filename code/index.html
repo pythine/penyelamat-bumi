@@ -119,6 +119,13 @@ textarea.inp{resize:none;display:block}
 .del{color:#e0646b;font-size:18px;padding:4px}
 .pf{display:flex;flex-direction:column;align-items:center;text-align:center;padding:14px 0 6px}
 .pf .pav{display:block;margin:0 auto}
+.svip{font-style:normal;font-size:9px;border-radius:7px;padding:1px 6px;margin-right:4px;color:#fff;white-space:nowrap;vertical-align:middle}
+.s1{background:linear-gradient(#8fa3b8,#566a80)}.s2{background:linear-gradient(#5ec8ff,#2b6dff)}.s3{background:linear-gradient(#b48bff,#6a4bff)}
+.s4{background:linear-gradient(#ff8ad8,#c2269c)}.s5{background:linear-gradient(#ffb36b,#ff4d2e)}.s6{background:linear-gradient(#ffe08a,#d9962f);color:#2a1700;box-shadow:0 0 8px #f5c15a}
+.ttl{margin:4px 0;font-size:13px}.ttl small{color:#a99d92;font-weight:700}
+.prog{width:70%;height:8px;border-radius:99px;background:#ffffff18;overflow:hidden;margin:6px auto}
+.prog i{display:block;height:100%;background:linear-gradient(90deg,#ffd886,#d9962f)}
+.ib.off{opacity:.45}
 .lk{display:inline-flex;align-items:center;gap:6px;margin-top:6px;padding:5px 14px;border-radius:999px;background:#ffffff14;font-size:14px}
 .lk.on{background:#7a263088;border:1px solid #e0646b}
 .pav{width:112px;height:112px;border-radius:50%;object-fit:cover;border:3px solid var(--gold);box-shadow:0 0 18px #f5c15a66;background:#1c1410}
@@ -146,6 +153,7 @@ textarea.inp{resize:none;display:block}
 <section id="room" class="scr hn hidden" style="flex-direction:column">
   <div class="top">
     <div class="t"><b id="ttl"></b><small id="sub"></small></div>
+    <button class="ib" id="spkb" onclick="H.spk()" title="Speaker (dengar suara)">🔊</button>
     <button class="ib" onclick="H.panel()" title="Panel Host">👑</button>
     <button class="ib" onclick="H.exit()" title="Keluar / ubah profil">⏏</button>
   </div>
@@ -218,11 +226,20 @@ const $ = s => document.querySelector(s);
 const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const hash = id => [...id].reduce((a, c) => a + c.charCodeAt(0), 0);
 const ago = t => { const s = (Date.now() - new Date(t)) / 1000; return s < 60 ? 'baru saja' : s < 3600 ? Math.floor(s / 60) + ' mnt lalu' : s < 86400 ? Math.floor(s / 3600) + ' jam lalu' : new Date(t).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }) };
+/* Gelar SVIP: jumlah hadiah yang dikirim. SVIP 1 = 30 hadiah, SVIP 6 = tertinggi. Ubah angkanya sesuka hati. */
+const SVIP = [30, 100, 250, 500, 1000, 2000];
+const lvl = n => SVIP.reduce((l, t, i) => (n || 0) >= t ? i + 1 : l, 0);
+const badge = n => { const l = lvl(n); return l ? `<i class="svip s${l}">SVIP ${l}</i>` : '' };
+function titleHTML(n) {
+  n = n || 0; const l = lvl(n), next = SVIP[l], base = SVIP[l - 1] || 0;
+  return `<div class="ttl">${badge(n) || '<span class="chip">Belum ada gelar</span>'} <small>${n} hadiah terkirim${next ? ` · ${next - n} lagi ke SVIP ${l + 1}` : ' · gelar tertinggi 👑'}</small></div>`
+    + (next ? `<div class="prog"><i style="width:${Math.min(100, (n - base) / (next - base) * 100)}%"></i></div>` : '');
+}
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 const H = window.H = {};
 let uid, me, avatar = '', settings = {title:'Voice & Gift Room', seat_count:15};
 let seats = {}, prof = {}, online = {}, mySeat = null, stream = null, muted = false, room, inRoom = false;
-let posts = [], gT = null, draftImg = null;
+let posts = [], gT = null, draftImg = null, myGifts = [], mq = Promise.resolve(), viewU = null;
 const pcs = {}, early = {};
 
 function toast(t) { const e = $('#toast'); e.textContent = t; e.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(() => e.classList.remove('on'), 2600) }
@@ -313,14 +330,17 @@ async function startRoom() {
   settings = (await sb.from('room_settings').select('*').single()).data || settings;
   await loadSeats();
   const { data: ms } = await sb.from('messages').select('*').order('id', { ascending: false }).limit(50);
+  await ensureProf((ms || []).map(m => m.user_id));
   (ms || []).reverse().forEach(m => addMsg(m, false));
+  loadMyGifts();
   loadPosts(true);
 
   sb.channel('db')
     .on('postgres_changes', { event: '*', schema: 'public', table: 'seats' }, loadSeats)
     .on('postgres_changes', { event: '*', schema: 'public', table: 'posts' }, () => loadPosts(true))
     .on('postgres_changes', { event: '*', schema: 'public', table: 'post_likes' }, () => loadPosts(true))
-    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, p => addMsg(p.new, true))
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'gift_log', filter: `to_id=eq.${uid}` }, () => loadMyGifts())
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, p => { mq = mq.then(async () => { await ensureProf([p.new.user_id]); addMsg(p.new, true) }).catch(() => {}) })
     .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'messages' }, () => $('#chat').innerHTML = '')
     .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'room_settings' }, p => { settings = p.new; renderSeats(); renderTop() })
     .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'profiles' }, p => {
@@ -328,6 +348,7 @@ async function startRoom() {
       if (p.new.id === uid) {
         if (p.new.gift_tickets > me.gift_tickets) showFx({ e: '🎉' }, 'Kamu dapat +1 Tiket Gift! 🎟️ dari Host');
         if (p.new.theme_ok && !me.theme_ok) showFx({ e: '🎨' }, 'Tema chat terbuka! Semua tema bebas dipakai');
+        if (lvl(p.new.gifts_sent) > lvl(me.gifts_sent)) toast(`🎉 Selamat! Kamu naik ke SVIP ${lvl(p.new.gifts_sent)}`);
         me = { ...me, ...p.new }; renderProf();
       }
       renderSeats();
@@ -371,13 +392,18 @@ async function sweep() {
   if (stale.length) await sb.from('seats').delete().in('user_id', stale);
 }
 window.addEventListener('pagehide', () => { if (inRoom) { room?.untrack(); sb.from('seats').delete().eq('user_id', uid).then(() => {}) } });
+async function ensureProf(ids) {
+  const miss = [...new Set(ids)].filter(i => i && prof[i]?.gifts_sent === undefined); if (!miss.length) return;
+  const { data } = await sb.from('profiles').select('id,points,gifts_sent').in('id', miss);
+  (data || []).forEach(x => prof[x.id] = { ...prof[x.id], ...x });
+}
 async function loadSeats() {
   const { data } = (await sb.from('seats').select('*')) ; seats = {};
   (data || []).forEach(s => seats[s.seat_no] = s);
   mySeat = (data || []).find(s => s.user_id === uid)?.seat_no || null;
-  if (!mySeat && stream) stopMic();
+  if (!mySeat && stream && !sitting) stopMic();
   const ids = (data || []).map(s => s.user_id);
-  if (ids.length) (await sb.from('profiles').select('id,points').in('id', ids)).data.forEach(x => prof[x.id] = x);
+  if (ids.length) (await sb.from('profiles').select('id,points,gifts_sent').in('id', ids)).data.forEach(x => prof[x.id] = x);
   renderSeats(); renderTop(); syncPeers();
 }
 
@@ -386,7 +412,7 @@ function renderSeats() {
   for (let i = 1; i <= settings.seat_count; i++) {
     const s = seats[i], d = document.createElement('div'); d.className = 'seat';
     d.innerHTML = s
-      ? `<div class="ring r${hash(s.user_id) % 5}" data-uid="${s.user_id}"><img src="${esc(s.avatar)}"><span class="mic">${s.muted ? '🔇' : '🎙️'}</span></div><div class="nm">${esc(s.name)}</div><div class="pill">${prof[s.user_id]?.points ?? 0}</div>`
+      ? `<div class="ring r${hash(s.user_id) % 5}" data-uid="${s.user_id}"><img src="${esc(s.avatar)}"><span class="mic">${s.muted ? '🔇' : '🎙️'}</span></div><div class="nm">${badge(prof[s.user_id]?.gifts_sent)}${esc(s.name)}</div><div class="pill">${prof[s.user_id]?.points ?? 0}</div>`
       : `<div class="ring empty">＋</div><div class="nm dim">${i}</div>`;
     /* tap kursi sendiri = turun; tap kursi orang lain = kirim gift ke dia; tap kursi kosong = duduk */
     d.onclick = () => s ? (s.user_id === uid ? leaveSeat() : H.giftTo(s.user_id)) : sit(i);
@@ -402,21 +428,28 @@ function renderTop() {
   $('#listen').innerHTML = L.slice(0, 7).map(u => `<div class="ring r${hash(u.k) % 5}"><img src="${esc(u.avatar)}"></div>`).join('') + `<b>${L.length || ''}</b>`;
 }
 
+let sitting = false;
 async function sit(n) {
-  await sb.from('seats').delete().eq('user_id', uid);
-  stopMic();
-  try { stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } }); muted = false; watch(stream, uid) }
-  catch { toast('Mikrofon ditolak. Kamu duduk tanpa suara.') }
-  closeAll(); /* tutup koneksi lama SEBELUM duduk, supaya offer dari pendengar tidak ikut tertutup */
-  const { error } = await sb.from('seats').insert({ seat_no: n, user_id: uid, name: me.name, avatar: me.avatar });
-  if (error) { stopMic(); return toast('Kursi sudah terisi') }
-  await loadSeats();
+  if (sitting) return; sitting = true;
+  try {
+    await sb.from('seats').delete().eq('user_id', uid);
+    stopMic();
+    try { stream = await navigator.mediaDevices.getUserMedia(GUM); muted = false; $('#micb').textContent = '🎙️'; watch(stream, uid) }
+    catch { toast('Mikrofon ditolak. Izinkan mikrofon, lalu ketuk tombol 🎙️ untuk mencoba lagi.') }
+    closeAll(); /* tutup koneksi lama SEBELUM duduk */
+    const { error } = await sb.from('seats').insert({ seat_no: n, user_id: uid, name: me.name, avatar: me.avatar });
+    if (error) { stopMic(); toast('Kursi sudah terisi') }
+  } finally { sitting = false; await loadSeats() }
 }
 async function leaveSeat() { await sb.from('seats').delete().eq('user_id', uid); stopMic(); closeAll(); await loadSeats() }
 function stopMic() { stream?.getTracks().forEach(t => t.stop()); stream = null }
 H.mic = async () => {
   if (!mySeat) return toast('Duduk di kursi dulu untuk bicara');
-  muted = !muted; stream?.getAudioTracks().forEach(t => t.enabled = !muted);
+  if (!stream) { /* mikrofon belum aktif (ditolak tadi): coba lagi, lalu sambung ulang suara */
+    try { stream = await navigator.mediaDevices.getUserMedia(GUM); muted = false; watch(stream, uid); closeAll(); syncPeers(); $('#micb').textContent = '🎙️'; await sb.from('seats').update({ muted: false }).eq('user_id', uid); return toast('Mikrofon aktif 🎙️') }
+    catch { return toast('Mikrofon diblokir. Izinkan di pengaturan browser (ikon gembok di alamat).') }
+  }
+  muted = !muted; stream.getAudioTracks().forEach(t => t.enabled = !muted);
   $('#micb').textContent = muted ? '🔇' : '🎙️';
   await sb.from('seats').update({ muted }).eq('user_id', uid);
 };
@@ -426,18 +459,18 @@ const PAGES = { room: '#room', posts: '#pgPosts', me: '#pgMe' };
 H.tab = t => {
   Object.entries(PAGES).forEach(([k, sel]) => $(sel).classList.toggle('hidden', k !== t));
   document.querySelectorAll('#nav button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
-  if (t === 'posts') loadPosts(); if (t === 'me') renderProf(); if (t === 'room') { const c = $('#chat'); c.scrollTop = c.scrollHeight }
+  if (t === 'posts') loadPosts(); if (t === 'me') { renderProf(); loadMyGifts() } if (t === 'room') { const c = $('#chat'); c.scrollTop = c.scrollHeight }
 };
 
 /* ---------- 5. Postingan ---------- */
 async function loadPosts(quiet) {
-  const { data, error } = await sb.from('posts').select('id,user_id,body,image,created_at,profiles!user_id(name,avatar,is_host),post_likes(user_id)').order('created_at', { ascending: false }).limit(50);
+  const { data, error } = await sb.from('posts').select('id,user_id,body,image,created_at,profiles!user_id(name,avatar,is_host,gifts_sent),post_likes(user_id)').order('created_at', { ascending: false }).limit(50);
   if (error) { if (!quiet) toast('Postingan: ' + error.message); return }
   posts = data || []; renderPosts(); renderProf();
 }
 function postHTML(p) {
   const u = p.profiles || {}, can = p.user_id === uid || me.is_host, L = p.post_likes || [], n = L.length, liked = L.some(l => l.user_id === uid);
-  return `<article class="post"><div class="hd"><img src="${esc(u.avatar)}"><div><b>${u.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${esc(u.name)}</b><small>${ago(p.created_at)}</small></div>
+  return `<article class="post"><div class="hd"><img src="${esc(u.avatar)}" onclick="H.view('${p.user_id}')" style="cursor:pointer"><div><b>${u.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(u.gifts_sent)}${esc(u.name)}</b><small>${ago(p.created_at)}</small></div>
     ${can ? `<button class="del" onclick="H.delPost(${p.id})" title="Hapus">🗑</button>` : ''}</div>
     ${p.body ? `<p>${esc(p.body)}</p>` : ''}${p.image ? `<img class="pi" loading="lazy" src="${esc(p.image)}">` : ''}
     <button class="lk ${liked ? 'on' : ''}" onclick="H.like(${p.id})">${liked ? '❤️' : '🤍'} ${n}</button></article>`;
@@ -475,14 +508,40 @@ H.doPost = async () => {
 };
 
 /* ---------- 6. Profil ---------- */
+async function getGifts(id) {
+  const { data } = await sb.from('gift_log').select('from_id,gift,profiles!from_id(name,avatar,gifts_sent)').eq('to_id', id).order('id', { ascending: false }).limit(1000);
+  return data || [];
+}
+async function loadMyGifts() { myGifts = await getGifts(uid); renderProf() }
+function giftHTML(rows) {
+  if (!rows.length) return '<p class="empty-t">Belum ada hadiah diterima 🎁</p>';
+  const tot = {}, by = {};
+  rows.forEach(r => { tot[r.gift] = (tot[r.gift] || 0) + 1; const b = by[r.from_id] ??= { u: r.profiles || {}, n: 0, g: {} }; b.n++; b.g[r.gift] = (b.g[r.gift] || 0) + 1 });
+  const em = g => GIFTS[g]?.e || '🎁';
+  return `<div class="stats" style="flex-wrap:wrap">${Object.entries(tot).map(([g, n]) => `<span class="chip">${em(g)} ×${n}</span>`).join('')}</div>
+    <p class="sub" style="text-align:center">Total ${rows.length} hadiah dari ${Object.keys(by).length} orang</p>
+    ${Object.entries(by).sort((a, b) => b[1].n - a[1].n).map(([id, b]) => `<div class="mrow" onclick="H.view('${id}')"><img src="${esc(b.u.avatar)}"><span>${badge(b.u.gifts_sent)}${esc(b.u.name)}<br><small style="color:#a99d92">${Object.entries(b.g).map(([g, n]) => `${em(g)}×${n}`).join(' ')}</small></span><b>${b.n}</b></div>`).join('')}`;
+}
+/* Lihat profil orang lain (ketuk foto di postingan / chat / daftar pengirim) */
+H.view = async id => {
+  if (id === uid) { H.close(); return H.tab('me') }
+  const { data: u } = await sb.from('profiles').select('id,name,avatar,is_host,gifts_sent,points').eq('id', id).maybeSingle();
+  if (!u) return toast('Profil tidak ditemukan');
+  viewU = u; const rows = await getGifts(id);
+  sheet(`<div class="pf" style="padding-top:0"><img class="pav" src="${esc(u.avatar)}"><h2>${u.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(u.gifts_sent)}${esc(u.name)}</h2>${titleHTML(u.gifts_sent)}</div>
+    <h3 class="sec" style="margin-top:6px">🎁 Koleksi Hadiah</h3>${giftHTML(rows)}
+    <button class="btn" style="margin-top:14px" onclick="H.giftView()">🎁 Kirim Gift ke ${esc(u.name)}</button>`);
+};
+H.giftView = () => { if (viewU) { gT = { id: viewU.id, name: viewU.name, avatar: viewU.avatar }; giftSheet() } };
 function renderProf() {
   if (!me) return;
   const mine = posts.filter(p => p.user_id === uid);
   $('#pfBox').innerHTML = `<div class="pf"><img class="pav" src="${esc(me.avatar)}">
-    <h2>${me.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${esc(me.name)}</h2>
+    <h2>${me.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(me.gifts_sent)}${esc(me.name)}</h2>${titleHTML(me.gifts_sent)}
     <div class="stats"><span class="chip">🎟️ ${me.gift_tickets ?? 0}</span><span class="chip">⭐ ${me.points ?? 0}</span><span class="chip">📝 ${mine.length}</span></div></div>
     <div class="acts"><button class="btn" onclick="H.editAv()">📷 Ubah Foto</button><button class="btn" onclick="H.editNm()">✏️ Ubah Nama</button></div>
     <button class="btn" onclick="H.compose()">➕ Buat Postingan</button>
+    <h3 class="sec">🎁 Koleksi Hadiah</h3>${giftHTML(myGifts)}
     <h3 class="sec">Postingan Saya</h3>${mine.map(postHTML).join('') || '<p class="empty-t">Belum ada postingan.</p>'}`;
 }
 H.editAv = () => pick(async f => { toast('Mengunggah foto…'); try { setAvatar(await upImg(f, 256)) } catch (e) { toast(e.message || 'Gagal mengunggah foto') } });
@@ -522,7 +581,7 @@ H.setTheme = async id => {
 /* ---------- 8. Chat & gift ---------- */
 function addMsg(m, live) {
   const c = $('#chat'), d = document.createElement('div'), hb = m.is_host ? '<i class="bdg">👑 HOST</i>' : '';
-  const head = `<img class="av" src="${esc(m.avatar)}">`, meta = `<div class="meta">${hb}${esc(m.name)}</div>`;
+  const head = `<img class="av" src="${esc(m.avatar)}"${m.user_id ? ` onclick="H.view('${m.user_id}')" style="cursor:pointer"` : ''}>`, meta = `<div class="meta">${hb}${badge(prof[m.user_id]?.gifts_sent)}${esc(m.name)}</div>`;
   d.className = 'row';
   if (m.type === 'join') d.innerHTML = `<div class="bub">${hb}<b>${esc(m.name)}</b> sedang bergabung</div>`;
   else if (m.type === 'leave') d.innerHTML = `<div class="bub sys">🚪 <b>${esc(m.name)}</b> keluar dari room</div>`;
@@ -563,8 +622,23 @@ H.send = async i => {
   error ? toast(error.message) : H.close();
 };
 
-/* ---------- 9. Suara: deteksi bicara + WebRTC (signaling via Supabase Broadcast) ---------- */
+/* ---------- 9. Suara: WebRTC (signaling via Supabase Broadcast) ----------
+   Aturan: pendengar (tidak duduk) selalu menelepon penghuni kursi; antar penghuni kursi, uid lebih kecil yang menelepon.
+   Koneksi yang gagal/putus otomatis dibuat ulang. */
+const ICE = [
+  { urls: ['stun:stun.l.google.com:19302', 'stun:stun1.l.google.com:19302', 'stun:stun.cloudflare.com:3478'] },
+  /* TURN cadangan untuk jaringan seluler/NAT ketat. Ganti dengan TURN milikmu sendiri bila perlu. */
+  { urls: ['turn:openrelay.metered.ca:80', 'turn:openrelay.metered.ca:443', 'turns:openrelay.metered.ca:443?transport=tcp'], username: 'openrelayproject', credential: 'openrelayproject' }];
+const GUM = { audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } };
+const W = {};
+let spk = true; /* speaker: dengar suara orang lain. Terpisah dari mic. */
+H.spk = () => {
+  spk = !spk; document.querySelectorAll('audio').forEach(a => a.muted = !spk);
+  const b = $('#spkb'); b.textContent = spk ? '🔊' : '🔈'; b.classList.toggle('off', !spk);
+  toast(spk ? 'Speaker aktif 🔊' : 'Speaker dimatikan: kamu tidak mendengar suara');
+};
 function watch(st, id) {
+  if (W[id] === st) return; W[id] = st;
   const ac = new (window.AudioContext || window.webkitAudioContext)(), an = ac.createAnalyser(); an.fftSize = 256;
   ac.createMediaStreamSource(st).connect(an); const b = new Uint8Array(an.frequencyBinCount);
   const iv = setInterval(() => {
@@ -573,38 +647,72 @@ function watch(st, id) {
     document.querySelectorAll(`[data-uid="${id}"]`).forEach(e => e.classList.toggle('talk', v > 12));
   }, 150);
 }
+/* HP sering memblokir suara otomatis: setiap sentuhan pertama membuka semua audio */
+document.addEventListener('pointerdown', () => document.querySelectorAll('audio').forEach(a => a.paused && a.play().catch(() => {})));
+document.addEventListener('visibilitychange', () => { if (!document.hidden) syncPeers() });
+
 const sig = (to, p) => room.send({ type: 'broadcast', event: 'sig', payload: { to, from: uid, ...p } });
+const seatedOthers = () => Object.values(seats).map(s => s.user_id).filter(i => i !== uid);
+function drop(k) {
+  const o = pcs[k]; if (!o) return;
+  clearTimeout(o.t); delete pcs[k]; try { o.pc.close() } catch {}
+  document.getElementById('a' + k)?.remove(); delete W[k];
+}
+function redo(id, o) { if (pcs[id] !== o) return; if (o.init && seatedOthers().includes(id)) connect(id); else drop(id) }
 function mkpc(id, init) {
-  pcs[id]?.pc.close();
-  const pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
+  const old = pcs[id]; if (old) { clearTimeout(old.t); delete pcs[id]; try { old.pc.close() } catch {} }
+  const pc = new RTCPeerConnection({ iceServers: ICE });
   const o = pcs[id] = { pc, init, q: early[id] || [] }; early[id] = [];
   pc.onicecandidate = e => e.candidate && sig(id, { c: e.candidate });
   pc.ontrack = e => {
     let a = document.getElementById('a' + id);
     if (!a) { a = document.createElement('audio'); a.id = 'a' + id; a.autoplay = true; a.playsInline = true; document.body.append(a) }
-    a.srcObject = e.streams[0]; watch(e.streams[0], id);
-    a.play().catch(() => { toast('Ketuk layar untuk mengaktifkan suara 🔊'); document.addEventListener('click', () => a.play(), { once: true }) });
+    a.muted = !spk; a.srcObject = e.streams[0]; watch(e.streams[0], id);
+    a.play().catch(() => toast('Ketuk layar untuk mengaktifkan suara 🔊'));
+  };
+  pc.onconnectionstatechange = () => {
+    if (pcs[id] !== o) return;
+    const st = pc.connectionState;
+    if (st === 'failed') redo(id, o);
+    else if (st === 'disconnected') setTimeout(() => pcs[id] === o && pc.connectionState !== 'connected' && redo(id, o), 3000);
   };
   if (stream) stream.getTracks().forEach(t => pc.addTrack(t, stream)); else if (init) pc.addTransceiver('audio', { direction: 'recvonly' });
   return o;
 }
-async function connect(id) { const o = mkpc(id, true); await o.pc.setLocalDescription(await o.pc.createOffer()); sig(id, { d: o.pc.localDescription }) }
+async function connect(id) {
+  const o = mkpc(id, true);
+  o.t = setTimeout(() => o.pc.connectionState !== 'connected' && redo(id, o), 10000); /* belum tersambung dalam 10 dtk = ulangi */
+  try { await o.pc.setLocalDescription(await o.pc.createOffer()); sig(id, { d: o.pc.localDescription }) } catch {}
+}
 const flush = o => o.q.splice(0).forEach(c => o.pc.addIceCandidate(c).catch(() => {}));
 async function onSig({ to, from, d, c }) {
   if (to !== uid) return;
-  if (d?.type === 'offer') { const o = mkpc(from, false); await o.pc.setRemoteDescription(d); flush(o); await o.pc.setLocalDescription(await o.pc.createAnswer()); sig(from, { d: o.pc.localDescription }) }
-  else if (d?.type === 'answer') { const o = pcs[from]; if (o) { await o.pc.setRemoteDescription(d); flush(o) } }
-  else if (c) { const o = pcs[from]; if (!o) (early[from] ??= []).push(c); else o.pc.remoteDescription ? o.pc.addIceCandidate(c).catch(() => {}) : o.q.push(c) }
+  try {
+    if (d?.type === 'offer') {
+      const ex = pcs[from];
+      if (ex?.init && ex.pc.signalingState === 'have-local-offer' && uid < from) return; /* dua-duanya menelepon: uid lebih kecil menang */
+      const o = mkpc(from, false);
+      await o.pc.setRemoteDescription(d); flush(o);
+      await o.pc.setLocalDescription(await o.pc.createAnswer()); sig(from, { d: o.pc.localDescription });
+    } else if (d?.type === 'answer') {
+      const o = pcs[from]; if (o && o.pc.signalingState === 'have-local-offer') { await o.pc.setRemoteDescription(d); flush(o) }
+    } else if (c) {
+      const o = pcs[from]; if (!o) (early[from] ??= []).push(c); else o.pc.remoteDescription ? o.pc.addIceCandidate(c).catch(() => {}) : o.q.push(c);
+    }
+  } catch {}
 }
-function closeAll() { Object.keys(pcs).forEach(k => { pcs[k].pc.close(); delete pcs[k]; document.getElementById('a' + k)?.remove() }) }
-/* Pendengar selalu menyambung ke penghuni kursi; antar penghuni kursi, uid lebih kecil yang memulai */
+function closeAll() { Object.keys(pcs).forEach(drop) }
 function syncPeers() {
-  if (!room) return;
-  const ids = Object.values(seats).map(s => s.user_id).filter(i => i !== uid);
-  Object.keys(pcs).forEach(k => { if (!ids.includes(k)) { pcs[k].pc.close(); delete pcs[k]; document.getElementById('a' + k)?.remove() } });
+  if (!room || sitting) return;
+  const ids = seatedOthers(), on = new Set(Object.keys(room.presenceState()));
+  Object.keys(pcs).forEach(k => {
+    /* yang kita telepon: hanya penghuni kursi. Yang menelepon kita (pendengar): tetap dijaga selama online */
+    const keep = pcs[k].init ? ids.includes(k) : (ids.includes(k) || on.has(k));
+    if (!keep) drop(k);
+  });
   ids.forEach(id => {
     const init = !mySeat || uid < id;
-    if (pcs[id] && pcs[id].init !== init) { pcs[id].pc.close(); delete pcs[id] }
+    if (pcs[id] && pcs[id].init !== init) drop(id);
     if (init && !pcs[id]) connect(id);
   });
 }
