@@ -21,7 +21,7 @@ body{background:
 .pav.ph{display:grid;place-items:center;font-size:40px;border-style:dashed;color:var(--gold)}
 .scr.hn{padding-bottom:calc(64px + env(safe-area-inset-bottom))}
 .col{display:flex;flex-direction:column}
-.pg{flex:1;min-height:0;overflow-y:auto;padding:4px 2px 14px;scrollbar-width:none}
+.pg{width:100%;flex:1;min-height:0;overflow-y:auto;padding:4px 2px 14px;scrollbar-width:none}
 .hidden{display:none!important}
 button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
 .inp{width:100%;background:rgba(255,255,255,.07);border:1.5px solid rgba(245,193,90,.35);border-radius:14px;padding:12px 14px;color:#fff;font:inherit;outline:none}
@@ -46,13 +46,14 @@ textarea.inp{resize:none;display:block}
 .ib.plus{background:#5b4ff0}
 .chips{display:flex;align-items:center;gap:8px;margin:4px 0 8px}
 .chip{background:var(--glass);border:1px solid rgba(245,193,90,.35);border-radius:999px;padding:3px 10px;font-size:13px}
-.mini{display:flex}.mini img{width:26px;height:26px;border-radius:50%;border:2px solid var(--gold);margin-left:-6px;background:#1c1410}
+.mini{display:flex}.mini img{width:26px;height:26px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);margin-left:-6px;background:#1c1410}
 /* seats */
 #grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px 6px;padding:8px 0 10px;border-bottom:1px solid rgba(245,193,90,.12)}
 .seat{display:flex;flex-direction:column;align-items:center;min-width:0;cursor:pointer}
 .ring{position:relative;width:min(15.5vw,76px);aspect-ratio:1;border-radius:50%;padding:4px;
  background:conic-gradient(#5ec8ff,#2b6dff,#b8e6ff,#5ec8ff)}
-.ring img{width:100%;height:100%;border-radius:50%;object-fit:cover;background:#1c1410;border:2px solid #0a0706;display:block}
+.ring{--p:4px;overflow:visible}
+.ring img{position:absolute;inset:var(--p);width:calc(100% - 2*var(--p));height:calc(100% - 2*var(--p));border-radius:50%;object-fit:cover;background:#1c1410;border:2px solid #0a0706;display:block}
 .r1{background:conic-gradient(#ffd886,#8a4bff,#ff8ad8,#ffd886)}
 .r2{background:conic-gradient(#ff9a1f,#ff3c1f,#ffd24a,#ff9a1f);box-shadow:0 0 12px #ff6a1f88}
 .r3{background:conic-gradient(#fff,#9aa3b2,#e8edf5,#fff)}
@@ -65,7 +66,7 @@ textarea.inp{resize:none;display:block}
 .nm.dim{color:#7d7066}
 .pill{margin-top:3px;min-width:58px;text-align:center;font-size:12px;border:2px solid var(--cy);border-radius:999px;background:rgba(8,18,38,.75);padding:0 10px}
 .listen{display:flex;align-items:center;gap:6px;padding:10px 0;overflow:hidden}
-.listen .ring{width:38px;padding:2px;flex:none}.listen b{margin-left:auto;color:#cfc6bd}
+.listen .ring{width:38px;--p:2px;padding:2px;flex:none}.listen b{margin-left:auto;color:#cfc6bd}
 /* chat */
 #chatw{flex:1;min-height:0;display:flex;flex-direction:column;border-radius:16px;margin:2px 0;overflow:hidden;background-size:cover;background-position:center;transition:background .3s}
 #chat{flex:1;min-height:0;overflow-y:auto;padding:8px 6px;display:flex;flex-direction:column;gap:8px;
@@ -115,7 +116,10 @@ textarea.inp{resize:none;display:block}
 .post p{margin:0 0 8px;white-space:pre-wrap;word-break:break-word;font-size:15px;font-weight:700}
 .pi{width:100%;border-radius:14px;max-height:380px;object-fit:cover;display:block;background:#1c1410}
 .del{color:#e0646b;font-size:18px;padding:4px}
-.pf{text-align:center;padding:14px 0 6px}
+.pf{display:flex;flex-direction:column;align-items:center;text-align:center;padding:14px 0 6px}
+.pf .pav{display:block;margin:0 auto}
+.lk{display:inline-flex;align-items:center;gap:6px;margin-top:6px;padding:5px 14px;border-radius:999px;background:#ffffff14;font-size:14px}
+.lk.on{background:#7a263088;border:1px solid #e0646b}
 .pav{width:112px;height:112px;border-radius:50%;object-fit:cover;border:3px solid var(--gold);box-shadow:0 0 18px #f5c15a66;background:#1c1410}
 .pf h2{margin:10px 0 6px;font-size:22px}
 .stats{display:flex;gap:8px;justify-content:center;margin:8px 0 14px}
@@ -130,8 +134,8 @@ textarea.inp{resize:none;display:block}
 <!-- ================= SETUP PROFIL ================= -->
 <section id="setup" class="scr" style="display:flex;flex-direction:column;justify-content:center">
   <button class="ib" style="position:absolute;right:14px;top:calc(12px + env(safe-area-inset-top))" onclick="H.hostLogin()" title="Login Host">👑</button>
-  <h1 style="font-size:30px;margin:0;color:var(--gold)">Kumpulan Penyelamat Bumi</h1>
-  <p class="sub" style="margin-top:4px">Upload foto profil dari HP-mu dan isi nama panggilan.</p>
+  <h1 style="font-size:30px;margin:0;color:var(--gold)">Welcome Penyelamat Bumi</h1>
+  <p class="sub" style="margin-top:4px">Upload foto profil dari HP-mu dan isi nama panggila.</p>
   <div class="avsel" id="avs"></div>
   <input id="nm" class="inp" maxlength="16" placeholder="Nama panggilan">
   <button class="btn" style="margin-top:16px" onclick="H.enter()">Masuk Room</button>
@@ -280,11 +284,13 @@ H.panel = async () => {
    <p class="sub">Anggota online</p>
    ${(data || []).map(u => `<div class="mrow"><img src="${esc(u.avatar)}"><span>${esc(u.name)} <small style="color:#a99d92">🎟️${u.gift_tickets} ${u.theme_ok ? '🎨✔' : ''}</small></span>
      <div class="bt"><button class="sm" onclick="H.tix('${u.id}')">+1 Tiket Gift</button>${u.theme_ok ? '' : `<button class="sm" onclick="H.thm('${u.id}')">🎨 Buka Tema</button>`}</div></div>`).join('')}
-   <div style="display:flex;gap:8px;margin-top:14px"><button class="sm o" onclick="H.reset()">Kosongkan kursi</button><button class="sm o" onclick="H.clear()">Bersihkan chat</button></div>`);
+   <div style="display:flex;gap:8px;margin-top:14px"><button class="sm o" onclick="H.reset()">Kosongkan kursi</button><button class="sm o" onclick="H.clear()">Bersihkan chat</button></div>
+   <button class="btn" style="margin-top:16px;background:linear-gradient(#e0646b,#9c2a33);color:#fff" onclick="H.unhost()">🚪 Keluar Host</button>`);
 };
 H.seatN = async d => { const n = Math.min(30, Math.max(4, settings.seat_count + d)); settings.seat_count = n; $('#sc').textContent = n; renderSeats(); await sb.from('room_settings').update({ seat_count: n }).eq('id', 1) };
 H.tix = async id => { const { error } = await sb.rpc('give_ticket', { target: id }); toast(error ? error.message : '+1 tiket terkirim 🎟️') };
 H.thm = async id => { const { error } = await sb.rpc('give_theme', { target: id }); toast(error ? error.message : 'Tema chat dibuka untuk dia 🎨'); if (!error) H.panel() };
+H.unhost = async () => { const { error } = await sb.rpc('release_host'); if (error) return toast(error.message); me = { ...me, is_host: false }; H.close(); renderProf(); renderPosts(); toast('Kamu keluar dari mode Host') };
 H.reset = async () => { await sb.from('seats').delete().neq('seat_no', 0); toast('Semua kursi dikosongkan') };
 H.clear = async () => { await sb.from('messages').delete().neq('id', 0); $('#chat').innerHTML = ''; toast('Chat dibersihkan') };
 
@@ -301,6 +307,7 @@ async function startRoom() {
   sb.channel('db')
     .on('postgres_changes', { event: '*', schema: 'public', table: 'seats' }, loadSeats)
     .on('postgres_changes', { event: '*', schema: 'public', table: 'posts' }, () => loadPosts(true))
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'post_likes' }, () => loadPosts(true))
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, p => addMsg(p.new, true))
     .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'messages' }, () => $('#chat').innerHTML = '')
     .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'room_settings' }, p => { settings = p.new; renderSeats(); renderTop() })
@@ -326,6 +333,8 @@ async function startRoom() {
     .subscribe(async s => {
       if (s !== 'SUBSCRIBED') return;
       await room.track({ name: me.name, avatar: me.avatar });
+      sb.rpc('cleanup_room').then(() => {});
+      setTimeout(sweep, 4000); setInterval(sweep, 60000);
       syncPeers(); /* pendengar langsung menyambung ke yang sudah duduk */
       await sb.from('messages').insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'join' });
     });
@@ -336,6 +345,14 @@ async function startRoom() {
   };
 }
 
+/* Bersihkan kursi 'hantu': pemilik kursi yang sudah tidak online (browser ditutup) */
+async function sweep() {
+  if (!room) return;
+  const on = new Set(Object.keys(room.presenceState()));
+  const stale = Object.values(seats).map(s => s.user_id).filter(i => i !== uid && !on.has(i));
+  if (stale.length) await sb.from('seats').delete().in('user_id', stale);
+}
+window.addEventListener('pagehide', () => { if (inRoom) { room?.untrack(); sb.from('seats').delete().eq('user_id', uid).then(() => {}) } });
 async function loadSeats() {
   const { data } = (await sb.from('seats').select('*')) ; seats = {};
   (data || []).forEach(s => seats[s.seat_no] = s);
@@ -396,17 +413,26 @@ H.tab = t => {
 
 /* ---------- 5. Postingan ---------- */
 async function loadPosts(quiet) {
-  const { data, error } = await sb.from('posts').select('id,user_id,body,image,created_at,profiles(name,avatar,is_host)').order('created_at', { ascending: false }).limit(50);
+  const { data, error } = await sb.from('posts').select('id,user_id,body,image,created_at,profiles(name,avatar,is_host),post_likes(user_id)').order('created_at', { ascending: false }).limit(50);
   if (error) { if (!quiet) toast('Postingan: ' + error.message); return }
   posts = data || []; renderPosts(); renderProf();
 }
 function postHTML(p) {
-  const u = p.profiles || {}, can = p.user_id === uid || me.is_host;
+  const u = p.profiles || {}, can = p.user_id === uid || me.is_host, L = p.post_likes || [], n = L.length, liked = L.some(l => l.user_id === uid);
   return `<article class="post"><div class="hd"><img src="${esc(u.avatar)}"><div><b>${u.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${esc(u.name)}</b><small>${ago(p.created_at)}</small></div>
     ${can ? `<button class="del" onclick="H.delPost(${p.id})" title="Hapus">🗑</button>` : ''}</div>
-    ${p.body ? `<p>${esc(p.body)}</p>` : ''}${p.image ? `<img class="pi" loading="lazy" src="${esc(p.image)}">` : ''}</article>`;
+    ${p.body ? `<p>${esc(p.body)}</p>` : ''}${p.image ? `<img class="pi" loading="lazy" src="${esc(p.image)}">` : ''}
+    <button class="lk ${liked ? 'on' : ''}" onclick="H.like(${p.id})">${liked ? '❤️' : '🤍'} ${n}</button></article>`;
 }
 function renderPosts() { $('#plist').innerHTML = posts.map(postHTML).join('') || '<p class="empty-t">Belum ada postingan. Jadilah yang pertama! 📝</p>' }
+H.like = async id => {
+  const p = posts.find(x => x.id === id); if (!p) return;
+  const liked = (p.post_likes || []).some(l => l.user_id === uid);
+  p.post_likes = liked ? p.post_likes.filter(l => l.user_id !== uid) : [...(p.post_likes || []), { user_id: uid }];
+  renderPosts(); renderProf();
+  const { error } = liked ? await sb.from('post_likes').delete().eq('post_id', id).eq('user_id', uid) : await sb.from('post_likes').insert({ post_id: id, user_id: uid });
+  if (error) { toast(error.message); loadPosts(true) }
+};
 H.delPost = async id => { if (!confirm('Hapus postingan ini?')) return; const { error } = await sb.from('posts').delete().eq('id', id); if (error) return toast(error.message); loadPosts() };
 H.compose = () => {
   draftImg = null;
