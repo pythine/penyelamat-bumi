@@ -108,6 +108,35 @@ textarea.inp{resize:none;display:block}
 @keyframes fl{0%{transform:translateY(40vh) scale(.4);opacity:0}12%{transform:translateY(0) scale(1.1);opacity:1}20%{transform:scale(1)}85%{transform:translateY(-6vh);opacity:1}100%{transform:translateY(-14vh);opacity:0}}
 #toast{position:fixed;left:50%;top:calc(14px + env(safe-area-inset-top));transform:translateX(-50%);z-index:50;background:#000d;border:1px solid var(--gold);border-radius:999px;padding:8px 18px;font-size:14px;opacity:0;transition:.25s;pointer-events:none;text-align:center;max-width:92vw}
 #toast.on{opacity:1}
+/* Popup kenaikan SVIP: tampil tepat di tengah layar untuk semua anggota room */
+#svipPop{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:20px;background:rgba(0,0,0,.58);backdrop-filter:blur(5px);pointer-events:none}
+#svipPop.hidden{display:none!important}
+#svipPop .svip-card{width:min(90vw,360px);text-align:center;padding:26px 20px 24px;border:2px solid #ffd36e;border-radius:26px;background:radial-gradient(circle at 50% 0%,#76501c,#211306 58%,#100b08);box-shadow:0 0 28px #ffc34d99, inset 0 0 22px #ffd36e22;animation:svipPopIn .55s cubic-bezier(.18,.9,.25,1.3) both}
+#svipPop .svip-crown{font-size:48px;line-height:1.1;filter:drop-shadow(0 0 12px #ffd36e)}
+#svipPop .svip-title{font-size:15px;letter-spacing:3px;color:#ffe6a8;margin:8px 0 4px}
+#svipPop .svip-level{font-size:clamp(34px,10vw,52px);line-height:1.1;font-weight:900;background:linear-gradient(#fff6c9,#ffc247 55%,#c87918);background-clip:text;-webkit-background-clip:text;color:transparent;text-shadow:0 4px 18px #ffb52b55}
+#svipPop .svip-name{font-size:20px;color:#fff;margin-top:10px;overflow-wrap:anywhere}
+#svipPop .svip-desc{font-size:13px;color:#e9cf9d;margin-top:5px}
+@keyframes svipPopIn{0%{opacity:0;transform:scale(.55) translateY(25px)}75%{opacity:1;transform:scale(1.04)}100%{opacity:1;transform:scale(1)}}
+
+/* Friends, replies, tags and private messages */
+.replybox{border-left:3px solid var(--gold);background:#0003;border-radius:8px;padding:5px 9px;margin:0 0 6px;font-size:12px;color:#e8c98e}
+.replybox b{display:block;color:#ffd886;margin-bottom:2px}
+.msgtools{display:flex;gap:10px;flex-wrap:wrap;margin-top:5px}
+.msgtools button{font-size:11px;color:#e8c98e;background:#ffffff12;border-radius:999px;padding:3px 9px}
+.tagged{color:#ffd886;font-weight:900}
+.friendcard{display:flex;align-items:center;gap:10px;padding:10px;background:var(--glass);border:1px solid #f5c15a30;border-radius:14px;margin:8px 0}
+.friendcard img{width:42px;height:42px;border-radius:50%;object-fit:cover}
+.friendcard .finfo{flex:1;min-width:0}.friendcard small{display:block;color:#a99d92}
+.dmhead{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.dmhead img{width:40px;height:40px;border-radius:50%;object-fit:cover}
+.dmfeed{max-height:48dvh;overflow:auto;display:flex;flex-direction:column;gap:8px;padding:8px 2px}
+.dmline{max-width:88%;padding:9px 12px;border-radius:15px;background:#ffffff12;word-break:break-word;align-self:flex-start}
+.dmline.mine{align-self:flex-end;background:#76501f88}
+.dmline small{display:block;color:#d6b98a;font-size:10px;margin-top:4px}
+.dmcomposer{display:flex;gap:6px;align-items:center;margin-top:8px}
+.dmcomposer .inp{min-width:0}
+.replyhint{display:flex;justify-content:space-between;align-items:center;background:#5b431e88;border-radius:10px;padding:7px 10px;margin:5px 0;font-size:12px;color:#ffe0a0}
 /* posts & profile */
 .post{background:var(--glass);border:1px solid rgba(245,193,90,.18);border-radius:18px;padding:12px;margin-bottom:12px}
 .post .hd{display:flex;align-items:center;gap:10px;margin-bottom:8px}
@@ -161,7 +190,9 @@ textarea.inp{resize:none;display:block}
   <div id="grid"></div>
   <div class="listen" id="listen"></div>
   <div id="chatw"><div id="chat"></div></div>
+  <div id="roomReplyHint"></div>
   <div class="bar">
+    <button class="ib" onclick="H.tagRoom()" title="Tag anggota">@</button>
     <input id="msg" class="inp" maxlength="200" placeholder="Katakan sesuatu" autocomplete="off" enterkeyhint="send">
     <button class="ib sendb" onpointerdown="event.preventDefault()" onclick="H.sendMsg()" title="Kirim pesan">➤</button>
     <button class="ib themeb" onclick="H.themes()" title="Tema chat">🎨</button>
@@ -179,6 +210,13 @@ textarea.inp{resize:none;display:block}
   <div class="pg" id="plist"></div>
 </section>
 
+<!-- ================= TEMAN ================= -->
+<section id="pgFriends" class="scr hn col hidden">
+  <div class="top"><div class="t"><b>Teman</b><small>Tambah teman dan mulai percakapan pribadi</small></div>
+    <button class="ib plus" onclick="H.findFriends()">＋</button></div>
+  <div class="pg" id="friendBox"></div>
+</section>
+
 <!-- ================= PROFIL ================= -->
 <section id="pgMe" class="scr hn col hidden">
   <div class="top">
@@ -191,10 +229,11 @@ textarea.inp{resize:none;display:block}
 <nav id="nav" class="nav hidden">
   <button data-t="room" class="on" onclick="H.tab('room')"><i>💬</i>Room</button>
   <button data-t="posts" onclick="H.tab('posts')"><i>📰</i>Postingan</button>
+  <button data-t="friends" onclick="H.tab('friends')"><i>👥</i>Teman</button>
   <button data-t="me" onclick="H.tab('me')"><i>👤</i>Profil</button>
 </nav>
 
-<div id="sheet" class="hidden"></div><div id="fx"></div><div id="toast"></div>
+<div id="sheet" class="hidden"></div><div id="fx"></div><div id="svipPop" class="hidden"></div><div id="toast"></div>
 
 <script type="module">
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
@@ -240,6 +279,7 @@ const H = window.H = {};
 let uid, me, avatar = '', settings = {title:'Voice & Gift Room', seat_count:15};
 let seats = {}, prof = {}, online = {}, mySeat = null, stream = null, muted = false, room, inRoom = false;
 let posts = [], gT = null, draftImg = null, myGifts = [], mq = Promise.resolve(), viewU = null;
+let friendRows = [], pendingRows = [], dmPeer = null, dmMessages = [], dmReply = null, roomReply = null;
 const pcs = {}, early = {};
 
 function toast(t) { const e = $('#toast'); e.textContent = t; e.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(() => e.classList.remove('on'), 2600) }
@@ -256,6 +296,12 @@ H.close = () => $('#sheet').classList.add('hidden');
 function showFx(g, who, to) {
   $('#fx').innerHTML = `<div class="g">${g.img ? `<img src="${esc(g.img)}">` : `<div class="big">${g.e}</div>`}<br><span class="ban">${esc(who)} mengirim hadiah${to ? ' ke ' + esc(to) : ''}!</span></div>`;
   clearTimeout(showFx.t); showFx.t = setTimeout(() => $('#fx').innerHTML = '', 4000);
+}
+function showSvipPopup(name, level) {
+  const e = $('#svipPop');
+  e.innerHTML = `<div class="svip-card"><div class="svip-crown">👑✨</div><div class="svip-title">SELAMAT ATAS PENINGKATAN GELAR</div><div class="svip-level">SVIP ${level}</div><div class="svip-name">${esc(name)}</div><div class="svip-desc">berhasil naik ke level SVIP ${level}!</div></div>`;
+  e.classList.remove('hidden'); clearTimeout(showSvipPopup.t);
+  showSvipPopup.t = setTimeout(() => { e.classList.add('hidden'); e.innerHTML = ''; }, 5000);
 }
 
 /* ---------- Util gambar: pilih file, kecilkan, unggah ke Storage ---------- */
@@ -342,13 +388,22 @@ async function startRoom() {
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'gift_log', filter: `to_id=eq.${uid}` }, () => loadMyGifts())
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, p => { mq = mq.then(async () => { await ensureProf([p.new.user_id]); addMsg(p.new, true) }).catch(() => {}) })
     .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'messages' }, () => $('#chat').innerHTML = '')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'friend_requests', filter: `recipient_id=eq.${uid}` }, () => { if(!$('#pgFriends').classList.contains('hidden')) loadFriends(); })
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'direct_messages', filter: `recipient_id=eq.${uid}` }, p => {
+      if(dmPeer && p.new.sender_id===dmPeer.id){ dmMessages.push(p.new); renderDM(); }
+      toast('Pesan pribadi baru 💬');
+    })
     .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'room_settings' }, p => { settings = p.new; renderSeats(); renderTop() })
     .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'profiles' }, p => {
-      prof[p.new.id] = p.new;
+      const previous = p.new.id === uid ? me : (prof[p.new.id] || p.old || null);
+      const oldLevel = previous ? lvl(previous.gifts_sent) : 0;
+      const newLevel = lvl(p.new.gifts_sent);
+      prof[p.new.id] = { ...prof[p.new.id], ...p.new };
+      // Popup ditampilkan di tengah layar seluruh anggota yang sedang berada di room.
+      if (newLevel > oldLevel) showSvipPopup(p.new.name || (p.new.id === uid ? me.name : 'Anggota'), newLevel);
       if (p.new.id === uid) {
         if (p.new.gift_tickets > me.gift_tickets) showFx({ e: '🎉' }, 'Kamu dapat +1 Tiket Gift! 🎟️ dari Host');
         if (p.new.theme_ok && !me.theme_ok) showFx({ e: '🎨' }, 'Tema chat terbuka! Semua tema bebas dipakai');
-        if (lvl(p.new.gifts_sent) > lvl(me.gifts_sent)) toast(`🎉 Selamat! Kamu naik ke SVIP ${lvl(p.new.gifts_sent)}`);
         me = { ...me, ...p.new }; renderProf();
       }
       renderSeats();
@@ -380,8 +435,9 @@ H.sendMsg = async () => {
   const i = $('#msg'), body = i.value.trim(); if (!body || H.sendMsg.busy) return;
   H.sendMsg.busy = true; setTimeout(() => H.sendMsg.busy = false, 400);
   i.value = ''; i.focus();
-  const { error } = await sb.from('messages').insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'chat', body });
+  const { error } = await sb.from('messages').insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'chat', body, reply_to_id: roomReply?.id || null, reply_preview: roomReply?.body || null });
   if (error) { toast(error.message); i.value = body }
+  else { roomReply = null; renderRoomReplyHint(); }
 };
 
 /* Bersihkan kursi 'hantu': pemilik kursi yang sudah tidak online (browser ditutup) */
@@ -455,11 +511,11 @@ H.mic = async () => {
 };
 
 /* ---------- 4. Menu (tab) ---------- */
-const PAGES = { room: '#room', posts: '#pgPosts', me: '#pgMe' };
+const PAGES = { room: '#room', posts: '#pgPosts', friends: '#pgFriends', me: '#pgMe' };
 H.tab = t => {
   Object.entries(PAGES).forEach(([k, sel]) => $(sel).classList.toggle('hidden', k !== t));
   document.querySelectorAll('#nav button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
-  if (t === 'posts') loadPosts(); if (t === 'me') { renderProf(); loadMyGifts() } if (t === 'room') { const c = $('#chat'); c.scrollTop = c.scrollHeight }
+  if (t === 'posts') loadPosts(); if (t === 'friends') loadFriends(); if (t === 'me') { renderProf(); loadMyGifts() } if (t === 'room') { const c = $('#chat'); c.scrollTop = c.scrollHeight }
 };
 
 /* ---------- 5. Postingan ---------- */
@@ -589,7 +645,11 @@ function addMsg(m, live) {
     const g = GIFTS[m.gift] || GIFTS[0];
     d.innerHTML = `${head}<div>${meta}<div class="gbub"><span>Kirim ${esc(g.name)}${m.to_name ? `<small>untuk ${esc(m.to_name)}</small>` : ''}</span><span class="e">${g.e}</span><b class="x">x1</b></div></div>`;
     if (live) showFx(g, m.name, m.to_name);
-  } else d.innerHTML = `${head}<div>${meta}<div class="bub">${esc(m.body)}</div></div>`;
+  } else {
+    const quoted = m.reply_to_id ? `<div class="replybox"><b>↩ Membalas pesan</b>${esc(m.reply_preview || 'Pesan sebelumnya')}</div>` : '';
+    const body = esc(m.body).replace(/(@[\\w.-]+)/g,'<span class="tagged">$1</span>');
+    d.innerHTML = `${head}<div>${meta}<div class="bub">${quoted}${body}</div><div class="msgtools"><button onclick="H.replyRoom(${Number(m.id)},'${esc((m.body||'').slice(0,90)).replace(/'/g,'&#39;')}','${esc(m.name).replace(/'/g,'&#39;')}')">↩ Balas</button><button onclick="H.forwardRoom(${Number(m.id)})">↗ Teruskan</button></div></div>`;
+  }
   c.append(d); while (c.children.length > 80) c.firstChild.remove(); c.scrollTop = c.scrollHeight;
 }
 /* Langkah 1: pilih penerima. Langkah 2: pilih gift. */
@@ -620,6 +680,92 @@ H.send = async i => {
   if (!me.is_host && me.gift_tickets < 1) return toast('Gift terkunci. Chat owner dulu 🔒');
   const { error } = await sb.rpc('send_gift_to', { g: i, target: gT.id });
   error ? toast(error.message) : H.close();
+};
+
+/* ---------- 8A. Teman, permintaan pertemanan, chat pribadi ---------- */
+async function loadFriends() {
+  const {data,error}=await sb.from('friends').select('friend_id,created_at').eq('user_id',uid).order('created_at',{ascending:false});
+  if(error){$('#friendBox').innerHTML=`<p class="empty-t">${esc(error.message)}<br>Jalankan SQL tambahan.</p>`;return;}
+  const ids=(data||[]).map(x=>x.friend_id);
+  const {data:people}=ids.length?await sb.from('profiles').select('id,name,avatar').in('id',ids):{data:[]};
+  friendRows=people||[];
+  const {data:req,error:re}=await sb.from('friend_requests').select('id,sender_id,created_at').eq('recipient_id',uid).eq('status','pending').order('created_at',{ascending:false});
+  if(re){$('#friendBox').innerHTML=`<p class="empty-t">${esc(re.message)}<br>Jalankan SQL tambahan.</p>`;return;}
+  const rids=(req||[]).map(x=>x.sender_id);
+  const {data:senders}=rids.length?await sb.from('profiles').select('id,name,avatar').in('id',rids):{data:[]};
+  pendingRows=(req||[]).map(x=>({...x,user:(senders||[]).find(u=>u.id===x.sender_id)}));
+  $('#friendBox').innerHTML=`<button class="btn" onclick="H.findFriends()">＋ Tambah Teman</button>
+    <h3 class="sec">Permintaan Pertemanan (${pendingRows.length})</h3>
+    ${pendingRows.map(x=>`<div class="friendcard"><img src="${esc(x.user?.avatar||'')}"><div class="finfo"><b>${esc(x.user?.name||'Anggota')}</b><small>Ingin berteman denganmu</small></div><button class="sm" onclick="H.acceptFriend('${x.id}')">Terima</button></div>`).join('')||'<p class="empty-t">Tidak ada permintaan baru.</p>'}
+    <h3 class="sec">Daftar Teman (${friendRows.length})</h3>
+    ${friendRows.map(u=>`<div class="friendcard"><img src="${esc(u.avatar||'')}"><div class="finfo"><b>${esc(u.name)}</b><small>Teman</small></div><button class="sm" onclick="H.openDM('${u.id}')">💬 Chat</button></div>`).join('')||'<p class="empty-t">Belum ada teman. Tambahkan teman untuk mulai chat.</p>'}`;
+}
+H.findFriends=()=>sheet(`<h3>Tambah Teman</h3><p class="sub">Cari anggota menggunakan nama profilnya.</p><input id="friendSearch" class="inp" placeholder="Ketik nama teman..." oninput="H.searchFriends()" autocomplete="off"><div id="friendResults" style="margin-top:10px"><p class="empty-t">Masukkan nama untuk mencari.</p></div>`);
+H.searchFriends=async()=>{
+  const q=$('#friendSearch')?.value.trim();if(!q){$('#friendResults').innerHTML='<p class="empty-t">Masukkan nama untuk mencari.</p>';return;}
+  const {data,error}=await sb.from('profiles').select('id,name,avatar').ilike('name',`%${q}%`).neq('id',uid).limit(15);
+  if(error){$('#friendResults').textContent=error.message;return;}
+  const ids=new Set(friendRows.map(x=>x.id));
+  $('#friendResults').innerHTML=(data||[]).map(u=>`<div class="friendcard"><img src="${esc(u.avatar||'')}"><div class="finfo"><b>${esc(u.name)}</b></div>${ids.has(u.id)?'<span class="sm o">Sudah teman</span>':`<button class="sm" onclick="H.requestFriend('${u.id}')">＋ Tambah</button>`}</div>`).join('')||'<p class="empty-t">Anggota tidak ditemukan.</p>';
+};
+H.requestFriend=async id=>{
+  const {error}=await sb.from('friend_requests').insert({sender_id:uid,recipient_id:id,status:'pending'});
+  if(error)return toast(error.code==='23505'?'Permintaan sudah pernah dikirim.':error.message);
+  toast('Permintaan pertemanan terkirim ✅');H.close();
+};
+H.acceptFriend=async id=>{
+  const {error}=await sb.rpc('accept_friend_request',{request_id:id});
+  if(error)return toast(error.message);toast('Sekarang kalian berteman! 🎉');loadFriends();
+};
+H.openDM=async id=>{
+  const u=friendRows.find(x=>x.id===id)||(await sb.from('profiles').select('id,name,avatar').eq('id',id).maybeSingle()).data;
+  if(!u)return toast('Teman tidak ditemukan');dmPeer=u;dmReply=null;
+  const {data,error}=await sb.from('direct_messages').select('*').or(`and(sender_id.eq.${uid},recipient_id.eq.${id}),and(sender_id.eq.${id},recipient_id.eq.${uid})`).order('created_at',{ascending:true}).limit(100);
+  if(error)return toast('Chat pribadi: '+error.message);dmMessages=data||[];renderDM();
+};
+function renderDM(){
+  if(!dmPeer)return;
+  const lines=dmMessages.map(m=>{
+    const mine=m.sender_id===uid,quoted=m.reply_to_id?dmMessages.find(x=>x.id===m.reply_to_id):null;
+    const body=esc(m.body).replace(/(@[\\w.-]+)/g,'<span class="tagged">$1</span>');
+    return `<div class="dmline ${mine?'mine':''}">${quoted?`<div class="replybox"><b>↩ ${quoted.sender_id===uid?'Kamu':esc(dmPeer.name)}</b>${esc(quoted.body.slice(0,100))}</div>`:''}${m.forwarded_from_id?'<small>↗ Pesan diteruskan</small>':''}${body}<small>${new Date(m.created_at).toLocaleString('id-ID',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'short'})}</small><div class="msgtools"><button onclick="H.replyDM('${m.id}')">↩ Balas</button><button onclick="H.forwardDM('${m.id}')">↗ Teruskan</button></div></div>`;
+  }).join('');
+  sheet(`<div class="dmhead"><img src="${esc(dmPeer.avatar||'')}"><div style="flex:1"><h3 style="margin:0">${esc(dmPeer.name)}</h3><p class="sub" style="margin:0">Pesan pribadi</p></div><button class="sm o" onclick="H.close()">Tutup</button></div><div class="dmfeed" id="dmFeed">${lines||'<p class="empty-t">Belum ada pesan. Mulai percakapan! 👋</p>'}</div><div id="dmReplyHint"></div><div class="dmcomposer"><button class="ib" onclick="H.tagDM()" title="Tag teman">@</button><input id="dmInput" class="inp" maxlength="200" placeholder="Tulis pesan..." onkeydown="if(event.key==='Enter')H.sendDM()"><button class="ib sendb" onclick="H.sendDM()">➤</button></div>`);
+  const f=$('#dmFeed');if(f)f.scrollTop=f.scrollHeight;renderDMReplyHint();
+}
+function renderDMReplyHint(){const e=$('#dmReplyHint');if(!e)return;const m=dmMessages.find(x=>x.id===dmReply);e.innerHTML=m?`<div class="replyhint">↩ Membalas: ${esc(m.body.slice(0,70))}<button onclick="H.cancelReplyDM()">✕</button></div>`:'';}
+H.replyDM=id=>{dmReply=id;renderDMReplyHint();$('#dmInput')?.focus()};
+H.cancelReplyDM=()=>{dmReply=null;renderDMReplyHint()};
+H.tagDM=()=>{if(!dmPeer)return;const i=$('#dmInput');i.value=(i.value?i.value+' ':'')+'@'+dmPeer.name.replace(/\\s+/g,'')+' ';i.focus()};
+H.sendDM=async()=>{
+  if(!dmPeer)return;const i=$('#dmInput'),body=i.value.trim();if(!body)return;
+  const {data,error}=await sb.from('direct_messages').insert({sender_id:uid,recipient_id:dmPeer.id,body,reply_to_id:dmReply||null}).select().single();
+  if(error)return toast(error.message);dmMessages.push(data);dmReply=null;renderDM();
+};
+H.forwardDM=async id=>{
+  const m=dmMessages.find(x=>x.id===id);if(!m)return;
+  const {data,error}=await sb.from('direct_messages').insert({sender_id:uid,recipient_id:dmPeer.id,body:m.body,forwarded_from_id:m.id}).select().single();
+  if(error)return toast(error.message);dmMessages.push(data);renderDM();toast('Pesan diteruskan');
+};
+H.replyRoom=(id,body,name)=>{roomReply={id,body,name};renderRoomReplyHint();$('#msg').focus()};
+H.cancelReplyRoom=()=>{roomReply=null;renderRoomReplyHint()};
+function renderRoomReplyHint(){const e=$('#roomReplyHint');if(!e)return;e.innerHTML=roomReply?`<div class="replyhint">↩ Membalas ${esc(roomReply.name)}: ${esc(roomReply.body)}<button onclick="H.cancelReplyRoom()">✕</button></div>`:'';}
+H.tagRoom=async()=>{
+  const {data,error}=await sb.from('profiles').select('id,name').neq('id',uid).limit(40);if(error)return toast(error.message);
+  sheet(`<h3>Tag Anggota</h3><p class="sub">Pilih anggota untuk menambahkan tag ke pesan.</p>${(data||[]).map(u=>`<div class="mrow"><span>${esc(u.name)}</span><button class="sm" onclick="H.insertRoomTag('${esc(u.name).replace(/'/g,'&#39;')}')">@ Tag</button></div>`).join('')||'<p class="empty-t">Belum ada anggota lain.</p>'}`);
+};
+H.insertRoomTag=name=>{const i=$('#msg');i.value=(i.value?i.value+' ':'')+'@'+name.replace(/\\s+/g,'')+' ';H.close();i.focus()};
+H.forwardRoom=async id=>{
+  const {data,error}=await sb.from('messages').select('id,body,name').eq('id',id).maybeSingle();if(error||!data)return toast('Pesan tidak ditemukan');
+  H.doForwardRoom.sourceId=id;
+  const {data:fs}=await sb.from('friends').select('friend_id').eq('user_id',uid);const ids=(fs||[]).map(x=>x.friend_id);
+  const {data:people}=ids.length?await sb.from('profiles').select('id,name,avatar').in('id',ids):{data:[]};
+  sheet(`<h3>Teruskan Pesan</h3><p class="sub">Pilih teman yang akan menerima pesan ini.</p><div class="replybox"><b>Pesan dari ${esc(data.name)}</b>${esc(data.body||'')}</div>${(people||[]).map(u=>`<div class="friendcard"><img src="${esc(u.avatar||'')}"><div class="finfo"><b>${esc(u.name)}</b></div><button class="sm" onclick="H.doForwardRoom('${u.id}')">Teruskan</button></div>`).join('')||'<p class="empty-t">Tambahkan teman terlebih dahulu.</p>'}`);
+};
+H.doForwardRoom=async friendId=>{
+  const {data:src}=await sb.from('messages').select('id,body,name').eq('id',H.doForwardRoom.sourceId).maybeSingle();if(!src)return toast('Pesan asal tidak ditemukan');
+  const {error}=await sb.from('direct_messages').insert({sender_id:uid,recipient_id:friendId,body:`↗ Diteruskan dari ${src.name}: ${src.body||''}`});
+  if(error)return toast(error.message);H.close();toast('Pesan berhasil diteruskan ✅');
 };
 
 /* ---------- 9. Suara: WebRTC (signaling via Supabase Broadcast) ----------
