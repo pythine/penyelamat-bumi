@@ -81,9 +81,10 @@ textarea.inp{resize:none;display:block}
 .gbub small{display:block;font-size:12px;color:#ffd3d6;font-weight:700}
 .gbub .x{color:var(--gold);font-size:22px;font-style:italic}
 .gbub .e{font-size:30px}
-.bar{display:flex;align-items:center;gap:8px;padding:8px 0 10px}
+.bar{display:flex;align-items:center;gap:6px;padding:8px 0 10px}
 .bar .inp{border-radius:999px;border-color:rgba(255,255,255,.1);background:rgba(20,14,12,.7);min-width:0}
-.bar .ib{width:42px;height:42px;flex:none;font-size:20px}
+.bar .ib{width:38px;height:38px;flex:none;font-size:18px}
+.sendb{background:linear-gradient(#ffd886,#d9962f);color:#2a1700;font-size:20px!important}
 .micb{background:linear-gradient(#a98bff,#6a4bff)}.giftb{background:linear-gradient(#ffb36b,#ff6a3c)}.themeb{background:linear-gradient(#6be0c3,#2b8fd6)}
 /* sheet / fx */
 #sheet{position:fixed;inset:0;background:#000a;display:flex;align-items:flex-end;justify-content:center;z-index:30}
@@ -153,7 +154,8 @@ textarea.inp{resize:none;display:block}
   <div class="listen" id="listen"></div>
   <div id="chatw"><div id="chat"></div></div>
   <div class="bar">
-    <input id="msg" class="inp" maxlength="200" placeholder="Katakan sesuatu" autocomplete="off">
+    <input id="msg" class="inp" maxlength="200" placeholder="Katakan sesuatu" autocomplete="off" enterkeyhint="send">
+    <button class="ib sendb" onpointerdown="event.preventDefault()" onclick="H.sendMsg()" title="Kirim pesan">➤</button>
     <button class="ib themeb" onclick="H.themes()" title="Tema chat">🎨</button>
     <button class="ib micb" id="micb" onclick="H.mic()">🎙️</button>
     <button class="ib giftb" onclick="H.gift()">🎁</button>
@@ -225,6 +227,14 @@ const pcs = {}, early = {};
 
 function toast(t) { const e = $('#toast'); e.textContent = t; e.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(() => e.classList.remove('on'), 2600) }
 function sheet(h) { const s = $('#sheet'); s.innerHTML = `<div>${h}</div>`; s.classList.remove('hidden'); s.onclick = e => e.target === s && H.close() }
+H.wa = msg => {
+  const u = `https://wa.me/${OWNER_WA}?text=${encodeURIComponent(msg)}`;
+  if (!window.open(u, '_blank')) {
+    navigator.clipboard?.writeText(u).catch(() => {});
+    toast('Link WhatsApp disalin. Tempel di browser untuk membuka chat owner.');
+    try { location.href = u } catch {}
+  }
+};
 H.close = () => $('#sheet').classList.add('hidden');
 function showFx(g, who, to) {
   $('#fx').innerHTML = `<div class="g">${g.img ? `<img src="${esc(g.img)}">` : `<div class="big">${g.e}</div>`}<br><span class="ban">${esc(who)} mengirim hadiah${to ? ' ke ' + esc(to) : ''}!</span></div>`;
@@ -338,12 +348,15 @@ async function startRoom() {
       syncPeers(); /* pendengar langsung menyambung ke yang sudah duduk */
       await sb.from('messages').insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'join' });
     });
-  $('#msg').onkeydown = async e => {
-    if (e.key !== 'Enter' || !e.target.value.trim()) return;
-    const body = e.target.value.trim(); e.target.value = '';
-    await sb.from('messages').insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'chat', body });
-  };
+  $('#msg').onkeydown = e => { if (e.key === 'Enter') H.sendMsg() };
 }
+
+H.sendMsg = async () => {
+  const i = $('#msg'), body = i.value.trim(); if (!body) return;
+  i.value = ''; i.focus();
+  const { error } = await sb.from('messages').insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'chat', body });
+  if (error) { toast(error.message); i.value = body }
+};
 
 /* Bersihkan kursi 'hantu': pemilik kursi yang sudah tidak online (browser ditutup) */
 async function sweep() {
@@ -491,7 +504,7 @@ H.themes = () => {
   const lock = !me.is_host && !me.theme_ok, cur = me.chat_theme || 'default';
   sheet(`<h3>Tema Chat</h3><p class="sub">${me.is_host ? '👑 Host: bebas ganti tema' : lock ? '🔒 Terkunci. Chat owner dulu untuk membuka semua tema.' : '🎨 Tema terbuka, bebas ganti kapan saja'}</p>
    <div class="gg">${THEMES.map(t => `<button class="gi ${lock && t.id !== 'default' ? 'lk' : ''} ${t.id === cur ? 'sel' : ''}" onclick="H.setTheme('${t.id}')"><span class="sw" style="background:${t.bg || '#150f0b'}"></span><small>${t.name}</small></button>`).join('')}</div>
-   ${lock ? `<a class="btn" target="_blank" href="https://wa.me/${OWNER_WA}?text=${encodeURIComponent('Hay Ganteng, mau buka tema chat dong!')}">Buka Tema (Chat Owner)</a>` : ''}`);
+   ${lock ? `<button class="btn" onclick="H.wa('Hay Ganteng, mau buka tema chat dong!')">Buka Tema (Chat Owner)</button>` : ''}`);
 };
 H.setTheme = async id => {
   if (id !== 'default' && !me.is_host && !me.theme_ok) return toast('Tema terkunci. Chat owner dulu 🔒');
@@ -535,7 +548,7 @@ function giftSheet() {
   sheet(`<h3>Kirim Gift</h3><p class="sub">${me.is_host ? '👑 Host: unlimited gratis' : `🎟️ Tiket kamu: ${me.gift_tickets}`}</p>
    <div class="mrow" style="border-top:0;padding-top:0"><img src="${esc(gT.avatar)}"><span>Untuk: <b>${esc(gT.name)}</b></span><button class="sm o" onclick="H.gift()">Ganti</button></div>
    <div class="gg">${GIFTS.map((g, i) => `<button class="gi ${lock ? 'lk' : ''}" onclick="H.send(${i})">${g.img ? `<img src="${esc(g.img)}">` : `<span class="e">${g.e}</span>`}<small>${g.name}</small></button>`).join('')}</div>
-   ${lock ? `<a class="btn" target="_blank" href="https://wa.me/${OWNER_WA}?text=${encodeURIComponent('Hay Host, mau buka gift dong!')}">Buka 1 Gift (Chat Owner)</a>` : ''}`);
+   ${lock ? `<button class="btn" onclick="H.wa('Hay Host, mau buka gift dong!')">Buka 1 Gift (Chat Owner)</button>` : ''}`);
 }
 H.send = async i => {
   if (!gT) return H.gift();
