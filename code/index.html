@@ -305,7 +305,9 @@ H.reset = async () => { await sb.from('seats').delete().neq('seat_no', 0); toast
 H.clear = async () => { await sb.from('messages').delete().neq('id', 0); $('#chat').innerHTML = ''; toast('Chat dibersihkan') };
 
 /* ---------- 3. Room ---------- */
+let joined = false;
 async function startRoom() {
+  if (inRoom) return;
   $('#setup').classList.add('hidden'); $('#room').classList.remove('hidden'); $('#room').style.display = 'flex'; $('#nav').classList.remove('hidden'); inRoom = true;
   applyTheme(me.chat_theme);
   settings = (await sb.from('room_settings').select('*').single()).data || settings;
@@ -343,16 +345,19 @@ async function startRoom() {
     .subscribe(async s => {
       if (s !== 'SUBSCRIBED') return;
       await room.track({ name: me.name, avatar: me.avatar });
+      syncPeers(); /* pendengar langsung menyambung ke yang sudah duduk */
+      if (joined) return; /* sambung ulang jaringan: jangan umumkan 'bergabung' dan jangan buat timer lagi */
+      joined = true;
       sb.rpc('cleanup_room').then(() => {});
       setTimeout(sweep, 4000); setInterval(sweep, 60000);
-      syncPeers(); /* pendengar langsung menyambung ke yang sudah duduk */
       await sb.from('messages').insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'join' });
     });
   $('#msg').onkeydown = e => { if (e.key === 'Enter') H.sendMsg() };
 }
 
 H.sendMsg = async () => {
-  const i = $('#msg'), body = i.value.trim(); if (!body) return;
+  const i = $('#msg'), body = i.value.trim(); if (!body || H.sendMsg.busy) return;
+  H.sendMsg.busy = true; setTimeout(() => H.sendMsg.busy = false, 400);
   i.value = ''; i.focus();
   const { error } = await sb.from('messages').insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'chat', body });
   if (error) { toast(error.message); i.value = body }
@@ -426,7 +431,7 @@ H.tab = t => {
 
 /* ---------- 5. Postingan ---------- */
 async function loadPosts(quiet) {
-  const { data, error } = await sb.from('posts').select('id,user_id,body,image,created_at,profiles(name,avatar,is_host),post_likes(user_id)').order('created_at', { ascending: false }).limit(50);
+  const { data, error } = await sb.from('posts').select('id,user_id,body,image,created_at,profiles!user_id(name,avatar,is_host),post_likes(user_id)').order('created_at', { ascending: false }).limit(50);
   if (error) { if (!quiet) toast('Postingan: ' + error.message); return }
   posts = data || []; renderPosts(); renderProf();
 }
@@ -461,6 +466,7 @@ H.pickPost = () => pick(async f => {
   catch (e) { toast(e.message || 'Gagal mengunggah foto') }
 });
 H.doPost = async () => {
+  if (H.doPost.busy) return; H.doPost.busy = true; setTimeout(() => H.doPost.busy = false, 1500);
   const body = ($('#pbody').value || '').trim();
   if (!body && !draftImg) return toast('Tulis sesuatu atau tambah foto dulu');
   const { error } = await sb.from('posts').insert({ user_id: uid, body, image: draftImg });
