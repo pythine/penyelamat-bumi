@@ -196,7 +196,7 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 const SUPABASE_URL = 'https://rojdbucohxpvgnygceie.supabase.co';
 const SUPABASE_KEY = 'sb_publishable__KXfm9Yv6VRXStTap-DFyQ_sNOPCLrG';
 /* Nomor WhatsApp owner (format internasional, tanpa + atau 0 di depan) */
-const OWNER_WA = '6281234567890';
+const OWNER_WA = '6285946186508';
 /* Gift: isi `img` dengan URL GIF publik (mis. dari GIPHY). Kosong = pakai emoji animasi. */
 const GIFTS = [
   {name:'Api Cinta',e:'🔥',img:''},{name:'Mahkota',e:'👑',img:''},{name:'Roket',e:'🚀',img:''},
@@ -491,7 +491,7 @@ H.themes = () => {
   const lock = !me.is_host && !me.theme_ok, cur = me.chat_theme || 'default';
   sheet(`<h3>Tema Chat</h3><p class="sub">${me.is_host ? '👑 Host: bebas ganti tema' : lock ? '🔒 Terkunci. Chat owner dulu untuk membuka semua tema.' : '🎨 Tema terbuka, bebas ganti kapan saja'}</p>
    <div class="gg">${THEMES.map(t => `<button class="gi ${lock && t.id !== 'default' ? 'lk' : ''} ${t.id === cur ? 'sel' : ''}" onclick="H.setTheme('${t.id}')"><span class="sw" style="background:${t.bg || '#150f0b'}"></span><small>${t.name}</small></button>`).join('')}</div>
-   ${lock ? `<a class="btn" target="_blank" href="https://wa.me/${OWNER_WA}?text=${encodeURIComponent('Hay Host, mau buka tema chat dong!')}">Buka Tema (Chat Owner)</a>` : ''}`);
+   ${lock ? `<a class="btn" target="_blank" href="https://wa.me/${OWNER_WA}?text=${encodeURIComponent('Hay Ganteng, mau buka tema chat dong!')}">Buka Tema (Chat Owner)</a>` : ''}`);
 };
 H.setTheme = async id => {
   if (id !== 'default' && !me.is_host && !me.theme_ok) return toast('Tema terkunci. Chat owner dulu 🔒');
