@@ -85,7 +85,7 @@ textarea.inp{resize:none;display:block}
 .bar .inp{border-radius:999px;border-color:rgba(255,255,255,.1);background:rgba(20,14,12,.7);min-width:0}
 .bar .ib{width:38px;height:38px;flex:none;font-size:18px}
 .sendb{background:linear-gradient(#ffd886,#d9962f);color:#2a1700;font-size:20px!important}
-.micb{background:linear-gradient(#a98bff,#6a4bff)}.giftb{background:linear-gradient(#ffb36b,#ff6a3c)}.themeb{background:linear-gradient(#6be0c3,#2b8fd6)}
+.micb{background:linear-gradient(#a98bff,#6a4bff)}.giftb{background:linear-gradient(#ffb36b,#ff6a3c)}.themeb{background:linear-gradient(#6be0c3,#2b8fd6)}.voiceb{background:linear-gradient(#ff8b9b,#d9365a)}.voiceb.rec{background:#e11d48;box-shadow:0 0 0 5px #e11d4844;animation:recPulse 1s infinite}@keyframes recPulse{50%{box-shadow:0 0 0 9px #e11d4822}}.voicebubble{background:rgba(30,24,35,.9);border:1px solid #a98bff66;border-radius:18px;padding:10px 12px;min-width:220px}.voicebubble audio{display:block;width:min(250px,65vw);height:38px;margin-top:5px}.voicebubble small{display:block;color:#c9b9e8;font-size:11px;margin-bottom:4px}
 /* sheet / fx */
 #sheet{position:fixed;inset:0;background:#000a;display:flex;align-items:flex-end;justify-content:center;z-index:30}
 #sheet>div{width:100%;max-width:520px;max-height:82dvh;overflow:auto;background:#150f0b;border:1.5px solid var(--gold2);border-bottom:0;border-radius:24px 24px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom))}
@@ -137,6 +137,21 @@ textarea.inp{resize:none;display:block}
 .dmcomposer{display:flex;gap:6px;align-items:center;margin-top:8px}
 .dmcomposer .inp{min-width:0}
 .replyhint{display:flex;justify-content:space-between;align-items:center;background:#5b431e88;border-radius:10px;padding:7px 10px;margin:5px 0;font-size:12px;color:#ffe0a0}
+/* Stories 24 jam */
+.storybar{display:flex;gap:12px;overflow-x:auto;padding:8px 2px 14px;scrollbar-width:none}
+.storyitem{flex:0 0 76px;text-align:center;font-size:11px;color:#e8d8c4;cursor:pointer}
+.storyring{width:66px;height:66px;border-radius:50%;padding:3px;margin:0 auto 5px;background:conic-gradient(#ffd886,#ff6a3c,#a84cff,#ffd886);box-shadow:0 0 12px #f5c15a55}
+.storyring img{width:100%;height:100%;border:3px solid #160e09;border-radius:50%;object-fit:cover;background:#21150e}
+.storyitem small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.storyview{position:fixed;inset:0;z-index:70;background:#050405f5;display:grid;place-items:center;padding:20px}
+.storyview img{max-width:min(94vw,520px);max-height:78dvh;object-fit:contain;border-radius:18px}
+.storyview .scap{max-width:520px;text-align:center;margin-top:12px}
+.storyview .sclose{position:absolute;right:20px;top:25px;font-size:28px}
+/* Entrance animation untuk SVIP 5+ */
+#entranceFX{position:fixed;inset:0;z-index:65;display:grid;place-items:center;pointer-events:none;background:radial-gradient(circle,rgba(35,13,5,.4),transparent 65%)}
+#entranceFX .entrance-art{font-size:clamp(100px,32vw,210px);filter:drop-shadow(0 0 28px #ffd36e);animation:entranceRun 3.8s ease-out both}
+#entranceFX .entrance-label{font-size:clamp(20px,6vw,30px);text-align:center;color:#ffe4a0;text-shadow:0 0 15px #ff9b26}
+@keyframes entranceRun{0%{transform:translateX(-110vw) scale(.45) rotate(-8deg);opacity:0}18%{opacity:1}55%{transform:translateX(0) scale(1.12) rotate(2deg);opacity:1}100%{transform:translateX(110vw) scale(.65);opacity:0}}
 /* posts & profile */
 .post{background:var(--glass);border:1px solid rgba(245,193,90,.18);border-radius:18px;padding:12px;margin-bottom:12px}
 .post .hd{display:flex;align-items:center;gap:10px;margin-bottom:8px}
@@ -195,6 +210,7 @@ textarea.inp{resize:none;display:block}
     <button class="ib" onclick="H.tagRoom()" title="Tag anggota">@</button>
     <input id="msg" class="inp" maxlength="200" placeholder="Katakan sesuatu" autocomplete="off" enterkeyhint="send">
     <button class="ib sendb" onpointerdown="event.preventDefault()" onclick="H.sendMsg()" title="Kirim pesan">➤</button>
+    <button class="ib voiceb" id="voiceMsgBtn" onclick="H.voiceMsg()" title="Rekam / kirim pesan suara">🎤</button>
     <button class="ib themeb" onclick="H.themes()" title="Tema chat">🎨</button>
     <button class="ib micb" id="micb" onclick="H.mic()">🎙️</button>
     <button class="ib giftb" onclick="H.gift()">🎁</button>
@@ -207,7 +223,7 @@ textarea.inp{resize:none;display:block}
     <div class="t"><b>Postingan</b><small>Dari semua anggota room</small></div>
     <button class="ib plus" onclick="H.compose()" title="Buat postingan">＋</button>
   </div>
-  <div class="pg" id="plist"></div>
+  <div class="pg"><div id="storyBar" class="storybar"></div><div id="plist"></div></div>
 </section>
 
 <!-- ================= TEMAN ================= -->
@@ -233,7 +249,7 @@ textarea.inp{resize:none;display:block}
   <button data-t="me" onclick="H.tab('me')"><i>👤</i>Profil</button>
 </nav>
 
-<div id="sheet" class="hidden"></div><div id="fx"></div><div id="svipPop" class="hidden"></div><div id="toast"></div>
+<div id="sheet" class="hidden"></div><div id="fx"></div><div id="svipPop" class="hidden"></div><div id="entranceFX" class="hidden"></div><div id="storyView" class="hidden"></div><div id="toast"></div>
 
 <script type="module">
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
@@ -248,8 +264,8 @@ const SUPABASE_KEY = 'sb_publishable__KXfm9Yv6VRXStTap-DFyQ_sNOPCLrG';
 const OWNER_WA = '6285946186508';
 /* Gift: isi `img` dengan URL GIF publik (mis. dari GIPHY). Kosong = pakai emoji animasi. */
 const GIFTS = [
-  {name:'Api Cinta',e:'🔥',img:''},{name:'Mahkota',e:'👑',img:''},{name:'Roket',e:'🚀',img:''},
-  {name:'Hati',e:'💖',img:''},{name:'Peti Harta',e:'🎁',img:''},{name:'Bintang',e:'🌟',img:''}];
+  {name:'Api Cinta',e:'🔥',img:'',points:10},{name:'Mahkota',e:'👑',img:'',points:25},{name:'Roket',e:'🚀',img:'',points:50},
+  {name:'Hati',e:'💖',img:'',points:100},{name:'Peti Harta',e:'🎁',img:'',points:250},{name:'Bintang',e:'🌟',img:'',points:500}];
 /* Tema background chat. `bg` = nilai CSS background. Tema 'default' selalu terbuka. */
 const THEMES = [
   {id:'default',name:'Polos',bg:''},
@@ -265,13 +281,13 @@ const $ = s => document.querySelector(s);
 const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const hash = id => [...id].reduce((a, c) => a + c.charCodeAt(0), 0);
 const ago = t => { const s = (Date.now() - new Date(t)) / 1000; return s < 60 ? 'baru saja' : s < 3600 ? Math.floor(s / 60) + ' mnt lalu' : s < 86400 ? Math.floor(s / 3600) + ' jam lalu' : new Date(t).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }) };
-/* Gelar SVIP: jumlah hadiah yang dikirim. SVIP 1 = 30 hadiah, SVIP 6 = tertinggi. Ubah angkanya sesuka hati. */
-const SVIP = [30, 100, 250, 500, 1000, 2000];
+/* Gelar SVIP dihitung dari poin hadiah yang DITERIMA. Ambang bisa diubah. */
+const SVIP = [100, 500, 1500, 3500, 7000, 15000];
 const lvl = n => SVIP.reduce((l, t, i) => (n || 0) >= t ? i + 1 : l, 0);
 const badge = n => { const l = lvl(n); return l ? `<i class="svip s${l}">SVIP ${l}</i>` : '' };
 function titleHTML(n) {
   n = n || 0; const l = lvl(n), next = SVIP[l], base = SVIP[l - 1] || 0;
-  return `<div class="ttl">${badge(n) || '<span class="chip">Belum ada gelar</span>'} <small>${n} hadiah terkirim${next ? ` · ${next - n} lagi ke SVIP ${l + 1}` : ' · gelar tertinggi 👑'}</small></div>`
+  return `<div class="ttl">${badge(n) || '<span class="chip">Belum ada gelar</span>'} <small>${n} poin hadiah${next ? ` · ${next - n} poin lagi ke SVIP ${l + 1}` : ' · gelar tertinggi 👑'}</small></div>`
     + (next ? `<div class="prog"><i style="width:${Math.min(100, (n - base) / (next - base) * 100)}%"></i></div>` : '');
 }
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -280,6 +296,7 @@ let uid, me, avatar = '', settings = {title:'Voice & Gift Room', seat_count:15};
 let seats = {}, prof = {}, online = {}, mySeat = null, stream = null, muted = false, room, inRoom = false;
 let posts = [], gT = null, draftImg = null, myGifts = [], mq = Promise.resolve(), viewU = null;
 let friendRows = [], pendingRows = [], dmPeer = null, dmMessages = [], dmReply = null, roomReply = null;
+let voiceRecorder = null, voiceStream = null, voiceChunks = [];
 const pcs = {}, early = {};
 
 function toast(t) { const e = $('#toast'); e.textContent = t; e.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(() => e.classList.remove('on'), 2600) }
@@ -296,6 +313,12 @@ H.close = () => $('#sheet').classList.add('hidden');
 function showFx(g, who, to) {
   $('#fx').innerHTML = `<div class="g">${g.img ? `<img src="${esc(g.img)}">` : `<div class="big">${g.e}</div>`}<br><span class="ban">${esc(who)} mengirim hadiah${to ? ' ke ' + esc(to) : ''}!</span></div>`;
   clearTimeout(showFx.t); showFx.t = setTimeout(() => $('#fx').innerHTML = '', 4000);
+}
+function showEntranceFx(name, level, kind) {
+  const choices = [{e:'🐎',t:'ROYAL HORSE'},{e:'🔥🦅',t:'PHOENIX RISE'},{e:'🐉',t:'GOLDEN DRAGON'},{e:'🦄',t:'MYSTIC UNICORN'}];
+  const v = choices[Math.abs(Number(kind)||0) % choices.length];
+  const e=$('#entranceFX'); e.innerHTML=`<div><div class="entrance-art">${v.e}</div><div class="entrance-label">${esc(name)} · SVIP ${level}<br><small>${v.t}</small></div></div>`;
+  e.classList.remove('hidden'); clearTimeout(showEntranceFx.t); showEntranceFx.t=setTimeout(()=>{e.classList.add('hidden');e.innerHTML=''},3900);
 }
 function showSvipPopup(name, level) {
   const e = $('#svipPop');
@@ -379,11 +402,12 @@ async function startRoom() {
   await ensureProf((ms || []).map(m => m.user_id));
   (ms || []).reverse().forEach(m => addMsg(m, false));
   loadMyGifts();
-  loadPosts(true);
+  loadPosts(true); loadStories();
 
   sb.channel('db')
     .on('postgres_changes', { event: '*', schema: 'public', table: 'seats' }, loadSeats)
     .on('postgres_changes', { event: '*', schema: 'public', table: 'posts' }, () => loadPosts(true))
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'stories' }, () => loadStories())
     .on('postgres_changes', { event: '*', schema: 'public', table: 'post_likes' }, () => loadPosts(true))
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'gift_log', filter: `to_id=eq.${uid}` }, () => loadMyGifts())
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, p => { mq = mq.then(async () => { await ensureProf([p.new.user_id]); addMsg(p.new, true) }).catch(() => {}) })
@@ -396,8 +420,8 @@ async function startRoom() {
     .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'room_settings' }, p => { settings = p.new; renderSeats(); renderTop() })
     .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'profiles' }, p => {
       const previous = p.new.id === uid ? me : (prof[p.new.id] || p.old || null);
-      const oldLevel = previous ? lvl(previous.gifts_sent) : 0;
-      const newLevel = lvl(p.new.gifts_sent);
+      const oldLevel = previous ? lvl(previous.points) : 0;
+      const newLevel = lvl(p.new.points);
       prof[p.new.id] = { ...prof[p.new.id], ...p.new };
       // Popup ditampilkan di tengah layar seluruh anggota yang sedang berada di room.
       if (newLevel > oldLevel) showSvipPopup(p.new.name || (p.new.id === uid ? me.name : 'Anggota'), newLevel);
@@ -427,6 +451,7 @@ async function startRoom() {
       sb.rpc('cleanup_room').then(() => {});
       setTimeout(sweep, 4000); setInterval(sweep, 60000);
       await sb.from('messages').insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'join' });
+      const myLevel = lvl(me.points || 0); if (myLevel >= 5) await sb.from('messages').insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'entrance', body: String(myLevel) });
     });
   $('#msg').onkeydown = e => { if (e.key === 'Enter') H.sendMsg() };
 }
@@ -440,6 +465,44 @@ H.sendMsg = async () => {
   else { roomReply = null; renderRoomReplyHint(); }
 };
 
+/* Rekam pesan suara room dan simpan file audio di Supabase Storage bucket 'media'. */
+H.voiceMsg = async () => {
+  const btn = $('#voiceMsgBtn');
+  if (voiceRecorder && voiceRecorder.state === 'recording') { voiceRecorder.stop(); return; }
+  if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) return toast('Browser belum mendukung rekam suara. Gunakan Chrome terbaru.');
+  try {
+    voiceStream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation:true, noiseSuppression:true, autoGainControl:true } });
+    voiceChunks = [];
+    const candidates = ['audio/webm;codecs=opus','audio/webm','audio/mp4','audio/ogg;codecs=opus'];
+    const mimeType = candidates.find(t => MediaRecorder.isTypeSupported?.(t));
+    voiceRecorder = new MediaRecorder(voiceStream, mimeType ? { mimeType } : undefined);
+    voiceRecorder.ondataavailable = e => { if (e.data?.size) voiceChunks.push(e.data); };
+    voiceRecorder.onerror = () => { toast('Gagal merekam suara. Coba lagi.'); voiceStream?.getTracks().forEach(t=>t.stop()); voiceStream=null; voiceRecorder=null; btn?.classList.remove('rec'); if(btn)btn.textContent='🎤'; };
+    voiceRecorder.onstop = async () => {
+      const rec = voiceRecorder, chunks = voiceChunks.slice();
+      voiceStream?.getTracks().forEach(t=>t.stop()); voiceStream=null; voiceRecorder=null; voiceChunks=[];
+      btn?.classList.remove('rec'); if(btn)btn.textContent='🎤';
+      const blob = new Blob(chunks, { type: rec?.mimeType || 'audio/webm' });
+      if (blob.size < 1000) return toast('Rekaman terlalu singkat. Coba bicara sedikit lebih lama.');
+      if (blob.size > 12*1024*1024) return toast('Ukuran pesan suara terlalu besar (maksimal 12 MB).');
+      toast('Mengunggah pesan suara…');
+      const ext = blob.type.includes('mp4') ? 'm4a' : blob.type.includes('ogg') ? 'ogg' : 'webm';
+      const path = `voice/${uid}/${Date.now()}.${ext}`;
+      const { error: upErr } = await sb.storage.from('media').upload(path, blob, { contentType: blob.type, upsert:false });
+      if (upErr) return toast('Upload suara gagal: '+upErr.message);
+      const url = sb.storage.from('media').getPublicUrl(path).data.publicUrl;
+      const { error } = await sb.from('messages').insert({ user_id:uid, name:me.name, avatar:me.avatar, type:'voice', body:url });
+      if (error) return toast('File terunggah, tetapi pesan gagal dikirim: '+error.message);
+      toast('Pesan suara terkirim 🎧');
+    };
+    voiceRecorder.start(); btn?.classList.add('rec'); if(btn)btn.textContent='⏹';
+    toast('Sedang merekam… tekan ⏹ untuk mengirim');
+  } catch (e) {
+    voiceStream?.getTracks().forEach(t=>t.stop()); voiceStream=null; voiceRecorder=null;
+    toast(e.name==='NotAllowedError' ? 'Izin mikrofon ditolak. Izinkan akses mikrofon di browser.' : (e.message||'Tidak bisa mengakses mikrofon.'));
+  }
+};
+
 /* Bersihkan kursi 'hantu': pemilik kursi yang sudah tidak online (browser ditutup) */
 async function sweep() {
   if (!room) return;
@@ -449,7 +512,7 @@ async function sweep() {
 }
 window.addEventListener('pagehide', () => { if (inRoom) { room?.untrack(); sb.from('seats').delete().eq('user_id', uid).then(() => {}) } });
 async function ensureProf(ids) {
-  const miss = [...new Set(ids)].filter(i => i && prof[i]?.gifts_sent === undefined); if (!miss.length) return;
+  const miss = [...new Set(ids)].filter(i => i && prof[i]?.points === undefined); if (!miss.length) return;
   const { data } = await sb.from('profiles').select('id,points,gifts_sent').in('id', miss);
   (data || []).forEach(x => prof[x.id] = { ...prof[x.id], ...x });
 }
@@ -468,7 +531,7 @@ function renderSeats() {
   for (let i = 1; i <= settings.seat_count; i++) {
     const s = seats[i], d = document.createElement('div'); d.className = 'seat';
     d.innerHTML = s
-      ? `<div class="ring r${hash(s.user_id) % 5}" data-uid="${s.user_id}"><img src="${esc(s.avatar)}"><span class="mic">${s.muted ? '🔇' : '🎙️'}</span></div><div class="nm">${badge(prof[s.user_id]?.gifts_sent)}${esc(s.name)}</div><div class="pill">${prof[s.user_id]?.points ?? 0}</div>`
+      ? `<div class="ring r${hash(s.user_id) % 5}" data-uid="${s.user_id}"><img src="${esc(s.avatar)}"><span class="mic">${s.muted ? '🔇' : '🎙️'}</span></div><div class="nm">${badge(prof[s.user_id]?.points)}${esc(s.name)}</div><div class="pill">${prof[s.user_id]?.points ?? 0}</div>`
       : `<div class="ring empty">＋</div><div class="nm dim">${i}</div>`;
     /* tap kursi sendiri = turun; tap kursi orang lain = kirim gift ke dia; tap kursi kosong = duduk */
     d.onclick = () => s ? (s.user_id === uid ? leaveSeat() : H.giftTo(s.user_id)) : sit(i);
@@ -515,18 +578,31 @@ const PAGES = { room: '#room', posts: '#pgPosts', friends: '#pgFriends', me: '#p
 H.tab = t => {
   Object.entries(PAGES).forEach(([k, sel]) => $(sel).classList.toggle('hidden', k !== t));
   document.querySelectorAll('#nav button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
-  if (t === 'posts') loadPosts(); if (t === 'friends') loadFriends(); if (t === 'me') { renderProf(); loadMyGifts() } if (t === 'room') { const c = $('#chat'); c.scrollTop = c.scrollHeight }
+  if (t === 'posts') { loadPosts(); loadStories(); } if (t === 'friends') loadFriends(); if (t === 'me') { renderProf(); loadMyGifts() } if (t === 'room') { const c = $('#chat'); c.scrollTop = c.scrollHeight }
 };
 
 /* ---------- 5. Postingan ---------- */
+let stories=[];
+async function loadStories(){
+  const {data,error}=await sb.from('stories').select('id,user_id,media_url,caption,created_at,profiles!user_id(name,avatar)').gt('expires_at',new Date().toISOString()).order('created_at',{ascending:false}).limit(100);
+  if(error){$('#storyBar').innerHTML='<small style="color:#a99d92">Story belum aktif. Jalankan SQL migrasi.</small>';return;}
+  stories=data||[]; const groups=[]; const seen=new Set();
+  for(const st of stories){if(!seen.has(st.user_id)){seen.add(st.user_id);groups.push(st)}}
+  $('#storyBar').innerHTML=`<div class="storyitem" onclick="H.addStory()"><div class="storyring"><img src="${esc(me.avatar||'')}" onerror="this.src=''"></div><small>＋ Story Saya</small></div>`+groups.map(st=>`<div class="storyitem" onclick="H.viewStory('${st.id}')"><div class="storyring"><img src="${esc(st.profiles?.avatar||'')}"></div><small>${esc(st.profiles?.name||'Anggota')}</small></div>`).join('');
+}
+H.addStory=()=>{draftImg=null;sheet(`<h3>Buat Story</h3><p class="sub">Story akan hilang otomatis setelah 24 jam.</p><textarea id="storyCaption" class="inp" rows="2" maxlength="180" placeholder="Tulis cerita singkat..."></textarea><div id="storyPrev"></div><button class="sm o" style="margin-top:10px" onclick="H.pickStory()">📷 Pilih Foto</button><button class="btn" style="margin-top:14px" onclick="H.publishStory()">Bagikan Story</button>`)};
+H.pickStory=()=>pick(async f=>{try{draftImg=await upImg(f,1080);$('#storyPrev').innerHTML=`<img class="pi" src="${esc(draftImg)}">`}catch(e){toast(e.message||'Upload gagal')}});
+H.publishStory=async()=>{if(!draftImg)return toast('Pilih foto untuk story dulu');const {error}=await sb.from('stories').insert({user_id:uid,media_url:draftImg,caption:($('#storyCaption')?.value||'').trim()});if(error)return toast(error.message);H.close();draftImg=null;toast('Story dibagikan! ✨');loadStories()};
+H.viewStory=id=>{const st=stories.find(x=>x.id===id);if(!st)return;const e=$('#storyView');e.innerHTML=`<button class="sclose" onclick="H.closeStory()">✕</button><div><img src="${esc(st.media_url)}"><div class="scap"><b>${esc(st.profiles?.name||'Anggota')}</b><p>${esc(st.caption||'')}</p><small>${ago(st.created_at)}</small></div></div>`;e.classList.remove('hidden')};
+H.closeStory=()=>{$('#storyView').classList.add('hidden');$('#storyView').innerHTML=''};
 async function loadPosts(quiet) {
-  const { data, error } = await sb.from('posts').select('id,user_id,body,image,created_at,profiles!user_id(name,avatar,is_host,gifts_sent),post_likes(user_id)').order('created_at', { ascending: false }).limit(50);
+  const { data, error } = await sb.from('posts').select('id,user_id,body,image,created_at,profiles!user_id(name,avatar,is_host,gifts_sent,points),post_likes(user_id)').order('created_at', { ascending: false }).limit(50);
   if (error) { if (!quiet) toast('Postingan: ' + error.message); return }
   posts = data || []; renderPosts(); renderProf();
 }
 function postHTML(p) {
   const u = p.profiles || {}, can = p.user_id === uid || me.is_host, L = p.post_likes || [], n = L.length, liked = L.some(l => l.user_id === uid);
-  return `<article class="post"><div class="hd"><img src="${esc(u.avatar)}" onclick="H.view('${p.user_id}')" style="cursor:pointer"><div><b>${u.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(u.gifts_sent)}${esc(u.name)}</b><small>${ago(p.created_at)}</small></div>
+  return `<article class="post"><div class="hd"><img src="${esc(u.avatar)}" onclick="H.view('${p.user_id}')" style="cursor:pointer"><div><b>${u.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(u.points)}${esc(u.name)}</b><small>${ago(p.created_at)}</small></div>
     ${can ? `<button class="del" onclick="H.delPost(${p.id})" title="Hapus">🗑</button>` : ''}</div>
     ${p.body ? `<p>${esc(p.body)}</p>` : ''}${p.image ? `<img class="pi" loading="lazy" src="${esc(p.image)}">` : ''}
     <button class="lk ${liked ? 'on' : ''}" onclick="H.like(${p.id})">${liked ? '❤️' : '🤍'} ${n}</button></article>`;
@@ -565,7 +641,7 @@ H.doPost = async () => {
 
 /* ---------- 6. Profil ---------- */
 async function getGifts(id) {
-  const { data } = await sb.from('gift_log').select('from_id,gift,profiles!from_id(name,avatar,gifts_sent)').eq('to_id', id).order('id', { ascending: false }).limit(1000);
+  const { data } = await sb.from('gift_log').select('from_id,gift,profiles!from_id(name,avatar,gifts_sent,points)').eq('to_id', id).order('id', { ascending: false }).limit(1000);
   return data || [];
 }
 async function loadMyGifts() { myGifts = await getGifts(uid); renderProf() }
@@ -576,7 +652,7 @@ function giftHTML(rows) {
   const em = g => GIFTS[g]?.e || '🎁';
   return `<div class="stats" style="flex-wrap:wrap">${Object.entries(tot).map(([g, n]) => `<span class="chip">${em(g)} ×${n}</span>`).join('')}</div>
     <p class="sub" style="text-align:center">Total ${rows.length} hadiah dari ${Object.keys(by).length} orang</p>
-    ${Object.entries(by).sort((a, b) => b[1].n - a[1].n).map(([id, b]) => `<div class="mrow" onclick="H.view('${id}')"><img src="${esc(b.u.avatar)}"><span>${badge(b.u.gifts_sent)}${esc(b.u.name)}<br><small style="color:#a99d92">${Object.entries(b.g).map(([g, n]) => `${em(g)}×${n}`).join(' ')}</small></span><b>${b.n}</b></div>`).join('')}`;
+    ${Object.entries(by).sort((a, b) => b[1].n - a[1].n).map(([id, b]) => `<div class="mrow" onclick="H.view('${id}')"><img src="${esc(b.u.avatar)}"><span>${badge(b.u.points)}${esc(b.u.name)}<br><small style="color:#a99d92">${Object.entries(b.g).map(([g, n]) => `${em(g)}×${n}`).join(' ')}</small></span><b>${b.n}</b></div>`).join('')}`;
 }
 /* Lihat profil orang lain (ketuk foto di postingan / chat / daftar pengirim) */
 H.view = async id => {
@@ -584,7 +660,7 @@ H.view = async id => {
   const { data: u } = await sb.from('profiles').select('id,name,avatar,is_host,gifts_sent,points').eq('id', id).maybeSingle();
   if (!u) return toast('Profil tidak ditemukan');
   viewU = u; const rows = await getGifts(id);
-  sheet(`<div class="pf" style="padding-top:0"><img class="pav" src="${esc(u.avatar)}"><h2>${u.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(u.gifts_sent)}${esc(u.name)}</h2>${titleHTML(u.gifts_sent)}</div>
+  sheet(`<div class="pf" style="padding-top:0"><img class="pav" src="${esc(u.avatar)}"><h2>${u.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(u.points)}${esc(u.name)}</h2>${titleHTML(u.points)}</div>
     <h3 class="sec" style="margin-top:6px">🎁 Koleksi Hadiah</h3>${giftHTML(rows)}
     <button class="btn" style="margin-top:14px" onclick="H.giftView()">🎁 Kirim Gift ke ${esc(u.name)}</button>`);
 };
@@ -593,7 +669,7 @@ function renderProf() {
   if (!me) return;
   const mine = posts.filter(p => p.user_id === uid);
   $('#pfBox').innerHTML = `<div class="pf"><img class="pav" src="${esc(me.avatar)}">
-    <h2>${me.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(me.gifts_sent)}${esc(me.name)}</h2>${titleHTML(me.gifts_sent)}
+    <h2>${me.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(me.points)}${esc(me.name)}</h2>${titleHTML(me.points)}
     <div class="stats"><span class="chip">🎟️ ${me.gift_tickets ?? 0}</span><span class="chip">⭐ ${me.points ?? 0}</span><span class="chip">📝 ${mine.length}</span></div></div>
     <div class="acts"><button class="btn" onclick="H.editAv()">📷 Ubah Foto</button><button class="btn" onclick="H.editNm()">✏️ Ubah Nama</button></div>
     <button class="btn" onclick="H.compose()">➕ Buat Postingan</button>
@@ -637,14 +713,17 @@ H.setTheme = async id => {
 /* ---------- 8. Chat & gift ---------- */
 function addMsg(m, live) {
   const c = $('#chat'), d = document.createElement('div'), hb = m.is_host ? '<i class="bdg">👑 HOST</i>' : '';
-  const head = `<img class="av" src="${esc(m.avatar)}"${m.user_id ? ` onclick="H.view('${m.user_id}')" style="cursor:pointer"` : ''}>`, meta = `<div class="meta">${hb}${badge(prof[m.user_id]?.gifts_sent)}${esc(m.name)}</div>`;
+  const head = `<img class="av" src="${esc(m.avatar)}"${m.user_id ? ` onclick="H.view('${m.user_id}')" style="cursor:pointer"` : ''}>`, meta = `<div class="meta">${hb}${badge(prof[m.user_id]?.points)}${esc(m.name)}</div>`;
   d.className = 'row';
   if (m.type === 'join') d.innerHTML = `<div class="bub">${hb}<b>${esc(m.name)}</b> sedang bergabung</div>`;
   else if (m.type === 'leave') d.innerHTML = `<div class="bub sys">🚪 <b>${esc(m.name)}</b> keluar dari room</div>`;
+  else if (m.type === 'entrance') { d.innerHTML = `<div class="bub sys">✨ ${esc(m.name)} memasuki room dengan efek SVIP ${esc(m.body)}!</div>`; if(live) showEntranceFx(m.name, Number(m.body)||5, hash(m.user_id||m.name)); }
   else if (m.type === 'gift') {
     const g = GIFTS[m.gift] || GIFTS[0];
     d.innerHTML = `${head}<div>${meta}<div class="gbub"><span>Kirim ${esc(g.name)}${m.to_name ? `<small>untuk ${esc(m.to_name)}</small>` : ''}</span><span class="e">${g.e}</span><b class="x">x1</b></div></div>`;
     if (live) showFx(g, m.name, m.to_name);
+  } else if (m.type === 'voice') {
+    d.innerHTML = `${head}<div>${meta}<div class="voicebubble"><small>🎙️ Pesan suara</small><audio controls preload="none" src="${esc(m.body)}"></audio></div></div>`;
   } else {
     const quoted = m.reply_to_id ? `<div class="replybox"><b>↩ Membalas pesan</b>${esc(m.reply_preview || 'Pesan sebelumnya')}</div>` : '';
     const body = esc(m.body).replace(/(@[\\w.-]+)/g,'<span class="tagged">$1</span>');
@@ -672,7 +751,7 @@ function giftSheet() {
   const lock = !me.is_host && me.gift_tickets < 1;
   sheet(`<h3>Kirim Gift</h3><p class="sub">${me.is_host ? '👑 Host: unlimited gratis' : `🎟️ Tiket kamu: ${me.gift_tickets}`}</p>
    <div class="mrow" style="border-top:0;padding-top:0"><img src="${esc(gT.avatar)}"><span>Untuk: <b>${esc(gT.name)}</b></span><button class="sm o" onclick="H.gift()">Ganti</button></div>
-   <div class="gg">${GIFTS.map((g, i) => `<button class="gi ${lock ? 'lk' : ''}" onclick="H.send(${i})">${g.img ? `<img src="${esc(g.img)}">` : `<span class="e">${g.e}</span>`}<small>${g.name}</small></button>`).join('')}</div>
+   <div class="gg">${GIFTS.map((g, i) => `<button class="gi ${lock ? 'lk' : ''}" onclick="H.send(${i})">${g.img ? `<img src="${esc(g.img)}">` : `<span class="e">${g.e}</span>`}<small>${g.name}</small><small style="display:block;color:#ffd886">+${g.points} poin</small></button>`).join('')}</div>
    ${lock ? `<button class="btn" onclick="H.wa('Hay Host, mau buka gift dong!')">Buka 1 Gift (Chat Owner)</button>` : ''}`);
 }
 H.send = async i => {
