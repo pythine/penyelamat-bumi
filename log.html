@@ -433,6 +433,9 @@ let posts = [], gT = null, draftImg = null, myGifts = [], mq = Promise.resolve()
 let friendRows = [], pendingRows = [], dmPeer = null, dmMessages = [], dmReply = null, roomReply = null;
 let voiceRecorder = null, voiceStream = null, voiceChunks = [];
 const pcs = {}, early = {};
+let dbChannel = null;
+let messageSyncTimer = null;
+const renderedMessageIds = new Set();
 
 function toast(t) { const e = $('#toast'); e.textContent = t; e.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(() => e.classList.remove('on'), 2600) }
 function sheet(h) { const s = $('#sheet'); s.innerHTML = `<div>${h}</div>`; s.classList.remove('hidden'); s.onclick = e => e.target === s && H.close() }
@@ -607,7 +610,7 @@ async function ensureProfile() {
   me = (await sb.from('profiles').select('*').eq('id', uid).single()).data; return me;
 }
 H.enter = async () => { if (await ensureProfile()) startRoom() };
-H.exit = async () => { await room?.untrack(); await sb.from('seats').delete().eq('user_id', uid); location.reload() };
+H.exit = async () => { await stopMessageSync(); await room?.untrack(); await sb.from('seats').delete().eq('user_id', uid); location.reload() };
 
 /* ---------- 2. Host ---------- */
 H.hostLogin = () => sheet(`<h3>Login Host</h3><p class="sub">Masukkan sandi host.</p>
@@ -702,6 +705,22 @@ H.clear = async () => { await sb.from('messages').delete().neq('id', 0); $('#cha
 
 /* ---------- 3. Room ---------- */
 let joined = false;
+async function syncRecentMessages() {
+  if (!inRoom) return;
+  const { data, error } = await sb.from('messages').select('*').order('id', { ascending: false }).limit(80);
+  if (error) { console.warn('Message sync:', error.message); return; }
+  const rows = (data || []).reverse();
+  await ensureProf(rows.map(m => m.user_id));
+  rows.forEach(m => addRoomMessage(m, false));
+}
+function startMessageSync() {
+  clearInterval(messageSyncTimer);
+  // Fallback for projects where messages is not enabled in supabase_realtime.
+  messageSyncTimer = setInterval(syncRecentMessages, 1500);
+}
+async function stopMessageSync() {
+  clearInterval(messageSyncTimer); messageSyncTimer = null;
+}
 async function startRoom() {
   if (inRoom) return;
   $('#setup').classList.add('hidden'); $('#room').classList.remove('hidden'); $('#room').style.display = 'flex'; $('#nav').classList.remove('hidden'); inRoom = true;
@@ -711,20 +730,34 @@ async function startRoom() {
   await loadGiftVideos();
   refreshMySocialStats();
   await loadSeats();
-  const { data: ms } = await sb.from('messages').select('*').order('id', { ascending: false }).limit(50);
-  await ensureProf((ms || []).map(m => m.user_id));
-  (ms || []).reverse().forEach(m => addMsg(m, false));
+  renderedMessageIds.clear();
+  await syncRecentMessages();
+  startMessageSync();
   loadMyGifts();
   loadPosts(true); loadStories();
 
-  sb.channel('db')
+  dbChannel = sb.channel('db')
     .on('postgres_changes', { event: '*', schema: 'public', table: 'seats' }, loadSeats)
     .on('postgres_changes', { event: '*', schema: 'public', table: 'posts' }, () => loadPosts(true))
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'stories' }, () => loadStories())
     .on('postgres_changes', { event: '*', schema: 'public', table: 'post_likes' }, () => loadPosts(true))
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'gift_log', filter: `to_id=eq.${uid}` }, () => loadMyGifts())
-    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, p => { mq = mq.then(async () => { await ensureProf([p.new.user_id]); addMsg(p.new, true) }).catch(() => {}) })
-    .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'messages' }, () => $('#chat').innerHTML = '')
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, p => {
+      mq = mq.then(async () => {
+        await ensureProf([p.new.user_id]);
+        addRoomMessage(p.new, true);
+      }).catch(err => console.warn('Realtime message:', err));
+    })
+    .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'messages' }, p => {
+      const id = p.old?.id;
+      if (id == null) {
+        $('#chat').innerHTML = '';
+        renderedMessageIds.clear();
+        return;
+      }
+      document.querySelector(`#chat [data-message-id="${CSS.escape(String(id))}"]`)?.remove();
+      renderedMessageIds.delete(String(id));
+    })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'friend_requests', filter: `recipient_id=eq.${uid}` }, () => { if(!$('#pgFriends').classList.contains('hidden')) loadFriends(); })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'friends', filter: `user_id=eq.${uid}` }, () => refreshMySocialStats())
     .on('postgres_changes', { event: '*', schema: 'public', table: 'follows', filter: `following_id=eq.${uid}` }, () => refreshMySocialStats())
@@ -749,7 +782,14 @@ async function startRoom() {
         me = { ...me, ...p.new }; room?.track(presence()); renderProf();
       }
       renderSeats();
-    }).subscribe();
+    }).subscribe(async status => {
+      if (status === 'SUBSCRIBED') {
+        await syncRecentMessages();
+      } else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
+        console.warn('Realtime channel status:', status);
+        toast('Koneksi pesan realtime terputus. Mencoba menyambung lagi…');
+      }
+    });
 
   /* Presence = pengganti onDisconnect: saat tab ditutup, kursi otomatis kosong + muncul keterangan keluar */
   room = sb.channel('room', { config: { presence: { key: uid }, broadcast: { self: false } } })
@@ -778,9 +818,14 @@ H.sendMsg = async () => {
   const i = $('#msg'), body = i.value.trim(); if (!body || H.sendMsg.busy) return;
   H.sendMsg.busy = true; setTimeout(() => H.sendMsg.busy = false, 400);
   i.value = ''; i.focus();
-  const { error } = await sb.from('messages').insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'chat', body, reply_to_id: roomReply?.id || null, reply_preview: roomReply?.body || null });
+  const { data: inserted, error } = await sb.from('messages')
+    .insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'chat', body, reply_to_id: roomReply?.id || null, reply_preview: roomReply?.body || null })
+    .select('*').single();
   if (error) { toast(error.message); i.value = body }
-  else { roomReply = null; renderRoomReplyHint(); }
+  else {
+    if (inserted) addRoomMessage(inserted, true);
+    roomReply = null; renderRoomReplyHint();
+  }
 };
 
 /* Rekam pesan suara room. Path Storage memakai folder pertama = UID,
@@ -828,15 +873,16 @@ H.voiceMsg = async () => {
 
       /* Gunakan type='chat' yang sama dengan pesan teks agar lolos policy RLS
          messages yang sudah ada. Penanda body membedakan audio dari teks tanpa SQL baru. */
-      const { error: msgErr } = await sb.from('messages').insert({
+      const { data: voiceMessage, error: msgErr } = await sb.from('messages').insert({
         user_id: uid, name: me.name, avatar: me.avatar,
         type: 'chat', body: '[VOICE_MSG]' + audioUrl
-      });
+      }).select('*').single();
       if (msgErr) {
         /* Jangan tinggalkan file yatim jika insert pesan ditolak. */
         await sb.storage.from('media').remove([path]).catch(() => {});
         return toast('Audio berhasil diunggah, tetapi insert pesan ditolak RLS: ' + msgErr.message);
       }
+      if (voiceMessage) addRoomMessage(voiceMessage, true);
       toast('Pesan suara terkirim 🎧');
     };
     activeRecorder.start(250);
@@ -872,7 +918,7 @@ async function sweep() {
   const stale = Object.values(seats).map(s => s.user_id).filter(i => i !== uid && !on.has(i));
   if (stale.length) await sb.from('seats').delete().in('user_id', stale);
 }
-window.addEventListener('pagehide', () => { if (inRoom) { room?.untrack(); sb.from('seats').delete().eq('user_id', uid).then(() => {}) } });
+window.addEventListener('pagehide', () => { if (inRoom) { stopMessageSync(); room?.untrack(); sb.from('seats').delete().eq('user_id', uid).then(() => {}) } });
 async function ensureProf(ids) {
   const miss = [...new Set(ids)].filter(i => i && prof[i]?.points === undefined); if (!miss.length) return;
   const { data } = await sb.from('profiles').select('id,points,gifts_sent,chat_theme,is_host' + BC()).in('id', miss);
@@ -1146,10 +1192,20 @@ H.giveBorder = async (id, b) => {
 };
 
 /* ---------- 8. Chat & gift ---------- */
+function addRoomMessage(m, live) {
+  if (m?.id != null) {
+    const key = String(m.id);
+    if (renderedMessageIds.has(key)) return;
+    renderedMessageIds.add(key);
+  }
+  addMsg(m, live);
+}
+
 function addMsg(m, live) {
   const c = $('#chat'), d = document.createElement('div'), hb = m.is_host ? '<i class="bdg">👑 HOST</i>' : '';
   const head = avatarHTML(m.avatar, prof[m.user_id]?.points, 'av', 34, m.user_id ? ` onclick="H.view('${m.user_id}')" style="cursor:pointer"` : '', prof[m.user_id]?.avatar_border, m.is_host || prof[m.user_id]?.is_host), meta = `<div class="meta">${hb}${badge(prof[m.user_id]?.points)}${esc(m.name)}</div>`;
   d.className = 'row';
+  if (m?.id != null) d.dataset.messageId = String(m.id);
   if (m.type === 'join') d.innerHTML = `<div class="bub">${hb}<b>${esc(m.name)}</b> sedang bergabung</div>`;
   else if (m.type === 'leave') d.innerHTML = `<div class="bub sys">🚪 <b>${esc(m.name)}</b> keluar dari room</div>`;
   else if (m.type === 'entrance') { d.innerHTML = `<div class="bub sys">✨ ${esc(m.name)} memasuki room dengan efek SVIP ${esc(m.body)}!</div>`; if(live) showEntranceFx(m.name, Number(m.body)||5); }
