@@ -445,6 +445,7 @@ const pcs = {}, early = {};
 let dbChannel = null;
 let messageSyncTimer = null;
 let profileSyncTimer = null;
+let presenceSyncTimer = null;
 const svipLevelCache = new Map();
 const renderedMessageIds = new Set();
 
@@ -760,14 +761,21 @@ async function syncSvipProfiles() {
   (data || []).forEach(p => applyProfileUpdate(p, true));
 }
 function startMessageSync() {
-  clearInterval(messageSyncTimer); clearInterval(profileSyncTimer);
+  clearInterval(messageSyncTimer); clearInterval(profileSyncTimer); clearInterval(presenceSyncTimer);
   // Fallback bila publication Realtime belum aktif di Supabase.
   messageSyncTimer = setInterval(() => syncRecentMessages(true), 500);
   profileSyncTimer = setInterval(syncSvipProfiles, 1000);
+  // Pastikan daftar anggota yang hadir selalu menggambar ulang di semua perangkat.
+  presenceSyncTimer = setInterval(() => {
+    if (!room) return;
+    online = room.presenceState();
+    renderTop();
+  }, 1000);
 }
 async function stopMessageSync() {
   clearInterval(messageSyncTimer); messageSyncTimer = null;
   clearInterval(profileSyncTimer); profileSyncTimer = null;
+  clearInterval(presenceSyncTimer); presenceSyncTimer = null;
 }
 async function startRoom() {
   if (inRoom) return;
@@ -832,7 +840,11 @@ async function startRoom() {
 
   /* Presence = pengganti onDisconnect: saat tab ditutup, kursi otomatis kosong + muncul keterangan keluar */
   room = sb.channel('room', { config: { presence: { key: uid }, broadcast: { self: false } } })
-    .on('presence', { event: 'sync' }, () => { online = room.presenceState(); renderTop() })
+    .on('presence', { event: 'sync' }, () => {
+      online = room.presenceState();
+      renderTop();
+      syncSvipProfiles();
+    })
     .on('presence', { event: 'leave' }, ({ key, leftPresences, currentPresences }) => {
       if (key === uid || currentPresences?.length) return; /* currentPresences > 0 = hanya ganti profil, bukan keluar */
       addMsg({ type: 'leave', name: leftPresences?.[0]?.name || 'Seseorang' }, false);
@@ -840,8 +852,15 @@ async function startRoom() {
     })
     .on('broadcast', { event: 'sig' }, ({ payload }) => onSig(payload))
     .subscribe(async s => {
+      if (s === 'CHANNEL_ERROR' || s === 'TIMED_OUT') {
+        console.warn('Presence channel status:', s);
+        toast('Daftar anggota sedang menyambung ulang…');
+        return;
+      }
       if (s !== 'SUBSCRIBED') return;
       await room.track(presence());
+      online = room.presenceState();
+      renderTop();
       syncPeers(); /* pendengar langsung menyambung ke yang sudah duduk */
       if (joined) return; /* sambung ulang jaringan: jangan umumkan 'bergabung' dan jangan buat timer lagi */
       joined = true;
