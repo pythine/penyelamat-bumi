@@ -105,6 +105,7 @@ textarea.inp{resize:none;display:block}
 #fx .g{text-align:center;animation:fl 4s ease-in-out forwards}
 #fx .big{font-size:min(55vw,260px);line-height:1;filter:drop-shadow(0 0 30px var(--gold))}#fx img{width:min(70vw,320px)}
 #fx .ban{display:inline-block;margin-top:10px;padding:8px 20px;border-radius:999px;background:linear-gradient(135deg,#7a2630,#4a1219);border:2px solid #e0646b;font-size:17px}
+#fx .gift-fx-video{display:block;width:min(82vw,560px);max-height:62vh;object-fit:contain;border-radius:22px;filter:drop-shadow(0 0 28px #ffd36e);box-shadow:0 0 45px #ffb52b88}
 @keyframes fl{0%{transform:translateY(40vh) scale(.4);opacity:0}12%{transform:translateY(0) scale(1.1);opacity:1}20%{transform:scale(1)}85%{transform:translateY(-6vh);opacity:1}100%{transform:translateY(-14vh);opacity:0}}
 #toast{position:fixed;left:50%;top:calc(14px + env(safe-area-inset-top));transform:translateX(-50%);z-index:50;background:#000d;border:1px solid var(--gold);border-radius:999px;padding:8px 18px;font-size:14px;opacity:0;transition:.25s;pointer-events:none;text-align:center;max-width:92vw}
 #toast.on{opacity:1}
@@ -181,6 +182,11 @@ textarea.inp{resize:none;display:block}
 .bd-hx-crystal{--bg:conic-gradient(transparent 0 64%,rgba(255,255,255,.95) 78%,transparent 90%),conic-gradient(#e8fbff,#6be0ff,#8a7bff,#6be0ff,#e8fbff);--glow:#6be0ff;--deco:'💠';--spd:3.6s;--dir:reverse}
 @keyframes hxGlowF{0%,100%{filter:drop-shadow(0 0 5px var(--glow)) drop-shadow(0 0 12px var(--glow))}50%{filter:drop-shadow(0 0 9px #fff) drop-shadow(0 0 24px var(--glow))}}
 @keyframes hxGlowB{0%,100%{box-shadow:0 0 12px var(--glow),0 0 24px var(--glow)}50%{box-shadow:0 0 18px #fff,0 0 38px var(--glow)}}
+/* Video SVIP menyatu dengan ruang: full-screen, tanpa frame/kotak, melintas di layar */
+#entranceFX .ent-video-wrap{position:absolute;inset:0;z-index:2;width:100%;height:100%;overflow:hidden;pointer-events:none}
+#entranceFX .ent-video{position:absolute;inset:0;display:block;width:100vw;height:100dvh;max-width:none;max-height:none;object-fit:cover;object-position:center;border:0;border-radius:0;outline:0;box-shadow:none;filter:saturate(1.18) contrast(1.08) brightness(1.04);opacity:.88;mix-blend-mode:screen;transform:translateX(0);animation:svipVideoPass 12s cubic-bezier(.2,.65,.25,1) both}
+#entranceFX .ent-video-wrap:after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.05) 50%,transparent 100%);mix-blend-mode:screen}
+@keyframes svipVideoPass{0%{opacity:0;transform:translateX(14vw) scale(1.08);filter:blur(9px) saturate(1.2)}12%{opacity:.92;filter:blur(0) saturate(1.18)}78%{opacity:.9;transform:translateX(-3vw) scale(1.02)}100%{opacity:0;transform:translateX(-13vw) scale(1.08);filter:blur(8px) saturate(1.2)}}
 /* Entrance SVIP 5-9: setiap level punya animasi sendiri */
 #entranceFX{position:fixed;inset:0;z-index:65;pointer-events:none;overflow:hidden}
 #entranceFX .ent{position:absolute;inset:0;display:grid;place-items:center}
@@ -360,7 +366,13 @@ const GIFTS = [
   {name:'Hati',e:'💖',img:'',points:100},{name:'Peti Harta',e:'🎁',img:'',points:250},{name:'Bintang',e:'🌟',img:'',points:500},
   {name:'Mawar',e:'🌹',img:'',points:20},{name:'Kopi',e:'☕',img:'',points:30},{name:'Cincin',e:'💍',img:'',points:750},
   {name:'Mobil Sport',e:'🏎️',img:'',points:1000},{name:'Unicorn',e:'🦄',img:'',points:1500},{name:'Kastil',e:'🏰',img:'',points:2500},
-  {name:'Jet Pribadi',e:'✈️',img:'',points:3500},{name:'Naga Emas',e:'🐉',img:'',points:5000},{name:'Galaksi',e:'🌌',img:'',points:10000}];
+  {name:'Jet Pribadi',e:'✈️',img:'',points:3500},{name:'Naga Emas',e:'🐉',img:'',points:5000},{name:'Galaksi',e:'🌌',img:'',points:10000},
+  {name:'Hati Berlian',e:'💎',img:'',points:120},{name:'Buket Sakura',e:'💐',img:'',points:180},{name:'Mahkota Raja',e:'🤴',img:'',points:800},
+  {name:'Kupu-Kupu',e:'🦋',img:'',points:300},{name:'Beruang Cinta',e:'🧸',img:'',points:450},{name:'Kapal Pesiar',e:'🛳️',img:'',points:2200},
+  {name:'Istana Kristal',e:'🏯',img:'',points:3200},{name:'Raja Phoenix',e:'🪽',img:'',points:6000},{name:'Naga Petir',e:'🐲',img:'',points:7500},
+  {name:'Planet Cinta',e:'🪐',img:'',points:9000},{name:'Supernova',e:'☄️',img:'',points:12000},{name:'Singgasana Emas',e:'🪑',img:'',points:15000},
+  {name:'Kapal Angkasa',e:'🛸',img:'',points:18000},{name:'Sayap Malaikat',e:'🪽',img:'',points:22000},{name:'Naga Kaisar',e:'🐉',img:'',points:30000}];
+const EXCLUSIVE_GIFT_START = 15; // hadiah nomor 16–30 bisa diberi animasi video eksklusif oleh Host
 /* Tema background chat. `bg` = nilai CSS background. Tema 'default' selalu terbuka. */
 const THEMES = [
   {id:'default',name:'Polos',bg:''},
@@ -413,7 +425,9 @@ function titleHTML(n) {
 }
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 const H = window.H = {};
-let uid, me, avatar = '', settings = {title:'Voice & Gift Room', seat_count:15};
+let uid, me, avatar = '', settings = {title:'Voice & Gift Room', seat_count:15, svip_videos:{}};
+let entranceVideos = {};
+let giftVideos = {};
 let seats = {}, prof = {}, online = {}, mySeat = null, stream = null, muted = false, room, inRoom = false;
 let posts = [], gT = null, draftImg = null, myGifts = [], mq = Promise.resolve(), viewU = null;
 let friendRows = [], pendingRows = [], dmPeer = null, dmMessages = [], dmReply = null, roomReply = null;
@@ -431,10 +445,16 @@ H.wa = msg => {
   }
 };
 H.close = () => $('#sheet').classList.add('hidden');
-function showFx(g, who, to) {
-  $('#fx').innerHTML = `<div class="g">${g.img ? `<img src="${esc(g.img)}">` : `<div class="big">${g.e}</div>`}<br><span class="ban">${esc(who)} mengirim hadiah${to ? ' ke ' + esc(to) : ''}!</span></div>`;
-  clearTimeout(showFx.t); showFx.t = setTimeout(() => $('#fx').innerHTML = '', 4000);
+function showFx(g, who, to, giftIndex) {
+  const video = giftVideos?.[giftIndex]?.url || '';
+  const visual = video && /^https:\/\//i.test(video)
+    ? `<video class="gift-fx-video" src="${esc(video)}" autoplay muted playsinline preload="auto" onended="H.hideGiftFx()" onerror="H.hideGiftFx()"></video>`
+    : (g.img ? `<img src="${esc(g.img)}">` : `<div class="big">${g.e}</div>`);
+  $('#fx').innerHTML = `<div class="g">${visual}<br><span class="ban">${esc(who)} mengirim hadiah${to ? ' ke ' + esc(to) : ''}!</span></div>`;
+  clearTimeout(showFx.t); showFx.t = setTimeout(() => $('#fx').innerHTML = '', video ? 10000 : 4000);
+  const player = $('#fx video'); if (player) player.play().catch(() => {});
 }
+H.hideGiftFx = () => { clearTimeout(showFx.t); $('#fx').innerHTML = ''; };
 /* Entrance SVIP 5-9: gambar (bukan emoji). Bawaan = ilustrasi SVG orisinal yang warnanya mengikuti tiap level.
    Isi `img` dengan URL gambar/GIF/WebP transparan milikmu untuk mengganti ilustrasi level itu. */
 const ENTRANCE = {
@@ -484,14 +504,23 @@ function unicornSVG() {
 }
 const ART = { 5: phoenixSVG, 6: () => dragonSVG(), 7: unicornSVG, 8: () => dragonSVG({ wings: 1, bolts: 1 }), 9: () => dragonSVG({ wings: 1, crown: 1, halo: 1 }) };
 const artHTML = lv => ENTRANCE[lv].img ? `<img src="${ENTRANCE[lv].img}" alt="">` : ART[lv]();
+function hideEntranceFx() {
+  const e = $('#entranceFX'); e.classList.add('hidden'); e.innerHTML = '';
+  clearTimeout(showEntranceFx.t);
+}
 function showEntranceFx(name, level) {
   const lv = Math.min(9, Math.max(5, Number(level) || 5)), v = ENTRANCE[lv];
+  const video = entranceVideos?.[lv]?.url || entranceVideos?.[lv] || '';
   const sp = Array.from({ length: 18 }, () => { const a = Math.random() * 6.283, r = 22 + Math.random() * 40;
     return `<i style="--tx:${Math.round(Math.cos(a) * r)}vmin;--ty:${Math.round(Math.sin(a) * r)}vmin;--dl:${(Math.random() * 2).toFixed(2)}s"></i>` }).join('');
   const e = $('#entranceFX');
-  e.innerHTML = `<div class="ent ent${lv}" style="--dur:${v.dur}s;--c1:${v.c1};--c2:${v.c2}"><div class="ent-bg"></div><div class="ent-rays"></div><div class="ent-burst"></div><div class="ent-sparks">${sp}</div><div class="ent-move"><div class="ent-art">${artHTML(lv)}</div></div><div class="ent-label">${esc(name)} · SVIP ${lv}<small>${v.t}</small></div></div>`;
+  const visual = video && /^https:\/\//i.test(video)
+    ? `<div class="ent-video-wrap"><video class="ent-video" src="${esc(video)}" autoplay muted playsinline preload="auto" onended="H.hideEntranceFx()" onerror="H.hideEntranceFx()"></video></div>`
+    : `<div class="ent-move"><div class="ent-art">${artHTML(lv)}</div></div>`;
+  e.innerHTML = `<div class="ent ent${lv}" style="--dur:${v.dur}s;--c1:${v.c1};--c2:${v.c2}"><div class="ent-bg"></div><div class="ent-rays"></div><div class="ent-burst"></div><div class="ent-sparks">${sp}</div>${visual}<div class="ent-label">${esc(name)} · SVIP ${lv}<small>${video ? 'SPECIAL VIDEO ENTRANCE' : v.t}</small></div></div>`;
   e.classList.remove('hidden'); clearTimeout(showEntranceFx.t);
-  showEntranceFx.t = setTimeout(() => { e.classList.add('hidden'); e.innerHTML = '' }, v.dur * 1000 + 200);
+  showEntranceFx.t = setTimeout(hideEntranceFx, (video ? 15 : v.dur) * 1000);
+  const player = e.querySelector('video'); if (player) player.play().catch(() => toast('Browser memblokir autoplay video. Ketuk layar untuk memulai.'));
 }
 function showSvipPopup(name, level) {
   const e = $('#svipPop');
@@ -511,6 +540,46 @@ async function upImg(file, max) {
   const { error } = await sb.storage.from('media').upload(path, blob, { contentType: 'image/jpeg' });
   if (error) throw error;
   return sb.storage.from('media').getPublicUrl(path).data.publicUrl;
+}
+function pickVideo(cb) {
+  const i = document.createElement('input'); i.type = 'file'; i.accept = 'video/mp4,video/webm,.mp4,.webm';
+  i.onchange = () => i.files?.[0] && cb(i.files[0]); i.click();
+}
+async function upEntranceVideo(file, level) {
+  if (!/video\/(mp4|webm)/i.test(file.type) && !/\.(mp4|webm)$/i.test(file.name))
+    throw new Error('Pilih video MP4 atau WebM.');
+  if (file.size > 30 * 1024 * 1024) throw new Error('Ukuran video maksimal 30 MB.');
+  const ext = /\.webm$/i.test(file.name) || file.type === 'video/webm' ? 'webm' : 'mp4';
+  const path = `${uid}/svip/entrance-${level}-${Date.now()}.${ext}`;
+  const { error } = await sb.storage.from('media').upload(path, file, {
+    contentType: ext === 'webm' ? 'video/webm' : 'video/mp4', upsert: false
+  });
+  if (error) throw error;
+  return { url: sb.storage.from('media').getPublicUrl(path).data.publicUrl, path, name: file.name };
+}
+async function loadEntranceVideos() {
+  const { data, error } = await sb.from('svip_entrances').select('level,video_url,video_path,video_name');
+  if (error) { console.warn('SVIP entrance config:', error.message); return false; }
+  entranceVideos = Object.fromEntries((data || []).map(x => [x.level, {
+    url: x.video_url, path: x.video_path, name: x.video_name
+  }]));
+  return true;
+}
+async function loadGiftVideos() {
+  const { data, error } = await sb.from('gift_videos').select('gift_index,video_url,video_path,video_name');
+  if (error) { console.warn('Gift video config:', error.message); return false; }
+  giftVideos = Object.fromEntries((data || []).map(x => [x.gift_index, {url:x.video_url,path:x.video_path,name:x.video_name}]));
+  return true;
+}
+async function upGiftVideo(file, giftIndex) {
+  if (!/video\/(mp4|webm)/i.test(file.type) && !/\.(mp4|webm)$/i.test(file.name)) throw new Error('Pilih video MP4 atau WebM.');
+  if (file.size > 30 * 1024 * 1024) throw new Error('Ukuran video maksimal 30 MB.');
+  const ext = /\.webm$/i.test(file.name) || file.type === 'video/webm' ? 'webm' : 'mp4';
+  const path = `${uid}/gifts/gift-${giftIndex}-${Date.now()}.${ext}`;
+  const {error} = await sb.storage.from('media').upload(path,file,{contentType:ext==='webm'?'video/webm':'video/mp4',upsert:false});
+  if(error) throw error;
+  const {data} = sb.storage.from('media').getPublicUrl(path);
+  return {url:data.publicUrl,path,name:file.name};
 }
 
 /* ---------- 1. Auth anonim + setup profil ---------- */
@@ -556,8 +625,14 @@ H.panel = async () => {
   const { data } = ids.length ? await sb.from('profiles').select('id,name,avatar,gift_tickets,theme_ok' + (HAS_BORDER ? ',borders' : '')).in('id', ids) : { data: [] };
   sheet(`<h3>Panel Host</h3><p class="sub">Jumlah kursi</p>
    <div class="cnt"><button onclick="H.seatN(-1)">−</button><b id="sc" style="font-size:24px">${settings.seat_count}</b><button onclick="H.seatN(1)">+</button></div>
-   <p class="sub">Tes animasi masuk SVIP (hanya kamu yang melihat)</p>
+   <h3 class="sec">🎬 Video Entrance SVIP</h3>
+   <p class="sub">Upload MP4/WebM maksimal 30 MB per level. Video akan diputar untuk semua anggota saat pemilik level bergabung.</p>
+   ${[5,6,7,8,9].map(n => `<div class="mrow" style="align-items:flex-start"><span style="flex:1"><b>SVIP ${n} · ${esc(ENTRANCE[n].t)}</b><small style="display:block;color:#a99d92;overflow-wrap:anywhere">${entranceVideos[n]?.name || (entranceVideos[n]?.url ? 'Video tersimpan' : 'Belum ada video — memakai animasi bawaan')}</small></span><div class="bt"><button class="sm" onclick="H.uploadEntrance(${n})">⬆ Upload</button><button class="sm o" onclick="H.previewEnt(${n})">▶ Preview</button>${entranceVideos[n]?.url ? `<button class="sm o" onclick="H.removeEntrance(${n})">Hapus</button>` : ''}</div></div>`).join('')}
+   <p class="sub" style="margin-top:12px">Tes animasi masuk SVIP (hanya kamu yang melihat)</p>
    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">${[5, 6, 7, 8, 9].map(n => `<button class="sm o" onclick="H.previewEnt(${n})">SVIP ${n}</button>`).join('')}</div>
+   <h3 class="sec">🎞️ Video Gift Eksklusif</h3>
+   <p class="sub">Pilih video MP4/WebM maksimal 30 MB untuk hadiah eksklusif nomor 16–30. Saat gift dikirim, video diputar di room semua anggota.</p>
+   ${GIFTS.slice(EXCLUSIVE_GIFT_START).map((g,j)=>{const i=j+EXCLUSIVE_GIFT_START;return `<div class="mrow" style="align-items:flex-start"><span style="flex:1"><b>${g.e} ${esc(g.name)}</b><small style="display:block;color:#a99d92">${giftVideos[i]?.name || (giftVideos[i]?.url ? 'Video tersimpan' : 'Belum ada video')}</small></span><div class="bt"><button class="sm" onclick="H.uploadGiftVideo(${i})">⬆ Video</button>${giftVideos[i]?.url ? `<button class="sm o" onclick="H.previewGift(${i})">▶</button><button class="sm o" onclick="H.removeGiftVideo(${i})">Hapus</button>` : ''}</div></div>`}).join('')}
    <p class="sub">Anggota online</p>
    ${(data || []).map(u => `<div class="mrow"><img src="${esc(u.avatar)}"><span>${esc(u.name)} <small style="color:#a99d92">🎟️${u.gift_tickets} ${u.theme_ok ? '🎨✔' : ''}</small></span>
      <div class="bt"><button class="sm" onclick="H.tix('${u.id}')">+1 Tiket Gift</button><button class="sm" onclick="H.hostBorder('${u.id}')">🖼 Border</button>${u.theme_ok ? '' : `<button class="sm" onclick="H.thm('${u.id}')">🎨 Buka Tema</button>`}</div></div>`).join('')}
@@ -565,6 +640,59 @@ H.panel = async () => {
    <button class="btn" style="margin-top:16px;background:linear-gradient(#e0646b,#9c2a33);color:#fff" onclick="H.unhost()">🚪 Keluar Host</button>`);
 };
 H.previewEnt = n => { H.close(); showEntranceFx(me.name, n) };
+H.uploadEntrance = level => {
+  if (!me?.is_host || ![5,6,7,8,9].includes(Number(level))) return;
+  pickVideo(async file => {
+    try {
+      toast(`Mengunggah video SVIP ${level}…`);
+      const uploaded = await upEntranceVideo(file, level);
+      const { error } = await sb.from('svip_entrances').upsert({
+        level, video_url: uploaded.url, video_path: uploaded.path, video_name: uploaded.name, updated_by: uid
+      }, { onConflict: 'level' });
+      if (error) {
+        await sb.storage.from('media').remove([uploaded.path]);
+        throw new Error(error.message.includes('svip_entrances') ? 'Tabel svip_entrances belum dibuat. Jalankan SQL migrasi yang saya sertakan.' : error.message);
+      }
+      const previous = entranceVideos[level];
+      entranceVideos = { ...(entranceVideos || {}), [level]: uploaded };
+      if (previous?.path) sb.storage.from('media').remove([previous.path]).then(() => {});
+      toast(`Video SVIP ${level} berhasil disimpan untuk semua anggota ✅`); H.panel();
+    } catch (e) { toast(e.message || 'Gagal mengunggah video'); }
+  });
+};
+H.removeEntrance = async level => {
+  if (!me?.is_host || !confirm(`Hapus video entrance SVIP ${level}?`)) return;
+  const old = entranceVideos?.[level];
+  const { error } = await sb.from('svip_entrances').delete().eq('level', level);
+  if (error) return toast(error.message);
+  const next = { ...(entranceVideos || {}) }; delete next[level]; entranceVideos = next;
+  if (old?.path) sb.storage.from('media').remove([old.path]).then(() => {});
+  toast(`Video SVIP ${level} dihapus. Animasi bawaan akan digunakan.`); H.panel();
+};
+H.uploadGiftVideo = giftIndex => {
+  if (!me?.is_host || giftIndex < EXCLUSIVE_GIFT_START || giftIndex >= GIFTS.length) return;
+  pickVideo(async file => {
+    try {
+      toast(`Mengunggah video ${GIFTS[giftIndex].name}…`);
+      const uploaded = await upGiftVideo(file, giftIndex);
+      const {error} = await sb.from('gift_videos').upsert({gift_index:giftIndex,video_url:uploaded.url,video_path:uploaded.path,video_name:uploaded.name,updated_by:uid},{onConflict:'gift_index'});
+      if(error){await sb.storage.from('media').remove([uploaded.path]);throw new Error(error.message.includes('gift_videos')?'Tabel gift_videos belum dibuat. Jalankan SQL migrasi tambahan.':error.message);}
+      const old=giftVideos[giftIndex]; giftVideos={...giftVideos,[giftIndex]:uploaded};
+      if(old?.path) sb.storage.from('media').remove([old.path]).then(()=>{});
+      toast('Video gift eksklusif berhasil disimpan ✅'); H.panel();
+    } catch(e){toast(e.message||'Gagal mengunggah video gift');}
+  });
+};
+H.previewGift = i => { H.close(); showFx(GIFTS[i],me.name,'Preview',i); };
+H.removeGiftVideo = async i => {
+  if(!me?.is_host||!confirm(`Hapus video gift ${GIFTS[i]?.name}?`))return;
+  const old=giftVideos[i]; const {error}=await sb.from('gift_videos').delete().eq('gift_index',i);
+  if(error)return toast(error.message);
+  const next={...giftVideos};delete next[i];giftVideos=next;
+  if(old?.path)sb.storage.from('media').remove([old.path]).then(()=>{});
+  toast('Video gift dihapus. Efek emoji bawaan digunakan.');H.panel();
+};
+H.hideEntranceFx = hideEntranceFx;
 H.seatN = async d => { const n = Math.min(30, Math.max(4, settings.seat_count + d)); settings.seat_count = n; $('#sc').textContent = n; renderSeats(); await sb.from('room_settings').update({ seat_count: n }).eq('id', 1) };
 H.tix = async id => { const { error } = await sb.rpc('give_ticket', { target: id }); toast(error ? error.message : '+1 tiket terkirim 🎟️') };
 H.thm = async id => { const { error } = await sb.rpc('give_theme', { target: id }); toast(error ? error.message : 'Tema chat dibuka untuk dia 🎨'); if (!error) H.panel() };
@@ -579,6 +707,9 @@ async function startRoom() {
   $('#setup').classList.add('hidden'); $('#room').classList.remove('hidden'); $('#room').style.display = 'flex'; $('#nav').classList.remove('hidden'); inRoom = true;
   prof[uid] = { ...prof[uid], ...me }; applyTheme();
   settings = (await sb.from('room_settings').select('*').single()).data || settings;
+  await loadEntranceVideos();
+  await loadGiftVideos();
+  refreshMySocialStats();
   await loadSeats();
   const { data: ms } = await sb.from('messages').select('*').order('id', { ascending: false }).limit(50);
   await ensureProf((ms || []).map(m => m.user_id));
@@ -595,11 +726,15 @@ async function startRoom() {
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, p => { mq = mq.then(async () => { await ensureProf([p.new.user_id]); addMsg(p.new, true) }).catch(() => {}) })
     .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'messages' }, () => $('#chat').innerHTML = '')
     .on('postgres_changes', { event: '*', schema: 'public', table: 'friend_requests', filter: `recipient_id=eq.${uid}` }, () => { if(!$('#pgFriends').classList.contains('hidden')) loadFriends(); })
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'friends', filter: `user_id=eq.${uid}` }, () => refreshMySocialStats())
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'follows', filter: `following_id=eq.${uid}` }, () => refreshMySocialStats())
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'direct_messages', filter: `recipient_id=eq.${uid}` }, p => {
       if(dmPeer && p.new.sender_id===dmPeer.id){ dmMessages.push(p.new); renderDM(); }
       toast('Pesan pribadi baru 💬');
     })
     .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'room_settings' }, p => { settings = p.new; renderSeats(); renderTop() })
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'svip_entrances' }, () => { loadEntranceVideos(); })
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'gift_videos' }, () => { loadGiftVideos(); })
     .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'profiles' }, p => {
       const previous = p.new.id === uid ? me : (prof[p.new.id] || p.old || null);
       const oldLevel = previous ? lvl(previous.points) : 0;
@@ -805,7 +940,7 @@ const PAGES = { room: '#room', posts: '#pgPosts', friends: '#pgFriends', me: '#p
 H.tab = t => {
   Object.entries(PAGES).forEach(([k, sel]) => $(sel).classList.toggle('hidden', k !== t));
   document.querySelectorAll('#nav button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
-  if (t === 'posts') { loadPosts(); loadStories(); } if (t === 'friends') loadFriends(); if (t === 'me') { renderProf(); loadMyGifts() } if (t === 'room') { const c = $('#chat'); c.scrollTop = c.scrollHeight }
+  if (t === 'posts') { loadPosts(); loadStories(); } if (t === 'friends') loadFriends(); if (t === 'me') { renderProf(); loadMyGifts(); refreshMySocialStats() } if (t === 'room') { const c = $('#chat'); c.scrollTop = c.scrollHeight }
 };
 
 /* ---------- 5. Postingan ---------- */
@@ -881,19 +1016,36 @@ function giftHTML(rows) {
     <p class="sub" style="text-align:center">Total ${rows.length} hadiah dari ${Object.keys(by).length} orang</p>
     ${Object.entries(by).sort((a, b) => b[1].n - a[1].n).map(([id, b]) => `<div class="mrow" onclick="H.view('${id}')">${avatarHTML(b.u.avatar, b.u.points, '', 34, '', b.u.avatar_border, b.u.is_host)}<span>${badge(b.u.points)}${esc(b.u.name)}<br><small style="color:#a99d92">${Object.entries(b.g).map(([g, n]) => `${em(g)}×${n}`).join(' ')}</small></span><b>${b.n}</b></div>`).join('')}`;
 }
+/* Statistik sosial: teman memakai relasi friends yang sudah ada; followers memakai tabel follows. */
+let mySocialStats = { friends: 0, followers: 0, ready: false };
+async function socialStats(id) {
+  const { data, error } = await sb.rpc('get_social_counts', { target_user: id });
+  const row = Array.isArray(data) ? data[0] : data;
+  return error || !row
+    ? { friends: null, followers: null, followError: error || new Error('Statistik belum tersedia') }
+    : { friends: Number(row.friends_count || 0), followers: Number(row.followers_count || 0), followError: null };
+}
+async function refreshMySocialStats() {
+  const x = await socialStats(uid);
+  mySocialStats = { friends: x.friends ?? 0, followers: x.followers ?? 0, ready: true };
+  renderProf();
+}
 /* Lihat profil orang lain (ketuk foto di postingan / chat / daftar pengirim) */
 H.view = async id => {
   if (id === uid) { H.close(); return H.tab('me') }
   const { data: u } = await sb.from('profiles').select('id,name,avatar,is_host,gifts_sent,points' + BC()).eq('id', id).maybeSingle();
   if (!u) return toast('Profil tidak ditemukan');
   viewU = u;
-  const [rows, fr, ps] = await Promise.all([getGifts(id),
+  const [rows, fr, ps, social, following] = await Promise.all([getGifts(id),
     sb.from('friends').select('friend_id').eq('user_id', uid).eq('friend_id', id).maybeSingle(),
-    sb.from('posts').select('id,body,image,created_at').eq('user_id', id).order('created_at', { ascending: false }).limit(10)]);
-  const isFriend = !!fr.data, seated = Object.values(seats).some(x => x.user_id === id), on = !!online[id], list = ps.data || [];
+    sb.from('posts').select('id,body,image,created_at').eq('user_id', id).order('created_at', { ascending: false }).limit(10),
+    socialStats(id),
+    sb.from('follows').select('follower_id').eq('follower_id', uid).eq('following_id', id).maybeSingle()]);
+  const isFriend = !!fr.data, isFollowing = !!following.data, seated = Object.values(seats).some(x => x.user_id === id), on = !!online[id], list = ps.data || [];
   sheet(`<div class="pf" style="padding-top:0">${avatarHTML(u.avatar, u.points, 'pav', 112, '', u.avatar_border, u.is_host)}<h2>${u.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(u.points)}${esc(u.name)}</h2>${titleHTML(u.points)}
-    <div class="stats" style="flex-wrap:wrap"><span class="chip">${seated ? '🎙️ Di kursi' : on ? '🟢 Online' : '⚪ Offline'}</span><span class="chip">⭐ ${u.points ?? 0}</span><span class="chip">🎁 ${u.gifts_sent ?? 0} dikirim</span><span class="chip">📝 ${list.length}</span></div></div>
+    <div class="stats" style="flex-wrap:wrap"><span class="chip">${seated ? '🎙️ Di kursi' : on ? '🟢 Online' : '⚪ Offline'}</span><span class="chip">👥 ${social.friends ?? '—'} Teman</span><span class="chip">👤 ${social.followers ?? '—'} Followers</span><span class="chip">⭐ ${u.points ?? 0}</span><span class="chip">🎁 ${u.gifts_sent ?? 0} dikirim</span><span class="chip">📝 ${list.length}</span></div></div>
     <div class="acts">${isFriend ? `<button class="btn" onclick="H.openDM('${u.id}')">💬 Chat</button>` : `<button class="btn" onclick="H.requestFriend('${u.id}')">＋ Tambah Teman</button>`}
+      <button class="btn" onclick="H.toggleFollow('${u.id}',${isFollowing})">${isFollowing ? '✓ Mengikuti' : '＋ Follow'}</button>
       <button class="btn" onclick="H.giftView()">🎁 Kirim Gift</button></div>
     ${me.is_host ? `<button class="btn" style="margin-bottom:6px;background:linear-gradient(#a98bff,#6a4bff);color:#fff" onclick="H.hostBorder('${u.id}')">🖼 Beri Border</button>` : ''}
     <h3 class="sec">🎁 Koleksi Hadiah</h3>${giftHTML(rows)}
@@ -910,7 +1062,7 @@ function renderProf() {
   const mine = posts.filter(p => p.user_id === uid);
   $('#pfBox').innerHTML = `<div class="pf">${avatarHTML(me.avatar, me.points, 'pav', 112, '', me.avatar_border, me.is_host)}
     <h2>${me.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(me.points)}${esc(me.name)}</h2>${titleHTML(me.points)}
-    <div class="stats"><span class="chip">🎟️ ${me.gift_tickets ?? 0}</span><span class="chip">⭐ ${me.points ?? 0}</span><span class="chip">📝 ${mine.length}</span></div></div>
+    <div class="stats" style="flex-wrap:wrap"><span class="chip">👥 ${mySocialStats.friends ?? '—'} Teman</span><span class="chip">👤 ${mySocialStats.followers ?? '—'} Followers</span><span class="chip">🎟️ ${me.gift_tickets ?? 0}</span><span class="chip">⭐ ${me.points ?? 0}</span><span class="chip">📝 ${mine.length}</span></div></div>
     <div class="acts"><button class="btn" onclick="H.editAv()">📷 Ubah Foto</button><button class="btn" onclick="H.editNm()">✏️ Ubah Nama</button></div>
     <button class="btn" onclick="H.compose()">➕ Buat Postingan</button>
     ${borderGridHTML()}
@@ -1004,7 +1156,7 @@ function addMsg(m, live) {
   else if (m.type === 'gift') {
     const g = GIFTS[m.gift] || GIFTS[0];
     d.innerHTML = `${head}<div>${meta}<div class="gbub"><span>Kirim ${esc(g.name)}${m.to_name ? `<small>untuk ${esc(m.to_name)}</small>` : ''}</span><span class="e">${g.e}</span><b class="x">x1</b></div></div>`;
-    if (live) showFx(g, m.name, m.to_name);
+    if (live) showFx(g, m.name, m.to_name, Number(m.gift));
   } else if (m.type === 'voice' || (m.type === 'chat' && String(m.body || '').startsWith('[VOICE_MSG]'))) {
     const audioUrl = m.type === 'voice' ? m.body : String(m.body).slice('[VOICE_MSG]'.length);
     const safeUrl = /^https:\/\//i.test(audioUrl) ? audioUrl : '';
@@ -1036,7 +1188,7 @@ function giftSheet() {
   const lock = !me.is_host && me.gift_tickets < 1;
   sheet(`<h3>Kirim Gift</h3><p class="sub">${me.is_host ? '👑 Host: unlimited gratis' : `🎟️ Tiket kamu: ${me.gift_tickets}`}</p>
    <div class="mrow" style="border-top:0;padding-top:0"><img src="${esc(gT.avatar)}"><span>Untuk: <b>${esc(gT.name)}</b></span><button class="sm o" onclick="H.gift()">Ganti</button></div>
-   <div class="gg">${GIFTS.map((g, i) => `<button class="gi ${lock ? 'lk' : ''}" onclick="H.send(${i})">${g.img ? `<img src="${esc(g.img)}">` : `<span class="e">${g.e}</span>`}<small>${g.name}</small><small style="display:block;color:#ffd886">+${g.points} poin</small></button>`).join('')}</div>
+   <div class="gg">${GIFTS.map((g, i) => `<button class="gi ${lock ? 'lk' : ''}" onclick="H.send(${i})">${g.img ? `<img src="${esc(g.img)}">` : `<span class="e">${g.e}</span>`}<small>${g.name}</small>${i>=EXCLUSIVE_GIFT_START?'<small style="display:block;color:#d7b6ff">✦ EKSKLUSIF</small>':''}<small style="display:block;color:#ffd886">+${g.points} poin</small></button>`).join('')}</div>
    ${lock ? `<button class="btn" onclick="H.wa('Hay Host, mau buka gift dong!')">Buka 1 Gift (Chat Owner)</button>` : ''}`);
 }
 H.send = async i => {
@@ -1077,9 +1229,19 @@ H.requestFriend=async id=>{
   if(error)return toast(error.code==='23505'?'Permintaan sudah pernah dikirim.':error.message);
   toast('Permintaan pertemanan terkirim ✅');H.close();
 };
+H.toggleFollow = async (id, currentlyFollowing) => {
+  const q = currentlyFollowing
+    ? sb.from('follows').delete().eq('follower_id', uid).eq('following_id', id)
+    : sb.from('follows').insert({ follower_id: uid, following_id: id });
+  const { error } = await q;
+  if (error) return toast(error.message.includes('follows') ? 'Tabel followers belum dibuat. Jalankan SQL migrasi.' : error.message);
+  toast(currentlyFollowing ? 'Follow dibatalkan.' : 'Berhasil mengikuti akun ✅');
+  H.view(id);
+  refreshMySocialStats();
+};
 H.acceptFriend=async id=>{
   const {error}=await sb.rpc('accept_friend_request',{request_id:id});
-  if(error)return toast(error.message);toast('Sekarang kalian berteman! 🎉');loadFriends();
+  if(error)return toast(error.message);toast('Sekarang kalian berteman! 🎉');loadFriends();refreshMySocialStats();
 };
 H.openDM=async id=>{
   const u=friendRows.find(x=>x.id===id)||(await sb.from('profiles').select('id,name,avatar').eq('id',id).maybeSingle()).data;
