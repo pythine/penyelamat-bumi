@@ -85,7 +85,7 @@ textarea.inp{resize:none;display:block}
 .bar .inp{border-radius:999px;border-color:rgba(255,255,255,.1);background:rgba(20,14,12,.7);min-width:0}
 .bar .ib{width:38px;height:38px;flex:none;font-size:18px}
 .sendb{background:linear-gradient(#ffd886,#d9962f);color:#2a1700;font-size:20px!important}
-.micb{background:linear-gradient(#a98bff,#6a4bff)}.giftb{background:linear-gradient(#ffb36b,#ff6a3c)}.themeb{background:linear-gradient(#6be0c3,#2b8fd6)}
+.micb{background:linear-gradient(#a98bff,#6a4bff)}.giftb{background:linear-gradient(#ffb36b,#ff6a3c)}.themeb{background:linear-gradient(#6be0c3,#2b8fd6)}.voiceb{background:linear-gradient(#ff8b9b,#d9365a)}.voiceb.rec{background:#e11d48;box-shadow:0 0 0 5px #e11d4844;animation:recPulse 1s infinite}@keyframes recPulse{50%{box-shadow:0 0 0 9px #e11d4822}}.voicebubble{background:rgba(30,24,35,.9);border:1px solid #a98bff66;border-radius:18px;padding:10px 12px;min-width:220px}.voicebubble audio{display:none}.voicebubble small{display:block;color:#c9b9e8;font-size:11px;margin-bottom:4px}.voiceplayer{display:flex;align-items:center;gap:9px}.voiceplay{width:38px;height:38px;border:0;border-radius:50%;background:linear-gradient(135deg,#a98bff,#6a4bff);color:#fff;font-size:16px;cursor:pointer;flex:0 0 38px}.voiceplayer span{font-size:12px;color:#e8def8}
 /* sheet / fx */
 #sheet{position:fixed;inset:0;background:#000a;display:flex;align-items:flex-end;justify-content:center;z-index:30}
 #sheet>div{width:100%;max-width:520px;max-height:82dvh;overflow:auto;background:#150f0b;border:1.5px solid var(--gold2);border-bottom:0;border-radius:24px 24px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom))}
@@ -137,6 +137,97 @@ textarea.inp{resize:none;display:block}
 .dmcomposer{display:flex;gap:6px;align-items:center;margin-top:8px}
 .dmcomposer .inp{min-width:0}
 .replyhint{display:flex;justify-content:space-between;align-items:center;background:#5b431e88;border-radius:10px;padding:7px 10px;margin:5px 0;font-size:12px;color:#ffe0a0}
+/* Stories 24 jam */
+.storybar{display:flex;gap:12px;overflow-x:auto;padding:8px 2px 14px;scrollbar-width:none}
+.storyitem{flex:0 0 76px;text-align:center;font-size:11px;color:#e8d8c4;cursor:pointer}
+.storyring{width:66px;height:66px;border-radius:50%;padding:3px;margin:0 auto 5px;background:conic-gradient(#ffd886,#ff6a3c,#a84cff,#ffd886);box-shadow:0 0 12px #f5c15a55}
+.storyring img{width:100%;height:100%;border:3px solid #160e09;border-radius:50%;object-fit:cover;background:#21150e}
+.storyitem small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.storyview{position:fixed;inset:0;z-index:70;background:#050405f5;display:grid;place-items:center;padding:20px}
+.storyview img{max-width:min(94vw,520px);max-height:78dvh;object-fit:contain;border-radius:18px}
+.storyview .scap{max-width:520px;text-align:center;margin-top:12px}
+.storyview .sclose{position:absolute;right:20px;top:25px;font-size:28px}
+/* Border avatar koleksi (dibuka lewat host) */
+.mrow .av9w{flex:none}
+.bd-aurora{--bg:conic-gradient(#2cffb0,#1fb8ff,#a259ff,#2cffb0);--glow:#2cffb0aa;--deco:'✨'}
+.bd-sakura{--bg:conic-gradient(#ffd1e6,#ff7ab8,#fff,#ff7ab8,#ffd1e6);--glow:#ff7ab8aa;--deco:'🌸';--spd:5s}
+.bd-api{--bg:conic-gradient(#ffe45c,#ff6a1f,#d11f00,#ff6a1f,#ffe45c);--glow:#ff6a1fcc;--deco:'🔥';--spd:1.6s}
+.bd-es{--bg:conic-gradient(#fff,#9fe3ff,#3fb4ff,#9fe3ff,#fff);--glow:#9fe3ffcc;--deco:'❄️';--spd:4s;--dir:reverse}
+.bd-petir{--bg:conic-gradient(#fff,#3a7bff,#fff,#1a2bff,#fff);--glow:#3a7bffcc;--deco:'⚡';--spd:.9s}
+.bd-zamrud{--bg:conic-gradient(#0fa968,#ffd36e,#0b7a4b,#ffd36e,#0fa968);--glow:#0fa968aa;--deco:'🍀';--spd:6s}
+.bd-samudra{--bg:conic-gradient(#0a4ea3,#1fd1c1,#6be0ff,#1fd1c1,#0a4ea3);--glow:#1fd1c1aa;--deco:'🌊';--spd:3.2s;--dir:reverse}
+.bd-bulan{--bg:conic-gradient(#fff,#b9c2d6,#e8edf5,#8793ab,#fff);--glow:#dfe6f5aa;--deco:'🌙';--spd:7s}
+.bd-ratu{--bg:conic-gradient(#ff3fb1,#ffd36e,#a84cff,#ffd36e,#ff3fb1);--glow:#ff3fb1aa;--deco:'💎';--spd:3s}
+.bd-naga{--bg:conic-gradient(#d11f2e,#ffc247,#7a0f1b,#ffc247,#d11f2e);--glow:#ff4d2ecc;--deco:'🐉';--spd:2.2s}
+/* Border eksklusif HOST: cincin emas-mawar-ungu-aqua dengan kilau melintas, glow berdenyut, mahkota melayang */
+.bd-host{--bg:conic-gradient(transparent 0 70%,rgba(255,255,255,.95) 82%,transparent 92%),conic-gradient(#ffe9a8,#ff8ad8,#9a7bff,#6be0ff,#ffe9a8);--glow:#ffe9a8;--deco:'👑';--spd:3.4s}
+.av9w.bd-host{animation:hostGlowF 2.6s ease-in-out infinite}
+.ring.vip9.bd-host{animation:hostGlowB 2.6s ease-in-out infinite}
+.ring.vip9.bd-host.talk{animation:pulse .7s ease-in-out infinite}
+.av9w.bd-host::after,.ring.vip9.bd-host::after{animation:crownBob 2s ease-in-out infinite}
+.ring img.bdimg{inset:-14%;width:128%;height:128%;border:0;border-radius:0;background:none;object-fit:contain;z-index:5;pointer-events:none}
+.av9w>img.bdimg{inset:-14%;width:128%!important;height:128%!important;border:0!important;border-radius:0;object-fit:contain;z-index:5;pointer-events:none}
+@keyframes hostGlowF{0%,100%{filter:drop-shadow(0 0 5px #ffe9a8) drop-shadow(0 0 12px #9a7bff88)}50%{filter:drop-shadow(0 0 9px #fff) drop-shadow(0 0 22px #ff8ad8aa)}}
+@keyframes hostGlowB{0%,100%{box-shadow:0 0 12px #ffe9a8cc,0 0 24px #9a7bff66}50%{box-shadow:0 0 18px #fff,0 0 36px #ff8ad8aa}}
+@keyframes crownBob{0%,100%{transform:translateX(-50%) translateY(0) rotate(-10deg)}50%{transform:translateX(-50%) translateY(-3px) rotate(6deg)}}
+/* 4 border eksklusif Host (orisinal): berputar + kilau melintas + glow berdenyut */
+.av9w[class*="bd-hx-"]{animation:hxGlowF 2.2s ease-in-out infinite}
+.ring.vip9[class*="bd-hx-"]{animation:hxGlowB 2.2s ease-in-out infinite}
+.ring.vip9[class*="bd-hx-"].talk{animation:pulse .7s ease-in-out infinite}
+.av9w[class*="bd-hx-"]::after,.ring.vip9[class*="bd-hx-"]::after{animation:crownBob 2s ease-in-out infinite}
+.bd-hx-flame{--bg:conic-gradient(transparent 0 68%,rgba(255,255,255,.9) 80%,transparent 90%),conic-gradient(#ffe45c,#ff6a1f,#b30d00,#ff6a1f,#ffe45c);--glow:#ff5a1f;--deco:'🔥';--spd:1.8s}
+.bd-hx-crown{--bg:conic-gradient(transparent 0 60%,rgba(255,255,255,.95) 74%,transparent 86%),conic-gradient(#fff2b0,#d9962f,#fff2b0,#b8802a,#fff2b0);--glow:#ffd36e;--deco:'👑';--spd:3s}
+.bd-hx-star{--bg:conic-gradient(transparent 0 72%,rgba(255,255,255,.95) 84%,transparent 94%),conic-gradient(#3fb4ff,#a259ff,#ff7ab8,#ffd36e,#3fb4ff);--glow:#a259ff;--deco:'⭐';--spd:2.4s}
+.bd-hx-crystal{--bg:conic-gradient(transparent 0 64%,rgba(255,255,255,.95) 78%,transparent 90%),conic-gradient(#e8fbff,#6be0ff,#8a7bff,#6be0ff,#e8fbff);--glow:#6be0ff;--deco:'💠';--spd:3.6s;--dir:reverse}
+@keyframes hxGlowF{0%,100%{filter:drop-shadow(0 0 5px var(--glow)) drop-shadow(0 0 12px var(--glow))}50%{filter:drop-shadow(0 0 9px #fff) drop-shadow(0 0 24px var(--glow))}}
+@keyframes hxGlowB{0%,100%{box-shadow:0 0 12px var(--glow),0 0 24px var(--glow)}50%{box-shadow:0 0 18px #fff,0 0 38px var(--glow)}}
+/* Entrance SVIP 5-9: setiap level punya animasi sendiri */
+#entranceFX{position:fixed;inset:0;z-index:65;pointer-events:none;overflow:hidden}
+#entranceFX .ent{position:absolute;inset:0;display:grid;place-items:center}
+#entranceFX .ent-bg{position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,var(--c2),transparent 65%);opacity:0;animation:entBg var(--dur) ease-out both}
+#entranceFX .ent-rays,#entranceFX .ent-burst{display:none;position:absolute;left:50%;top:50%}
+#entranceFX .ent8 .ent-rays,#entranceFX .ent9 .ent-rays{display:block;width:150vmax;height:150vmax;margin:-75vmax 0 0 -75vmax;background:repeating-conic-gradient(var(--c1) 0 5deg,transparent 5deg 15deg);-webkit-mask-image:radial-gradient(circle,#000,transparent 60%);mask-image:radial-gradient(circle,#000,transparent 60%);opacity:0;animation:entRays var(--dur) linear both}
+#entranceFX .ent9 .ent-burst{display:block;width:40vmin;height:40vmin;margin:-20vmin 0 0 -20vmin;border-radius:50%;border:4px solid var(--c1);box-shadow:0 0 30px var(--c1),inset 0 0 30px var(--c1);opacity:0;animation:entBurst 1.5s ease-out .5s 3 both}
+#entranceFX .ent-sparks i{position:absolute;left:50%;top:50%;width:9px;height:9px;margin:-4px;border-radius:50%;background:var(--c1);box-shadow:0 0 12px 2px var(--c1);opacity:0;animation:entSpark 2.2s ease-out var(--dl) both}
+#entranceFX .ent-move{position:relative;will-change:transform}
+#entranceFX .ent-art{font-size:clamp(110px,34vw,220px);line-height:1;filter:drop-shadow(0 0 26px var(--c1)) drop-shadow(0 0 60px var(--c2))}
+#entranceFX .ent9 .ent-art{font-size:clamp(130px,42vw,280px)}
+#entranceFX .ent-art svg,#entranceFX .ent-art img{display:block;width:clamp(170px,54vw,320px);height:auto}
+#entranceFX .ent9 .ent-art svg,#entranceFX .ent9 .ent-art img{width:clamp(210px,68vw,400px)}
+#entranceFX .ent-label{position:absolute;left:0;right:0;bottom:16%;padding:0 16px;text-align:center;font-size:clamp(20px,6vw,30px);color:#ffe4a0;text-shadow:0 0 16px var(--c2),0 2px 8px #000;animation:entLabel var(--dur) ease-out both}
+#entranceFX .ent-label small{display:block;margin-top:4px;font-size:.55em;letter-spacing:3px;color:var(--c1)}
+/* 5 Phoenix: naik dari bawah, sayap mengepak */
+#entranceFX .ent5 .ent-move{animation:mv5 var(--dur) ease-out both}
+#entranceFX .ent5 .ent-art{animation:flap5 .5s ease-in-out infinite}
+/* 6 Naga Emas: meliuk terbang kiri ke kanan */
+#entranceFX .ent6 .ent-move{animation:mv6 var(--dur) linear both}
+#entranceFX .ent6 .ent-art{animation:wave6 1.4s ease-in-out infinite}
+/* 7 Unicorn: berlari kanan ke kiri sambil melompat */
+#entranceFX .ent7 .ent-move{animation:mv7 var(--dur) ease-in-out both}
+#entranceFX .ent7 .ent-art{animation:gallop7 .5s ease-in-out infinite}
+/* 8 Naga Petir: menukik dari langit, kilat menyambar, layar bergetar */
+#entranceFX .ent8 .ent-move{animation:mv8 var(--dur) ease-out both}
+#entranceFX .ent8 .ent-art{animation:shake8 .12s linear 1s 14}
+#entranceFX .ent8 .ent-bg{background:radial-gradient(circle,#dff3ff,var(--c2) 40%,transparent 70%);animation:flash8 var(--dur) linear both}
+/* 9 Naga Kaisar: ledakan emas, sinar berputar, gelombang cahaya */
+#entranceFX .ent9 .ent-move{animation:mv9 var(--dur) ease-out both}
+#entranceFX .ent9 .ent-art{animation:glow9 1.1s ease-in-out infinite}
+@keyframes entBg{0%{opacity:0}15%{opacity:.6}80%{opacity:.5}100%{opacity:0}}
+@keyframes entRays{0%{transform:rotate(0);opacity:0}15%{opacity:.35}85%{opacity:.35}100%{transform:rotate(50deg);opacity:0}}
+@keyframes entBurst{0%{transform:scale(.2);opacity:.95}100%{transform:scale(3.6);opacity:0}}
+@keyframes entSpark{0%{transform:translate(0,0) scale(1);opacity:0}15%{opacity:1}100%{transform:translate(var(--tx),var(--ty)) scale(0);opacity:0}}
+@keyframes entLabel{0%,12%{opacity:0;transform:translateY(16px)}24%,80%{opacity:1;transform:none}100%{opacity:0}}
+@keyframes mv5{0%{transform:translateY(60vh) scale(.35);opacity:0}18%{opacity:1}45%{transform:translateY(-2vh) scale(1.15)}70%{transform:translateY(-6vh) scale(1.22);opacity:1}100%{transform:translateY(-70vh) scale(.7);opacity:0}}
+@keyframes flap5{0%,100%{transform:scaleX(1) rotate(-4deg)}50%{transform:scaleX(.78) rotate(4deg)}}
+@keyframes mv6{0%{transform:translateX(-85vw);opacity:0}8%{opacity:1}92%{opacity:1}100%{transform:translateX(85vw);opacity:0}}
+@keyframes wave6{0%,100%{transform:translateY(-12vh) rotate(-10deg)}50%{transform:translateY(12vh) rotate(10deg)}}
+@keyframes mv7{0%{transform:translateX(85vw);opacity:0}8%{opacity:1}92%{opacity:1}100%{transform:translateX(-85vw);opacity:0}}
+@keyframes gallop7{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-8vh) rotate(-7deg)}}
+@keyframes mv8{0%{transform:translateY(-80vh) scale(.5);opacity:0}22%{transform:translateY(0) scale(1.35);opacity:1}30%{transform:scale(1)}78%{transform:scale(1.06);opacity:1}100%{transform:scale(1.5);opacity:0}}
+@keyframes shake8{0%{transform:translate(0,0)}25%{transform:translate(-6px,3px)}50%{transform:translate(5px,-4px)}75%{transform:translate(-4px,-3px)}100%{transform:translate(0,0)}}
+@keyframes flash8{0%,20%{opacity:0}22%{opacity:1}25%{opacity:.15}28%{opacity:.9}33%{opacity:.25}70%{opacity:.4}100%{opacity:0}}
+@keyframes mv9{0%{transform:scale(0) rotate(-200deg);opacity:0}22%{transform:scale(1.3) rotate(8deg);opacity:1}32%{transform:scale(1) rotate(0)}85%{transform:scale(1.1);opacity:1}100%{transform:scale(2);opacity:0}}
+@keyframes glow9{0%,100%{filter:drop-shadow(0 0 22px #fff1a8) drop-shadow(0 0 50px #ff8a00)}50%{filter:drop-shadow(0 0 40px #fff) drop-shadow(0 0 90px #ffb52b)}}
 /* posts & profile */
 .post{background:var(--glass);border:1px solid rgba(245,193,90,.18);border-radius:18px;padding:12px;margin-bottom:12px}
 .post .hd{display:flex;align-items:center;gap:10px;margin-bottom:8px}
@@ -151,6 +242,20 @@ textarea.inp{resize:none;display:block}
 .svip{font-style:normal;font-size:9px;border-radius:7px;padding:1px 6px;margin-right:4px;color:#fff;white-space:nowrap;vertical-align:middle}
 .s1{background:linear-gradient(#8fa3b8,#566a80)}.s2{background:linear-gradient(#5ec8ff,#2b6dff)}.s3{background:linear-gradient(#b48bff,#6a4bff)}
 .s4{background:linear-gradient(#ff8ad8,#c2269c)}.s5{background:linear-gradient(#ffb36b,#ff4d2e)}.s6{background:linear-gradient(#ffe08a,#d9962f);color:#2a1700;box-shadow:0 0 8px #f5c15a}
+.s7{background:linear-gradient(#7af0c8,#14a37f)}.s8{background:linear-gradient(#7fd6ff,#2b6dff 55%,#a84cff)}
+.s9{background:linear-gradient(90deg,#fff6c9,#ffc247,#ff4fd8,#6a4bff,#3fb4ff,#fff6c9);background-size:200% 100%;animation:s9shine 2.5s linear infinite;color:#1a0f00;box-shadow:0 0 10px #ffc34d}
+@keyframes s9shine{to{background-position:200% 0}}
+@keyframes av9spin{to{transform:rotate(360deg)}}
+/* SVIP 9: border avatar eksklusif (cincin pelangi-emas berputar + mahkota) */
+.ring.vip9{background:none!important;box-shadow:0 0 16px var(--glow,#ffc34dcc),0 0 4px #fff6c9;--p:5px}
+.ring.vip9::before{content:'';position:absolute;inset:-2px;border-radius:50%;background:var(--bg,conic-gradient(#fff6c9,#ffc247,#ff4fd8,#6a4bff,#3fb4ff,#5effc0,#fff6c9));animation:av9spin var(--spd,2.6s) linear infinite var(--dir,normal)}
+.ring.vip9::after{content:var(--deco,'👑');position:absolute;top:-13px;left:50%;transform:translateX(-50%) rotate(-10deg);font-size:17px;line-height:1;filter:drop-shadow(0 0 4px #ffc34d);z-index:3}
+.ring.vip9 img{z-index:1}.ring.vip9 .mic{z-index:4}
+.listen .ring.vip9{--p:3px}.listen .ring.vip9::after{font-size:11px;top:-9px}
+.av9w{position:relative;display:inline-block;flex:none;width:var(--sz);height:var(--sz);border-radius:50%;isolation:isolate;filter:drop-shadow(0 0 6px var(--glow,#ffc34daa));vertical-align:middle}
+.av9w::before{content:'';position:absolute;inset:0;border-radius:50%;z-index:-1;background:var(--bg,conic-gradient(#fff6c9,#ffc247,#ff4fd8,#6a4bff,#3fb4ff,#5effc0,#fff6c9));animation:av9spin var(--spd,2.6s) linear infinite var(--dir,normal)}
+.av9w::after{content:var(--deco,'👑');position:absolute;left:50%;top:calc(var(--sz)*-.24);transform:translateX(-50%) rotate(-10deg);font-size:calc(var(--sz)*.4);line-height:1;filter:drop-shadow(0 0 4px #ffc34d)}
+.av9w>img{position:absolute;inset:4px;width:calc(100% - 8px)!important;height:calc(100% - 8px)!important;max-width:none;margin:0!important;border-radius:50%;object-fit:cover;border:2px solid #0a0706!important;box-shadow:none!important}
 .ttl{margin:4px 0;font-size:13px}.ttl small{color:#a99d92;font-weight:700}
 .prog{width:70%;height:8px;border-radius:99px;background:#ffffff18;overflow:hidden;margin:6px auto}
 .prog i{display:block;height:100%;background:linear-gradient(90deg,#ffd886,#d9962f)}
@@ -195,6 +300,7 @@ textarea.inp{resize:none;display:block}
     <button class="ib" onclick="H.tagRoom()" title="Tag anggota">@</button>
     <input id="msg" class="inp" maxlength="200" placeholder="Katakan sesuatu" autocomplete="off" enterkeyhint="send">
     <button class="ib sendb" onpointerdown="event.preventDefault()" onclick="H.sendMsg()" title="Kirim pesan">➤</button>
+    <button class="ib voiceb" id="voiceMsgBtn" onclick="H.voiceMsg()" title="Rekam / kirim pesan suara">🎤</button>
     <button class="ib themeb" onclick="H.themes()" title="Tema chat">🎨</button>
     <button class="ib micb" id="micb" onclick="H.mic()">🎙️</button>
     <button class="ib giftb" onclick="H.gift()">🎁</button>
@@ -207,7 +313,7 @@ textarea.inp{resize:none;display:block}
     <div class="t"><b>Postingan</b><small>Dari semua anggota room</small></div>
     <button class="ib plus" onclick="H.compose()" title="Buat postingan">＋</button>
   </div>
-  <div class="pg" id="plist"></div>
+  <div class="pg"><div id="storyBar" class="storybar"></div><div id="plist"></div></div>
 </section>
 
 <!-- ================= TEMAN ================= -->
@@ -233,7 +339,7 @@ textarea.inp{resize:none;display:block}
   <button data-t="me" onclick="H.tab('me')"><i>👤</i>Profil</button>
 </nav>
 
-<div id="sheet" class="hidden"></div><div id="fx"></div><div id="svipPop" class="hidden"></div><div id="toast"></div>
+<div id="sheet" class="hidden"></div><div id="fx"></div><div id="svipPop" class="hidden"></div><div id="entranceFX" class="hidden"></div><div id="storyView" class="hidden"></div><div id="toast"></div>
 
 <script type="module">
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
@@ -246,10 +352,15 @@ const SUPABASE_URL = 'https://rojdbucohxpvgnygceie.supabase.co';
 const SUPABASE_KEY = 'sb_publishable__KXfm9Yv6VRXStTap-DFyQ_sNOPCLrG';
 /* Nomor WhatsApp owner (format internasional, tanpa + atau 0 di depan) */
 const OWNER_WA = '6285946186508';
+/* Opsional: URL gambar bingkai khusus HOST (PNG/GIF/WebP transparan, bagian tengah bolong). Kosong = pakai efek CSS saja. */
+const HOST_BORDER_IMG = '';
 /* Gift: isi `img` dengan URL GIF publik (mis. dari GIPHY). Kosong = pakai emoji animasi. */
 const GIFTS = [
-  {name:'Api Cinta',e:'🔥',img:''},{name:'Mahkota',e:'👑',img:''},{name:'Roket',e:'🚀',img:''},
-  {name:'Hati',e:'💖',img:''},{name:'Peti Harta',e:'🎁',img:''},{name:'Bintang',e:'🌟',img:''}];
+  {name:'Api Cinta',e:'🔥',img:'',points:10},{name:'Mahkota',e:'👑',img:'',points:25},{name:'Roket',e:'🚀',img:'',points:50},
+  {name:'Hati',e:'💖',img:'',points:100},{name:'Peti Harta',e:'🎁',img:'',points:250},{name:'Bintang',e:'🌟',img:'',points:500},
+  {name:'Mawar',e:'🌹',img:'',points:20},{name:'Kopi',e:'☕',img:'',points:30},{name:'Cincin',e:'💍',img:'',points:750},
+  {name:'Mobil Sport',e:'🏎️',img:'',points:1000},{name:'Unicorn',e:'🦄',img:'',points:1500},{name:'Kastil',e:'🏰',img:'',points:2500},
+  {name:'Jet Pribadi',e:'✈️',img:'',points:3500},{name:'Naga Emas',e:'🐉',img:'',points:5000},{name:'Galaksi',e:'🌌',img:'',points:10000}];
 /* Tema background chat. `bg` = nilai CSS background. Tema 'default' selalu terbuka. */
 const THEMES = [
   {id:'default',name:'Polos',bg:''},
@@ -259,19 +370,45 @@ const THEMES = [
   {id:'sakura',name:'Sakura',bg:'linear-gradient(160deg,#3a1030,#b8457a 70%,#ffb3d1)'},
   {id:'galaxy',name:'Galaksi',bg:'radial-gradient(circle at 20% 20%,#6a4bff66,transparent 45%),radial-gradient(circle at 80% 70%,#ff6adf55,transparent 45%),linear-gradient(#07041a,#120a36)'},
   {id:'gold',name:'Emas',bg:'linear-gradient(160deg,#2a1700,#8a5a12 60%,#f5c15a)'}];
+/* Border avatar koleksi: semua terkunci, dibuka satu per satu oleh host (lihat border_migration.sql) */
+const BORDERS = [
+  {id:'aurora',name:'Aurora',desc:'Cahaya utara hijau-ungu yang mengalir.'},
+  {id:'sakura',name:'Sakura',desc:'Kelopak merah muda yang lembut.'},
+  {id:'api',name:'Api Abadi',desc:'Nyala api oranye yang tak pernah padam.'},
+  {id:'es',name:'Kristal Es',desc:'Es biru berkilau yang berputar pelan.'},
+  {id:'petir',name:'Petir Biru',desc:'Sambaran listrik super cepat.'},
+  {id:'zamrud',name:'Zamrud',desc:'Hijau zamrud berhias emas.'},
+  {id:'samudra',name:'Samudra',desc:'Ombak biru-tosca yang bergulung.'},
+  {id:'bulan',name:'Bulan Perak',desc:'Perak dingin diterangi cahaya bulan.'},
+  {id:'ratu',name:'Mahkota Ratu',desc:'Magenta dan emas bertabur permata.'},
+  {id:'naga',name:'Sisik Naga',desc:'Merah-emas sisik naga yang garang.'}];
+/* Border eksklusif khusus Host (orisinal, efek CSS) */
+const HOST_BORDERS = [
+  {id:'hx-flame',name:'Api Kaisar'},{id:'hx-crown',name:'Mahkota Emas'},
+  {id:'hx-star',name:'Bintang Cakrawala'},{id:'hx-crystal',name:'Kristal Surgawi'}];
 /* Sandi host ada di server: lihat tabel host_secret di schema.sql */
 
 const $ = s => document.querySelector(s);
 const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const hash = id => [...id].reduce((a, c) => a + c.charCodeAt(0), 0);
 const ago = t => { const s = (Date.now() - new Date(t)) / 1000; return s < 60 ? 'baru saja' : s < 3600 ? Math.floor(s / 60) + ' mnt lalu' : s < 86400 ? Math.floor(s / 3600) + ' jam lalu' : new Date(t).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }) };
-/* Gelar SVIP: jumlah hadiah yang dikirim. SVIP 1 = 30 hadiah, SVIP 6 = tertinggi. Ubah angkanya sesuka hati. */
-const SVIP = [30, 100, 250, 500, 1000, 2000];
+/* Gelar SVIP dihitung dari poin hadiah yang DITERIMA. Ambang bisa diubah. */
+const SVIP = [100, 500, 1500, 3500, 7000, 15000, 30000, 60000, 100000]; /* SVIP 1..9 */
 const lvl = n => SVIP.reduce((l, t, i) => (n || 0) >= t ? i + 1 : l, 0);
 const badge = n => { const l = lvl(n); return l ? `<i class="svip s${l}">SVIP ${l}</i>` : '' };
+const isV9 = p => lvl(p) >= 9;
+/* Avatar: SVIP 9 mendapat border eksklusif (pembungkus .av9w) */
+/* Border aktif: pilihan koleksi (jika valid) > bawaan SVIP 9 > tidak ada */
+const bdOf = (points, border, host) => (BORDERS.some(b => b.id === border) || (host && HOST_BORDERS.some(b => b.id === border))) ? border : host ? 'host' : (lvl(points) >= 9 ? 'svip9' : '');
+const ringBd = (points, border, host) => { const x = bdOf(points, border, host); return x ? ` vip9 bd-${x}` : '' };
+const bdImg = b => b === 'host' && HOST_BORDER_IMG ? `<img class="bdimg" src="${esc(HOST_BORDER_IMG)}" alt="">` : '';
+function avatarHTML(src, points, cls, size, attrs, border, host) {
+  const im = `<img${cls ? ` class="${cls}"` : ''} src="${esc(src)}"${attrs || ''}>`, b = bdOf(points, border, host);
+  return b ? `<span class="av9w bd-${b}" style="--sz:${size + 8}px">${im}${bdImg(b)}</span>` : im;
+}
 function titleHTML(n) {
   n = n || 0; const l = lvl(n), next = SVIP[l], base = SVIP[l - 1] || 0;
-  return `<div class="ttl">${badge(n) || '<span class="chip">Belum ada gelar</span>'} <small>${n} hadiah terkirim${next ? ` · ${next - n} lagi ke SVIP ${l + 1}` : ' · gelar tertinggi 👑'}</small></div>`
+  return `<div class="ttl">${badge(n) || '<span class="chip">Belum ada gelar</span>'} <small>${n} poin hadiah${next ? ` · ${next - n} poin lagi ke SVIP ${l + 1}` : ' · gelar tertinggi 👑'}</small></div>`
     + (next ? `<div class="prog"><i style="width:${Math.min(100, (n - base) / (next - base) * 100)}%"></i></div>` : '');
 }
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -280,6 +417,7 @@ let uid, me, avatar = '', settings = {title:'Voice & Gift Room', seat_count:15};
 let seats = {}, prof = {}, online = {}, mySeat = null, stream = null, muted = false, room, inRoom = false;
 let posts = [], gT = null, draftImg = null, myGifts = [], mq = Promise.resolve(), viewU = null;
 let friendRows = [], pendingRows = [], dmPeer = null, dmMessages = [], dmReply = null, roomReply = null;
+let voiceRecorder = null, voiceStream = null, voiceChunks = [];
 const pcs = {}, early = {};
 
 function toast(t) { const e = $('#toast'); e.textContent = t; e.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(() => e.classList.remove('on'), 2600) }
@@ -296,6 +434,64 @@ H.close = () => $('#sheet').classList.add('hidden');
 function showFx(g, who, to) {
   $('#fx').innerHTML = `<div class="g">${g.img ? `<img src="${esc(g.img)}">` : `<div class="big">${g.e}</div>`}<br><span class="ban">${esc(who)} mengirim hadiah${to ? ' ke ' + esc(to) : ''}!</span></div>`;
   clearTimeout(showFx.t); showFx.t = setTimeout(() => $('#fx').innerHTML = '', 4000);
+}
+/* Entrance SVIP 5-9: gambar (bukan emoji). Bawaan = ilustrasi SVG orisinal yang warnanya mengikuti tiap level.
+   Isi `img` dengan URL gambar/GIF/WebP transparan milikmu untuk mengganti ilustrasi level itu. */
+const ENTRANCE = {
+  5: { img: '', t: 'PHOENIX RISE', c1: '#ffb347', c2: '#ff4d1f', dur: 4 },
+  6: { img: '', t: 'GOLDEN DRAGON', c1: '#ffd36e', c2: '#c87918', dur: 4.4 },
+  7: { img: '', t: 'MYSTIC UNICORN', c1: '#ff9bf0', c2: '#6a4bff', dur: 4.4 },
+  8: { img: '', t: 'THUNDER DRAGON', c1: '#7fd6ff', c2: '#2b6dff', dur: 4.6 },
+  9: { img: '', t: 'IMPERIAL CELESTIAL DRAGON', c1: '#fff1a8', c2: '#ff8a00', dur: 5.6 }};
+const SVG_DEFS = '<defs><linearGradient id="eg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset=".45" style="stop-color:var(--c1)"/><stop offset="1" style="stop-color:var(--c2)"/></linearGradient><linearGradient id="eg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--c1)"/><stop offset="1" style="stop-color:var(--c2)"/></linearGradient><linearGradient id="egm" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ff7ab8"/><stop offset=".5" stop-color="#a259ff"/><stop offset="1" stop-color="#3fb4ff"/></linearGradient></defs>';
+const svgWrap = b => `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">${SVG_DEFS}${b}</svg>`;
+function phoenixSVG() {
+  const wing = 'M100 95C70 60 30 50 8 70C30 72 40 82 48 95C30 92 18 98 10 112C34 108 48 114 60 126C48 128 40 136 38 148C62 138 84 128 100 112Z';
+  const tl = 'M96 134C70 150 62 176 66 194C80 176 92 160 100 138Z';
+  return svgWrap(`<g fill="url(#eg)" stroke="#fff" stroke-opacity=".5" stroke-width="1">
+    <path d="${wing}"/><path transform="matrix(-1 0 0 1 200 0)" d="${wing}"/>
+    <path d="${tl}"/><path transform="matrix(-1 0 0 1 200 0)" d="${tl}"/>
+    <path d="M100 138C90 160 96 180 100 198C104 180 110 160 100 138Z"/>
+    <path d="M100 70C86 78 82 100 90 122C94 134 100 140 100 140C100 140 106 134 110 122C118 100 114 78 100 70Z"/>
+    <path d="M100 54C95 42 99 30 106 20C106 34 113 42 105 56Z"/><path d="M94 56C86 46 84 36 88 26C92 36 98 44 100 54Z"/></g>
+    <circle cx="100" cy="64" r="13" fill="url(#eg2)"/><path d="M94 68L100 84L106 68Z" fill="#ffd36e"/>
+    <circle cx="95" cy="62" r="2.2" fill="#1a0f00"/><circle cx="105" cy="62" r="2.2" fill="#1a0f00"/>
+    <path d="M100 100C74 82 44 74 22 78M100 108C78 98 56 96 36 104" stroke="#fff" stroke-opacity=".45" stroke-width="2" fill="none"/>
+    <path transform="matrix(-1 0 0 1 200 0)" d="M100 100C74 82 44 74 22 78M100 108C78 98 56 96 36 104" stroke="#fff" stroke-opacity=".45" stroke-width="2" fill="none"/>`);
+}
+function dragonSVG(o = {}) {
+  const body = 'M8 150C38 84 70 196 106 134C126 98 136 82 154 76';
+  return svgWrap(`${o.halo ? '<circle cx="100" cy="100" r="92" fill="none" style="stroke:var(--c1)" stroke-opacity=".5" stroke-width="2" stroke-dasharray="4 8"/>' : ''}
+    ${o.wings ? '<path d="M104 128C96 76 66 46 26 40C48 58 54 78 54 100C40 88 24 86 10 92C36 104 52 122 62 146Z" fill="url(#eg2)" opacity=".9" stroke="#fff" stroke-opacity=".5"/>' : ''}
+    <path d="${body}" fill="none" stroke="url(#eg2)" stroke-width="17" stroke-linecap="round"/>
+    <path d="${body}" fill="none" stroke="#fff" stroke-opacity=".4" stroke-width="3" stroke-dasharray="1 8" stroke-linecap="round"/>
+    <path d="M50 150l-9 15M58 152l-3 17M112 128l10 14" stroke="url(#eg2)" stroke-width="5" stroke-linecap="round"/>
+    <g transform="translate(4 24)"><path d="M148 38C146 22 136 14 124 12C134 20 138 30 140 42Z M156 34C158 18 150 8 140 4C148 14 150 24 150 38Z" fill="#ffe9a8"/>
+    <path d="M142 38C152 28 176 28 190 40C182 44 176 44 170 48C176 54 170 62 160 64C148 66 140 58 142 38Z" fill="url(#eg)" stroke="#fff" stroke-opacity=".6"/>
+    <circle cx="168" cy="40" r="3.4" fill="#1a0f00"/><circle cx="169" cy="39" r="1.1" fill="#fff"/>
+    <path d="M184 44C196 48 198 58 190 66M176 56C184 64 182 74 174 78" fill="none" style="stroke:var(--c1)" stroke-width="2.5" stroke-linecap="round"/>
+    ${o.crown ? '<path d="M138 30L140 10L151 22L162 6L173 22L184 10L186 30Z" fill="#ffd36e" stroke="#fff" stroke-opacity=".7"/><circle cx="162" cy="22" r="3.5" fill="#ff4d6a"/>' : ''}</g>
+    ${o.bolts ? '<path d="M26 14L10 54L28 50L16 92L48 40L30 44Z M178 112L166 142L178 140L170 170L194 130L182 132Z" fill="#fff" stroke="#bfe6ff"/>' : ''}`);
+}
+function unicornSVG() {
+  return svgWrap(`<path d="M100 44C130 40 150 60 156 90C160 120 152 150 164 196C140 168 144 126 132 100C124 82 112 66 100 44Z" fill="url(#egm)"/>
+    <path d="M44 98C40 88 48 78 60 72L78 50C84 44 92 42 100 44L152 70L160 196L96 196C100 160 96 136 80 120C70 112 60 112 52 108C46 106 44 102 44 98Z" fill="url(#eg)" stroke="#fff" stroke-opacity=".6"/>
+    <path d="M96 46L100 22L113 47Z" fill="url(#eg2)"/>
+    <path d="M71 57L84 46L56 4Z" fill="#fff6c9" stroke="#ffd36e"/><path d="M66 46L72 40M62 34L68 28M59 22L63 18" stroke="#ffb347" stroke-width="2"/>
+    <path d="M96 50C124 54 142 74 144 104C146 130 140 158 146 190C132 164 132 132 124 108C116 86 106 72 96 50Z" fill="url(#egm)" opacity=".85"/>
+    <circle cx="70" cy="78" r="3.6" fill="#1a0f00"/><circle cx="71.2" cy="76.8" r="1.2" fill="#fff"/>
+    <circle cx="50" cy="96" r="2" fill="#7a3a6a"/>`);
+}
+const ART = { 5: phoenixSVG, 6: () => dragonSVG(), 7: unicornSVG, 8: () => dragonSVG({ wings: 1, bolts: 1 }), 9: () => dragonSVG({ wings: 1, crown: 1, halo: 1 }) };
+const artHTML = lv => ENTRANCE[lv].img ? `<img src="${ENTRANCE[lv].img}" alt="">` : ART[lv]();
+function showEntranceFx(name, level) {
+  const lv = Math.min(9, Math.max(5, Number(level) || 5)), v = ENTRANCE[lv];
+  const sp = Array.from({ length: 18 }, () => { const a = Math.random() * 6.283, r = 22 + Math.random() * 40;
+    return `<i style="--tx:${Math.round(Math.cos(a) * r)}vmin;--ty:${Math.round(Math.sin(a) * r)}vmin;--dl:${(Math.random() * 2).toFixed(2)}s"></i>` }).join('');
+  const e = $('#entranceFX');
+  e.innerHTML = `<div class="ent ent${lv}" style="--dur:${v.dur}s;--c1:${v.c1};--c2:${v.c2}"><div class="ent-bg"></div><div class="ent-rays"></div><div class="ent-burst"></div><div class="ent-sparks">${sp}</div><div class="ent-move"><div class="ent-art">${artHTML(lv)}</div></div><div class="ent-label">${esc(name)} · SVIP ${lv}<small>${v.t}</small></div></div>`;
+  e.classList.remove('hidden'); clearTimeout(showEntranceFx.t);
+  showEntranceFx.t = setTimeout(() => { e.classList.add('hidden'); e.innerHTML = '' }, v.dur * 1000 + 200);
 }
 function showSvipPopup(name, level) {
   const e = $('#svipPop');
@@ -321,6 +517,11 @@ async function upImg(file, max) {
 const { data: { session } } = await sb.auth.getSession();
 uid = session?.user?.id || (await sb.auth.signInAnonymously()).data?.user?.id;
 if (!uid) toast('Gagal login anonim. Aktifkan Anonymous Sign-Ins di Supabase.');
+/* Fitur border butuh kolom baru (border_migration.sql). Jika belum dijalankan, fitur dimatikan tanpa merusak yang lain. */
+let HAS_BORDER = false;
+try { HAS_BORDER = !(await sb.from('profiles').select('avatar_border,borders').limit(1)).error } catch {}
+const BC = () => HAS_BORDER ? ',avatar_border' : '';
+const presence = () => ({ name: me.name, avatar: me.avatar, points: me.points || 0, border: me.avatar_border || '', host: !!me.is_host });
 const { data: old } = await sb.from('profiles').select('*').eq('id', uid).maybeSingle();
 if (old) { $('#nm').value = old.name; avatar = old.avatar || ''; me = old }
 function drawAv() {
@@ -346,24 +547,28 @@ H.doHost = async () => {
   if (!me && !(await ensureProfile())) return;
   const { data } = await sb.rpc('claim_host', { pw: $('#pw').value });
   if (!data) return toast('Sandi salah');
-  me.is_host = true; toast('Mode Host aktif 👑'); H.close(); if (inRoom) { H.panel(); renderProf() }
+  me.is_host = true; toast('Mode Host aktif 👑'); H.close(); prof[uid] = { ...prof[uid], is_host: true };
+  if (inRoom) { room?.track(presence()); renderSeats(); H.panel(); renderProf() }
 };
 H.panel = async () => {
   if (!me.is_host) return H.hostLogin();
   const ids = Object.keys(online);
-  const { data } = ids.length ? await sb.from('profiles').select('id,name,avatar,gift_tickets,theme_ok').in('id', ids) : { data: [] };
+  const { data } = ids.length ? await sb.from('profiles').select('id,name,avatar,gift_tickets,theme_ok' + (HAS_BORDER ? ',borders' : '')).in('id', ids) : { data: [] };
   sheet(`<h3>Panel Host</h3><p class="sub">Jumlah kursi</p>
    <div class="cnt"><button onclick="H.seatN(-1)">−</button><b id="sc" style="font-size:24px">${settings.seat_count}</b><button onclick="H.seatN(1)">+</button></div>
+   <p class="sub">Tes animasi masuk SVIP (hanya kamu yang melihat)</p>
+   <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">${[5, 6, 7, 8, 9].map(n => `<button class="sm o" onclick="H.previewEnt(${n})">SVIP ${n}</button>`).join('')}</div>
    <p class="sub">Anggota online</p>
    ${(data || []).map(u => `<div class="mrow"><img src="${esc(u.avatar)}"><span>${esc(u.name)} <small style="color:#a99d92">🎟️${u.gift_tickets} ${u.theme_ok ? '🎨✔' : ''}</small></span>
-     <div class="bt"><button class="sm" onclick="H.tix('${u.id}')">+1 Tiket Gift</button>${u.theme_ok ? '' : `<button class="sm" onclick="H.thm('${u.id}')">🎨 Buka Tema</button>`}</div></div>`).join('')}
+     <div class="bt"><button class="sm" onclick="H.tix('${u.id}')">+1 Tiket Gift</button><button class="sm" onclick="H.hostBorder('${u.id}')">🖼 Border</button>${u.theme_ok ? '' : `<button class="sm" onclick="H.thm('${u.id}')">🎨 Buka Tema</button>`}</div></div>`).join('')}
    <div style="display:flex;gap:8px;margin-top:14px"><button class="sm o" onclick="H.reset()">Kosongkan kursi</button><button class="sm o" onclick="H.clear()">Bersihkan chat</button></div>
    <button class="btn" style="margin-top:16px;background:linear-gradient(#e0646b,#9c2a33);color:#fff" onclick="H.unhost()">🚪 Keluar Host</button>`);
 };
+H.previewEnt = n => { H.close(); showEntranceFx(me.name, n) };
 H.seatN = async d => { const n = Math.min(30, Math.max(4, settings.seat_count + d)); settings.seat_count = n; $('#sc').textContent = n; renderSeats(); await sb.from('room_settings').update({ seat_count: n }).eq('id', 1) };
 H.tix = async id => { const { error } = await sb.rpc('give_ticket', { target: id }); toast(error ? error.message : '+1 tiket terkirim 🎟️') };
 H.thm = async id => { const { error } = await sb.rpc('give_theme', { target: id }); toast(error ? error.message : 'Tema chat dibuka untuk dia 🎨'); if (!error) H.panel() };
-H.unhost = async () => { const { error } = await sb.rpc('release_host'); if (error) return toast(error.message); me = { ...me, is_host: false }; H.close(); renderProf(); renderPosts(); toast('Kamu keluar dari mode Host') };
+H.unhost = async () => { const { error } = await sb.rpc('release_host'); if (error) return toast(error.message); me = { ...me, is_host: false }; prof[uid] = { ...prof[uid], is_host: false }; room?.track(presence()); renderSeats(); H.close(); renderProf(); renderPosts(); toast('Kamu keluar dari mode Host') };
 H.reset = async () => { await sb.from('seats').delete().neq('seat_no', 0); toast('Semua kursi dikosongkan') };
 H.clear = async () => { await sb.from('messages').delete().neq('id', 0); $('#chat').innerHTML = ''; toast('Chat dibersihkan') };
 
@@ -372,18 +577,19 @@ let joined = false;
 async function startRoom() {
   if (inRoom) return;
   $('#setup').classList.add('hidden'); $('#room').classList.remove('hidden'); $('#room').style.display = 'flex'; $('#nav').classList.remove('hidden'); inRoom = true;
-  applyTheme(me.chat_theme);
+  prof[uid] = { ...prof[uid], ...me }; applyTheme();
   settings = (await sb.from('room_settings').select('*').single()).data || settings;
   await loadSeats();
   const { data: ms } = await sb.from('messages').select('*').order('id', { ascending: false }).limit(50);
   await ensureProf((ms || []).map(m => m.user_id));
   (ms || []).reverse().forEach(m => addMsg(m, false));
   loadMyGifts();
-  loadPosts(true);
+  loadPosts(true); loadStories();
 
   sb.channel('db')
     .on('postgres_changes', { event: '*', schema: 'public', table: 'seats' }, loadSeats)
     .on('postgres_changes', { event: '*', schema: 'public', table: 'posts' }, () => loadPosts(true))
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'stories' }, () => loadStories())
     .on('postgres_changes', { event: '*', schema: 'public', table: 'post_likes' }, () => loadPosts(true))
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'gift_log', filter: `to_id=eq.${uid}` }, () => loadMyGifts())
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, p => { mq = mq.then(async () => { await ensureProf([p.new.user_id]); addMsg(p.new, true) }).catch(() => {}) })
@@ -396,15 +602,16 @@ async function startRoom() {
     .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'room_settings' }, p => { settings = p.new; renderSeats(); renderTop() })
     .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'profiles' }, p => {
       const previous = p.new.id === uid ? me : (prof[p.new.id] || p.old || null);
-      const oldLevel = previous ? lvl(previous.gifts_sent) : 0;
-      const newLevel = lvl(p.new.gifts_sent);
-      prof[p.new.id] = { ...prof[p.new.id], ...p.new };
+      const oldLevel = previous ? lvl(previous.points) : 0;
+      const newLevel = lvl(p.new.points);
+      prof[p.new.id] = { ...prof[p.new.id], ...p.new }; refreshBubbles(p.new.id);
       // Popup ditampilkan di tengah layar seluruh anggota yang sedang berada di room.
       if (newLevel > oldLevel) showSvipPopup(p.new.name || (p.new.id === uid ? me.name : 'Anggota'), newLevel);
       if (p.new.id === uid) {
         if (p.new.gift_tickets > me.gift_tickets) showFx({ e: '🎉' }, 'Kamu dapat +1 Tiket Gift! 🎟️ dari Host');
         if (p.new.theme_ok && !me.theme_ok) showFx({ e: '🎨' }, 'Tema chat terbuka! Semua tema bebas dipakai');
-        me = { ...me, ...p.new }; renderProf();
+        if ((p.new.borders || []).length > (me.borders || []).length) toast('Border baru terbuka dari Host! 🖼️');
+        me = { ...me, ...p.new }; room?.track(presence()); renderProf();
       }
       renderSeats();
     }).subscribe();
@@ -420,13 +627,14 @@ async function startRoom() {
     .on('broadcast', { event: 'sig' }, ({ payload }) => onSig(payload))
     .subscribe(async s => {
       if (s !== 'SUBSCRIBED') return;
-      await room.track({ name: me.name, avatar: me.avatar });
+      await room.track(presence());
       syncPeers(); /* pendengar langsung menyambung ke yang sudah duduk */
       if (joined) return; /* sambung ulang jaringan: jangan umumkan 'bergabung' dan jangan buat timer lagi */
       joined = true;
       sb.rpc('cleanup_room').then(() => {});
       setTimeout(sweep, 4000); setInterval(sweep, 60000);
       await sb.from('messages').insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'join' });
+      const myLevel = lvl(me.points || 0); if (myLevel >= 5) await sb.from('messages').insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'entrance', body: String(myLevel) });
     });
   $('#msg').onkeydown = e => { if (e.key === 'Enter') H.sendMsg() };
 }
@@ -440,6 +648,88 @@ H.sendMsg = async () => {
   else { roomReply = null; renderRoomReplyHint(); }
 };
 
+/* Rekam pesan suara room. Path Storage memakai folder pertama = UID,
+   sama seperti upImg(), agar sesuai dengan policy Storage yang sudah dipakai foto profil. */
+H.voiceMsg = async () => {
+  const btn = $('#voiceMsgBtn');
+  if (voiceRecorder && voiceRecorder.state === 'recording') { voiceRecorder.stop(); return; }
+  if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) return toast('Browser belum mendukung rekam suara. Gunakan Chrome terbaru dan HTTPS.');
+  if (!uid || !me) return toast('Masuk ke room terlebih dahulu.');
+  try {
+    voiceStream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation:true, noiseSuppression:true, autoGainControl:true } });
+    voiceChunks = [];
+    const candidates = ['audio/webm;codecs=opus','audio/webm','audio/mp4','audio/ogg;codecs=opus'];
+    const mimeType = candidates.find(t => MediaRecorder.isTypeSupported?.(t));
+    voiceRecorder = new MediaRecorder(voiceStream, mimeType ? { mimeType } : undefined);
+    const activeRecorder = voiceRecorder;
+    activeRecorder.ondataavailable = e => { if (e.data?.size) voiceChunks.push(e.data); };
+    activeRecorder.onerror = () => {
+      toast('Gagal merekam suara. Coba lagi.');
+      voiceStream?.getTracks().forEach(t=>t.stop()); voiceStream=null; voiceRecorder=null; voiceChunks=[];
+      btn?.classList.remove('rec'); if(btn)btn.textContent='🎤';
+    };
+    activeRecorder.onstop = async () => {
+      const chunks = voiceChunks.slice(), recordedType = activeRecorder.mimeType || chunks[0]?.type || 'audio/webm';
+      voiceStream?.getTracks().forEach(t=>t.stop()); voiceStream=null; voiceRecorder=null; voiceChunks=[];
+      btn?.classList.remove('rec'); if(btn)btn.textContent='🎤';
+      const blob = new Blob(chunks, { type: recordedType });
+      if (blob.size < 1000) return toast('Rekaman terlalu singkat. Coba bicara sedikit lebih lama.');
+      if (blob.size > 12*1024*1024) return toast('Ukuran pesan suara terlalu besar (maksimal 12 MB).');
+
+      toast('Mengunggah pesan suara…');
+      const mime = (blob.type || 'audio/webm').split(';')[0].toLowerCase();
+      const ext = mime === 'audio/mp4' ? 'm4a' : mime === 'audio/ogg' ? 'ogg' : mime === 'audio/mpeg' ? 'mp3' : 'webm';
+      /* Penting: jangan pakai voice/${uid}/... karena policy Storage lama umumnya
+         memeriksa folder pertama = auth.uid(). */
+      const path = `${uid}/voice-${Date.now()}.${ext}`;
+      const { error: upErr } = await sb.storage.from('media').upload(path, blob, {
+        contentType: mime, upsert: false, cacheControl: '3600'
+      });
+      if (upErr) return toast('Upload audio ke Storage gagal: ' + upErr.message);
+
+      const { data: pub } = sb.storage.from('media').getPublicUrl(path);
+      const audioUrl = pub?.publicUrl;
+      if (!audioUrl) return toast('Audio terunggah, tetapi URL audio tidak berhasil dibuat.');
+
+      /* Gunakan type='chat' yang sama dengan pesan teks agar lolos policy RLS
+         messages yang sudah ada. Penanda body membedakan audio dari teks tanpa SQL baru. */
+      const { error: msgErr } = await sb.from('messages').insert({
+        user_id: uid, name: me.name, avatar: me.avatar,
+        type: 'chat', body: '[VOICE_MSG]' + audioUrl
+      });
+      if (msgErr) {
+        /* Jangan tinggalkan file yatim jika insert pesan ditolak. */
+        await sb.storage.from('media').remove([path]).catch(() => {});
+        return toast('Audio berhasil diunggah, tetapi insert pesan ditolak RLS: ' + msgErr.message);
+      }
+      toast('Pesan suara terkirim 🎧');
+    };
+    activeRecorder.start(250);
+    btn?.classList.add('rec'); if(btn)btn.textContent='⏹';
+    toast('Sedang merekam… tekan ⏹ untuk mengirim');
+  } catch (e) {
+    voiceStream?.getTracks().forEach(t=>t.stop()); voiceStream=null; voiceRecorder=null; voiceChunks=[];
+    btn?.classList.remove('rec'); if(btn)btn.textContent='🎤';
+    toast(e.name==='NotAllowedError' ? 'Izin mikrofon ditolak. Izinkan akses mikrofon di browser.' : (e.message||'Tidak bisa mengakses mikrofon.'));
+  }
+};
+
+H.toggleVoice = async id => {
+  const audio = document.getElementById('voice-audio-' + id);
+  const button = document.getElementById('voice-play-' + id);
+  if (!audio || !button) return;
+  if (audio.paused) {
+    document.querySelectorAll('.voicebubble audio').forEach(a => { if (a !== audio) { a.pause(); a.currentTime = 0; const b=document.getElementById('voice-play-' + a.dataset.msgid); if(b)b.textContent='▶'; } });
+    try { await audio.play(); button.textContent = '❚❚'; }
+    catch (e) { toast('Audio tidak bisa diputar. Periksa akses Storage/bucket media.'); }
+  } else { audio.pause(); button.textContent = '▶'; }
+};
+H.voiceEnded = id => {
+  const audio = document.getElementById('voice-audio-' + id), button = document.getElementById('voice-play-' + id);
+  if (audio) audio.currentTime = 0;
+  if (button) button.textContent = '▶';
+};
+
 /* Bersihkan kursi 'hantu': pemilik kursi yang sudah tidak online (browser ditutup) */
 async function sweep() {
   if (!room) return;
@@ -449,8 +739,8 @@ async function sweep() {
 }
 window.addEventListener('pagehide', () => { if (inRoom) { room?.untrack(); sb.from('seats').delete().eq('user_id', uid).then(() => {}) } });
 async function ensureProf(ids) {
-  const miss = [...new Set(ids)].filter(i => i && prof[i]?.gifts_sent === undefined); if (!miss.length) return;
-  const { data } = await sb.from('profiles').select('id,points,gifts_sent').in('id', miss);
+  const miss = [...new Set(ids)].filter(i => i && prof[i]?.points === undefined); if (!miss.length) return;
+  const { data } = await sb.from('profiles').select('id,points,gifts_sent,chat_theme,is_host' + BC()).in('id', miss);
   (data || []).forEach(x => prof[x.id] = { ...prof[x.id], ...x });
 }
 async function loadSeats() {
@@ -459,7 +749,7 @@ async function loadSeats() {
   mySeat = (data || []).find(s => s.user_id === uid)?.seat_no || null;
   if (!mySeat && stream && !sitting) stopMic();
   const ids = (data || []).map(s => s.user_id);
-  if (ids.length) (await sb.from('profiles').select('id,points,gifts_sent').in('id', ids)).data.forEach(x => prof[x.id] = x);
+  if (ids.length) (await sb.from('profiles').select('id,points,gifts_sent,chat_theme,is_host' + BC()).in('id', ids)).data.forEach(x => prof[x.id] = { ...prof[x.id], ...x });
   renderSeats(); renderTop(); syncPeers();
 }
 
@@ -468,10 +758,10 @@ function renderSeats() {
   for (let i = 1; i <= settings.seat_count; i++) {
     const s = seats[i], d = document.createElement('div'); d.className = 'seat';
     d.innerHTML = s
-      ? `<div class="ring r${hash(s.user_id) % 5}" data-uid="${s.user_id}"><img src="${esc(s.avatar)}"><span class="mic">${s.muted ? '🔇' : '🎙️'}</span></div><div class="nm">${badge(prof[s.user_id]?.gifts_sent)}${esc(s.name)}</div><div class="pill">${prof[s.user_id]?.points ?? 0}</div>`
+      ? `<div class="ring r${hash(s.user_id) % 5}${ringBd(prof[s.user_id]?.points, prof[s.user_id]?.avatar_border, prof[s.user_id]?.is_host)}" data-uid="${s.user_id}"><img src="${esc(s.avatar)}">${bdImg(bdOf(prof[s.user_id]?.points, prof[s.user_id]?.avatar_border, prof[s.user_id]?.is_host))}<span class="mic">${s.muted ? '🔇' : '🎙️'}</span></div><div class="nm">${badge(prof[s.user_id]?.points)}${esc(s.name)}</div><div class="pill">${prof[s.user_id]?.points ?? 0}</div>`
       : `<div class="ring empty">＋</div><div class="nm dim">${i}</div>`;
-    /* tap kursi sendiri = turun; tap kursi orang lain = kirim gift ke dia; tap kursi kosong = duduk */
-    d.onclick = () => s ? (s.user_id === uid ? leaveSeat() : H.giftTo(s.user_id)) : sit(i);
+    /* tap kursi sendiri = turun; tap kursi orang lain = menu (lihat profil / kirim gift); tap kursi kosong = duduk */
+    d.onclick = () => s ? (s.user_id === uid ? leaveSeat() : H.seatMenu(s.user_id)) : sit(i);
     g.append(d);
   }
 }
@@ -481,7 +771,7 @@ function renderTop() {
   const seated = new Set(Object.values(seats).map(s => s.user_id));
   const L = Object.entries(online).filter(([k]) => !seated.has(k)).map(([k, v]) => ({ k, ...v[0] }));
   $('#mini').innerHTML = L.slice(0, 3).map(u => `<img src="${esc(u.avatar)}">`).join('');
-  $('#listen').innerHTML = L.slice(0, 7).map(u => `<div class="ring r${hash(u.k) % 5}"><img src="${esc(u.avatar)}"></div>`).join('') + `<b>${L.length || ''}</b>`;
+  $('#listen').innerHTML = L.slice(0, 7).map(u => `<div class="ring r${hash(u.k) % 5}${ringBd(prof[u.k]?.points ?? u.points, prof[u.k]?.avatar_border ?? u.border, prof[u.k]?.is_host ?? u.host)}" onclick="H.view('${u.k}')" style="cursor:pointer"><img src="${esc(u.avatar)}"></div>`).join('') + `<b>${L.length || ''}</b>`;
 }
 
 let sitting = false;
@@ -515,18 +805,31 @@ const PAGES = { room: '#room', posts: '#pgPosts', friends: '#pgFriends', me: '#p
 H.tab = t => {
   Object.entries(PAGES).forEach(([k, sel]) => $(sel).classList.toggle('hidden', k !== t));
   document.querySelectorAll('#nav button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
-  if (t === 'posts') loadPosts(); if (t === 'friends') loadFriends(); if (t === 'me') { renderProf(); loadMyGifts() } if (t === 'room') { const c = $('#chat'); c.scrollTop = c.scrollHeight }
+  if (t === 'posts') { loadPosts(); loadStories(); } if (t === 'friends') loadFriends(); if (t === 'me') { renderProf(); loadMyGifts() } if (t === 'room') { const c = $('#chat'); c.scrollTop = c.scrollHeight }
 };
 
 /* ---------- 5. Postingan ---------- */
+let stories=[];
+async function loadStories(){
+  const {data,error}=await sb.from('stories').select('id,user_id,media_url,caption,created_at,profiles!user_id(name,avatar)').gt('expires_at',new Date().toISOString()).order('created_at',{ascending:false}).limit(100);
+  if(error){$('#storyBar').innerHTML='<small style="color:#a99d92">Story belum aktif. Jalankan SQL migrasi.</small>';return;}
+  stories=data||[]; const groups=[]; const seen=new Set();
+  for(const st of stories){if(!seen.has(st.user_id)){seen.add(st.user_id);groups.push(st)}}
+  $('#storyBar').innerHTML=`<div class="storyitem" onclick="H.addStory()"><div class="storyring"><img src="${esc(me.avatar||'')}" onerror="this.src=''"></div><small>＋ Story Saya</small></div>`+groups.map(st=>`<div class="storyitem" onclick="H.viewStory('${st.id}')"><div class="storyring"><img src="${esc(st.profiles?.avatar||'')}"></div><small>${esc(st.profiles?.name||'Anggota')}</small></div>`).join('');
+}
+H.addStory=()=>{draftImg=null;sheet(`<h3>Buat Story</h3><p class="sub">Story akan hilang otomatis setelah 24 jam.</p><textarea id="storyCaption" class="inp" rows="2" maxlength="180" placeholder="Tulis cerita singkat..."></textarea><div id="storyPrev"></div><button class="sm o" style="margin-top:10px" onclick="H.pickStory()">📷 Pilih Foto</button><button class="btn" style="margin-top:14px" onclick="H.publishStory()">Bagikan Story</button>`)};
+H.pickStory=()=>pick(async f=>{try{draftImg=await upImg(f,1080);$('#storyPrev').innerHTML=`<img class="pi" src="${esc(draftImg)}">`}catch(e){toast(e.message||'Upload gagal')}});
+H.publishStory=async()=>{if(!draftImg)return toast('Pilih foto untuk story dulu');const {error}=await sb.from('stories').insert({user_id:uid,media_url:draftImg,caption:($('#storyCaption')?.value||'').trim()});if(error)return toast(error.message);H.close();draftImg=null;toast('Story dibagikan! ✨');loadStories()};
+H.viewStory=id=>{const st=stories.find(x=>x.id===id);if(!st)return;const e=$('#storyView');e.innerHTML=`<button class="sclose" onclick="H.closeStory()">✕</button><div><img src="${esc(st.media_url)}"><div class="scap"><b>${esc(st.profiles?.name||'Anggota')}</b><p>${esc(st.caption||'')}</p><small>${ago(st.created_at)}</small></div></div>`;e.classList.remove('hidden')};
+H.closeStory=()=>{$('#storyView').classList.add('hidden');$('#storyView').innerHTML=''};
 async function loadPosts(quiet) {
-  const { data, error } = await sb.from('posts').select('id,user_id,body,image,created_at,profiles!user_id(name,avatar,is_host,gifts_sent),post_likes(user_id)').order('created_at', { ascending: false }).limit(50);
+  const { data, error } = await sb.from('posts').select('id,user_id,body,image,created_at,profiles!user_id(name,avatar,is_host,gifts_sent,points' + BC() + '),post_likes(user_id)').order('created_at', { ascending: false }).limit(50);
   if (error) { if (!quiet) toast('Postingan: ' + error.message); return }
   posts = data || []; renderPosts(); renderProf();
 }
 function postHTML(p) {
   const u = p.profiles || {}, can = p.user_id === uid || me.is_host, L = p.post_likes || [], n = L.length, liked = L.some(l => l.user_id === uid);
-  return `<article class="post"><div class="hd"><img src="${esc(u.avatar)}" onclick="H.view('${p.user_id}')" style="cursor:pointer"><div><b>${u.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(u.gifts_sent)}${esc(u.name)}</b><small>${ago(p.created_at)}</small></div>
+  return `<article class="post"><div class="hd">${avatarHTML(u.avatar, u.points, '', 40, ` onclick="H.view('${p.user_id}')" style="cursor:pointer"`, u.avatar_border, u.is_host)}<div><b>${u.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(u.points)}${esc(u.name)}</b><small>${ago(p.created_at)}</small></div>
     ${can ? `<button class="del" onclick="H.delPost(${p.id})" title="Hapus">🗑</button>` : ''}</div>
     ${p.body ? `<p>${esc(p.body)}</p>` : ''}${p.image ? `<img class="pi" loading="lazy" src="${esc(p.image)}">` : ''}
     <button class="lk ${liked ? 'on' : ''}" onclick="H.like(${p.id})">${liked ? '❤️' : '🤍'} ${n}</button></article>`;
@@ -565,7 +868,7 @@ H.doPost = async () => {
 
 /* ---------- 6. Profil ---------- */
 async function getGifts(id) {
-  const { data } = await sb.from('gift_log').select('from_id,gift,profiles!from_id(name,avatar,gifts_sent)').eq('to_id', id).order('id', { ascending: false }).limit(1000);
+  const { data } = await sb.from('gift_log').select('from_id,gift,profiles!from_id(name,avatar,is_host,gifts_sent,points' + BC() + ')').eq('to_id', id).order('id', { ascending: false }).limit(1000);
   return data || [];
 }
 async function loadMyGifts() { myGifts = await getGifts(uid); renderProf() }
@@ -576,27 +879,41 @@ function giftHTML(rows) {
   const em = g => GIFTS[g]?.e || '🎁';
   return `<div class="stats" style="flex-wrap:wrap">${Object.entries(tot).map(([g, n]) => `<span class="chip">${em(g)} ×${n}</span>`).join('')}</div>
     <p class="sub" style="text-align:center">Total ${rows.length} hadiah dari ${Object.keys(by).length} orang</p>
-    ${Object.entries(by).sort((a, b) => b[1].n - a[1].n).map(([id, b]) => `<div class="mrow" onclick="H.view('${id}')"><img src="${esc(b.u.avatar)}"><span>${badge(b.u.gifts_sent)}${esc(b.u.name)}<br><small style="color:#a99d92">${Object.entries(b.g).map(([g, n]) => `${em(g)}×${n}`).join(' ')}</small></span><b>${b.n}</b></div>`).join('')}`;
+    ${Object.entries(by).sort((a, b) => b[1].n - a[1].n).map(([id, b]) => `<div class="mrow" onclick="H.view('${id}')">${avatarHTML(b.u.avatar, b.u.points, '', 34, '', b.u.avatar_border, b.u.is_host)}<span>${badge(b.u.points)}${esc(b.u.name)}<br><small style="color:#a99d92">${Object.entries(b.g).map(([g, n]) => `${em(g)}×${n}`).join(' ')}</small></span><b>${b.n}</b></div>`).join('')}`;
 }
 /* Lihat profil orang lain (ketuk foto di postingan / chat / daftar pengirim) */
 H.view = async id => {
   if (id === uid) { H.close(); return H.tab('me') }
-  const { data: u } = await sb.from('profiles').select('id,name,avatar,is_host,gifts_sent,points').eq('id', id).maybeSingle();
+  const { data: u } = await sb.from('profiles').select('id,name,avatar,is_host,gifts_sent,points' + BC()).eq('id', id).maybeSingle();
   if (!u) return toast('Profil tidak ditemukan');
-  viewU = u; const rows = await getGifts(id);
-  sheet(`<div class="pf" style="padding-top:0"><img class="pav" src="${esc(u.avatar)}"><h2>${u.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(u.gifts_sent)}${esc(u.name)}</h2>${titleHTML(u.gifts_sent)}</div>
-    <h3 class="sec" style="margin-top:6px">🎁 Koleksi Hadiah</h3>${giftHTML(rows)}
-    <button class="btn" style="margin-top:14px" onclick="H.giftView()">🎁 Kirim Gift ke ${esc(u.name)}</button>`);
+  viewU = u;
+  const [rows, fr, ps] = await Promise.all([getGifts(id),
+    sb.from('friends').select('friend_id').eq('user_id', uid).eq('friend_id', id).maybeSingle(),
+    sb.from('posts').select('id,body,image,created_at').eq('user_id', id).order('created_at', { ascending: false }).limit(10)]);
+  const isFriend = !!fr.data, seated = Object.values(seats).some(x => x.user_id === id), on = !!online[id], list = ps.data || [];
+  sheet(`<div class="pf" style="padding-top:0">${avatarHTML(u.avatar, u.points, 'pav', 112, '', u.avatar_border, u.is_host)}<h2>${u.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(u.points)}${esc(u.name)}</h2>${titleHTML(u.points)}
+    <div class="stats" style="flex-wrap:wrap"><span class="chip">${seated ? '🎙️ Di kursi' : on ? '🟢 Online' : '⚪ Offline'}</span><span class="chip">⭐ ${u.points ?? 0}</span><span class="chip">🎁 ${u.gifts_sent ?? 0} dikirim</span><span class="chip">📝 ${list.length}</span></div></div>
+    <div class="acts">${isFriend ? `<button class="btn" onclick="H.openDM('${u.id}')">💬 Chat</button>` : `<button class="btn" onclick="H.requestFriend('${u.id}')">＋ Tambah Teman</button>`}
+      <button class="btn" onclick="H.giftView()">🎁 Kirim Gift</button></div>
+    ${me.is_host ? `<button class="btn" style="margin-bottom:6px;background:linear-gradient(#a98bff,#6a4bff);color:#fff" onclick="H.hostBorder('${u.id}')">🖼 Beri Border</button>` : ''}
+    <h3 class="sec">🎁 Koleksi Hadiah</h3>${giftHTML(rows)}
+    <h3 class="sec">📝 Postingan</h3>${list.map(q => `<div class="post"><p>${esc(q.body || '')}</p>${q.image ? `<img class="pi" loading="lazy" src="${esc(q.image)}">` : ''}<small style="color:#9a8f86">${ago(q.created_at)}</small></div>`).join('') || '<p class="empty-t">Belum ada postingan.</p>'}`);
+};
+H.seatMenu = id => {
+  const x = Object.values(seats).find(v => v.user_id === id); if (!x) return;
+  sheet(`<div class="dmhead"><img src="${esc(x.avatar)}"><div style="flex:1"><h3 style="margin:0">${esc(x.name)}</h3><p class="sub" style="margin:0">Sedang di kursi</p></div></div>
+    <div class="acts"><button class="btn" onclick="H.view('${id}')">👤 Lihat Profil</button><button class="btn" onclick="H.giftTo('${id}')">🎁 Kirim Gift</button></div>`);
 };
 H.giftView = () => { if (viewU) { gT = { id: viewU.id, name: viewU.name, avatar: viewU.avatar }; giftSheet() } };
 function renderProf() {
   if (!me) return;
   const mine = posts.filter(p => p.user_id === uid);
-  $('#pfBox').innerHTML = `<div class="pf"><img class="pav" src="${esc(me.avatar)}">
-    <h2>${me.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(me.gifts_sent)}${esc(me.name)}</h2>${titleHTML(me.gifts_sent)}
+  $('#pfBox').innerHTML = `<div class="pf">${avatarHTML(me.avatar, me.points, 'pav', 112, '', me.avatar_border, me.is_host)}
+    <h2>${me.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(me.points)}${esc(me.name)}</h2>${titleHTML(me.points)}
     <div class="stats"><span class="chip">🎟️ ${me.gift_tickets ?? 0}</span><span class="chip">⭐ ${me.points ?? 0}</span><span class="chip">📝 ${mine.length}</span></div></div>
     <div class="acts"><button class="btn" onclick="H.editAv()">📷 Ubah Foto</button><button class="btn" onclick="H.editNm()">✏️ Ubah Nama</button></div>
     <button class="btn" onclick="H.compose()">➕ Buat Postingan</button>
+    ${borderGridHTML()}
     <h3 class="sec">🎁 Koleksi Hadiah</h3>${giftHTML(myGifts)}
     <h3 class="sec">Postingan Saya</h3>${mine.map(postHTML).join('') || '<p class="empty-t">Belum ada postingan.</p>'}`;
 }
@@ -606,7 +923,7 @@ async function setAvatar(url) {
   if (error) return toast(error.message);
   me = { ...me, avatar: url }; avatar = url;
   await sb.from('seats').update({ avatar: url }).eq('user_id', uid);
-  room?.track({ name: me.name, avatar: url });
+  room?.track(presence());
   H.close(); renderProf(); loadPosts(true); toast('Foto profil diperbarui ✅');
 }
 H.editNm = () => sheet(`<h3>Ubah Nama</h3><input id="newnm" class="inp" maxlength="16" value="${esc(me.name)}" style="margin:8px 0 14px"><button class="btn" onclick="H.saveNm()">Simpan</button>`);
@@ -615,15 +932,19 @@ H.saveNm = async () => {
   const { error } = await sb.from('profiles').update({ name }).eq('id', uid);
   if (error) return toast(error.message);
   me = { ...me, name }; await sb.from('seats').update({ name }).eq('user_id', uid);
-  room?.track({ name, avatar: me.avatar });
+  room?.track(presence());
   H.close(); renderProf(); loadPosts(true); toast('Nama diperbarui ✅');
 };
 
 /* ---------- 7. Tema chat (terkunci sampai chat owner; host bebas) ---------- */
-function applyTheme(id) { $('#chatw').style.background = (THEMES.find(t => t.id === id) || THEMES[0]).bg }
+/* Tema hanya mewarnai balon pesan milik pengirimnya; semua orang melihat tema masing-masing pengirim */
+const themeBg = id => (THEMES.find(t => t.id === id) || THEMES[0]).bg;
+const bubStyle = uid => { const b = themeBg(prof[uid]?.chat_theme); return b ? ` style="background:${b}"` : '' };
+function refreshBubbles(id) { const b = themeBg(prof[id]?.chat_theme); document.querySelectorAll(`[data-bu="${id}"]`).forEach(e => e.style.background = b || '') }
+function applyTheme() { $('#chatw').style.background = ''; refreshBubbles(uid) }
 H.themes = () => {
   const lock = !me.is_host && !me.theme_ok, cur = me.chat_theme || 'default';
-  sheet(`<h3>Tema Chat</h3><p class="sub">${me.is_host ? '👑 Host: bebas ganti tema' : lock ? '🔒 Terkunci. Chat owner dulu untuk membuka semua tema.' : '🎨 Tema terbuka, bebas ganti kapan saja'}</p>
+  sheet(`<h3>Tema Chat</h3><p class="sub">${me.is_host ? '👑 Host: bebas ganti tema' : lock ? '🔒 Terkunci. Chat owner dulu untuk membuka semua tema.' : '🎨 Tema terbuka. Warna ini tampil di balon pesanmu dan dilihat semua orang'}</p>
    <div class="gg">${THEMES.map(t => `<button class="gi ${lock && t.id !== 'default' ? 'lk' : ''} ${t.id === cur ? 'sel' : ''}" onclick="H.setTheme('${t.id}')"><span class="sw" style="background:${t.bg || '#150f0b'}"></span><small>${t.name}</small></button>`).join('')}</div>
    ${lock ? `<button class="btn" onclick="H.wa('Hay Ganteng, mau buka tema chat dong!')">Buka Tema (Chat Owner)</button>` : ''}`);
 };
@@ -631,24 +952,67 @@ H.setTheme = async id => {
   if (id !== 'default' && !me.is_host && !me.theme_ok) return toast('Tema terkunci. Chat owner dulu 🔒');
   const { error } = await sb.rpc('set_theme', { t: id });
   if (error) return toast(error.message);
-  me = { ...me, chat_theme: id }; applyTheme(id); H.close();
+  me = { ...me, chat_theme: id }; prof[uid] = { ...prof[uid], chat_theme: id }; applyTheme(); H.close();
+};
+
+/* ---------- 7B. Border avatar koleksi ---------- */
+const ownsBorder = id => me.is_host || (me.borders || []).includes(id);
+function borderGridHTML() {
+  if (!HAS_BORDER) return '<h3 class="sec">🖼 Border Avatar</h3><p class="sub">Fitur border belum aktif. Jalankan border_migration.sql di Supabase.</p>';
+  const cur = me.avatar_border || '';
+  return `<h3 class="sec">🖼 Border Avatar</h3><p class="sub">${me.is_host ? '👑 Host: semua border terbuka' : '🔒 Semua border terkunci. Chat host untuk membuka; setiap konfirmasi host membuka 1 border.'}</p>
+   <div class="gg"><button class="gi ${!cur ? 'sel' : ''}" onclick="H.useBorder('')"><div style="display:grid;place-items:center;padding:14px 0 6px">${avatarHTML(me.avatar, me.points, 'bp', 52, '', '', me.is_host)}</div><small>${me.is_host ? 'Bawaan Host 👑' : lvl(me.points) >= 9 ? 'Bawaan SVIP 9' : 'Tanpa border'}</small></button>
+   ${BORDERS.map(b => { const o = ownsBorder(b.id);
+     return `<button class="gi ${o ? '' : 'lk'} ${cur === b.id ? 'sel' : ''}" onclick="${o ? `H.useBorder('${b.id}')` : `H.borderLocked('${b.id}')`}"><div style="display:grid;place-items:center;padding:14px 0 6px">${avatarHTML(me.avatar, 0, 'bp', 52, '', b.id)}</div><small>${b.name}</small></button>` }).join('')}</div>${me.is_host ? `<h3 class="sec">👑 Eksklusif Host</h3><div class="gg">${HOST_BORDERS.map(b => `<button class="gi ${cur === b.id ? 'sel' : ''}" onclick="H.useBorder('${b.id}')"><div style="display:grid;place-items:center;padding:14px 0 6px">${avatarHTML(me.avatar, 0, 'bp', 52, '', b.id, true)}</div><small>${b.name}</small></button>`).join('')}</div>` : ''}`;
+}
+H.useBorder = async id => {
+  const { error } = await sb.rpc('set_border', { b: id });
+  if (error) return toast(error.message);
+  me = { ...me, avatar_border: id || null }; prof[uid] = { ...prof[uid], avatar_border: id || null };
+  room?.track(presence()); renderProf(); renderSeats(); toast(id ? 'Border dipakai ✨' : 'Border dilepas');
+};
+H.borderLocked = id => {
+  const b = BORDERS.find(x => x.id === id); if (!b) return;
+  sheet(`<h3>🔒 ${b.name}</h3><p class="sub">${b.desc}</p>
+   <div style="display:grid;place-items:center;padding:22px 0">${avatarHTML(me.avatar, 0, 'bp', 96, '', b.id)}</div>
+   <p class="sub" style="text-align:center">Border ini masih terkunci. Chat host, dan setelah dikonfirmasi 1 border terbuka untukmu.</p>
+   <button class="btn" onclick="H.askBorder('${b.id}')">Buka Border (Chat Host)</button>`);
+};
+H.askBorder = id => { const b = BORDERS.find(x => x.id === id); if (b) H.wa(`Hay Host, mau buka border avatar "${b.name}" dong! Nama saya: ${me.name}`) };
+H.hostBorder = async id => {
+  if (!me.is_host) return;
+  const { data: u, error } = await sb.from('profiles').select('id,name,avatar,borders').eq('id', id).maybeSingle();
+  if (error || !u) return toast(error?.message || 'Anggota tidak ditemukan');
+  const own = u.borders || [];
+  sheet(`<div class="dmhead"><img src="${esc(u.avatar)}"><div style="flex:1"><h3 style="margin:0">Beri Border</h3><p class="sub" style="margin:0">${esc(u.name)} · ${own.length}/${BORDERS.length} terbuka</p></div><button class="sm o" onclick="H.panel()">Panel</button></div>
+   ${BORDERS.map(b => `<div class="mrow"><div>${avatarHTML(u.avatar, 0, '', 34, '', b.id)}</div><span>${b.name}<br><small style="color:#a99d92">${b.desc}</small></span>${own.includes(b.id) ? '<span class="sm o">✔ Terbuka</span>' : `<button class="sm" onclick="H.giveBorder('${u.id}','${b.id}')">Buka</button>`}</div>`).join('')}`);
+};
+H.giveBorder = async (id, b) => {
+  const { error } = await sb.rpc('give_border', { target: id, b });
+  if (error) return toast(error.message);
+  toast('Border dibuka ✅'); H.hostBorder(id);
 };
 
 /* ---------- 8. Chat & gift ---------- */
 function addMsg(m, live) {
   const c = $('#chat'), d = document.createElement('div'), hb = m.is_host ? '<i class="bdg">👑 HOST</i>' : '';
-  const head = `<img class="av" src="${esc(m.avatar)}"${m.user_id ? ` onclick="H.view('${m.user_id}')" style="cursor:pointer"` : ''}>`, meta = `<div class="meta">${hb}${badge(prof[m.user_id]?.gifts_sent)}${esc(m.name)}</div>`;
+  const head = avatarHTML(m.avatar, prof[m.user_id]?.points, 'av', 34, m.user_id ? ` onclick="H.view('${m.user_id}')" style="cursor:pointer"` : '', prof[m.user_id]?.avatar_border, m.is_host || prof[m.user_id]?.is_host), meta = `<div class="meta">${hb}${badge(prof[m.user_id]?.points)}${esc(m.name)}</div>`;
   d.className = 'row';
   if (m.type === 'join') d.innerHTML = `<div class="bub">${hb}<b>${esc(m.name)}</b> sedang bergabung</div>`;
   else if (m.type === 'leave') d.innerHTML = `<div class="bub sys">🚪 <b>${esc(m.name)}</b> keluar dari room</div>`;
+  else if (m.type === 'entrance') { d.innerHTML = `<div class="bub sys">✨ ${esc(m.name)} memasuki room dengan efek SVIP ${esc(m.body)}!</div>`; if(live) showEntranceFx(m.name, Number(m.body)||5); }
   else if (m.type === 'gift') {
     const g = GIFTS[m.gift] || GIFTS[0];
     d.innerHTML = `${head}<div>${meta}<div class="gbub"><span>Kirim ${esc(g.name)}${m.to_name ? `<small>untuk ${esc(m.to_name)}</small>` : ''}</span><span class="e">${g.e}</span><b class="x">x1</b></div></div>`;
     if (live) showFx(g, m.name, m.to_name);
+  } else if (m.type === 'voice' || (m.type === 'chat' && String(m.body || '').startsWith('[VOICE_MSG]'))) {
+    const audioUrl = m.type === 'voice' ? m.body : String(m.body).slice('[VOICE_MSG]'.length);
+    const safeUrl = /^https:\/\//i.test(audioUrl) ? audioUrl : '';
+    d.innerHTML = `${head}<div>${meta}<div class="voicebubble"${bubStyle(m.user_id)} data-bu="${m.user_id}"><small>🎙️ Pesan suara</small><div class="voiceplayer"><button class="voiceplay" id="voice-play-${Number(m.id)}" onclick="H.toggleVoice(${Number(m.id)})" title="Putar pesan suara">▶</button><span>Putar audio</span><audio id="voice-audio-${Number(m.id)}" data-msgid="${Number(m.id)}" preload="none" src="${esc(safeUrl)}" onended="H.voiceEnded(${Number(m.id)})" onerror="this.previousElementSibling && (this.previousElementSibling.textContent='⚠');"></audio></div></div></div>`;
   } else {
     const quoted = m.reply_to_id ? `<div class="replybox"><b>↩ Membalas pesan</b>${esc(m.reply_preview || 'Pesan sebelumnya')}</div>` : '';
-    const body = esc(m.body).replace(/(@[\\w.-]+)/g,'<span class="tagged">$1</span>');
-    d.innerHTML = `${head}<div>${meta}<div class="bub">${quoted}${body}</div><div class="msgtools"><button onclick="H.replyRoom(${Number(m.id)},'${esc((m.body||'').slice(0,90)).replace(/'/g,'&#39;')}','${esc(m.name).replace(/'/g,'&#39;')}')">↩ Balas</button><button onclick="H.forwardRoom(${Number(m.id)})">↗ Teruskan</button></div></div>`;
+    const body = esc(m.body).replace(/(@[\w.-]+)/g,'<span class="tagged">$1</span>');
+    d.innerHTML = `${head}<div>${meta}<div class="bub"${bubStyle(m.user_id)} data-bu="${m.user_id}">${quoted}${body}</div><div class="msgtools"><button onclick="H.replyRoom(${Number(m.id)},'${esc((m.body||'').slice(0,90)).replace(/'/g,'&#39;')}','${esc(m.name).replace(/'/g,'&#39;')}')">↩ Balas</button><button onclick="H.forwardRoom(${Number(m.id)})">↗ Teruskan</button></div></div>`;
   }
   c.append(d); while (c.children.length > 80) c.firstChild.remove(); c.scrollTop = c.scrollHeight;
 }
@@ -658,7 +1022,7 @@ H.gift = () => {
   const seated = new Set(Object.values(seats).map(s => s.user_id));
   const L = Object.entries(online).filter(([k]) => k !== uid).map(([k, v]) => ({ id: k, name: v[0]?.name, avatar: v[0]?.avatar, seat: seated.has(k) })).sort((a, b) => b.seat - a.seat);
   sheet(`<h3>Kirim Gift</h3><p class="sub">Pilih dulu siapa yang mau diberi hadiah</p>
-   ${L.map(u => `<div class="mrow"><img src="${esc(u.avatar)}"><span>${esc(u.name)} ${u.seat ? '<small style="color:#a99d92">🎙️ di kursi</small>' : ''}</span><button class="sm" onclick="H.pick('${u.id}')">Pilih</button></div>`).join('') || '<p class="empty-t">Belum ada orang lain di room.</p>'}`);
+   ${L.map(u => `<div class="mrow"><img src="${esc(u.avatar)}" onclick="H.view('${u.id}')" style="cursor:pointer"><span>${esc(u.name)} ${u.seat ? '<small style="color:#a99d92">🎙️ di kursi</small>' : ''}</span><button class="sm" onclick="H.pick('${u.id}')">Pilih</button></div>`).join('') || '<p class="empty-t">Belum ada orang lain di room.</p>'}`);
 };
 H.pick = id => {
   const u = online[id]?.[0]; if (!u) return toast('Orang itu sudah keluar');
@@ -672,7 +1036,7 @@ function giftSheet() {
   const lock = !me.is_host && me.gift_tickets < 1;
   sheet(`<h3>Kirim Gift</h3><p class="sub">${me.is_host ? '👑 Host: unlimited gratis' : `🎟️ Tiket kamu: ${me.gift_tickets}`}</p>
    <div class="mrow" style="border-top:0;padding-top:0"><img src="${esc(gT.avatar)}"><span>Untuk: <b>${esc(gT.name)}</b></span><button class="sm o" onclick="H.gift()">Ganti</button></div>
-   <div class="gg">${GIFTS.map((g, i) => `<button class="gi ${lock ? 'lk' : ''}" onclick="H.send(${i})">${g.img ? `<img src="${esc(g.img)}">` : `<span class="e">${g.e}</span>`}<small>${g.name}</small></button>`).join('')}</div>
+   <div class="gg">${GIFTS.map((g, i) => `<button class="gi ${lock ? 'lk' : ''}" onclick="H.send(${i})">${g.img ? `<img src="${esc(g.img)}">` : `<span class="e">${g.e}</span>`}<small>${g.name}</small><small style="display:block;color:#ffd886">+${g.points} poin</small></button>`).join('')}</div>
    ${lock ? `<button class="btn" onclick="H.wa('Hay Host, mau buka gift dong!')">Buka 1 Gift (Chat Owner)</button>` : ''}`);
 }
 H.send = async i => {
@@ -696,9 +1060,9 @@ async function loadFriends() {
   pendingRows=(req||[]).map(x=>({...x,user:(senders||[]).find(u=>u.id===x.sender_id)}));
   $('#friendBox').innerHTML=`<button class="btn" onclick="H.findFriends()">＋ Tambah Teman</button>
     <h3 class="sec">Permintaan Pertemanan (${pendingRows.length})</h3>
-    ${pendingRows.map(x=>`<div class="friendcard"><img src="${esc(x.user?.avatar||'')}"><div class="finfo"><b>${esc(x.user?.name||'Anggota')}</b><small>Ingin berteman denganmu</small></div><button class="sm" onclick="H.acceptFriend('${x.id}')">Terima</button></div>`).join('')||'<p class="empty-t">Tidak ada permintaan baru.</p>'}
+    ${pendingRows.map(x=>`<div class="friendcard"><img src="${esc(x.user?.avatar||'')}" onclick="H.view('${x.sender_id}')" style="cursor:pointer"><div class="finfo"><b>${esc(x.user?.name||'Anggota')}</b><small>Ingin berteman denganmu</small></div><button class="sm" onclick="H.acceptFriend('${x.id}')">Terima</button></div>`).join('')||'<p class="empty-t">Tidak ada permintaan baru.</p>'}
     <h3 class="sec">Daftar Teman (${friendRows.length})</h3>
-    ${friendRows.map(u=>`<div class="friendcard"><img src="${esc(u.avatar||'')}"><div class="finfo"><b>${esc(u.name)}</b><small>Teman</small></div><button class="sm" onclick="H.openDM('${u.id}')">💬 Chat</button></div>`).join('')||'<p class="empty-t">Belum ada teman. Tambahkan teman untuk mulai chat.</p>'}`;
+    ${friendRows.map(u=>`<div class="friendcard"><img src="${esc(u.avatar||'')}" onclick="H.view('${u.id}')" style="cursor:pointer"><div class="finfo"><b>${esc(u.name)}</b><small>Teman</small></div><button class="sm" onclick="H.openDM('${u.id}')">💬 Chat</button></div>`).join('')||'<p class="empty-t">Belum ada teman. Tambahkan teman untuk mulai chat.</p>'}`;
 }
 H.findFriends=()=>sheet(`<h3>Tambah Teman</h3><p class="sub">Cari anggota menggunakan nama profilnya.</p><input id="friendSearch" class="inp" placeholder="Ketik nama teman..." oninput="H.searchFriends()" autocomplete="off"><div id="friendResults" style="margin-top:10px"><p class="empty-t">Masukkan nama untuk mencari.</p></div>`);
 H.searchFriends=async()=>{
@@ -706,7 +1070,7 @@ H.searchFriends=async()=>{
   const {data,error}=await sb.from('profiles').select('id,name,avatar').ilike('name',`%${q}%`).neq('id',uid).limit(15);
   if(error){$('#friendResults').textContent=error.message;return;}
   const ids=new Set(friendRows.map(x=>x.id));
-  $('#friendResults').innerHTML=(data||[]).map(u=>`<div class="friendcard"><img src="${esc(u.avatar||'')}"><div class="finfo"><b>${esc(u.name)}</b></div>${ids.has(u.id)?'<span class="sm o">Sudah teman</span>':`<button class="sm" onclick="H.requestFriend('${u.id}')">＋ Tambah</button>`}</div>`).join('')||'<p class="empty-t">Anggota tidak ditemukan.</p>';
+  $('#friendResults').innerHTML=(data||[]).map(u=>`<div class="friendcard"><img src="${esc(u.avatar||'')}" onclick="H.view('${u.id}')" style="cursor:pointer"><div class="finfo"><b>${esc(u.name)}</b></div>${ids.has(u.id)?'<span class="sm o">Sudah teman</span>':`<button class="sm" onclick="H.requestFriend('${u.id}')">＋ Tambah</button>`}</div>`).join('')||'<p class="empty-t">Anggota tidak ditemukan.</p>';
 };
 H.requestFriend=async id=>{
   const {error}=await sb.from('friend_requests').insert({sender_id:uid,recipient_id:id,status:'pending'});
@@ -727,7 +1091,7 @@ function renderDM(){
   if(!dmPeer)return;
   const lines=dmMessages.map(m=>{
     const mine=m.sender_id===uid,quoted=m.reply_to_id?dmMessages.find(x=>x.id===m.reply_to_id):null;
-    const body=esc(m.body).replace(/(@[\\w.-]+)/g,'<span class="tagged">$1</span>');
+    const body=esc(m.body).replace(/(@[\w.-]+)/g,'<span class="tagged">$1</span>');
     return `<div class="dmline ${mine?'mine':''}">${quoted?`<div class="replybox"><b>↩ ${quoted.sender_id===uid?'Kamu':esc(dmPeer.name)}</b>${esc(quoted.body.slice(0,100))}</div>`:''}${m.forwarded_from_id?'<small>↗ Pesan diteruskan</small>':''}${body}<small>${new Date(m.created_at).toLocaleString('id-ID',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'short'})}</small><div class="msgtools"><button onclick="H.replyDM('${m.id}')">↩ Balas</button><button onclick="H.forwardDM('${m.id}')">↗ Teruskan</button></div></div>`;
   }).join('');
   sheet(`<div class="dmhead"><img src="${esc(dmPeer.avatar||'')}"><div style="flex:1"><h3 style="margin:0">${esc(dmPeer.name)}</h3><p class="sub" style="margin:0">Pesan pribadi</p></div><button class="sm o" onclick="H.close()">Tutup</button></div><div class="dmfeed" id="dmFeed">${lines||'<p class="empty-t">Belum ada pesan. Mulai percakapan! 👋</p>'}</div><div id="dmReplyHint"></div><div class="dmcomposer"><button class="ib" onclick="H.tagDM()" title="Tag teman">@</button><input id="dmInput" class="inp" maxlength="200" placeholder="Tulis pesan..." onkeydown="if(event.key==='Enter')H.sendDM()"><button class="ib sendb" onclick="H.sendDM()">➤</button></div>`);
@@ -736,7 +1100,7 @@ function renderDM(){
 function renderDMReplyHint(){const e=$('#dmReplyHint');if(!e)return;const m=dmMessages.find(x=>x.id===dmReply);e.innerHTML=m?`<div class="replyhint">↩ Membalas: ${esc(m.body.slice(0,70))}<button onclick="H.cancelReplyDM()">✕</button></div>`:'';}
 H.replyDM=id=>{dmReply=id;renderDMReplyHint();$('#dmInput')?.focus()};
 H.cancelReplyDM=()=>{dmReply=null;renderDMReplyHint()};
-H.tagDM=()=>{if(!dmPeer)return;const i=$('#dmInput');i.value=(i.value?i.value+' ':'')+'@'+dmPeer.name.replace(/\\s+/g,'')+' ';i.focus()};
+H.tagDM=()=>{if(!dmPeer)return;const i=$('#dmInput');i.value=(i.value?i.value+' ':'')+'@'+dmPeer.name.replace(/\s+/g,'')+' ';i.focus()};
 H.sendDM=async()=>{
   if(!dmPeer)return;const i=$('#dmInput'),body=i.value.trim();if(!body)return;
   const {data,error}=await sb.from('direct_messages').insert({sender_id:uid,recipient_id:dmPeer.id,body,reply_to_id:dmReply||null}).select().single();
@@ -754,7 +1118,7 @@ H.tagRoom=async()=>{
   const {data,error}=await sb.from('profiles').select('id,name').neq('id',uid).limit(40);if(error)return toast(error.message);
   sheet(`<h3>Tag Anggota</h3><p class="sub">Pilih anggota untuk menambahkan tag ke pesan.</p>${(data||[]).map(u=>`<div class="mrow"><span>${esc(u.name)}</span><button class="sm" onclick="H.insertRoomTag('${esc(u.name).replace(/'/g,'&#39;')}')">@ Tag</button></div>`).join('')||'<p class="empty-t">Belum ada anggota lain.</p>'}`);
 };
-H.insertRoomTag=name=>{const i=$('#msg');i.value=(i.value?i.value+' ':'')+'@'+name.replace(/\\s+/g,'')+' ';H.close();i.focus()};
+H.insertRoomTag=name=>{const i=$('#msg');i.value=(i.value?i.value+' ':'')+'@'+name.replace(/\s+/g,'')+' ';H.close();i.focus()};
 H.forwardRoom=async id=>{
   const {data,error}=await sb.from('messages').select('id,body,name').eq('id',id).maybeSingle();if(error||!data)return toast('Pesan tidak ditemukan');
   H.doForwardRoom.sourceId=id;
@@ -771,37 +1135,44 @@ H.doForwardRoom=async friendId=>{
 /* ---------- 9. Suara: WebRTC (signaling via Supabase Broadcast) ----------
    Aturan: pendengar (tidak duduk) selalu menelepon penghuni kursi; antar penghuni kursi, uid lebih kecil yang menelepon.
    Koneksi yang gagal/putus otomatis dibuat ulang. */
+/* TURN dibutuhkan di jaringan seluler/NAT ketat (banyak operator HP). Isi dengan server TURN milikmu
+   (mis. akun gratis Metered.ca / Cloudflare Calls / coturn): [{urls:'turn:host:3478', username:'u', credential:'p'}] */
+const TURN_CUSTOM = [];
 const ICE = [
   { urls: ['stun:stun.l.google.com:19302', 'stun:stun1.l.google.com:19302', 'stun:stun.cloudflare.com:3478'] },
-  /* TURN cadangan untuk jaringan seluler/NAT ketat. Ganti dengan TURN milikmu sendiri bila perlu. */
-  { urls: ['turn:openrelay.metered.ca:80', 'turn:openrelay.metered.ca:443', 'turns:openrelay.metered.ca:443?transport=tcp'], username: 'openrelayproject', credential: 'openrelayproject' }];
+  ...TURN_CUSTOM,
+  /* TURN publik cadangan (bisa tidak stabil) */
+  { urls: ['turn:openrelay.metered.ca:80', 'turn:openrelay.metered.ca:443', 'turn:openrelay.metered.ca:80?transport=tcp', 'turns:openrelay.metered.ca:443?transport=tcp'], username: 'openrelayproject', credential: 'openrelayproject' }];
+const voiceWarn = () => { if (Date.now() - (voiceWarn.t || 0) > 20000) { voiceWarn.t = Date.now(); toast('Koneksi suara gagal. Jaringan mungkin butuh server TURN.') } };
 const GUM = { audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } };
-const W = {};
+const W = {}, ACS = new Set();
 let spk = true; /* speaker: dengar suara orang lain. Terpisah dari mic. */
 H.spk = () => {
-  spk = !spk; document.querySelectorAll('audio').forEach(a => a.muted = !spk);
+  spk = !spk; document.querySelectorAll('audio.rtc').forEach(a => a.muted = !spk);
   const b = $('#spkb'); b.textContent = spk ? '🔊' : '🔈'; b.classList.toggle('off', !spk);
   toast(spk ? 'Speaker aktif 🔊' : 'Speaker dimatikan: kamu tidak mendengar suara');
 };
 function watch(st, id) {
   if (W[id] === st) return; W[id] = st;
-  const ac = new (window.AudioContext || window.webkitAudioContext)(), an = ac.createAnalyser(); an.fftSize = 256;
+  const ac = new (window.AudioContext || window.webkitAudioContext)(), an = ac.createAnalyser(); an.fftSize = 256; ACS.add(ac);
   ac.createMediaStreamSource(st).connect(an); const b = new Uint8Array(an.frequencyBinCount);
   const iv = setInterval(() => {
-    if (!st.active) { clearInterval(iv); return ac.close() }
+    if (!st.active) { clearInterval(iv); ACS.delete(ac); return ac.close() }
     an.getByteFrequencyData(b); const v = b.reduce((a, c) => a + c, 0) / b.length;
     document.querySelectorAll(`[data-uid="${id}"]`).forEach(e => e.classList.toggle('talk', v > 12));
   }, 150);
 }
 /* HP sering memblokir suara otomatis: setiap sentuhan pertama membuka semua audio */
-document.addEventListener('pointerdown', () => document.querySelectorAll('audio').forEach(a => a.paused && a.play().catch(() => {})));
-document.addEventListener('visibilitychange', () => { if (!document.hidden) syncPeers() });
+const wake = () => { ACS.forEach(c => c.state === 'suspended' && c.resume().catch(() => {})); document.querySelectorAll('audio.rtc').forEach(a => { a.muted = !spk; a.paused && a.play().catch(() => {}) }) };
+document.addEventListener('pointerdown', wake);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) { wake(); syncPeers() } });
 
-const sig = (to, p) => room.send({ type: 'broadcast', event: 'sig', payload: { to, from: uid, ...p } });
+const sig = (to, p) => room?.send({ type: 'broadcast', event: 'sig', payload: { to, from: uid, ...p } });
 const seatedOthers = () => Object.values(seats).map(s => s.user_id).filter(i => i !== uid);
-function drop(k) {
+function drop(k, notify) {
   const o = pcs[k]; if (!o) return;
   clearTimeout(o.t); delete pcs[k]; try { o.pc.close() } catch {}
+  if (notify) sig(k, { bye: 1 }); /* beri tahu lawan agar langsung menyambung ulang, tidak menunggu timeout */
   document.getElementById('a' + k)?.remove(); delete W[k];
 }
 function redo(id, o) { if (pcs[id] !== o) return; if (o.init && seatedOthers().includes(id)) connect(id); else drop(id) }
@@ -811,15 +1182,17 @@ function mkpc(id, init) {
   const o = pcs[id] = { pc, init, q: early[id] || [] }; early[id] = [];
   pc.onicecandidate = e => e.candidate && sig(id, { c: e.candidate });
   pc.ontrack = e => {
+    const st = e.streams[0] || new MediaStream([e.track]);
     let a = document.getElementById('a' + id);
-    if (!a) { a = document.createElement('audio'); a.id = 'a' + id; a.autoplay = true; a.playsInline = true; document.body.append(a) }
-    a.muted = !spk; a.srcObject = e.streams[0]; watch(e.streams[0], id);
+    if (!a) { a = document.createElement('audio'); a.id = 'a' + id; a.className = 'rtc'; a.autoplay = true; a.playsInline = true; a.setAttribute('playsinline', ''); document.body.append(a) }
+    a.muted = !spk; a.srcObject = st; watch(st, id);
+    e.track.onunmute = () => a.play().catch(() => {});
     a.play().catch(() => toast('Ketuk layar untuk mengaktifkan suara 🔊'));
   };
   pc.onconnectionstatechange = () => {
     if (pcs[id] !== o) return;
     const st = pc.connectionState;
-    if (st === 'failed') redo(id, o);
+    if (st === 'failed') { voiceWarn(); redo(id, o) }
     else if (st === 'disconnected') setTimeout(() => pcs[id] === o && pc.connectionState !== 'connected' && redo(id, o), 3000);
   };
   if (stream) stream.getTracks().forEach(t => pc.addTrack(t, stream)); else if (init) pc.addTransceiver('audio', { direction: 'recvonly' });
@@ -831,8 +1204,9 @@ async function connect(id) {
   try { await o.pc.setLocalDescription(await o.pc.createOffer()); sig(id, { d: o.pc.localDescription }) } catch {}
 }
 const flush = o => o.q.splice(0).forEach(c => o.pc.addIceCandidate(c).catch(() => {}));
-async function onSig({ to, from, d, c }) {
+async function onSig({ to, from, d, c, bye }) {
   if (to !== uid) return;
+  if (bye) { drop(from); setTimeout(syncPeers, 600); return }
   try {
     if (d?.type === 'offer') {
       const ex = pcs[from];
@@ -847,7 +1221,7 @@ async function onSig({ to, from, d, c }) {
     }
   } catch {}
 }
-function closeAll() { Object.keys(pcs).forEach(drop) }
+function closeAll() { Object.keys(pcs).forEach(k => drop(k, true)) }
 function syncPeers() {
   if (!room || sitting) return;
   const ids = seatedOthers(), on = new Set(Object.keys(room.presenceState()));
@@ -858,7 +1232,7 @@ function syncPeers() {
   });
   ids.forEach(id => {
     const init = !mySeat || uid < id;
-    if (pcs[id] && pcs[id].init !== init) drop(id);
+    if (pcs[id] && (pcs[id].init !== init || ['failed', 'closed'].includes(pcs[id].pc.connectionState))) drop(id);
     if (init && !pcs[id]) connect(id);
   });
 }
