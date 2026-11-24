@@ -200,10 +200,6 @@ textarea.inp{resize:none;display:block}
 .storyring{width:66px;height:66px;border-radius:50%;padding:3px;margin:0 auto 5px;background:conic-gradient(#ffd886,#ff6a3c,#a84cff,#ffd886);box-shadow:0 0 12px #f5c15a55}
 .storyring img{width:100%;height:100%;border:3px solid #160e09;border-radius:50%;object-fit:cover;background:#21150e}
 .storyitem small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.storyview{position:fixed;inset:0;z-index:70;background:#050405f5;display:grid;place-items:center;padding:20px}
-.storyview img{max-width:min(94vw,520px);max-height:78dvh;object-fit:contain;border-radius:18px}
-.storyview .scap{max-width:520px;text-align:center;margin-top:12px}
-.storyview .sclose{position:absolute;right:20px;top:25px;font-size:28px}
 /* Border avatar koleksi (dibuka lewat host) */
 .mrow .av9w{flex:none}
 .bd-aurora{--bg:conic-gradient(#2cffb0,#1fb8ff,#a259ff,#2cffb0);--glow:#2cffb0aa;--deco:'✨'}
@@ -365,6 +361,41 @@ textarea.inp{resize:none;display:block}
 .sec{margin:18px 0 10px;color:var(--gold);font-size:17px}
 .empty-t{color:#8d8176;text-align:center;padding:24px 0;font-size:14px}
 @media(prefers-reduced-motion:reduce){.ring.talk,#fx .g{animation-duration:.01s}}
+/* Story viewer (layar penuh, progres, ketuk kiri/kanan) */
+.storyview{position:fixed;inset:0;z-index:70;background:#050405f8;display:flex;flex-direction:column;align-items:center;padding:calc(10px + env(safe-area-inset-top)) 12px calc(14px + env(safe-area-inset-bottom))}
+.storyview.hidden{display:none!important}
+.sv-top{width:100%;max-width:520px;position:relative;z-index:4}
+.sv-bars{display:flex;gap:4px;margin-bottom:10px}
+.sv-bars span{flex:1;height:3px;border-radius:9px;background:#ffffff33;overflow:hidden}
+.sv-bars i{display:block;height:100%;width:0;background:#fff}
+.sv-bars i.done{width:100%}.sv-bars i.run{animation:svfill 5s linear forwards}
+@keyframes svfill{from{width:0}to{width:100%}}
+.sv-who{display:flex;align-items:center;gap:10px}
+.sv-who img{width:38px;height:38px;border-radius:50%;object-fit:cover;border:2px solid var(--gold)}
+.sv-who>div{flex:1;min-width:0}.sv-who small{display:block;color:#b9ada0;font-weight:700;font-size:12px}
+.sv-who button{font-size:20px;width:38px;height:38px;border-radius:50%;background:#ffffff18}
+.sv-body{position:relative;z-index:1;flex:1;min-height:0;width:100%;max-width:520px;display:flex;align-items:center;justify-content:center}
+.sv-body img{max-width:100%;max-height:100%;object-fit:contain;border-radius:18px}
+.sv-cap{position:absolute;left:0;right:0;bottom:0;padding:34px 16px 14px;text-align:center;border-radius:0 0 18px 18px;background:linear-gradient(transparent,#000c);font-size:15px;overflow-wrap:anywhere}
+.sv-nav{position:absolute;z-index:3;top:0;bottom:0;width:38%}.sv-nav.l{left:0}.sv-nav.r{right:0}
+.storyring.seen{background:#6b6259;box-shadow:none}
+.storyadd{position:relative}.storyadd::after{content:'＋';position:absolute;right:2px;bottom:2px;width:22px;height:22px;border-radius:50%;background:var(--gold);color:#2a1700;display:grid;place-items:center;font-size:15px;font-weight:900;border:2px solid #160e09}
+/* Komentar postingan */
+.cmtfeed{max-height:46dvh;overflow:auto;display:flex;flex-direction:column;gap:10px;margin:8px 0}
+.cmt{display:flex;gap:9px;align-items:flex-start}
+.cmt>img{width:34px;height:34px;border-radius:50%;object-fit:cover;flex:none;cursor:pointer;background:#1c1410}
+.cmt .cb{flex:1;min-width:0;background:#ffffff0f;border-radius:14px;padding:7px 11px}
+.cmt .cb p{margin:2px 0 0;font-size:14px;word-break:break-word;white-space:pre-wrap}
+.cmt small{color:#9a8f86;font-size:11px;font-weight:700}
+.postbar{display:flex;gap:8px;align-items:center}
+/* Banner gelar Eksklusif/Sultan: tidak terpotong (teks mengkilap diberi ruang, glow tidak dipotong) */
+.svip.s10 span,.svip.s11 span{display:block;padding:.14em .22em;line-height:1.3}
+.nm2{display:flex;justify-content:center;width:100%;margin-top:4px;overflow:visible}
+.nm2 .svip.s10,.nm2 .svip.s11{display:flex;margin:0;font-size:5.6px;padding:2px 4px;letter-spacing:.08em}
+.nm2 .svip.s11{padding:2px 3px}
+.svip-ban{display:flex;justify-content:center;max-width:100%;margin:12px 0 6px;overflow:visible}
+.svip-ban .svip.big{font-size:clamp(18px,5.6vw,28px);margin:8px 0;max-width:100%}
+#svipPop .svip-card{overflow:visible}
 /* ===== Notifikasi ===== */
 .bell{position:relative}
 .nb{position:absolute;top:-4px;right:-4px;min-width:17px;height:17px;padding:0 4px;border-radius:99px;background:#e11d48;color:#fff;font:900 10px/17px Nunito,system-ui,sans-serif;font-style:normal;text-align:center;box-shadow:0 0 0 2px #0c0806;pointer-events:none}
@@ -470,7 +501,7 @@ textarea.inp{resize:none;display:block}
   <button data-t="me" onclick="H.tab('me')"><i>👤</i>Profil<em class="nb"></em></button>
 </nav>
 
-<div id="sheet" class="hidden"></div><div id="fx"></div><div id="svipPop" class="hidden"></div><div id="entranceFX" class="hidden"></div><div id="storyView" class="hidden"></div><div id="toast"></div><div id="nbanner"></div>
+<div id="sheet" class="hidden"></div><div id="fx"></div><div id="svipPop" class="hidden"></div><div id="entranceFX" class="hidden"></div><div id="storyView" class="storyview hidden"></div><div id="toast"></div><div id="nbanner"></div>
 
 <script type="module">
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
@@ -664,7 +695,7 @@ H.wa = msg => {
     try { location.href = u } catch {}
   }
 };
-H.close = () => $('#sheet').classList.add('hidden');
+H.close = () => { cmtPost = null; $('#sheet').classList.add('hidden') };
 const GFX_DUR = [3.6, 4.2, 4.8, 5.6, 6.8, 8.5];
 const GFX_COL = [['#ffd36e','#3a2a0066'],['#ffd36e','#3a2a0066'],['#ffd36e','#5b3a0099'],['#ffd36e','#8a5a1299'],['#ff8ad8','#6a1b5a99'],['#fff1a8','#b8420099']];
 const tierOf = p => p >= 15000 ? 5 : p >= 5000 ? 4 : p >= 1000 ? 3 : p >= 250 ? 2 : p >= 50 ? 1 : 0;
@@ -1075,6 +1106,15 @@ async function startRoom() {
   clearInterval(startRoom.bt); startRoom.bt = setInterval(() => { if (!document.hidden) { refreshMyBorders(); syncPoints() } }, 10000);
   loadMyGifts();
   loadPosts(true); loadStories();
+  sb.from('post_comments').select('id').limit(1).then(r => { /* channel terpisah: tabel opsional tidak merusak channel utama */
+    if (r.error) return; HAS_CMT = true; loadCmtCounts();
+    sb.channel('cmt').on('postgres_changes', { event: '*', schema: 'public', table: 'post_comments' }, p => {
+      loadCmtCounts();
+      if (cmtPost && $('#cmtFeed') && (p.eventType === 'DELETE' || String(p.new?.post_id) === String(cmtPost.id))) renderCmts();
+      if (p.eventType === 'INSERT' && p.new?.user_id !== uid && String(posts.find(x => String(x.id) === String(p.new.post_id))?.user_id) === String(uid))
+        pushNotif({ key: 'cm:' + p.new.id, type: 'comment', icon: '💬', from: p.new.user_id, text: 'mengomentari postinganmu: ' + String(p.new.body || '').slice(0, 60), tab: 'posts', act: { k: 'tab', t: 'posts' } });
+    }).subscribe();
+  });
 
   dbChannel = sb.channel('db')
     .on('postgres_changes', { event: '*', schema: 'public', table: 'seats' }, loadSeats)
@@ -1334,7 +1374,7 @@ function renderSeats() {
   for (let i = 1; i <= settings.seat_count; i++) {
     const s = seats[i], d = document.createElement('div'); d.className = 'seat';
     d.innerHTML = s
-      ? `<div class="ring r${hash(s.user_id) % 5}${ringBd(prof[s.user_id]?.points, prof[s.user_id]?.avatar_border, prof[s.user_id]?.is_host)}" data-uid="${s.user_id}"><img src="${esc(s.avatar)}">${bdImg(bdOf(prof[s.user_id]?.points, prof[s.user_id]?.avatar_border, prof[s.user_id]?.is_host))}<span class="mic">${s.muted ? '🔇' : '🎙️'}</span></div><div class="nm">${badge(prof[s.user_id]?.points)}${esc(s.name)}</div><div class="pill">${prof[s.user_id]?.points ?? 0}</div>`
+      ? `<div class="ring r${hash(s.user_id) % 5}${ringBd(prof[s.user_id]?.points, prof[s.user_id]?.avatar_border, prof[s.user_id]?.is_host)}" data-uid="${s.user_id}"><img src="${esc(s.avatar)}">${bdImg(bdOf(prof[s.user_id]?.points, prof[s.user_id]?.avatar_border, prof[s.user_id]?.is_host))}<span class="mic">${s.muted ? '🔇' : '🎙️'}</span></div>${lvl(prof[s.user_id]?.points) >= 10 ? `<div class="nm2">${badge(prof[s.user_id]?.points)}</div><div class="nm" style="margin-top:2px">${esc(s.name)}</div>` : `<div class="nm">${badge(prof[s.user_id]?.points)}${esc(s.name)}</div>`}<div class="pill">${prof[s.user_id]?.points ?? 0}</div>`
       : `<div class="ring empty">＋</div><div class="nm dim">${i}</div>`;
     /* tap kursi sendiri = turun; tap kursi orang lain = menu (lihat profil / kirim gift); tap kursi kosong = duduk */
     d.onclick = () => s ? (s.user_id === uid ? leaveSeat() : H.seatMenu(s.user_id)) : sit(i);
@@ -1386,30 +1426,105 @@ H.tab = t => {
 };
 
 /* ---------- 5. Postingan ---------- */
-let stories=[];
+let stories=[],stGroups=[],stCur=null,stSeen=new Set();
+const STORY_MS=864e5; /* story hanya hidup 24 jam; postingan tidak pernah kedaluwarsa */
+async function purgeMyStories(){
+  const since=new Date(Date.now()-STORY_MS).toISOString();
+  const {data}=await sb.from('stories').select('id,media_url').eq('user_id',uid).lt('created_at',since).limit(50);
+  if(!data?.length) return;
+  const paths=data.map(r=>{const m=String(r.media_url||'').split('/media/')[1];return m?decodeURIComponent(m.split('?')[0]):null}).filter(Boolean);
+  if(paths.length) await sb.storage.from('media').remove(paths).catch(()=>{});
+  await sb.from('stories').delete().in('id',data.map(r=>r.id));
+}
 async function loadStories(){
-  const {data,error}=await sb.from('stories').select('id,user_id,media_url,caption,created_at,profiles!user_id(name,avatar)').gt('expires_at',new Date().toISOString()).order('created_at',{ascending:false}).limit(100);
+  const since=new Date(Date.now()-STORY_MS).toISOString(),nowIso=new Date().toISOString();
+  const {data,error}=await sb.from('stories').select('id,user_id,media_url,caption,created_at,profiles!user_id(name,avatar)').gte('created_at',since).or(`expires_at.gt.${nowIso},expires_at.is.null`).order('created_at',{ascending:true}).limit(300);
   if(error){$('#storyBar').innerHTML='<small style="color:#a99d92">Story belum aktif. Jalankan SQL migrasi.</small>';return;}
-  stories=data||[]; const groups=[]; const seen=new Set();
-  for(const st of stories){if(!seen.has(st.user_id)){seen.add(st.user_id);groups.push(st)}}
-  $('#storyBar').innerHTML=`<div class="storyitem" onclick="H.addStory()"><div class="storyring"><img src="${esc(me.avatar||'')}" onerror="this.src=''"></div><small>＋ Story Saya</small></div>`+groups.map(st=>`<div class="storyitem" onclick="H.viewStory('${st.id}')"><div class="storyring"><img src="${esc(st.profiles?.avatar||'')}"></div><small>${esc(st.profiles?.name||'Anggota')}</small></div>`).join('');
+  stories=data||[];
+  const by={};stories.forEach(x=>(by[x.user_id]??=[]).push(x));
+  stGroups=Object.keys(by).sort((a,b)=>(a===uid?-1:b===uid?1:0)||by[b][by[b].length-1].created_at.localeCompare(by[a][by[a].length-1].created_at));
+  $('#storyBar').innerHTML=`<div class="storyitem" onclick="H.addStory()"><div class="storyring storyadd"><img src="${esc(me.avatar||'')}" onerror="this.src=''"></div><small>Story Saya</small></div>`+stGroups.map(u=>{const g=by[u],st=g[g.length-1],seen=g.every(x=>stSeen.has(String(x.id)));
+    return `<div class="storyitem" onclick="H.viewStory('${u}')"><div class="storyring${seen?' seen':''}"><img src="${esc(st.profiles?.avatar||'')}"></div><small>${esc(u===uid?'Story Saya':(st.profiles?.name||'Anggota'))}</small></div>`}).join('');
+  if(!loadStories.purged){loadStories.purged=1;purgeMyStories().catch(()=>{})}
+  if(!loadStories.iv)loadStories.iv=setInterval(()=>{if(inRoom)loadStories()},120000); /* story yang lewat 24 jam hilang otomatis */
 }
 H.addStory=()=>{draftImg=null;sheet(`<h3>Buat Story</h3><p class="sub">Story akan hilang otomatis setelah 24 jam.</p><textarea id="storyCaption" class="inp" rows="2" maxlength="180" placeholder="Tulis cerita singkat..."></textarea><div id="storyPrev"></div><button class="sm o" style="margin-top:10px" onclick="H.pickStory()">📷 Pilih Foto</button><button class="btn" style="margin-top:14px" onclick="H.publishStory()">Bagikan Story</button>`)};
-H.pickStory=()=>pick(async f=>{try{draftImg=await upImg(f,1080);$('#storyPrev').innerHTML=`<img class="pi" src="${esc(draftImg)}">`}catch(e){toast(e.message||'Upload gagal')}});
-H.publishStory=async()=>{if(!draftImg)return toast('Pilih foto untuk story dulu');const {error}=await sb.from('stories').insert({user_id:uid,media_url:draftImg,caption:($('#storyCaption')?.value||'').trim()});if(error)return toast(error.message);H.close();draftImg=null;toast('Story dibagikan! ✨');loadStories()};
-H.viewStory=id=>{const st=stories.find(x=>x.id===id);if(!st)return;const e=$('#storyView');e.innerHTML=`<button class="sclose" onclick="H.closeStory()">✕</button><div><img src="${esc(st.media_url)}"><div class="scap"><b>${esc(st.profiles?.name||'Anggota')}</b><p>${esc(st.caption||'')}</p><small>${ago(st.created_at)}</small></div></div>`;e.classList.remove('hidden')};
-H.closeStory=()=>{$('#storyView').classList.add('hidden');$('#storyView').innerHTML=''};
+H.pickStory=()=>pick(async f=>{try{toast('Mengunggah foto…');draftImg=await upImg(f,1080);$('#storyPrev').innerHTML=`<img class="pi" style="margin-top:10px" src="${esc(draftImg)}">`;toast('Foto siap ✅')}catch(e){toast(e.message||'Upload gagal')}});
+H.publishStory=async()=>{if(!draftImg)return toast('Pilih foto untuk story dulu');const {error}=await sb.from('stories').insert({user_id:uid,media_url:draftImg,caption:($('#storyCaption')?.value||'').trim(),expires_at:new Date(Date.now()+STORY_MS).toISOString()});if(error)return toast(error.message);H.close();draftImg=null;toast('Story dibagikan! ✨');loadStories()};
+/* Ketuk lingkaran story → tampil layar penuh; ketuk kanan/kiri untuk lanjut/kembali, otomatis lanjut tiap 5 detik */
+H.viewStory=(userId,idx)=>{
+  const list=stories.filter(x=>x.user_id===userId&&Date.now()-Date.parse(x.created_at)<STORY_MS);
+  if(!list.length){loadStories();return toast('Story sudah berakhir')}
+  stCur={userId,list,i:Math.min(Math.max(0,idx||0),list.length-1)};drawStory();
+};
+function drawStory(){
+  const c=stCur;if(!c)return;const st=c.list[c.i],e=$('#storyView'),own=st.user_id===uid;
+  clearTimeout(drawStory.t);stSeen.add(String(st.id));
+  e.innerHTML=`<div class="sv-top"><div class="sv-bars">${c.list.map((_,k)=>`<span><i class="${k<c.i?'done':k===c.i?'run':''}"></i></span>`).join('')}</div>
+    <div class="sv-who"><img src="${esc(st.profiles?.avatar||'')}"><div><b>${esc(st.profiles?.name||'Anggota')}</b><small>${ago(st.created_at)} · hilang dalam ${Math.max(1,Math.ceil((STORY_MS-(Date.now()-Date.parse(st.created_at)))/36e5))} jam</small></div>${own?'<button onclick="H.delStory()" title="Hapus story">🗑</button>':''}<button onclick="H.closeStory()">✕</button></div></div>
+    <div class="sv-body"><img src="${esc(st.media_url)}">${st.caption?`<div class="sv-cap">${esc(st.caption)}</div>`:''}<button class="sv-nav l" onclick="H.stepStory(-1)"></button><button class="sv-nav r" onclick="H.stepStory(1)"></button></div>`;
+  e.classList.remove('hidden');
+  drawStory.t=setTimeout(()=>H.stepStory(1),5000);
+}
+H.stepStory=d=>{
+  const c=stCur;if(!c)return;const n=c.i+d;
+  if(n<0)return drawStory();
+  if(n>=c.list.length){const nx=stGroups[stGroups.indexOf(c.userId)+1];return nx?H.viewStory(nx):H.closeStory()}
+  c.i=n;drawStory();
+};
+H.closeStory=()=>{clearTimeout(drawStory.t);stCur=null;$('#storyView').classList.add('hidden');$('#storyView').innerHTML='';loadStories()};
+H.delStory=async()=>{
+  const st=stCur?.list[stCur.i];if(!st||st.user_id!==uid||!confirm('Hapus story ini?'))return;
+  const {error}=await sb.from('stories').delete().eq('id',st.id);if(error)return toast(error.message);
+  const p=String(st.media_url||'').split('/media/')[1];if(p)sb.storage.from('media').remove([decodeURIComponent(p.split('?')[0])]).catch(()=>{});
+  H.closeStory();toast('Story dihapus');
+};
+/* ---------- 5B. Komentar postingan ---------- */
+let cmtCount = {}, HAS_CMT = false, cmtPost = null;
+async function loadCmtCounts() {
+  const ids = posts.map(p => p.id); if (!ids.length) return;
+  const { data, error } = await sb.from('post_comments').select('post_id').in('post_id', ids);
+  if (error) { HAS_CMT = false; return }
+  HAS_CMT = true; cmtCount = {}; (data || []).forEach(r => cmtCount[r.post_id] = (cmtCount[r.post_id] || 0) + 1); renderPosts();
+}
+function cmtHTML(c) {
+  const u = c.profiles || {}, can = c.user_id === uid || me.is_host || cmtPost?.user_id === uid;
+  return `<div class="cmt"><img src="${esc(u.avatar || '')}" onclick="H.view('${c.user_id}')"><div class="cb"><b>${u.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(u.points)}${esc(u.name || 'Anggota')}</b> <small>${ago(c.created_at)}</small><p>${esc(c.body).replace(/(@[\w.-]+)/g, '<span class="tagged">$1</span>')}</p></div>${can ? `<button class="del" onclick="H.delCmt(${Number(c.id)})" title="Hapus">🗑</button>` : ''}</div>`;
+}
+async function renderCmts() {
+  if (!cmtPost) return;
+  const { data, error } = await sb.from('post_comments').select('id,user_id,body,created_at,profiles!user_id(name,avatar,points,is_host' + BC() + ')').eq('post_id', cmtPost.id).order('created_at', { ascending: true }).limit(200);
+  if (error) { sheet(`<h3>💬 Komentar</h3><p class="sub">${esc(error.message)}<br>Jalankan stories_comments_migration.sql di Supabase.</p>`); return }
+  const old = $('#cmtInput'), keep = old?.value || '', focused = document.activeElement === old;
+  sheet(`<h3>💬 Komentar (${(data || []).length})</h3><div class="cmtfeed" id="cmtFeed">${(data || []).map(cmtHTML).join('') || '<p class="empty-t">Belum ada komentar. Jadilah yang pertama! 💬</p>'}</div>
+   <div class="dmcomposer"><input id="cmtInput" class="inp" maxlength="300" placeholder="Tulis komentar..." autocomplete="off" onkeydown="if(event.key==='Enter')H.sendCmt()"><button class="ib sendb" onclick="H.sendCmt()">➤</button></div>`);
+  const i = $('#cmtInput'); if (i) { i.value = keep; if (focused) i.focus() }
+  const f = $('#cmtFeed'); if (f) f.scrollTop = f.scrollHeight;
+}
+H.comments = async id => { cmtPost = posts.find(x => x.id === id) || { id }; await renderCmts(); $('#cmtInput')?.focus() };
+H.sendCmt = async () => {
+  const i = $('#cmtInput'), body = i?.value.trim(); if (!body || !cmtPost || H.sendCmt.busy) return;
+  H.sendCmt.busy = true; setTimeout(() => H.sendCmt.busy = false, 500);
+  const { error } = await sb.from('post_comments').insert({ post_id: cmtPost.id, user_id: uid, body });
+  if (error) return toast(error.message);
+  i.value = ''; await renderCmts(); loadCmtCounts(); $('#cmtInput')?.focus();
+};
+H.delCmt = async id => {
+  if (!confirm('Hapus komentar ini?')) return;
+  const { error } = await sb.from('post_comments').delete().eq('id', id); if (error) return toast(error.message);
+  await renderCmts(); loadCmtCounts();
+};
 async function loadPosts(quiet) {
   const { data, error } = await sb.from('posts').select('id,user_id,body,image,created_at,profiles!user_id(name,avatar,is_host,gifts_sent,points' + BC() + '),post_likes(user_id)').order('created_at', { ascending: false }).limit(50);
   if (error) { if (!quiet) toast('Postingan: ' + error.message); return }
-  posts = data || []; renderPosts(); renderProf();
+  posts = data || []; renderPosts(); renderProf(); loadCmtCounts();
 }
 function postHTML(p) {
   const u = p.profiles || {}, can = p.user_id === uid || me.is_host, L = p.post_likes || [], n = L.length, liked = L.some(l => l.user_id === uid);
   return `<article class="post"><div class="hd">${avatarHTML(u.avatar, u.points, '', 40, ` onclick="H.view('${p.user_id}')" style="cursor:pointer"`, u.avatar_border, u.is_host, p.user_id)}<div><b>${u.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(u.points)}${esc(u.name)}</b><small>${ago(p.created_at)}</small></div>
     ${can ? `<button class="del" onclick="H.delPost(${p.id})" title="Hapus">🗑</button>` : ''}</div>
     ${p.body ? `<p>${esc(p.body)}</p>` : ''}${p.image ? `<img class="pi" loading="lazy" src="${esc(p.image)}">` : ''}
-    <button class="likebtn ${liked ? 'on' : ''}" onclick="H.like(${p.id})">${liked ? '❤️' : '🤍'} ${n}</button></article>`;
+    <div class="postbar"><button class="likebtn ${liked ? 'on' : ''}" onclick="H.like(${p.id})">${liked ? '❤️' : '🤍'} ${n}</button><button class="likebtn" onclick="H.comments(${p.id})">💬 ${cmtCount[p.id] || 0}</button></div></article>`;
 }
 function renderPosts() { $('#plist').innerHTML = posts.map(postHTML).join('') || '<p class="empty-t">Belum ada postingan. Jadilah yang pertama! 📝</p>' }
 H.like = async id => {
