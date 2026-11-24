@@ -103,19 +103,66 @@ textarea.inp{resize:none;display:block}
 .cnt{display:flex;align-items:center;gap:16px;margin:8px 0 14px}.cnt button{width:40px;height:40px;border-radius:50%;background:#ffffff18;font-size:22px}
 #fx{position:fixed;inset:0;z-index:40;display:grid;place-items:center;pointer-events:none}
 #fx .g{text-align:center;animation:fl 4s ease-in-out forwards}
-#fx .g.fx-float{animation:giftFloat 5s ease-in-out forwards}
-#fx .g.fx-legend{animation:giftLegend 6.5s ease-in-out forwards}
-#fx .g.fx-float .big,#fx .g.fx-float img{filter:drop-shadow(0 0 34px #ffd36e) drop-shadow(0 0 70px #ff9d2e88)}
-#fx .g.fx-legend .big,#fx .g.fx-legend img{filter:drop-shadow(0 0 38px #fff1a8) drop-shadow(0 0 90px #ff8a00) drop-shadow(0 0 130px #ff3fb188)}
-#fx .g.fx-legend::before,#fx .g.fx-legend::after{content:'✦  ✧  ✦  ✧  ✦';position:absolute;left:50%;top:42%;width:100vw;color:#ffd36e;font-size:clamp(18px,5vw,32px);letter-spacing:18px;text-shadow:0 0 14px #fff;pointer-events:none;animation:giftSpark 2.2s ease-out infinite}
-#fx .g.fx-legend::after{content:'✧  ✦  ✧  ✦';top:55%;color:#ff8ad8;animation-delay:.7s}
 #fx .big{font-size:min(55vw,260px);line-height:1;filter:drop-shadow(0 0 30px var(--gold))}#fx img{width:min(70vw,320px)}
 #fx .ban{display:inline-block;margin-top:10px;padding:8px 20px;border-radius:999px;background:linear-gradient(135deg,#7a2630,#4a1219);border:2px solid #e0646b;font-size:17px}
 #fx .gift-fx-video{display:block;width:min(82vw,560px);max-height:62vh;object-fit:contain;border-radius:22px;filter:drop-shadow(0 0 28px #ffd36e);box-shadow:0 0 45px #ffb52b88}
 @keyframes fl{0%{transform:translateY(40vh) scale(.4);opacity:0}12%{transform:translateY(0) scale(1.1);opacity:1}20%{transform:scale(1)}85%{transform:translateY(-6vh);opacity:1}100%{transform:translateY(-14vh);opacity:0}}
-@keyframes giftFloat{0%{transform:translateY(42vh) scale(.45) rotate(-8deg);opacity:0}15%{transform:translateY(0) scale(1.08) rotate(4deg);opacity:1}32%{transform:translateY(-2vh) rotate(-3deg)}58%{transform:translateY(1vh) rotate(3deg)}82%{transform:translateY(-9vh) scale(1.04);opacity:1}100%{transform:translateY(-18vh) scale(.82) rotate(-2deg);opacity:0}}
-@keyframes giftLegend{0%{transform:translateY(45vh) scale(.25) rotate(-18deg);opacity:0}15%{transform:translateY(0) scale(1.2) rotate(8deg);opacity:1}28%{transform:scale(1) rotate(-4deg)}48%{transform:translateY(-3vh) scale(1.08) rotate(4deg)}72%{transform:translateY(-10vh) scale(1.14) rotate(-2deg);opacity:1}100%{transform:translateY(-24vh) scale(.65) rotate(8deg);opacity:0}}
-@keyframes giftSpark{0%{transform:translate(-50%,0) scale(.7);opacity:0}25%{opacity:1}100%{transform:translate(-50%,-18vh) scale(1.4);opacity:0}}
+/* ===== Gift FX berjenjang ===== */
+#fx .gs{position:absolute;inset:0;display:grid;place-items:center;overflow:hidden}
+#fx .gs.t5{animation:gShake .5s linear 1.2s 3}
+#fx .gm{position:relative;text-align:center;will-change:transform;animation-duration:var(--gd);animation-timing-function:ease-in-out;animation-fill-mode:both}
+#fx .gs.t0 .big,#fx .gs.t1 .big{font-size:min(42vw,190px)}
+#fx .gs.t3 .big,#fx .gs.t3 img{filter:drop-shadow(0 0 34px #ffd36e) drop-shadow(0 0 70px #ff9d2e88)}
+#fx .gs.t4 .big,#fx .gs.t4 img{filter:drop-shadow(0 0 38px #fff1a8) drop-shadow(0 0 90px #ff8a00) drop-shadow(0 0 130px #ff3fb188)}
+#fx .gs.t5 .big{font-size:min(70vw,340px)}
+#fx .gs.t5 .big,#fx .gs.t5 img{filter:drop-shadow(0 0 44px #fff) drop-shadow(0 0 100px #ffb52b) drop-shadow(0 0 150px #ff3fb1)}
+#fx .vig{position:absolute;inset:0;background:radial-gradient(circle,transparent 40%,var(--gc2) 130%);opacity:0;animation:gVig var(--gd) ease both}
+#fx .rays{position:absolute;left:50%;top:50%;width:160vmax;height:160vmax;margin:-80vmax 0 0 -80vmax;background:repeating-conic-gradient(var(--gc) 0 6deg,transparent 6deg 18deg);-webkit-mask-image:radial-gradient(circle,#000,transparent 62%);mask-image:radial-gradient(circle,#000,transparent 62%);opacity:0;animation:gRays var(--gd) linear both}
+#fx .flash{position:absolute;inset:0;background:radial-gradient(circle,#fff,transparent 60%);opacity:0;animation:gFlash var(--gd) linear both}
+#fx i.p,#fx i.r{position:absolute;font-style:normal;opacity:0;font-size:var(--s,20px)}
+#fx i.p{left:50%;top:50%;animation:gBurst 2.4s ease-out var(--dl) both}
+#fx i.r{top:-10vh;left:var(--x);animation:gRain var(--rd) linear var(--dl) both}
+#fx .gban{position:absolute;left:0;right:0;bottom:16%;text-align:center;animation:gBan var(--gd) ease both}
+@keyframes gVig{0%{opacity:0}15%{opacity:.7}80%{opacity:.5}100%{opacity:0}}
+@keyframes gRays{0%{opacity:0;transform:rotate(0)}12%{opacity:.4}85%{opacity:.4}100%{opacity:0;transform:rotate(60deg)}}
+@keyframes gFlash{0%,8%{opacity:0}10%{opacity:.9}18%{opacity:0}60%{opacity:0}62%{opacity:.5}70%,100%{opacity:0}}
+@keyframes gBurst{0%{transform:translate(-50%,-50%) scale(.3);opacity:0}15%{opacity:1}100%{transform:translate(calc(-50% + var(--tx)),calc(-50% + var(--ty))) scale(1);opacity:0}}
+@keyframes gRain{0%{transform:translateY(0) rotate(0);opacity:0}8%{opacity:1}100%{transform:translateY(115vh) rotate(var(--rot,360deg));opacity:.9}}
+@keyframes gBan{0%,6%{opacity:0;transform:translateY(14px)}14%,82%{opacity:1;transform:none}100%{opacity:0}}
+@keyframes gShake{0%,100%{transform:translate(0,0)}25%{transform:translate(-5px,3px)}50%{transform:translate(4px,-3px)}75%{transform:translate(-3px,-2px)}}
+@keyframes m-vid{0%{opacity:0;transform:scale(.8)}8%{opacity:1;transform:scale(1)}100%{opacity:1}}
+@keyframes m-pop{0%{transform:scale(.2);opacity:0}15%{transform:scale(1.2);opacity:1}25%{transform:scale(1)}85%{opacity:1}100%{transform:scale(.8);opacity:0}}
+@keyframes m-rise{0%{transform:translateY(45vh) scale(.5);opacity:0}15%{transform:translateY(0) scale(1.1);opacity:1}80%{transform:translateY(-6vh) scale(1.05);opacity:1}100%{transform:translateY(-22vh) scale(.8);opacity:0}}
+@keyframes m-flame{0%{transform:translateY(40vh) scale(.4);opacity:0}15%{transform:translateY(0) scale(1.1) rotate(-4deg);opacity:1}30%{transform:scale(1.2) rotate(4deg)}45%{transform:scale(1) rotate(-4deg)}60%{transform:scale(1.18) rotate(3deg)}85%{opacity:1}100%{transform:translateY(-20vh) scale(.7);opacity:0}}
+@keyframes m-drop{0%{transform:translateY(-70vh) rotate(-20deg);opacity:0}18%{transform:translateY(0) rotate(6deg);opacity:1}26%{transform:translateY(-8vh)}34%{transform:translateY(0) rotate(0)}85%{opacity:1}100%{transform:translateY(10vh) scale(.8);opacity:0}}
+@keyframes m-rocket{0%{transform:translate(-45vw,55vh) scale(.6);opacity:0}12%{opacity:1}100%{transform:translate(45vw,-65vh) scale(1.3);opacity:0}}
+@keyframes m-beat{0%{transform:scale(.2);opacity:0}12%{transform:scale(1);opacity:1}22%{transform:scale(1.25)}32%{transform:scale(1)}42%{transform:scale(1.25)}52%{transform:scale(1)}85%{transform:scale(1.05);opacity:1}100%{transform:scale(1.4);opacity:0}}
+@keyframes m-shake{0%{transform:translateY(40vh) scale(.5);opacity:0}15%{transform:translateY(0) scale(1.1);opacity:1}25%{transform:rotate(-8deg)}35%{transform:rotate(8deg)}45%{transform:rotate(-8deg)}55%{transform:rotate(8deg) scale(1.15)}65%{transform:rotate(0) scale(1)}85%{opacity:1}100%{transform:translateY(-18vh) scale(.8);opacity:0}}
+@keyframes m-spin{0%{transform:scale(.1) rotate(-540deg);opacity:0}25%{transform:scale(1.15) rotate(0);opacity:1}35%{transform:scale(1)}85%{opacity:1}100%{transform:scale(1.6) rotate(25deg);opacity:0}}
+@keyframes m-shine{0%{transform:scale(.2) rotateY(0);opacity:0}25%{transform:scale(1.2) rotateY(360deg);opacity:1}40%{transform:scale(1) rotateY(360deg)}60%{transform:scale(1.1) rotateY(720deg)}85%{opacity:1}100%{transform:scale(1.5) rotateY(720deg);opacity:0}}
+@keyframes m-sway{0%{transform:translateY(40vh) rotate(-12deg);opacity:0}15%{transform:translateY(0) rotate(10deg);opacity:1}35%{transform:rotate(-10deg)}55%{transform:rotate(10deg)}75%{transform:rotate(-8deg);opacity:1}100%{transform:translateY(-20vh) rotate(6deg);opacity:0}}
+@keyframes m-drive{0%{transform:translateX(-95vw);opacity:0}8%,92%{opacity:1}100%{transform:translateX(95vw);opacity:0}}
+@keyframes m-gallop{0%{transform:translate(95vw,0);opacity:0}8%{opacity:1}15%{transform:translate(70vw,-8vh)}30%{transform:translate(45vw,0)}45%{transform:translate(20vw,-8vh)}60%{transform:translate(-5vw,0)}75%{transform:translate(-30vw,-8vh)}92%{opacity:1}100%{transform:translate(-95vw,0);opacity:0}}
+@keyframes m-fly{0%{transform:translate(-60vw,40vh) rotate(-15deg);opacity:0}12%{opacity:1}100%{transform:translate(60vw,-45vh) rotate(-15deg);opacity:0}}
+@keyframes m-swoop{0%{transform:translate(-95vw,-20vh);opacity:0}8%{opacity:1}25%{transform:translate(-45vw,15vh)}50%{transform:translate(0,-15vh)}75%{transform:translate(45vw,15vh)}92%{opacity:1}100%{transform:translate(95vw,-20vh);opacity:0}}
+@keyframes m-orbit{0%{transform:rotate(-360deg) scale(.1);opacity:0}25%{transform:rotate(0) scale(1.2);opacity:1}85%{transform:rotate(40deg) scale(1.05);opacity:1}100%{transform:rotate(120deg) scale(.4);opacity:0}}
+@keyframes m-meteor{0%{transform:translate(60vw,-70vh) scale(.5) rotate(-20deg);opacity:0}15%{opacity:1}30%{transform:translate(0,0) scale(1.3)}70%{transform:translate(-6vw,2vh) scale(1.1);opacity:1}100%{transform:translate(-50vw,60vh) scale(.5);opacity:0}}
+@keyframes m-ufo{0%{transform:translate(-80vw,-25vh);opacity:0}10%{opacity:1}25%{transform:translate(-20vw,-5vh) rotate(8deg)}40%{transform:translate(0,-12vh) rotate(-8deg)}60%{transform:translate(0,-5vh) rotate(8deg)}80%{transform:translate(30vw,-20vh) rotate(-6deg);opacity:1}100%{transform:translate(95vw,-35vh);opacity:0}}
+@keyframes m-wings{0%{transform:scale(.3);opacity:0}15%{transform:scale(1.1);opacity:1}25%{transform:scaleX(.7)}35%{transform:scaleX(1.1)}45%{transform:scaleX(.7)}55%{transform:scaleX(1.1)}65%{transform:scaleX(.75)}85%{transform:scale(1);opacity:1}100%{transform:translateY(-20vh);opacity:0}}
+@keyframes m-bounce{0%{transform:translateY(50vh) scale(.5);opacity:0}15%{transform:translateY(0);opacity:1}25%{transform:translateY(-10vh)}35%{transform:translateY(0)}45%{transform:translateY(-6vh)}55%{transform:translateY(0)}85%{opacity:1}100%{transform:translateY(-14vh);opacity:0}}
+@keyframes m-flutter{0%{transform:translate(-70vw,20vh);opacity:0}10%{opacity:1}30%{transform:translate(-30vw,-10vh)}50%{transform:translate(0,10vh)}70%{transform:translate(30vw,-12vh)}90%{opacity:1}100%{transform:translate(70vw,-5vh);opacity:0}}
+#entranceFX .ent-video.alpha{mix-blend-mode:normal}
+/* Hubungan */
+.relcard{padding:12px;border-radius:16px;margin:8px 0;background:var(--glass);border:1.5px solid var(--rc,#f5c15a55);box-shadow:0 0 12px var(--rg,transparent)}
+.relcard .rh{display:flex;align-items:center;gap:10px}
+.relcard .rh img{width:42px;height:42px;border-radius:50%;object-fit:cover;border:2px solid var(--rc,var(--gold))}
+.relcard .rh>div{flex:1;min-width:0}
+.relcard small{color:#a99d92;font-weight:700}
+.relcard .prog{width:100%}
+.relk{font-style:normal;font-size:10px;border-radius:8px;padding:1px 7px;background:var(--rc,var(--gold));color:#1a0f00}
+.rl1{--rc:#8fa3b8}.rl2{--rc:#5ec8ff}.rl3{--rc:#b48bff}.rl4{--rc:#ff8ad8;--rg:#ff8ad855}.rl5{--rc:#ffb36b;--rg:#ff6a3c66}.rl6{--rc:#ffd36e;--rg:#ffc34daa}
+#svipPop .rel-card{border-color:#ff8ad8;background:radial-gradient(circle at 50% 0%,#6a1b5a,#1d0a1a 58%,#100b08);box-shadow:0 0 28px #ff8ad899}
+.gi.lk>small.tkc{opacity:1;filter:none;color:#9fe3ff}
 #toast{position:fixed;left:50%;top:calc(14px + env(safe-area-inset-top));transform:translateX(-50%);z-index:50;background:#000d;border:1px solid var(--gold);border-radius:999px;padding:8px 18px;font-size:14px;opacity:0;transition:.25s;pointer-events:none;text-align:center;max-width:92vw}
 #toast.on{opacity:1}
 /* Popup kenaikan SVIP: tampil tepat di tengah layar untuk semua anggota room */
@@ -275,8 +322,8 @@ textarea.inp{resize:none;display:block}
 .prog{width:70%;height:8px;border-radius:99px;background:#ffffff18;overflow:hidden;margin:6px auto}
 .prog i{display:block;height:100%;background:linear-gradient(90deg,#ffd886,#d9962f)}
 .ib.off{opacity:.45}
-.lk{display:inline-flex;align-items:center;gap:6px;margin-top:6px;padding:5px 14px;border-radius:999px;background:#ffffff14;font-size:14px}
-.lk.on{background:#7a263088;border:1px solid #e0646b}
+.likebtn{display:inline-flex;align-items:center;gap:6px;margin-top:6px;padding:5px 14px;border-radius:999px;background:#ffffff14;font-size:14px}
+.likebtn.on{background:#7a263088;border:1px solid #e0646b}
 .pav{width:112px;height:112px;border-radius:50%;object-fit:cover;border:3px solid var(--gold);box-shadow:0 0 18px #f5c15a66;background:#1c1410}
 .pf h2{margin:10px 0 6px;font-size:22px}
 .stats{display:flex;gap:8px;justify-content:center;margin:8px 0 14px}
@@ -292,7 +339,7 @@ textarea.inp{resize:none;display:block}
 <section id="setup" class="scr" style="display:flex;flex-direction:column;justify-content:center">
   <button class="ib" style="position:absolute;right:14px;top:calc(12px + env(safe-area-inset-top))" onclick="H.hostLogin()" title="Login Host">👑</button>
   <h1 style="font-size:30px;margin:0;color:var(--gold)">Welcome Penyelamat Bumi</h1>
-  <p class="sub" style="margin-top:4px">Upload foto profil dari HP-mu dan isi nama panggila.</p>
+  <p class="sub" style="margin-top:4px">Upload foto profil dari HP-mu dan isi nama panggilan.</p>
   <div class="avsel" id="avs"></div>
   <input id="nm" class="inp" maxlength="16" placeholder="Nama panggilan">
   <button class="btn" style="margin-top:16px" onclick="H.enter()">Masuk Room</button>
@@ -381,6 +428,20 @@ const GIFTS = [
   {name:'Istana Kristal',e:'🏯',img:'',points:3200},{name:'Raja Phoenix',e:'🪽',img:'',points:6000},{name:'Naga Petir',e:'🐲',img:'',points:7500},
   {name:'Planet Cinta',e:'🪐',img:'',points:9000},{name:'Supernova',e:'☄️',img:'',points:12000},{name:'Singgasana Emas',e:'🪑',img:'',points:15000},
   {name:'Kapal Angkasa',e:'🛸',img:'',points:18000},{name:'Sayap Malaikat',e:'🪽',img:'',points:22000},{name:'Naga Kaisar',e:'🐉',img:'',points:30000}];
+const GIFT_FX = ['flame','drop','rocket','beat','shake','spin','sway','pop','shine','drive','gallop','rise','fly','swoop','orbit','shine','sway','drop','flutter','bounce','drive','rise','flame','swoop','orbit','meteor','rise','ufo','wings','swoop'];
+/* Harga gift dalam koin emas (g.coin) mengikuti EXP-nya: 1 koin = 1 EXP. Tabel gift_catalog di Supabase (kolom coins) bisa menimpa. */
+GIFTS.forEach((g, i) => { g.fx = GIFT_FX[i] || 'pop'; g.coin = g.points; });
+/* Hubungan: level naik dari total poin gift yang dikirim antar dua orang (hitungan di server) */
+const REL = {
+  sahabat:{name:'Sahabat',e:'💛',desc:'Teman dekat yang selalu ada.'},
+  pasangan:{name:'Pasangan',e:'💍',desc:'Anniversary dihitung otomatis. Maksimal 1 pasangan.'},
+  saudara:{name:'Kakak-Adik',e:'🤝',desc:'Keluarga di dalam room.'},
+  duet:{name:'Partner Duet',e:'🎤',desc:'Teman bernyanyi dan ngobrol di kursi.'}};
+const REL_LV = [0, 300, 1500, 5000, 15000, 40000];
+const REL_TITLES = ['Baru Kenal', 'Akrab', 'Dekat', 'Erat', 'Setia', 'Abadi'];
+const relLvl = s => REL_LV.reduce((l, t, i) => (s || 0) >= t ? i + 1 : l, 1);
+const relDays = t => Math.floor((Date.now() - Date.parse(t)) / 864e5) + 1;
+let HAS_REL = false, myRel = [], relNoted = false, relChannel = null;
 const EXCLUSIVE_GIFT_START = 15; // hadiah nomor 16–30 bisa diberi animasi video eksklusif oleh Host
 /* Tema background chat. `bg` = nilai CSS background. Tema 'default' selalu terbuka. */
 const THEMES = [
@@ -445,6 +506,8 @@ const pcs = {}, early = {};
 let dbChannel = null;
 let messageSyncTimer = null;
 const renderedMessageIds = new Set();
+const msgCache = new Map();
+let tagNames = [];
 
 function toast(t) { const e = $('#toast'); e.textContent = t; e.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(() => e.classList.remove('on'), 2600) }
 function sheet(h) { const s = $('#sheet'); s.innerHTML = `<div>${h}</div>`; s.classList.remove('hidden'); s.onclick = e => e.target === s && H.close() }
@@ -457,17 +520,29 @@ H.wa = msg => {
   }
 };
 H.close = () => $('#sheet').classList.add('hidden');
+const GFX_DUR = [3.6, 4.2, 4.8, 5.6, 6.8, 8.5];
+const GFX_COL = [['#ffd36e','#3a2a0066'],['#ffd36e','#3a2a0066'],['#ffd36e','#5b3a0099'],['#ffd36e','#8a5a1299'],['#ff8ad8','#6a1b5a99'],['#fff1a8','#b8420099']];
+const tierOf = p => p >= 15000 ? 5 : p >= 5000 ? 4 : p >= 1000 ? 3 : p >= 250 ? 2 : p >= 50 ? 1 : 0;
+/* Efek gift: gerakan khas tiap item (g.fx) + lapisan megah sesuai poin (tier 0-5). Efek kecil tidak memotong efek besar. */
 function showFx(g, who, to, giftIndex) {
-  const video = giftVideos?.[giftIndex]?.url || '';
-  const points = Number(g?.points || 0);
-  // 0–999 poin: efek biasa, 1.000–4.999: melayang, 5.000+: legenda.
-  const tier = points >= 5000 ? 'fx-legend' : points >= 1000 ? 'fx-float' : '';
-  const visual = video && /^https:\/\//i.test(video)
+  const named = !!g?.name, points = Number(g?.points || 0), tier = named ? tierOf(points) : 0;
+  const video = named ? (giftVideos?.[giftIndex]?.url || '') : '', hasVid = /^https:\/\//i.test(video);
+  if (showFx.until > Date.now() && tier < (showFx.tier ?? 0)) return;
+  const gd = hasVid ? 12 : GFX_DUR[tier], [gc, gc2] = GFX_COL[tier], mot = hasVid ? 'vid' : (g?.fx || 'pop');
+  showFx.tier = tier; showFx.until = Date.now() + gd * 1000;
+  const rnd = (a, b) => a + Math.random() * (b - a), pick1 = a => a[Math.floor(Math.random() * a.length)];
+  const burst = n => Array.from({ length: n }, () => { const a = Math.random() * 6.283, r = rnd(18, 48);
+    return `<i class="p" style="--tx:${Math.round(Math.cos(a) * r)}vmin;--ty:${Math.round(Math.sin(a) * r)}vmin;--dl:${rnd(.2, 1.8).toFixed(2)}s;--s:${Math.round(rnd(14, 30))}px">${pick1(['✨','⭐','💫','✦'])}</i>` }).join('');
+  const rain = (n, set) => Array.from({ length: n }, () => `<i class="r" style="--x:${Math.round(rnd(2, 96))}vw;--dl:${rnd(0, 2.8).toFixed(2)}s;--rd:${rnd(2.2, 3.6).toFixed(2)}s;--s:${Math.round(rnd(18, 34))}px;--rot:${Math.round(rnd(-360, 360))}deg">${pick1(set)}</i>`).join('');
+  const nR = [0, 0, 0, 12, 24, 40][tier], set = tier >= 5 ? ['🪙','💎','👑','✨'] : tier >= 4 ? ['🪙','✨','💎'] : ['✨','⭐'];
+  const layers = (tier >= 2 ? '<div class="vig"></div>' : '') + (tier >= 3 ? '<div class="rays"></div>' : '') + (tier >= 4 ? '<div class="flash"></div>' : '')
+    + burst([0, 8, 14, 20, 24, 30][tier]) + (nR ? rain(nR, set) : '');
+  const visual = hasVid
     ? `<video class="gift-fx-video" src="${esc(video)}" autoplay muted playsinline preload="auto" onended="H.hideGiftFx()" onerror="H.hideGiftFx()"></video>`
-    : (g.img ? `<img src="${esc(g.img)}">` : `<div class="big">${g.e}</div>`);
-  const label = `${esc(who)} mengirim ${esc(g?.name || 'hadiah')}${to ? ' ke ' + esc(to) : ''} · ${points.toLocaleString('id-ID')} poin!`;
-  $('#fx').innerHTML = `<div class="g ${tier}">${visual}<br><span class="ban">${label}</span></div>`;
-  clearTimeout(showFx.t); showFx.t = setTimeout(() => $('#fx').innerHTML = '', video ? 12000 : (tier ? 6500 : 4000));
+    : (g?.img ? `<img src="${esc(g.img)}">` : `<div class="big">${g?.e || '🎁'}</div>`);
+  const label = named ? `${esc(who)} mengirim ${esc(g.name)}${to ? ' ke ' + esc(to) : ''} · ${points.toLocaleString('id-ID')} poin!` : esc(who);
+  $('#fx').innerHTML = `<div class="gs t${tier}" style="--gd:${gd}s;--gc:${gc};--gc2:${gc2}">${layers}<div class="gm" style="animation-name:m-${mot}">${visual}</div><div class="gban"><span class="ban">${label}</span></div></div>`;
+  clearTimeout(showFx.t); showFx.t = setTimeout(() => { $('#fx').innerHTML = ''; showFx.until = 0 }, hasVid ? 12000 : gd * 1000 + 500);
   const player = $('#fx video'); if (player) player.play().catch(() => {});
 }
 H.hideGiftFx = () => { clearTimeout(showFx.t); $('#fx').innerHTML = ''; };
@@ -520,23 +595,61 @@ function unicornSVG() {
 }
 const ART = { 5: phoenixSVG, 6: () => dragonSVG(), 7: unicornSVG, 8: () => dragonSVG({ wings: 1, bolts: 1 }), 9: () => dragonSVG({ wings: 1, crown: 1, halo: 1 }) };
 const artHTML = lv => ENTRANCE[lv].img ? `<img src="${ENTRANCE[lv].img}" alt="">` : ART[lv]();
+const entQueue = []; let entBusy = false, entResolve = null, entLoadedAt = 0; const entSeen = {};
 function hideEntranceFx() {
   const e = $('#entranceFX'); e.classList.add('hidden'); e.innerHTML = '';
-  clearTimeout(showEntranceFx.t);
+  clearTimeout(playEntrance.t);
+  const r = entResolve; entResolve = null; if (r) r();
 }
+/* Video gagal dimuat/diputar: pakai animasi bawaan level itu supaya entrance tetap muncul */
+H.entVideoFail = () => {
+  const cur = $('#entranceFX .ent'), w = cur?.querySelector('.ent-video-wrap'); if (!w) return;
+  const lv = Number(cur.dataset.lv);
+  w.outerHTML = `<div class="ent-move"><div class="ent-art">${artHTML(lv)}</div></div>`;
+  const lab = cur.querySelector('.ent-label small'); if (lab) lab.textContent = ENTRANCE[lv].t;
+  clearTimeout(playEntrance.t); playEntrance.t = setTimeout(hideEntranceFx, ENTRANCE[lv].dur * 1000);
+};
+/* Entrance masuk antrean: beberapa SVIP yang masuk bersamaan tampil bergantian, tidak saling menimpa */
 function showEntranceFx(name, level) {
+  entQueue.push({ name, level }); if (entQueue.length > 5) entQueue.shift();
+  pumpEntrance();
+}
+async function pumpEntrance() {
+  if (entBusy) return; entBusy = true;
+  try { while (entQueue.length) { const x = entQueue.shift(); await playEntrance(x.name, x.level); } }
+  finally { entBusy = false; }
+}
+async function playEntrance(name, level) {
   const lv = Math.min(9, Math.max(5, Number(level) || 5)), v = ENTRANCE[lv];
-  const video = entranceVideos?.[lv]?.url || entranceVideos?.[lv] || '';
-  const sp = Array.from({ length: 18 }, () => { const a = Math.random() * 6.283, r = 22 + Math.random() * 40;
+  if (!entranceVideos?.[lv]?.url && Date.now() - entLoadedAt > 30000) { entLoadedAt = Date.now(); await loadEntranceVideos(); }
+  const video = entranceVideos?.[lv]?.url || '', ok = /^https:\/\//i.test(video), alpha = /\.webm(\?|$)/i.test(video);
+  const sp = ok ? '' : Array.from({ length: 18 }, () => { const a = Math.random() * 6.283, r = 22 + Math.random() * 40;
     return `<i style="--tx:${Math.round(Math.cos(a) * r)}vmin;--ty:${Math.round(Math.sin(a) * r)}vmin;--dl:${(Math.random() * 2).toFixed(2)}s"></i>` }).join('');
-  const e = $('#entranceFX');
-  const visual = video && /^https:\/\//i.test(video)
-    ? `<div class="ent-video-wrap"><video class="ent-video" src="${esc(video)}" autoplay muted playsinline preload="auto" onended="H.hideEntranceFx()" onerror="H.hideEntranceFx()"></video></div>`
+  const visual = ok
+    ? `<div class="ent-video-wrap"><video class="ent-video${alpha ? ' alpha' : ''}" src="${esc(video)}" autoplay muted playsinline preload="auto" onended="H.hideEntranceFx()" onerror="H.entVideoFail()"></video></div>`
     : `<div class="ent-move"><div class="ent-art">${artHTML(lv)}</div></div>`;
-  e.innerHTML = `<div class="ent ent${lv}" style="--dur:${v.dur}s;--c1:${v.c1};--c2:${v.c2}"><div class="ent-bg"></div><div class="ent-rays"></div><div class="ent-burst"></div><div class="ent-sparks">${sp}</div>${visual}<div class="ent-label">${esc(name)} · SVIP ${lv}<small>${video ? 'SPECIAL VIDEO ENTRANCE' : v.t}</small></div></div>`;
-  e.classList.remove('hidden'); clearTimeout(showEntranceFx.t);
-  showEntranceFx.t = setTimeout(hideEntranceFx, (video ? 15 : v.dur) * 1000);
-  const player = e.querySelector('video'); if (player) player.play().catch(() => toast('Browser memblokir autoplay video. Ketuk layar untuk memulai.'));
+  const e = $('#entranceFX');
+  await new Promise(res => {
+    entResolve = res;
+    e.innerHTML = `<div class="ent ent${lv}" data-lv="${lv}" style="--dur:${ok ? 6 : v.dur}s;--c1:${v.c1};--c2:${v.c2}">${ok ? '' : `<div class="ent-bg"></div><div class="ent-rays"></div><div class="ent-burst"></div><div class="ent-sparks">${sp}</div>`}${visual}<div class="ent-label">${esc(name)} · SVIP ${lv}<small>${ok ? 'SPECIAL VIDEO ENTRANCE' : v.t}</small></div></div>`;
+    e.classList.remove('hidden');
+    clearTimeout(playEntrance.t); playEntrance.t = setTimeout(hideEntranceFx, (ok ? 45 : v.dur) * 1000);
+    const player = e.querySelector('video'); if (player) player.play().catch(() => H.entVideoFail());
+  });
+}
+/* Dipanggil untuk setiap anggota yang masuk (lewat broadcast, pesan [ENT], atau lokal). Level diverifikasi dari poin di database. */
+async function entranceFor(id, name, claimed) {
+  if (!id || Date.now() - (entSeen[id] || 0) < 20000) return;
+  entSeen[id] = Date.now();
+  await ensureProf([id], true);
+  const pts = prof[id]?.points, lv = Math.min(9, pts === undefined ? Number(claimed) || 0 : lvl(pts));
+  if (lv >= 5) showEntranceFx(name || prof[id]?.name || 'Anggota', lv);
+}
+function showRelPopup(text) {
+  const e = $('#svipPop');
+  e.innerHTML = `<div class="svip-card rel-card"><div class="svip-crown">💞✨</div><div class="svip-title">HUBUNGAN SPESIAL</div><div class="svip-name" style="font-size:18px">${esc(text)}</div></div>`;
+  e.classList.remove('hidden'); clearTimeout(showSvipPopup.t);
+  showSvipPopup.t = setTimeout(() => { e.classList.add('hidden'); e.innerHTML = ''; }, 4500);
 }
 function showSvipPopup(name, level) {
   const e = $('#svipPop');
@@ -646,12 +759,14 @@ H.panel = async () => {
    ${[5,6,7,8,9].map(n => `<div class="mrow" style="align-items:flex-start"><span style="flex:1"><b>SVIP ${n} · ${esc(ENTRANCE[n].t)}</b><small style="display:block;color:#a99d92;overflow-wrap:anywhere">${entranceVideos[n]?.name || (entranceVideos[n]?.url ? 'Video tersimpan' : 'Belum ada video — memakai animasi bawaan')}</small></span><div class="bt"><button class="sm" onclick="H.uploadEntrance(${n})">⬆ Upload</button><button class="sm o" onclick="H.previewEnt(${n})">▶ Preview</button>${entranceVideos[n]?.url ? `<button class="sm o" onclick="H.removeEntrance(${n})">Hapus</button>` : ''}</div></div>`).join('')}
    <p class="sub" style="margin-top:12px">Tes animasi masuk SVIP (hanya kamu yang melihat)</p>
    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">${[5, 6, 7, 8, 9].map(n => `<button class="sm o" onclick="H.previewEnt(${n})">SVIP ${n}</button>`).join('')}</div>
+   <h3 class="sec">✨ Tes Efek Gift</h3><p class="sub">Ketuk gift untuk melihat efeknya (hanya kamu yang melihat). Makin besar poin, makin megah.</p>
+   <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">${GIFTS.map((g, i) => `<button class="sm o" onclick="H.previewGift(${i})" title="${esc(g.name)} · ${g.points} poin">${g.e}</button>`).join('')}</div>
    <h3 class="sec">🎞️ Video Gift Eksklusif</h3>
    <p class="sub">Pilih video MP4/WebM maksimal 30 MB untuk hadiah eksklusif nomor 16–30. Saat gift dikirim, video diputar di room semua anggota.</p>
    ${GIFTS.slice(EXCLUSIVE_GIFT_START).map((g,j)=>{const i=j+EXCLUSIVE_GIFT_START;return `<div class="mrow" style="align-items:flex-start"><span style="flex:1"><b>${g.e} ${esc(g.name)}</b><small style="display:block;color:#a99d92">${giftVideos[i]?.name || (giftVideos[i]?.url ? 'Video tersimpan' : 'Belum ada video')}</small></span><div class="bt"><button class="sm" onclick="H.uploadGiftVideo(${i})">⬆ Video</button>${giftVideos[i]?.url ? `<button class="sm o" onclick="H.previewGift(${i})">▶</button><button class="sm o" onclick="H.removeGiftVideo(${i})">Hapus</button>` : ''}</div></div>`}).join('')}
    <p class="sub">Anggota online</p>
-   ${(data || []).map(u => `<div class="mrow"><img src="${esc(u.avatar)}"><span>${esc(u.name)} <small style="color:#a99d92">🎟️${u.gift_tickets} ${u.theme_ok ? '🎨✔' : ''}</small></span>
-     <div class="bt"><button class="sm" onclick="H.tix('${u.id}')">+1 Tiket Gift</button><button class="sm" onclick="H.hostBorder('${u.id}')">🖼 Border</button>${u.theme_ok ? '' : `<button class="sm" onclick="H.thm('${u.id}')">🎨 Buka Tema</button>`}</div></div>`).join('')}
+   ${(data || []).map(u => `<div class="mrow"><img src="${esc(u.avatar)}"><span>${esc(u.name)} <small style="color:#a99d92">🪙${Number(u.gift_tickets || 0).toLocaleString('id-ID')} ${u.theme_ok ? '🎨✔' : ''}</small></span>
+     <div class="bt"><button class="sm" onclick="H.tix('${u.id}',100)">+100 🪙</button><button class="sm" onclick="H.tix('${u.id}',1000)">+1rb</button><button class="sm" onclick="H.tix('${u.id}',10000)">+10rb</button><button class="sm" onclick="H.tix('${u.id}',50000)">+50rb</button><button class="sm" onclick="H.hostBorder('${u.id}')">🖼 Border</button>${u.theme_ok ? '' : `<button class="sm" onclick="H.thm('${u.id}')">🎨 Buka Tema</button>`}</div></div>`).join('')}
    <div style="display:flex;gap:8px;margin-top:14px"><button class="sm o" onclick="H.reset()">Kosongkan kursi</button><button class="sm o" onclick="H.clear()">Bersihkan chat</button></div>
    <button class="btn" style="margin-top:16px;background:linear-gradient(#e0646b,#9c2a33);color:#fff" onclick="H.unhost()">🚪 Keluar Host</button>`);
 };
@@ -710,7 +825,11 @@ H.removeGiftVideo = async i => {
 };
 H.hideEntranceFx = hideEntranceFx;
 H.seatN = async d => { const n = Math.min(30, Math.max(4, settings.seat_count + d)); settings.seat_count = n; $('#sc').textContent = n; renderSeats(); await sb.from('room_settings').update({ seat_count: n }).eq('id', 1) };
-H.tix = async id => { const { error } = await sb.rpc('give_ticket', { target: id }); toast(error ? error.message : '+1 tiket terkirim 🎟️') };
+H.tix = async (id, n = 100) => {
+  const { error } = await sb.rpc('give_coins', { target: id, amount: n });
+  if (error && (error.code === 'PGRST202' || /Could not find the function/i.test(error.message || ''))) return toast('Jalankan gift_relation_migration.sql terbaru dulu 🪙');
+  toast(error ? error.message : `+${n.toLocaleString('id-ID')} koin emas terkirim 🪙`);
+};
 H.thm = async id => { const { error } = await sb.rpc('give_theme', { target: id }); toast(error ? error.message : 'Tema chat dibuka untuk dia 🎨'); if (!error) H.panel() };
 H.unhost = async () => { const { error } = await sb.rpc('release_host'); if (error) return toast(error.message); me = { ...me, is_host: false }; prof[uid] = { ...prof[uid], is_host: false }; room?.track(presence()); renderSeats(); H.close(); renderProf(); renderPosts(); toast('Kamu keluar dari mode Host') };
 H.reset = async () => { await sb.from('seats').delete().neq('seat_no', 0); toast('Semua kursi dikosongkan') };
@@ -718,18 +837,24 @@ H.clear = async () => { await sb.from('messages').delete().neq('id', 0); $('#cha
 
 /* ---------- 3. Room ---------- */
 let joined = false;
+let msgReady = false, msgSyncBusy = false;
 async function syncRecentMessages() {
-  if (!inRoom) return;
-  const { data, error } = await sb.from('messages').select('*').order('id', { ascending: false }).limit(80);
-  if (error) { console.warn('Message sync:', error.message); return; }
-  const rows = (data || []).reverse();
-  await ensureProf(rows.map(m => m.user_id));
-  rows.forEach(m => addRoomMessage(m, false));
+  if (!inRoom || msgSyncBusy) return;
+  msgSyncBusy = true;
+  try {
+    const { data, error } = await sb.from('messages').select('*').order('id', { ascending: false }).limit(msgReady ? 30 : 80);
+    if (error) { console.warn('Message sync:', error.message); return; }
+    const rows = (data || []).reverse().filter(m => !renderedMessageIds.has(String(m.id)));
+    if (!rows.length) return;
+    await ensureProf(rows.map(m => m.user_id));
+    /* Pesan baru yang lebih dulu ditangkap polling tetap memicu efek gift/entrance (live) */
+    rows.forEach(m => addRoomMessage(m, msgReady && Date.now() - Date.parse(m.created_at) < 20000));
+  } finally { msgSyncBusy = false; }
 }
 function startMessageSync() {
   clearInterval(messageSyncTimer);
   // Fallback for projects where messages is not enabled in supabase_realtime.
-  messageSyncTimer = setInterval(syncRecentMessages, 500);
+  messageSyncTimer = setInterval(syncRecentMessages, 2000);
 }
 async function stopMessageSync() {
   clearInterval(messageSyncTimer); messageSyncTimer = null;
@@ -741,10 +866,20 @@ async function startRoom() {
   settings = (await sb.from('room_settings').select('*').single()).data || settings;
   await loadEntranceVideos();
   await loadGiftVideos();
+  await loadGiftCatalog();
+  HAS_REL = !(await sb.from('relations').select('id').limit(1)).error;
+  if (HAS_REL) { /* channel terpisah: tabel opsional tidak merusak channel utama */
+    loadMyRelations();
+    relChannel = sb.channel('rel')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'relation_requests', filter: `recipient_id=eq.${uid}` }, () => { toast('Ada ajakan hubungan baru 💞'); if (!$('#pgFriends').classList.contains('hidden')) loadFriends(); })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'relations', filter: `user_a=eq.${uid}` }, () => loadMyRelations())
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'relations', filter: `user_b=eq.${uid}` }, () => loadMyRelations())
+      .subscribe();
+  }
   refreshMySocialStats();
   await loadSeats();
-  renderedMessageIds.clear();
-  await syncRecentMessages();
+  renderedMessageIds.clear(); msgReady = false;
+  await syncRecentMessages(); msgReady = true;
   startMessageSync();
   loadMyGifts();
   loadPosts(true); loadStories();
@@ -782,14 +917,14 @@ async function startRoom() {
     .on('postgres_changes', { event: '*', schema: 'public', table: 'svip_entrances' }, () => { loadEntranceVideos(); })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'gift_videos' }, () => { loadGiftVideos(); })
     .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'profiles' }, p => {
-      const previous = p.new.id === uid ? me : (prof[p.new.id] || p.old || null);
-      const oldLevel = previous ? lvl(previous.points) : 0;
-      const newLevel = lvl(p.new.points);
+      const previous = p.new.id === uid ? me : (prof[p.new.id] || null);
+      const knownPts = previous?.points ?? online[p.new.id]?.[0]?.points;
+      const oldLevel = lvl(knownPts), newLevel = lvl(p.new.points);
       prof[p.new.id] = { ...prof[p.new.id], ...p.new }; refreshBubbles(p.new.id);
       // Popup ditampilkan di tengah layar seluruh anggota yang sedang berada di room.
-      if (newLevel > oldLevel) showSvipPopup(p.new.name || (p.new.id === uid ? me.name : 'Anggota'), newLevel);
+      if (knownPts !== undefined && newLevel > oldLevel) showSvipPopup(p.new.name || (p.new.id === uid ? me.name : 'Anggota'), newLevel);
       if (p.new.id === uid) {
-        if (p.new.gift_tickets > me.gift_tickets) showFx({ e: '🎉' }, 'Kamu dapat +1 Tiket Gift! 🎟️ dari Host');
+        if (p.new.gift_tickets > me.gift_tickets) showFx({ e: '🎉' }, `Kamu dapat +${(p.new.gift_tickets - (me.gift_tickets || 0)).toLocaleString('id-ID')} Koin Emas 🪙 dari Host`);
         if (p.new.theme_ok && !me.theme_ok) showFx({ e: '🎨' }, 'Tema chat terbuka! Semua tema bebas dipakai');
         if ((p.new.borders || []).length > (me.borders || []).length) toast('Border baru terbuka dari Host! 🖼️');
         me = { ...me, ...p.new }; room?.track(presence()); renderProf();
@@ -813,6 +948,7 @@ async function startRoom() {
       sb.from('seats').delete().eq('user_id', key).then(() => {});
     })
     .on('broadcast', { event: 'sig' }, ({ payload }) => onSig(payload))
+    .on('broadcast', { event: 'ent' }, ({ payload }) => payload?.uid && entranceFor(payload.uid, String(payload.name || 'Anggota'), Number(payload.level) || 5))
     .subscribe(async s => {
       if (s !== 'SUBSCRIBED') return;
       await room.track(presence());
@@ -822,7 +958,14 @@ async function startRoom() {
       sb.rpc('cleanup_room').then(() => {});
       setTimeout(sweep, 4000); setInterval(sweep, 60000);
       await sb.from('messages').insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'join' });
-      const myLevel = lvl(me.points || 0); if (myLevel >= 5) await sb.from('messages').insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'entrance', body: String(myLevel) });
+      /* Entrance SVIP 5-9: broadcast langsung ke semua anggota + pesan type 'chat' bertanda [ENT] (lolos RLS seperti pesan suara) */
+      const myLevel = Math.min(9, lvl(me.points || 0));
+      if (myLevel >= 5) {
+        entranceFor(uid, me.name, myLevel);
+        room.send({ type: 'broadcast', event: 'ent', payload: { uid, name: me.name, level: myLevel } });
+        const { error: entErr } = await sb.from('messages').insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'chat', body: '[ENT]' + myLevel });
+        if (entErr) console.warn('Entrance message:', entErr.message);
+      }
     });
   $('#msg').onkeydown = e => { if (e.key === 'Enter') H.sendMsg() };
 }
@@ -831,9 +974,10 @@ H.sendMsg = async () => {
   const i = $('#msg'), body = i.value.trim(); if (!body || H.sendMsg.busy) return;
   H.sendMsg.busy = true; setTimeout(() => H.sendMsg.busy = false, 400);
   i.value = ''; i.focus();
-  const { data: inserted, error } = await sb.from('messages')
-    .insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'chat', body, reply_to_id: roomReply?.id || null, reply_preview: roomReply?.body || null })
-    .select('*').single();
+  const row = { user_id: uid, name: me.name, avatar: me.avatar, type: 'chat', body };
+  const withReply = roomReply ? { ...row, reply_to_id: roomReply.id, reply_preview: roomReply.body } : row;
+  let { data: inserted, error } = await sb.from('messages').insert(withReply).select('*').single();
+  if (error && /reply_/.test(error.message || '')) ({ data: inserted, error } = await sb.from('messages').insert(row).select('*').single());
   if (error) { toast(error.message); i.value = body }
   else {
     if (inserted) addRoomMessage(inserted, true);
@@ -932,8 +1076,8 @@ async function sweep() {
   if (stale.length) await sb.from('seats').delete().in('user_id', stale);
 }
 window.addEventListener('pagehide', () => { if (inRoom) { stopMessageSync(); room?.untrack(); sb.from('seats').delete().eq('user_id', uid).then(() => {}) } });
-async function ensureProf(ids) {
-  const miss = [...new Set(ids)].filter(i => i && prof[i]?.points === undefined); if (!miss.length) return;
+async function ensureProf(ids, force) {
+  const miss = [...new Set(ids)].filter(i => i && (force || prof[i]?.points === undefined)); if (!miss.length) return;
   const { data } = await sb.from('profiles').select('id,points,gifts_sent,chat_theme,is_host' + BC()).in('id', miss);
   (data || []).forEach(x => prof[x.id] = { ...prof[x.id], ...x });
 }
@@ -943,7 +1087,7 @@ async function loadSeats() {
   mySeat = (data || []).find(s => s.user_id === uid)?.seat_no || null;
   if (!mySeat && stream && !sitting) stopMic();
   const ids = (data || []).map(s => s.user_id);
-  if (ids.length) (await sb.from('profiles').select('id,points,gifts_sent,chat_theme,is_host' + BC()).in('id', ids)).data.forEach(x => prof[x.id] = { ...prof[x.id], ...x });
+  if (ids.length) ((await sb.from('profiles').select('id,points,gifts_sent,chat_theme,is_host' + BC()).in('id', ids)).data || []).forEach(x => prof[x.id] = { ...prof[x.id], ...x });
   renderSeats(); renderTop(); syncPeers();
 }
 
@@ -999,7 +1143,7 @@ const PAGES = { room: '#room', posts: '#pgPosts', friends: '#pgFriends', me: '#p
 H.tab = t => {
   Object.entries(PAGES).forEach(([k, sel]) => $(sel).classList.toggle('hidden', k !== t));
   document.querySelectorAll('#nav button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
-  if (t === 'posts') { loadPosts(); loadStories(); } if (t === 'friends') loadFriends(); if (t === 'me') { renderProf(); loadMyGifts(); refreshMySocialStats() } if (t === 'room') { const c = $('#chat'); c.scrollTop = c.scrollHeight }
+  if (t === 'posts') { loadPosts(); loadStories(); } if (t === 'friends') loadFriends(); if (t === 'me') { renderProf(); loadMyGifts(); refreshMySocialStats(); loadMyRelations() } if (t === 'room') { const c = $('#chat'); c.scrollTop = c.scrollHeight }
 };
 
 /* ---------- 5. Postingan ---------- */
@@ -1026,7 +1170,7 @@ function postHTML(p) {
   return `<article class="post"><div class="hd">${avatarHTML(u.avatar, u.points, '', 40, ` onclick="H.view('${p.user_id}')" style="cursor:pointer"`, u.avatar_border, u.is_host)}<div><b>${u.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(u.points)}${esc(u.name)}</b><small>${ago(p.created_at)}</small></div>
     ${can ? `<button class="del" onclick="H.delPost(${p.id})" title="Hapus">🗑</button>` : ''}</div>
     ${p.body ? `<p>${esc(p.body)}</p>` : ''}${p.image ? `<img class="pi" loading="lazy" src="${esc(p.image)}">` : ''}
-    <button class="lk ${liked ? 'on' : ''}" onclick="H.like(${p.id})">${liked ? '❤️' : '🤍'} ${n}</button></article>`;
+    <button class="likebtn ${liked ? 'on' : ''}" onclick="H.like(${p.id})">${liked ? '❤️' : '🤍'} ${n}</button></article>`;
 }
 function renderPosts() { $('#plist').innerHTML = posts.map(postHTML).join('') || '<p class="empty-t">Belum ada postingan. Jadilah yang pertama! 📝</p>' }
 H.like = async id => {
@@ -1095,19 +1239,20 @@ H.view = async id => {
   const { data: u } = await sb.from('profiles').select('id,name,avatar,is_host,gifts_sent,points' + BC()).eq('id', id).maybeSingle();
   if (!u) return toast('Profil tidak ditemukan');
   viewU = u;
-  const [rows, fr, ps, social, following] = await Promise.all([getGifts(id),
+  const [rows, fr, ps, social, following, rels] = await Promise.all([getGifts(id),
     sb.from('friends').select('friend_id').eq('user_id', uid).eq('friend_id', id).maybeSingle(),
     sb.from('posts').select('id,body,image,created_at').eq('user_id', id).order('created_at', { ascending: false }).limit(10),
     socialStats(id),
-    sb.from('follows').select('follower_id').eq('follower_id', uid).eq('following_id', id).maybeSingle()]);
+    sb.from('follows').select('follower_id').eq('follower_id', uid).eq('following_id', id).maybeSingle(),
+    HAS_REL ? loadRelations(id) : Promise.resolve(null)]);
   const isFriend = !!fr.data, isFollowing = !!following.data, seated = Object.values(seats).some(x => x.user_id === id), on = !!online[id], list = ps.data || [];
   sheet(`<div class="pf" style="padding-top:0">${avatarHTML(u.avatar, u.points, 'pav', 112, '', u.avatar_border, u.is_host)}<h2>${u.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(u.points)}${esc(u.name)}</h2>${titleHTML(u.points)}
     <div class="stats" style="flex-wrap:wrap"><span class="chip">${seated ? '🎙️ Di kursi' : on ? '🟢 Online' : '⚪ Offline'}</span><span class="chip">👥 ${social.friends ?? '—'} Teman</span><span class="chip">👤 ${social.followers ?? '—'} Followers</span><span class="chip">⭐ ${u.points ?? 0}</span><span class="chip">🎁 ${u.gifts_sent ?? 0} dikirim</span><span class="chip">📝 ${list.length}</span></div></div>
     <div class="acts">${isFriend ? `<button class="btn" onclick="H.openDM('${u.id}')">💬 Chat</button>` : `<button class="btn" onclick="H.requestFriend('${u.id}')">＋ Tambah Teman</button>`}
       <button class="btn" onclick="H.toggleFollow('${u.id}',${isFollowing})">${isFollowing ? '✓ Mengikuti' : '＋ Follow'}</button>
-      <button class="btn" onclick="H.giftView()">🎁 Kirim Gift</button></div>
+      <button class="btn" onclick="H.giftView()">🎁 Kirim Gift</button>${HAS_REL ? `<button class="btn" onclick="H.relPick('${u.id}')">💞 Ajak Hubungan</button>` : ''}</div>
     ${me.is_host ? `<button class="btn" style="margin-bottom:6px;background:linear-gradient(#a98bff,#6a4bff);color:#fff" onclick="H.hostBorder('${u.id}')">🖼 Beri Border</button>` : ''}
-    <h3 class="sec">🎁 Koleksi Hadiah</h3>${giftHTML(rows)}
+    ${HAS_REL ? `<h3 class="sec">💞 Hubungan</h3>${(rels || []).map(r => relCardHTML(r, false)).join('') || '<p class="empty-t">Belum ada hubungan.</p>'}` : ''}<h3 class="sec">🎁 Koleksi Hadiah</h3>${giftHTML(rows)}
     <h3 class="sec">📝 Postingan</h3>${list.map(q => `<div class="post"><p>${esc(q.body || '')}</p>${q.image ? `<img class="pi" loading="lazy" src="${esc(q.image)}">` : ''}<small style="color:#9a8f86">${ago(q.created_at)}</small></div>`).join('') || '<p class="empty-t">Belum ada postingan.</p>'}`);
 };
 H.seatMenu = id => {
@@ -1121,10 +1266,10 @@ function renderProf() {
   const mine = posts.filter(p => p.user_id === uid);
   $('#pfBox').innerHTML = `<div class="pf">${avatarHTML(me.avatar, me.points, 'pav', 112, '', me.avatar_border, me.is_host)}
     <h2>${me.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(me.points)}${esc(me.name)}</h2>${titleHTML(me.points)}
-    <div class="stats" style="flex-wrap:wrap"><span class="chip">👥 ${mySocialStats.friends ?? '—'} Teman</span><span class="chip">👤 ${mySocialStats.followers ?? '—'} Followers</span><span class="chip">🎟️ ${me.gift_tickets ?? 0}</span><span class="chip">⭐ ${me.points ?? 0}</span><span class="chip">📝 ${mine.length}</span></div></div>
+    <div class="stats" style="flex-wrap:wrap"><span class="chip">👥 ${mySocialStats.friends ?? '—'} Teman</span><span class="chip">👤 ${mySocialStats.followers ?? '—'} Followers</span><span class="chip">🪙 ${Number(me.gift_tickets ?? 0).toLocaleString('id-ID')}</span><span class="chip">⭐ ${me.points ?? 0}</span><span class="chip">📝 ${mine.length}</span></div></div>
     <div class="acts"><button class="btn" onclick="H.editAv()">📷 Ubah Foto</button><button class="btn" onclick="H.editNm()">✏️ Ubah Nama</button></div>
     <button class="btn" onclick="H.compose()">➕ Buat Postingan</button>
-    ${borderGridHTML()}
+    ${relSectionHTML()}${borderGridHTML()}
     <h3 class="sec">🎁 Koleksi Hadiah</h3>${giftHTML(myGifts)}
     <h3 class="sec">Postingan Saya</h3>${mine.map(postHTML).join('') || '<p class="empty-t">Belum ada postingan.</p>'}`;
 }
@@ -1221,19 +1366,28 @@ function addMsg(m, live) {
   if (m?.id != null) d.dataset.messageId = String(m.id);
   if (m.type === 'join') d.innerHTML = `<div class="bub">${hb}<b>${esc(m.name)}</b> sedang bergabung</div>`;
   else if (m.type === 'leave') d.innerHTML = `<div class="bub sys">🚪 <b>${esc(m.name)}</b> keluar dari room</div>`;
-  else if (m.type === 'entrance') { d.innerHTML = `<div class="bub sys">✨ ${esc(m.name)} memasuki room dengan efek SVIP ${esc(m.body)}!</div>`; if(live) showEntranceFx(m.name, Number(m.body)||5); }
+  else if (m.type === 'entrance' || (m.type === 'chat' && String(m.body || '').startsWith('[ENT]'))) {
+    const claimed = Math.min(9, Number(String(m.body || '').replace('[ENT]', '')) || 5);
+    d.innerHTML = `<div class="bub sys">✨ ${esc(m.name)} memasuki room dengan efek SVIP ${claimed}!</div>`;
+    if (live) entranceFor(m.user_id, m.name, claimed);
+  }
   else if (m.type === 'gift') {
     const g = GIFTS[m.gift] || GIFTS[0];
     d.innerHTML = `${head}<div>${meta}<div class="gbub"><span>Kirim ${esc(g.name)}${m.to_name ? `<small>untuk ${esc(m.to_name)}</small>` : ''}</span><span class="e">${g.e}</span><b class="x">x1</b></div></div>`;
     if (live) showFx(g, m.name, m.to_name, Number(m.gift));
+  } else if (m.type === 'chat' && String(m.body || '').startsWith('[REL]')) {
+    const txt = String(m.body).slice(5);
+    d.innerHTML = `<div class="bub sys">💞 ${esc(txt)}</div>`;
+    if (live) showRelPopup(txt);
   } else if (m.type === 'voice' || (m.type === 'chat' && String(m.body || '').startsWith('[VOICE_MSG]'))) {
     const audioUrl = m.type === 'voice' ? m.body : String(m.body).slice('[VOICE_MSG]'.length);
     const safeUrl = /^https:\/\//i.test(audioUrl) ? audioUrl : '';
-    d.innerHTML = `${head}<div>${meta}<div class="voicebubble"${bubStyle(m.user_id)} data-bu="${m.user_id}"><small>🎙️ Pesan suara</small><div class="voiceplayer"><button class="voiceplay" id="voice-play-${Number(m.id)}" onclick="H.toggleVoice(${Number(m.id)})" title="Putar pesan suara">▶</button><span>Putar audio</span><audio id="voice-audio-${Number(m.id)}" data-msgid="${Number(m.id)}" preload="none" src="${esc(safeUrl)}" onended="H.voiceEnded(${Number(m.id)})" onerror="this.previousElementSibling && (this.previousElementSibling.textContent='⚠');"></audio></div></div></div>`;
+    d.innerHTML = `${head}<div>${meta}<div class="voicebubble"${bubStyle(m.user_id)} data-bu="${m.user_id}"><small>🎙️ Pesan suara</small><div class="voiceplayer"><button class="voiceplay" id="voice-play-${Number(m.id)}" onclick="H.toggleVoice(${Number(m.id)})" title="Putar pesan suara">▶</button><span>Putar audio</span><audio id="voice-audio-${Number(m.id)}" data-msgid="${Number(m.id)}" preload="none" src="${esc(safeUrl)}" onended="H.voiceEnded(${Number(m.id)})" onerror="document.getElementById('voice-play-${Number(m.id)}').textContent='⚠'"></audio></div></div></div>`;
   } else {
+    if (m.id != null) { msgCache.set(String(m.id), { id: m.id, body: m.body || '', name: m.name || '' }); if (msgCache.size > 300) msgCache.delete(msgCache.keys().next().value); }
     const quoted = m.reply_to_id ? `<div class="replybox"><b>↩ Membalas pesan</b>${esc(m.reply_preview || 'Pesan sebelumnya')}</div>` : '';
     const body = esc(m.body).replace(/(@[\w.-]+)/g,'<span class="tagged">$1</span>');
-    d.innerHTML = `${head}<div>${meta}<div class="bub"${bubStyle(m.user_id)} data-bu="${m.user_id}">${quoted}${body}</div><div class="msgtools"><button onclick="H.replyRoom(${Number(m.id)},'${esc((m.body||'').slice(0,90)).replace(/'/g,'&#39;')}','${esc(m.name).replace(/'/g,'&#39;')}')">↩ Balas</button><button onclick="H.forwardRoom(${Number(m.id)})">↗ Teruskan</button></div></div>`;
+    d.innerHTML = `${head}<div>${meta}<div class="bub"${bubStyle(m.user_id)} data-bu="${m.user_id}">${quoted}${body}</div><div class="msgtools"><button onclick="H.replyRoom(${Number(m.id)})">↩ Balas</button><button onclick="H.forwardRoom(${Number(m.id)})">↗ Teruskan</button></div></div>`;
   }
   c.append(d); while (c.children.length > 80) c.firstChild.remove(); c.scrollTop = c.scrollHeight;
 }
@@ -1253,19 +1407,72 @@ H.giftTo = id => {
   const s = Object.values(seats).find(x => x.user_id === id); if (!s) return;
   gT = { id, name: s.name, avatar: s.avatar }; giftSheet();
 };
+async function loadGiftCatalog() {
+  const { data, error } = await sb.from('gift_catalog').select('idx,points,coins');
+  if (error) return false;
+  (data || []).forEach(r => { const g = GIFTS[r.idx]; if (g) { g.points = Number(r.points); if (Number(r.coins) > 0) g.coin = Number(r.coins); } });
+  return true;
+}
+const kfmt = n => Number(n || 0).toLocaleString('id-ID');
 function giftSheet() {
-  const lock = !me.is_host && me.gift_tickets < 1;
-  sheet(`<h3>Kirim Gift</h3><p class="sub">${me.is_host ? '👑 Host: unlimited gratis' : `🎟️ Tiket kamu: ${me.gift_tickets}`}</p>
+  const own = me.gift_tickets || 0, cheapest = Math.min(...GIFTS.map(g => g.coin));
+  sheet(`<h3>Kirim Gift</h3><p class="sub">${me.is_host ? '👑 Host: unlimited gratis' : `🪙 Koin emasmu: ${kfmt(own)} · makin mahal gift, makin besar EXP`}</p>
    <div class="mrow" style="border-top:0;padding-top:0"><img src="${esc(gT.avatar)}"><span>Untuk: <b>${esc(gT.name)}</b></span><button class="sm o" onclick="H.gift()">Ganti</button></div>
-   <div class="gg">${GIFTS.map((g, i) => `<button class="gi ${lock ? 'lk' : ''}" onclick="H.send(${i})">${g.img ? `<img src="${esc(g.img)}">` : `<span class="e">${g.e}</span>`}<small>${g.name}</small>${i>=EXCLUSIVE_GIFT_START?'<small style="display:block;color:#d7b6ff">✦ EKSKLUSIF</small>':''}<small style="display:block;color:#ffd886">+${g.points} poin</small></button>`).join('')}</div>
-   ${lock ? `<button class="btn" onclick="H.wa('Hay Host, mau buka gift dong!')">Buka 1 Gift (Chat Owner)</button>` : ''}`);
+   <div class="gg">${GIFTS.map((g, i) => { const lock = !me.is_host && own < g.coin; return `<button class="gi ${lock ? 'lk' : ''}" onclick="H.send(${i})">${g.img ? `<img src="${esc(g.img)}">` : `<span class="e">${g.e}</span>`}<small>${g.name}</small>${i >= EXCLUSIVE_GIFT_START ? '<small style="display:block;color:#d7b6ff">✦ EKSKLUSIF</small>' : ''}<small style="display:block;color:#ffd886">+${kfmt(g.points)} EXP</small><small class="tkc" style="display:block">🪙 ${kfmt(g.coin)}</small></button>` }).join('')}</div>
+   ${!me.is_host && own < cheapest ? `<button class="btn" onclick="H.wa('Hay Host, mau isi koin emas dong!')">Isi Koin Emas (Chat Owner)</button>` : ''}`);
 }
 H.send = async i => {
   if (!gT) return H.gift();
-  if (!me.is_host && me.gift_tickets < 1) return toast('Gift terkunci. Chat owner dulu 🔒');
-  const { error } = await sb.rpc('send_gift_to', { g: i, target: gT.id });
+  const g = GIFTS[i]; if (!g) return;
+  if (!me.is_host && (me.gift_tickets || 0) < g.coin) return toast(`Koin emas kurang 🔒 Butuh ${kfmt(g.coin)}, kamu punya ${kfmt(me.gift_tickets)}`);
+  const { error } = await sb.rpc('send_gift_v2', { g: i, target: gT.id });
+  if (error && (error.code === 'PGRST202' || /Could not find the function/i.test(error.message || ''))) return toast('Jalankan gift_relation_migration.sql terbaru dulu 🪙');
   error ? toast(error.message) : H.close();
 };
+
+/* ---------- 8B. Hubungan: Sahabat, Pasangan (anniversary), Kakak-Adik, Partner Duet ---------- */
+async function loadRelations(id) {
+  const { data, error } = await sb.from('relations').select('id,user_a,user_b,kind,score,created_at').or(`user_a.eq.${id},user_b.eq.${id}`).order('score', { ascending: false });
+  if (error) return null;
+  const rows = data || [], pid = r => r.user_a === id ? r.user_b : r.user_a, pids = rows.map(pid);
+  const { data: ps } = pids.length ? await sb.from('profiles').select('id,name,avatar').in('id', pids) : { data: [] };
+  return rows.map(r => ({ ...r, partner: (ps || []).find(p => p.id === pid(r)) || {} }));
+}
+function relCardHTML(r, mine) {
+  const k = REL[r.kind] || REL.sahabat, l = relLvl(r.score), base = REL_LV[l - 1], next = REL_LV[l], p = r.partner || {};
+  const days = relDays(r.created_at), pct = next ? Math.min(100, (r.score - base) / (next - base) * 100) : 100;
+  const ann = days > 1 && days % 365 === 0 ? `🎉 Anniversary ${days / 365} tahun!` : days > 1 && days % 100 === 0 ? `🎉 ${days} hari bersama!` : '';
+  return `<div class="relcard rl${l}"><div class="rh"><img src="${esc(p.avatar || '')}"${p.id ? ` onclick="H.view('${p.id}')" style="cursor:pointer"` : ''}><div><b>${esc(p.name || 'Anggota')}</b><br><i class="relk">${k.e} ${k.name} · Lv.${l} ${REL_TITLES[l - 1]}</i></div>${mine ? `<button class="sm o" onclick="H.endRel(${Number(r.id)})">Akhiri</button>` : ''}</div>
+    <div class="prog"><i style="width:${pct}%"></i></div>
+    <small>${next ? `${Number(r.score).toLocaleString('id-ID')} / ${next.toLocaleString('id-ID')} poin hubungan` : 'Level tertinggi 👑'} · Hari ke-${days}${ann ? ' · ' + ann : ''}</small></div>`;
+}
+function relSectionHTML() {
+  if (!HAS_REL) return '<h3 class="sec">💞 Hubungan</h3><p class="sub">Fitur hubungan belum aktif. Jalankan gift_relation_migration.sql di Supabase.</p>';
+  return `<h3 class="sec">💞 Hubungan</h3>${myRel.map(r => relCardHTML(r, true)).join('') || '<p class="empty-t">Belum ada hubungan. Buka profil temanmu lalu ketuk "💞 Ajak Hubungan".</p>'}`;
+}
+async function loadMyRelations() {
+  if (!HAS_REL) return;
+  const r = await loadRelations(uid); if (!r) return;
+  myRel = r; renderProf();
+  if (!relNoted) { relNoted = true; r.forEach(x => { const d = relDays(x.created_at);
+    if (d > 1 && (d % 100 === 0 || d % 365 === 0)) toast(`🎉 Hari ini ${d % 365 === 0 ? d / 365 + ' tahun' : d + ' hari'} ${REL[x.kind]?.name || 'hubungan'} dengan ${x.partner?.name || 'dia'}!`) }) }
+}
+async function relReqHTML() {
+  if (!HAS_REL) return '';
+  const { data, error } = await sb.from('relation_requests').select('id,sender_id,kind').eq('recipient_id', uid).order('created_at', { ascending: false });
+  if (error || !data?.length) return '';
+  const ids = data.map(x => x.sender_id), { data: ps } = await sb.from('profiles').select('id,name,avatar').in('id', ids);
+  return `<h3 class="sec">💞 Ajakan Hubungan (${data.length})</h3>` + data.map(x => { const u = (ps || []).find(p => p.id === x.sender_id) || {}, k = REL[x.kind] || REL.sahabat;
+    return `<div class="friendcard"><img src="${esc(u.avatar || '')}" onclick="H.view('${x.sender_id}')" style="cursor:pointer"><div class="finfo"><b>${esc(u.name || 'Anggota')}</b><small>${k.e} Ingin jadi ${k.name} denganmu</small></div><button class="sm" onclick="H.acceptRel(${Number(x.id)})">Terima</button><button class="sm o" onclick="H.declineRel(${Number(x.id)})">Tolak</button></div>` }).join('');
+}
+H.relPick = id => {
+  const u = viewU && viewU.id === id ? viewU : { name: 'dia' };
+  sheet(`<h3>💞 Ajak Hubungan</h3><p class="sub">Pilih jenis hubungan dengan ${esc(u.name)}. Level naik saat kalian saling kirim gift.</p>${Object.entries(REL).map(([k, v]) => `<div class="mrow"><span style="font-size:28px;flex:none">${v.e}</span><span><b>${v.name}</b><br><small style="color:#a99d92">${v.desc}</small></span><button class="sm" onclick="H.requestRel('${id}','${k}')">Ajak</button></div>`).join('')}`);
+};
+H.requestRel = async (id, k) => { const { error } = await sb.rpc('request_relation', { target: id, rel_kind: k }); if (error) return toast(error.message); H.close(); toast('Ajakan hubungan terkirim 💞') };
+H.acceptRel = async id => { const { error } = await sb.rpc('accept_relation', { request_id: id }); if (error) return toast(error.message); toast('Hubungan resmi dimulai 💞'); loadFriends(); loadMyRelations() };
+H.declineRel = async id => { const { error } = await sb.rpc('decline_relation', { request_id: id }); if (error) return toast(error.message); loadFriends() };
+H.endRel = async id => { if (!confirm('Akhiri hubungan ini? Level dan poinnya akan hilang.')) return; const { error } = await sb.rpc('end_relation', { rel_id: id }); if (error) return toast(error.message); toast('Hubungan diakhiri'); loadMyRelations() };
 
 /* ---------- 8A. Teman, permintaan pertemanan, chat pribadi ---------- */
 async function loadFriends() {
@@ -1279,9 +1486,11 @@ async function loadFriends() {
   const rids=(req||[]).map(x=>x.sender_id);
   const {data:senders}=rids.length?await sb.from('profiles').select('id,name,avatar').in('id',rids):{data:[]};
   pendingRows=(req||[]).map(x=>({...x,user:(senders||[]).find(u=>u.id===x.sender_id)}));
+  const relHtml=await relReqHTML();
   $('#friendBox').innerHTML=`<button class="btn" onclick="H.findFriends()">＋ Tambah Teman</button>
     <h3 class="sec">Permintaan Pertemanan (${pendingRows.length})</h3>
     ${pendingRows.map(x=>`<div class="friendcard"><img src="${esc(x.user?.avatar||'')}" onclick="H.view('${x.sender_id}')" style="cursor:pointer"><div class="finfo"><b>${esc(x.user?.name||'Anggota')}</b><small>Ingin berteman denganmu</small></div><button class="sm" onclick="H.acceptFriend('${x.id}')">Terima</button></div>`).join('')||'<p class="empty-t">Tidak ada permintaan baru.</p>'}
+    ${relHtml}
     <h3 class="sec">Daftar Teman (${friendRows.length})</h3>
     ${friendRows.map(u=>`<div class="friendcard"><img src="${esc(u.avatar||'')}" onclick="H.view('${u.id}')" style="cursor:pointer"><div class="finfo"><b>${esc(u.name)}</b><small>Teman</small></div><button class="sm" onclick="H.openDM('${u.id}')">💬 Chat</button></div>`).join('')||'<p class="empty-t">Belum ada teman. Tambahkan teman untuk mulai chat.</p>'}`;
 }
@@ -1342,14 +1551,14 @@ H.forwardDM=async id=>{
   const {data,error}=await sb.from('direct_messages').insert({sender_id:uid,recipient_id:dmPeer.id,body:m.body,forwarded_from_id:m.id}).select().single();
   if(error)return toast(error.message);dmMessages.push(data);renderDM();toast('Pesan diteruskan');
 };
-H.replyRoom=(id,body,name)=>{roomReply={id,body,name};renderRoomReplyHint();$('#msg').focus()};
+H.replyRoom=id=>{const m=msgCache.get(String(id));if(!m)return;roomReply={id:m.id,body:m.body.slice(0,90),name:m.name};renderRoomReplyHint();$('#msg').focus()};
 H.cancelReplyRoom=()=>{roomReply=null;renderRoomReplyHint()};
 function renderRoomReplyHint(){const e=$('#roomReplyHint');if(!e)return;e.innerHTML=roomReply?`<div class="replyhint">↩ Membalas ${esc(roomReply.name)}: ${esc(roomReply.body)}<button onclick="H.cancelReplyRoom()">✕</button></div>`:'';}
 H.tagRoom=async()=>{
-  const {data,error}=await sb.from('profiles').select('id,name').neq('id',uid).limit(40);if(error)return toast(error.message);
-  sheet(`<h3>Tag Anggota</h3><p class="sub">Pilih anggota untuk menambahkan tag ke pesan.</p>${(data||[]).map(u=>`<div class="mrow"><span>${esc(u.name)}</span><button class="sm" onclick="H.insertRoomTag('${esc(u.name).replace(/'/g,'&#39;')}')">@ Tag</button></div>`).join('')||'<p class="empty-t">Belum ada anggota lain.</p>'}`);
+  const {data,error}=await sb.from('profiles').select('id,name').neq('id',uid).limit(40);if(error)return toast(error.message);tagNames=(data||[]).map(u=>u.name);
+  sheet(`<h3>Tag Anggota</h3><p class="sub">Pilih anggota untuk menambahkan tag ke pesan.</p>${(data||[]).map((u,k)=>`<div class="mrow"><span>${esc(u.name)}</span><button class="sm" onclick="H.insertRoomTag(${k})">@ Tag</button></div>`).join('')||'<p class="empty-t">Belum ada anggota lain.</p>'}`);
 };
-H.insertRoomTag=name=>{const i=$('#msg');i.value=(i.value?i.value+' ':'')+'@'+name.replace(/\s+/g,'')+' ';H.close();i.focus()};
+H.insertRoomTag=k=>{const name=tagNames[k]||'';const i=$('#msg');i.value=(i.value?i.value+' ':'')+'@'+name.replace(/\s+/g,'')+' ';H.close();i.focus()};
 H.forwardRoom=async id=>{
   const {data,error}=await sb.from('messages').select('id,body,name').eq('id',id).maybeSingle();if(error||!data)return toast('Pesan tidak ditemukan');
   H.doForwardRoom.sourceId=id;
