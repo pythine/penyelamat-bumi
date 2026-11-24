@@ -372,8 +372,8 @@ textarea.inp{resize:none;display:block}
 .nav button{position:relative}
 .nav button .nb{top:-1px;right:calc(50% - 26px)}
 .sm .nb{position:static;display:inline-block;margin-left:6px;box-shadow:none;vertical-align:middle}
-#nbanner{position:fixed;left:50%;top:calc(58px + env(safe-area-inset-top));transform:translate(-50%,-160%);z-index:55;width:min(94vw,480px);display:flex;align-items:center;gap:10px;padding:9px 14px;border-radius:18px;background:rgba(20,14,12,.97);border:1.5px solid var(--gold);box-shadow:0 8px 30px #000a;transition:transform .32s cubic-bezier(.2,.9,.3,1.15);cursor:pointer}
-#nbanner.on{transform:translate(-50%,0)}
+#nbanner{position:fixed;left:50%;top:calc(58px + env(safe-area-inset-top));transform:translate(-50%,-30px);opacity:0;visibility:hidden;pointer-events:none;z-index:55;width:min(94vw,480px);display:flex;align-items:center;gap:10px;padding:9px 14px;border-radius:18px;background:rgba(20,14,12,.97);border:1.5px solid var(--gold);box-shadow:0 8px 30px #000a;transition:transform .32s cubic-bezier(.2,.9,.3,1.15),opacity .25s,visibility .25s;cursor:pointer}
+#nbanner.on{transform:translate(-50%,0);opacity:1;visibility:visible;pointer-events:auto}
 #nbanner img,.nitem img{width:38px;height:38px;border-radius:50%;object-fit:cover;background:#1c1410;flex:none}
 #nbanner .ni,.nitem .ni{font-size:26px;width:38px;text-align:center;flex:none}
 #nbanner div,.nitem div{flex:1;min-width:0}
@@ -384,6 +384,18 @@ textarea.inp{resize:none;display:block}
 .nitem{display:flex;align-items:center;gap:10px;padding:10px 8px;border-top:1px solid #ffffff14;border-radius:12px;cursor:pointer}
 .nitem.un{background:rgba(245,193,90,.10)}
 .nitem .nt{flex:none;font-size:11px;color:#8d8176}
+/* Popup naik SVIP: kilatan, sinar berputar, percikan, glow berdenyut */
+#svipPop .svip-card{position:relative;z-index:2;animation:svipPopIn .55s cubic-bezier(.18,.9,.25,1.3) both,svipGlow 1.5s ease-in-out .55s infinite}
+#svipPop .svip-level{font-size:clamp(46px,14vw,72px)}
+#svipPop .svip-rays{position:absolute;left:50%;top:50%;width:150vmax;height:150vmax;margin:-75vmax 0 0 -75vmax;background:repeating-conic-gradient(rgba(255,214,120,.34) 0 7deg,transparent 7deg 20deg);-webkit-mask-image:radial-gradient(circle,#000,transparent 58%);mask-image:radial-gradient(circle,#000,transparent 58%);animation:svipSpin 12s linear infinite,svipFadeIn 1s ease both;pointer-events:none}
+#svipPop .svip-flash{position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,#fff,rgba(255,230,160,.65) 28%,transparent 62%);animation:svipFlash 1s ease-out both;pointer-events:none;z-index:3}
+#svipPop .svip-spark{position:absolute;left:50%;top:50%;width:8px;height:8px;border-radius:50%;background:#fff6c9;box-shadow:0 0 12px 4px #ffc247;opacity:0;animation:svipSpark 2s ease-out infinite;z-index:1}
+@keyframes svipSpin{to{transform:rotate(360deg)}}
+@keyframes svipFadeIn{from{opacity:0}to{opacity:1}}
+@keyframes svipFlash{0%{opacity:.95}100%{opacity:0}}
+@keyframes svipGlow{0%,100%{box-shadow:0 0 28px #ffc34d99,0 0 60px #ff9d2e55,inset 0 0 22px #ffd36e22}50%{box-shadow:0 0 46px #fff1a8,0 0 110px #ffb52bcc,inset 0 0 34px #ffd36e55}}
+@keyframes svipSpark{0%{opacity:0;transform:translate(0,0) scale(.3)}15%{opacity:1}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.1)}}
+@media (prefers-reduced-motion:reduce){#svipPop .svip-rays,#svipPop .svip-spark,#svipPop .svip-card{animation:none}}
 </style>
 </head>
 <body>
@@ -581,6 +593,33 @@ function syncBordersFromPresence() {
     if ((cur.avatar_border || null) !== nb) { cur.avatar_border = nb; ch.push(k) }
   }
   if (ch.length) { renderSeats(); ch.forEach(repaintAvatars) }
+}
+/* Poin & level SVIP diambil ulang setiap ada hadiah (dan berkala), jadi naik level tetap realtime
+   walau event realtime tabel profiles terlambat / tidak terkirim. */
+let ptsBusy = false, ptsTimer = null;
+function syncPointsSoon(delay) { clearTimeout(ptsTimer); ptsTimer = setTimeout(syncPoints, delay || 600) }
+async function syncPoints() {
+  if (ptsBusy || !inRoom || !me) return; ptsBusy = true;
+  try {
+    const ids = [...new Set([uid, ...Object.keys(online), ...Object.values(seats).map(x => x.user_id)])].filter(Boolean);
+    const { data } = await sb.from('profiles').select('id,name,points,gifts_sent').in('id', ids);
+    let changed = false, mineChanged = false;
+    (data || []).forEach(x => {
+      const isMe = x.id === uid, old = isMe ? me.points : prof[x.id]?.points;
+      if (old === x.points) return;
+      prof[x.id] = { ...prof[x.id], points: x.points, gifts_sent: x.gifts_sent };
+      if (isMe) { me = { ...me, points: x.points, gifts_sent: x.gifts_sent }; mineChanged = true }
+      changed = true; repaintAvatars(x.id);
+      if (old === undefined || old === null) return; /* belum tahu level sebelumnya: jangan tampilkan popup */
+      const nl = lvl(x.points);
+      if (nl > lvl(old)) {
+        showSvipPopup(x.name || (isMe ? me.name : 'Anggota'), nl, isMe);
+        if (isMe) pushNotif({ key: 'lv:' + nl, type: 'level', icon: '⭐', title: 'Selamat! 🎉', text: `Kamu naik ke ${tierName(nl)}`, tab: 'me', act: { k: 'tab', t: 'me' } });
+      }
+    });
+    if (changed) { renderSeats(); renderTop() }
+    if (mineChanged) { room?.track(presence()); renderProf() }
+  } finally { ptsBusy = false }
 }
 function repaintMine() { renderProf(); renderSeats(); renderTop(); repaintAvatars(uid) }
 function titleHTML(n) {
@@ -781,11 +820,25 @@ function showRelPopup(text) {
   e.classList.remove('hidden'); clearTimeout(showSvipPopup.t);
   showSvipPopup.t = setTimeout(() => { e.classList.add('hidden'); e.innerHTML = ''; }, 4500);
 }
-function showSvipPopup(name, level) {
+function levelChime() {
+  try {
+    nAC ||= new (window.AudioContext || window.webkitAudioContext)(); if (nAC.state === 'suspended') nAC.resume();
+    [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => {
+      const t = nAC.currentTime + i * .11, o = nAC.createOscillator(), g = nAC.createGain();
+      o.type = 'triangle'; o.frequency.value = f;
+      g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.14, t + .03); g.gain.exponentialRampToValueAtTime(.0001, t + .5);
+      o.connect(g).connect(nAC.destination); o.start(t); o.stop(t + .55);
+    });
+  } catch {}
+}
+function showSvipPopup(name, level, mine) {
   const e = $('#svipPop');
-  e.innerHTML = `<div class="svip-card"><div class="svip-crown">👑✨</div><div class="svip-title">SELAMAT ATAS PENINGKATAN GELAR</div>${level >= 10 ? `<div class="svip-ban">${badgeOf(level, true)}</div>` : `<div class="svip-level">SVIP ${level}</div>`}<div class="svip-name">${esc(name)}</div><div class="svip-desc">berhasil naik ke ${level >= 10 ? 'tingkat' : 'level'} ${tierName(level)}!</div></div>`;
+  const sp = Array.from({ length: 16 }, () => { const a = Math.random() * Math.PI * 2, d = 90 + Math.random() * 170; return `<i class="svip-spark" style="--dx:${Math.round(Math.cos(a) * d)}px;--dy:${Math.round(Math.sin(a) * d)}px;animation-delay:${(Math.random() * 1.6).toFixed(2)}s"></i>` }).join('');
+  e.innerHTML = `<div class="svip-rays"></div>${sp}<div class="svip-card"><div class="svip-crown">👑✨</div><div class="svip-title">${mine ? 'KAMU NAIK GELAR!' : 'SELAMAT ATAS PENINGKATAN GELAR'}</div>${level >= 10 ? `<div class="svip-ban">${badgeOf(level, true)}</div>` : `<div class="svip-level">SVIP ${level}</div>`}<div class="svip-name">${esc(name)}</div><div class="svip-desc">berhasil naik ke ${level >= 10 ? 'tingkat' : 'level'} ${tierName(level)}!</div></div><div class="svip-flash"></div>`;
   e.classList.remove('hidden'); clearTimeout(showSvipPopup.t);
-  showSvipPopup.t = setTimeout(() => { e.classList.add('hidden'); e.innerHTML = ''; }, 5000);
+  showSvipPopup.t = setTimeout(() => { e.classList.add('hidden'); e.innerHTML = ''; }, 6000);
+  if (nSound) levelChime();
+  if (mine) try { navigator.vibrate?.([120, 60, 120, 60, 260]) } catch {}
 }
 
 /* ---------- Util gambar: pilih file, kecilkan, unggah ke Storage ---------- */
@@ -1019,7 +1072,7 @@ async function startRoom() {
   renderedMessageIds.clear(); msgReady = false;
   await syncRecentMessages(); msgReady = true;
   startMessageSync();
-  clearInterval(startRoom.bt); startRoom.bt = setInterval(() => { if (!document.hidden) refreshMyBorders() }, 10000);
+  clearInterval(startRoom.bt); startRoom.bt = setInterval(() => { if (!document.hidden) { refreshMyBorders(); syncPoints() } }, 10000);
   loadMyGifts();
   loadPosts(true); loadStories();
 
@@ -1029,7 +1082,7 @@ async function startRoom() {
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'stories' }, () => loadStories())
     .on('postgres_changes', { event: '*', schema: 'public', table: 'post_likes' }, p => { loadPosts(true); if (p.eventType === 'INSERT' && p.new?.user_id !== uid) notifyLike(p.new) })
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'gift_log', filter: `to_id=eq.${uid}` }, p => {
-      loadMyGifts();
+      loadMyGifts(); syncPointsSoon(300);
       if (p.new.from_id !== uid) { const g = GIFTS[p.new.gift]; pushNotif({ key: 'gift:' + p.new.id, type: 'gift', icon: g?.e || '🎁', from: p.new.from_id, text: `mengirim ${g?.name || 'hadiah'} untukmu`, tab: 'me', act: { k: 'user', id: p.new.from_id } }) }
     })
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, p => {
@@ -1076,7 +1129,7 @@ async function startRoom() {
       const oldLevel = lvl(knownPts), newLevel = lvl(p.new.points);
       prof[p.new.id] = { ...prof[p.new.id], ...p.new }; delete pinfo[p.new.id]; refreshBubbles(p.new.id); repaintAvatars(p.new.id);
       // Popup ditampilkan di tengah layar seluruh anggota yang sedang berada di room.
-      if (knownPts !== undefined && newLevel > oldLevel) { showSvipPopup(p.new.name || (p.new.id === uid ? me.name : 'Anggota'), newLevel); if (p.new.id === uid) pushNotif({ key: 'lv:' + newLevel, type: 'level', icon: '⭐', title: 'Selamat! 🎉', text: `Kamu naik ke ${tierName(newLevel)}`, tab: 'me', act: { k: 'tab', t: 'me' } }) }
+      if (knownPts !== undefined && newLevel > oldLevel) { showSvipPopup(p.new.name || (p.new.id === uid ? me.name : 'Anggota'), newLevel, p.new.id === uid); if (p.new.id === uid) pushNotif({ key: 'lv:' + newLevel, type: 'level', icon: '⭐', title: 'Selamat! 🎉', text: `Kamu naik ke ${tierName(newLevel)}`, tab: 'me', act: { k: 'tab', t: 'me' } }) }
       if (p.new.id === uid) {
         if (p.new.gift_tickets > me.gift_tickets) { const add = (p.new.gift_tickets - (me.gift_tickets || 0)).toLocaleString('id-ID'); showFx({ e: '🎉' }, `Kamu dapat +${add} Koin Emas 🪙 dari Host`); pushNotif({ type: 'host', icon: '🪙', title: 'Host 👑', text: `memberimu +${add} Koin Emas`, tab: 'me', act: { k: 'tab', t: 'me' } }) }
         if (p.new.theme_ok && !me.theme_ok) { showFx({ e: '🎨' }, 'Tema chat terbuka! Semua tema bebas dipakai'); pushNotif({ type: 'host', icon: '🎨', title: 'Host 👑', text: 'membuka semua tema chat untukmu', tab: 'me', act: { k: 'tab', t: 'me' } }) }
@@ -1565,6 +1618,7 @@ function addRoomMessage(m, live) {
   }
   addMsg(m, live);
   if (live) checkRoomMention(m);
+  if (live && m.type === 'gift') syncPointsSoon(500);
 }
 
 function addMsg(m, live) {
@@ -1635,7 +1689,7 @@ H.send = async i => {
   if (!me.is_host && (me.gift_tickets || 0) < g.coin) return toast(`Koin emas kurang 🔒 Butuh ${kfmt(g.coin)}, kamu punya ${kfmt(me.gift_tickets)}`);
   const { error } = await sb.rpc('send_gift_v2', { g: i, target: gT.id });
   if (error && (error.code === 'PGRST202' || /Could not find the function/i.test(error.message || ''))) return toast('Jalankan gift_relation_migration.sql terbaru dulu 🪙');
-  error ? toast(error.message) : H.close();
+  error ? toast(error.message) : (H.close(), syncPointsSoon(500));
 };
 
 /* ---------- 8B. Hubungan: Sahabat, Pasangan (anniversary), Kakak-Adik, Partner Duet ---------- */
@@ -1892,7 +1946,7 @@ function checkRoomMention(m) {
     pushNotif({ key: 'rp:' + m.id, type: 'reply', icon: '↩️', from: m.user_id, who, text: 'membalas pesanmu: ' + body.slice(0, 70), tab: 'room', act: { k: 'tab', t: 'room' } });
 }
 document.addEventListener('pointerdown', () => { try { nAC ||= new (window.AudioContext || window.webkitAudioContext)(); nAC.state === 'suspended' && nAC.resume() } catch {} }, { once: true });
-document.addEventListener('visibilitychange', () => { if (!document.hidden && inRoom) { refreshMyBorders(); nRender() } });
+document.addEventListener('visibilitychange', () => { if (!document.hidden && inRoom) { refreshMyBorders(); syncPoints(); nRender() } });
 
 /* ---------- 9. Suara: WebRTC (signaling via Supabase Broadcast) ----------
    Aturan: pendengar (tidak duduk) selalu menelepon penghuni kursi; antar penghuni kursi, uid lebih kecil yang menelepon.
