@@ -103,10 +103,19 @@ textarea.inp{resize:none;display:block}
 .cnt{display:flex;align-items:center;gap:16px;margin:8px 0 14px}.cnt button{width:40px;height:40px;border-radius:50%;background:#ffffff18;font-size:22px}
 #fx{position:fixed;inset:0;z-index:40;display:grid;place-items:center;pointer-events:none}
 #fx .g{text-align:center;animation:fl 4s ease-in-out forwards}
+#fx .g.fx-float{animation:giftFloat 5s ease-in-out forwards}
+#fx .g.fx-legend{animation:giftLegend 6.5s ease-in-out forwards}
+#fx .g.fx-float .big,#fx .g.fx-float img{filter:drop-shadow(0 0 34px #ffd36e) drop-shadow(0 0 70px #ff9d2e88)}
+#fx .g.fx-legend .big,#fx .g.fx-legend img{filter:drop-shadow(0 0 38px #fff1a8) drop-shadow(0 0 90px #ff8a00) drop-shadow(0 0 130px #ff3fb188)}
+#fx .g.fx-legend::before,#fx .g.fx-legend::after{content:'✦  ✧  ✦  ✧  ✦';position:absolute;left:50%;top:42%;width:100vw;color:#ffd36e;font-size:clamp(18px,5vw,32px);letter-spacing:18px;text-shadow:0 0 14px #fff;pointer-events:none;animation:giftSpark 2.2s ease-out infinite}
+#fx .g.fx-legend::after{content:'✧  ✦  ✧  ✦';top:55%;color:#ff8ad8;animation-delay:.7s}
 #fx .big{font-size:min(55vw,260px);line-height:1;filter:drop-shadow(0 0 30px var(--gold))}#fx img{width:min(70vw,320px)}
 #fx .ban{display:inline-block;margin-top:10px;padding:8px 20px;border-radius:999px;background:linear-gradient(135deg,#7a2630,#4a1219);border:2px solid #e0646b;font-size:17px}
 #fx .gift-fx-video{display:block;width:min(82vw,560px);max-height:62vh;object-fit:contain;border-radius:22px;filter:drop-shadow(0 0 28px #ffd36e);box-shadow:0 0 45px #ffb52b88}
 @keyframes fl{0%{transform:translateY(40vh) scale(.4);opacity:0}12%{transform:translateY(0) scale(1.1);opacity:1}20%{transform:scale(1)}85%{transform:translateY(-6vh);opacity:1}100%{transform:translateY(-14vh);opacity:0}}
+@keyframes giftFloat{0%{transform:translateY(42vh) scale(.45) rotate(-8deg);opacity:0}15%{transform:translateY(0) scale(1.08) rotate(4deg);opacity:1}32%{transform:translateY(-2vh) rotate(-3deg)}58%{transform:translateY(1vh) rotate(3deg)}82%{transform:translateY(-9vh) scale(1.04);opacity:1}100%{transform:translateY(-18vh) scale(.82) rotate(-2deg);opacity:0}}
+@keyframes giftLegend{0%{transform:translateY(45vh) scale(.25) rotate(-18deg);opacity:0}15%{transform:translateY(0) scale(1.2) rotate(8deg);opacity:1}28%{transform:scale(1) rotate(-4deg)}48%{transform:translateY(-3vh) scale(1.08) rotate(4deg)}72%{transform:translateY(-10vh) scale(1.14) rotate(-2deg);opacity:1}100%{transform:translateY(-24vh) scale(.65) rotate(8deg);opacity:0}}
+@keyframes giftSpark{0%{transform:translate(-50%,0) scale(.7);opacity:0}25%{opacity:1}100%{transform:translate(-50%,-18vh) scale(1.4);opacity:0}}
 #toast{position:fixed;left:50%;top:calc(14px + env(safe-area-inset-top));transform:translateX(-50%);z-index:50;background:#000d;border:1px solid var(--gold);border-radius:999px;padding:8px 18px;font-size:14px;opacity:0;transition:.25s;pointer-events:none;text-align:center;max-width:92vw}
 #toast.on{opacity:1}
 /* Popup kenaikan SVIP: tampil tepat di tengah layar untuk semua anggota room */
@@ -435,6 +444,8 @@ let voiceRecorder = null, voiceStream = null, voiceChunks = [];
 const pcs = {}, early = {};
 let dbChannel = null;
 let messageSyncTimer = null;
+let profileSyncTimer = null;
+const svipLevelCache = new Map();
 const renderedMessageIds = new Set();
 
 function toast(t) { const e = $('#toast'); e.textContent = t; e.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(() => e.classList.remove('on'), 2600) }
@@ -450,11 +461,15 @@ H.wa = msg => {
 H.close = () => $('#sheet').classList.add('hidden');
 function showFx(g, who, to, giftIndex) {
   const video = giftVideos?.[giftIndex]?.url || '';
+  const points = Number(g?.points || 0);
+  // 0–999 poin: efek biasa, 1.000–4.999: melayang, 5.000+: legenda.
+  const tier = points >= 5000 ? 'fx-legend' : points >= 1000 ? 'fx-float' : '';
   const visual = video && /^https:\/\//i.test(video)
     ? `<video class="gift-fx-video" src="${esc(video)}" autoplay muted playsinline preload="auto" onended="H.hideGiftFx()" onerror="H.hideGiftFx()"></video>`
     : (g.img ? `<img src="${esc(g.img)}">` : `<div class="big">${g.e}</div>`);
-  $('#fx').innerHTML = `<div class="g">${visual}<br><span class="ban">${esc(who)} mengirim hadiah${to ? ' ke ' + esc(to) : ''}!</span></div>`;
-  clearTimeout(showFx.t); showFx.t = setTimeout(() => $('#fx').innerHTML = '', video ? 10000 : 4000);
+  const label = `${esc(who)} mengirim ${esc(g?.name || 'hadiah')}${to ? ' ke ' + esc(to) : ''} · ${points.toLocaleString('id-ID')} poin!`;
+  $('#fx').innerHTML = `<div class="g ${tier}">${visual}<br><span class="ban">${label}</span></div>`;
+  clearTimeout(showFx.t); showFx.t = setTimeout(() => $('#fx').innerHTML = '', video ? 12000 : (tier ? 6500 : 4000));
   const player = $('#fx video'); if (player) player.play().catch(() => {});
 }
 H.hideGiftFx = () => { clearTimeout(showFx.t); $('#fx').innerHTML = ''; };
@@ -705,21 +720,54 @@ H.clear = async () => { await sb.from('messages').delete().neq('id', 0); $('#cha
 
 /* ---------- 3. Room ---------- */
 let joined = false;
-async function syncRecentMessages() {
+function applyProfileUpdate(p, notify = true) {
+  if (!p?.id) return;
+  const id = p.id;
+  const previous = prof[id] || (id === uid ? me : null);
+  const oldLevel = svipLevelCache.has(id) ? svipLevelCache.get(id) : lvl(previous?.points || 0);
+  const newLevel = lvl(p.points || 0);
+  const wasKnown = svipLevelCache.has(id);
+  svipLevelCache.set(id, newLevel);
+  prof[id] = { ...prof[id], ...p };
+  refreshBubbles(id);
+  if (notify && wasKnown && newLevel > oldLevel) {
+    showSvipPopup(p.name || (id === uid ? me.name : 'Anggota'), newLevel);
+  }
+  if (id === uid) {
+    if (notify && Number(p.gift_tickets || 0) > Number(me.gift_tickets || 0)) showFx({ e: '🎉', name: 'Tiket Gift', points: 0 }, 'Kamu mendapat', '', 0);
+    if (notify && p.theme_ok && !me.theme_ok) showFx({ e: '🎨', name: 'Tema Chat', points: 0 }, 'Tema chat terbuka', '', 0);
+    if (notify && (p.borders || []).length > (me.borders || []).length) toast('Border baru terbuka dari Host! 🖼️');
+    me = { ...me, ...p };
+    room?.track(presence());
+    renderProf();
+  }
+  renderSeats();
+}
+async function syncRecentMessages(live = false) {
   if (!inRoom) return;
   const { data, error } = await sb.from('messages').select('*').order('id', { ascending: false }).limit(80);
   if (error) { console.warn('Message sync:', error.message); return; }
   const rows = (data || []).reverse();
   await ensureProf(rows.map(m => m.user_id));
-  rows.forEach(m => addRoomMessage(m, false));
+  rows.forEach(m => addRoomMessage(m, live));
+}
+async function syncSvipProfiles() {
+  if (!inRoom) return;
+  const ids = [...new Set([uid, ...Object.keys(online)])];
+  if (!ids.length) return;
+  const { data, error } = await sb.from('profiles').select('id,name,avatar,points,gift_tickets,theme_ok,gifts_sent,is_host,chat_theme' + BC()).in('id', ids);
+  if (error) { console.warn('SVIP sync:', error.message); return; }
+  (data || []).forEach(p => applyProfileUpdate(p, true));
 }
 function startMessageSync() {
-  clearInterval(messageSyncTimer);
-  // Fallback for projects where messages is not enabled in supabase_realtime.
-  messageSyncTimer = setInterval(syncRecentMessages, 1500);
+  clearInterval(messageSyncTimer); clearInterval(profileSyncTimer);
+  // Fallback bila publication Realtime belum aktif di Supabase.
+  messageSyncTimer = setInterval(() => syncRecentMessages(true), 500);
+  profileSyncTimer = setInterval(syncSvipProfiles, 1000);
 }
 async function stopMessageSync() {
   clearInterval(messageSyncTimer); messageSyncTimer = null;
+  clearInterval(profileSyncTimer); profileSyncTimer = null;
 }
 async function startRoom() {
   if (inRoom) return;
@@ -731,7 +779,9 @@ async function startRoom() {
   refreshMySocialStats();
   await loadSeats();
   renderedMessageIds.clear();
-  await syncRecentMessages();
+  svipLevelCache.set(uid, lvl(me.points || 0));
+  await syncRecentMessages(false);
+  await syncSvipProfiles();
   startMessageSync();
   loadMyGifts();
   loadPosts(true); loadStories();
@@ -769,22 +819,11 @@ async function startRoom() {
     .on('postgres_changes', { event: '*', schema: 'public', table: 'svip_entrances' }, () => { loadEntranceVideos(); })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'gift_videos' }, () => { loadGiftVideos(); })
     .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'profiles' }, p => {
-      const previous = p.new.id === uid ? me : (prof[p.new.id] || p.old || null);
-      const oldLevel = previous ? lvl(previous.points) : 0;
-      const newLevel = lvl(p.new.points);
-      prof[p.new.id] = { ...prof[p.new.id], ...p.new }; refreshBubbles(p.new.id);
-      // Popup ditampilkan di tengah layar seluruh anggota yang sedang berada di room.
-      if (newLevel > oldLevel) showSvipPopup(p.new.name || (p.new.id === uid ? me.name : 'Anggota'), newLevel);
-      if (p.new.id === uid) {
-        if (p.new.gift_tickets > me.gift_tickets) showFx({ e: '🎉' }, 'Kamu dapat +1 Tiket Gift! 🎟️ dari Host');
-        if (p.new.theme_ok && !me.theme_ok) showFx({ e: '🎨' }, 'Tema chat terbuka! Semua tema bebas dipakai');
-        if ((p.new.borders || []).length > (me.borders || []).length) toast('Border baru terbuka dari Host! 🖼️');
-        me = { ...me, ...p.new }; room?.track(presence()); renderProf();
-      }
-      renderSeats();
+      applyProfileUpdate(p.new, true);
     }).subscribe(async status => {
       if (status === 'SUBSCRIBED') {
-        await syncRecentMessages();
+        await syncRecentMessages(false);
+        await syncSvipProfiles();
       } else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
         console.warn('Realtime channel status:', status);
         toast('Koneksi pesan realtime terputus. Mencoba menyambung lagi…');
@@ -930,7 +969,7 @@ async function loadSeats() {
   mySeat = (data || []).find(s => s.user_id === uid)?.seat_no || null;
   if (!mySeat && stream && !sitting) stopMic();
   const ids = (data || []).map(s => s.user_id);
-  if (ids.length) (await sb.from('profiles').select('id,points,gifts_sent,chat_theme,is_host' + BC()).in('id', ids)).data.forEach(x => prof[x.id] = { ...prof[x.id], ...x });
+  if (ids.length) (await sb.from('profiles').select('id,name,avatar,points,gifts_sent,chat_theme,is_host' + BC()).in('id', ids)).data.forEach(x => applyProfileUpdate(x, false));
   renderSeats(); renderTop(); syncPeers();
 }
 
@@ -1195,10 +1234,11 @@ H.giveBorder = async (id, b) => {
 function addRoomMessage(m, live) {
   if (m?.id != null) {
     const key = String(m.id);
-    if (renderedMessageIds.has(key)) return;
+    if (renderedMessageIds.has(key)) return false;
     renderedMessageIds.add(key);
   }
   addMsg(m, live);
+  return true;
 }
 
 function addMsg(m, live) {

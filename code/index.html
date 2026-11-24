@@ -444,6 +444,8 @@ let voiceRecorder = null, voiceStream = null, voiceChunks = [];
 const pcs = {}, early = {};
 let dbChannel = null;
 let messageSyncTimer = null;
+let profileSyncTimer = null;
+const svipLevelCache = new Map();
 const renderedMessageIds = new Set();
 
 function toast(t) { const e = $('#toast'); e.textContent = t; e.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(() => e.classList.remove('on'), 2600) }
@@ -718,21 +720,54 @@ H.clear = async () => { await sb.from('messages').delete().neq('id', 0); $('#cha
 
 /* ---------- 3. Room ---------- */
 let joined = false;
-async function syncRecentMessages() {
+function applyProfileUpdate(p, notify = true) {
+  if (!p?.id) return;
+  const id = p.id;
+  const previous = prof[id] || (id === uid ? me : null);
+  const oldLevel = svipLevelCache.has(id) ? svipLevelCache.get(id) : lvl(previous?.points || 0);
+  const newLevel = lvl(p.points || 0);
+  const wasKnown = svipLevelCache.has(id);
+  svipLevelCache.set(id, newLevel);
+  prof[id] = { ...prof[id], ...p };
+  refreshBubbles(id);
+  if (notify && wasKnown && newLevel > oldLevel) {
+    showSvipPopup(p.name || (id === uid ? me.name : 'Anggota'), newLevel);
+  }
+  if (id === uid) {
+    if (notify && Number(p.gift_tickets || 0) > Number(me.gift_tickets || 0)) showFx({ e: '🎉', name: 'Tiket Gift', points: 0 }, 'Kamu mendapat', '', 0);
+    if (notify && p.theme_ok && !me.theme_ok) showFx({ e: '🎨', name: 'Tema Chat', points: 0 }, 'Tema chat terbuka', '', 0);
+    if (notify && (p.borders || []).length > (me.borders || []).length) toast('Border baru terbuka dari Host! 🖼️');
+    me = { ...me, ...p };
+    room?.track(presence());
+    renderProf();
+  }
+  renderSeats();
+}
+async function syncRecentMessages(live = false) {
   if (!inRoom) return;
   const { data, error } = await sb.from('messages').select('*').order('id', { ascending: false }).limit(80);
   if (error) { console.warn('Message sync:', error.message); return; }
   const rows = (data || []).reverse();
   await ensureProf(rows.map(m => m.user_id));
-  rows.forEach(m => addRoomMessage(m, false));
+  rows.forEach(m => addRoomMessage(m, live));
+}
+async function syncSvipProfiles() {
+  if (!inRoom) return;
+  const ids = [...new Set([uid, ...Object.keys(online)])];
+  if (!ids.length) return;
+  const { data, error } = await sb.from('profiles').select('id,name,avatar,points,gift_tickets,theme_ok,gifts_sent,is_host,chat_theme' + BC()).in('id', ids);
+  if (error) { console.warn('SVIP sync:', error.message); return; }
+  (data || []).forEach(p => applyProfileUpdate(p, true));
 }
 function startMessageSync() {
-  clearInterval(messageSyncTimer);
-  // Fallback for projects where messages is not enabled in supabase_realtime.
-  messageSyncTimer = setInterval(syncRecentMessages, 500);
+  clearInterval(messageSyncTimer); clearInterval(profileSyncTimer);
+  // Fallback bila publication Realtime belum aktif di Supabase.
+  messageSyncTimer = setInterval(() => syncRecentMessages(true), 500);
+  profileSyncTimer = setInterval(syncSvipProfiles, 1000);
 }
 async function stopMessageSync() {
   clearInterval(messageSyncTimer); messageSyncTimer = null;
+  clearInterval(profileSyncTimer); profileSyncTimer = null;
 }
 async function startRoom() {
   if (inRoom) return;
@@ -744,7 +779,9 @@ async function startRoom() {
   refreshMySocialStats();
   await loadSeats();
   renderedMessageIds.clear();
-  await syncRecentMessages();
+  svipLevelCache.set(uid, lvl(me.points || 0));
+  await syncRecentMessages(false);
+  await syncSvipProfiles();
   startMessageSync();
   loadMyGifts();
   loadPosts(true); loadStories();
@@ -782,22 +819,11 @@ async function startRoom() {
     .on('postgres_changes', { event: '*', schema: 'public', table: 'svip_entrances' }, () => { loadEntranceVideos(); })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'gift_videos' }, () => { loadGiftVideos(); })
     .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'profiles' }, p => {
-      const previous = p.new.id === uid ? me : (prof[p.new.id] || p.old || null);
-      const oldLevel = previous ? lvl(previous.points) : 0;
-      const newLevel = lvl(p.new.points);
-      prof[p.new.id] = { ...prof[p.new.id], ...p.new }; refreshBubbles(p.new.id);
-      // Popup ditampilkan di tengah layar seluruh anggota yang sedang berada di room.
-      if (newLevel > oldLevel) showSvipPopup(p.new.name || (p.new.id === uid ? me.name : 'Anggota'), newLevel);
-      if (p.new.id === uid) {
-        if (p.new.gift_tickets > me.gift_tickets) showFx({ e: '🎉' }, 'Kamu dapat +1 Tiket Gift! 🎟️ dari Host');
-        if (p.new.theme_ok && !me.theme_ok) showFx({ e: '🎨' }, 'Tema chat terbuka! Semua tema bebas dipakai');
-        if ((p.new.borders || []).length > (me.borders || []).length) toast('Border baru terbuka dari Host! 🖼️');
-        me = { ...me, ...p.new }; room?.track(presence()); renderProf();
-      }
-      renderSeats();
+      applyProfileUpdate(p.new, true);
     }).subscribe(async status => {
       if (status === 'SUBSCRIBED') {
-        await syncRecentMessages();
+        await syncRecentMessages(false);
+        await syncSvipProfiles();
       } else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
         console.warn('Realtime channel status:', status);
         toast('Koneksi pesan realtime terputus. Mencoba menyambung lagi…');
@@ -943,7 +969,7 @@ async function loadSeats() {
   mySeat = (data || []).find(s => s.user_id === uid)?.seat_no || null;
   if (!mySeat && stream && !sitting) stopMic();
   const ids = (data || []).map(s => s.user_id);
-  if (ids.length) (await sb.from('profiles').select('id,points,gifts_sent,chat_theme,is_host' + BC()).in('id', ids)).data.forEach(x => prof[x.id] = { ...prof[x.id], ...x });
+  if (ids.length) (await sb.from('profiles').select('id,name,avatar,points,gifts_sent,chat_theme,is_host' + BC()).in('id', ids)).data.forEach(x => applyProfileUpdate(x, false));
   renderSeats(); renderTop(); syncPeers();
 }
 
@@ -1208,10 +1234,11 @@ H.giveBorder = async (id, b) => {
 function addRoomMessage(m, live) {
   if (m?.id != null) {
     const key = String(m.id);
-    if (renderedMessageIds.has(key)) return;
+    if (renderedMessageIds.has(key)) return false;
     renderedMessageIds.add(key);
   }
   addMsg(m, live);
+  return true;
 }
 
 function addMsg(m, live) {
