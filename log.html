@@ -103,19 +103,66 @@ textarea.inp{resize:none;display:block}
 .cnt{display:flex;align-items:center;gap:16px;margin:8px 0 14px}.cnt button{width:40px;height:40px;border-radius:50%;background:#ffffff18;font-size:22px}
 #fx{position:fixed;inset:0;z-index:40;display:grid;place-items:center;pointer-events:none}
 #fx .g{text-align:center;animation:fl 4s ease-in-out forwards}
-#fx .g.fx-float{animation:giftFloat 5s ease-in-out forwards}
-#fx .g.fx-legend{animation:giftLegend 6.5s ease-in-out forwards}
-#fx .g.fx-float .big,#fx .g.fx-float img{filter:drop-shadow(0 0 34px #ffd36e) drop-shadow(0 0 70px #ff9d2e88)}
-#fx .g.fx-legend .big,#fx .g.fx-legend img{filter:drop-shadow(0 0 38px #fff1a8) drop-shadow(0 0 90px #ff8a00) drop-shadow(0 0 130px #ff3fb188)}
-#fx .g.fx-legend::before,#fx .g.fx-legend::after{content:'✦  ✧  ✦  ✧  ✦';position:absolute;left:50%;top:42%;width:100vw;color:#ffd36e;font-size:clamp(18px,5vw,32px);letter-spacing:18px;text-shadow:0 0 14px #fff;pointer-events:none;animation:giftSpark 2.2s ease-out infinite}
-#fx .g.fx-legend::after{content:'✧  ✦  ✧  ✦';top:55%;color:#ff8ad8;animation-delay:.7s}
 #fx .big{font-size:min(55vw,260px);line-height:1;filter:drop-shadow(0 0 30px var(--gold))}#fx img{width:min(70vw,320px)}
 #fx .ban{display:inline-block;margin-top:10px;padding:8px 20px;border-radius:999px;background:linear-gradient(135deg,#7a2630,#4a1219);border:2px solid #e0646b;font-size:17px}
 #fx .gift-fx-video{display:block;width:min(82vw,560px);max-height:62vh;object-fit:contain;border-radius:22px;filter:drop-shadow(0 0 28px #ffd36e);box-shadow:0 0 45px #ffb52b88}
 @keyframes fl{0%{transform:translateY(40vh) scale(.4);opacity:0}12%{transform:translateY(0) scale(1.1);opacity:1}20%{transform:scale(1)}85%{transform:translateY(-6vh);opacity:1}100%{transform:translateY(-14vh);opacity:0}}
-@keyframes giftFloat{0%{transform:translateY(42vh) scale(.45) rotate(-8deg);opacity:0}15%{transform:translateY(0) scale(1.08) rotate(4deg);opacity:1}32%{transform:translateY(-2vh) rotate(-3deg)}58%{transform:translateY(1vh) rotate(3deg)}82%{transform:translateY(-9vh) scale(1.04);opacity:1}100%{transform:translateY(-18vh) scale(.82) rotate(-2deg);opacity:0}}
-@keyframes giftLegend{0%{transform:translateY(45vh) scale(.25) rotate(-18deg);opacity:0}15%{transform:translateY(0) scale(1.2) rotate(8deg);opacity:1}28%{transform:scale(1) rotate(-4deg)}48%{transform:translateY(-3vh) scale(1.08) rotate(4deg)}72%{transform:translateY(-10vh) scale(1.14) rotate(-2deg);opacity:1}100%{transform:translateY(-24vh) scale(.65) rotate(8deg);opacity:0}}
-@keyframes giftSpark{0%{transform:translate(-50%,0) scale(.7);opacity:0}25%{opacity:1}100%{transform:translate(-50%,-18vh) scale(1.4);opacity:0}}
+/* ===== Gift FX berjenjang ===== */
+#fx .gs{position:absolute;inset:0;display:grid;place-items:center;overflow:hidden}
+#fx .gs.t5{animation:gShake .5s linear 1.2s 3}
+#fx .gm{position:relative;text-align:center;will-change:transform;animation-duration:var(--gd);animation-timing-function:ease-in-out;animation-fill-mode:both}
+#fx .gs.t0 .big,#fx .gs.t1 .big{font-size:min(42vw,190px)}
+#fx .gs.t3 .big,#fx .gs.t3 img{filter:drop-shadow(0 0 34px #ffd36e) drop-shadow(0 0 70px #ff9d2e88)}
+#fx .gs.t4 .big,#fx .gs.t4 img{filter:drop-shadow(0 0 38px #fff1a8) drop-shadow(0 0 90px #ff8a00) drop-shadow(0 0 130px #ff3fb188)}
+#fx .gs.t5 .big{font-size:min(70vw,340px)}
+#fx .gs.t5 .big,#fx .gs.t5 img{filter:drop-shadow(0 0 44px #fff) drop-shadow(0 0 100px #ffb52b) drop-shadow(0 0 150px #ff3fb1)}
+#fx .vig{position:absolute;inset:0;background:radial-gradient(circle,transparent 40%,var(--gc2) 130%);opacity:0;animation:gVig var(--gd) ease both}
+#fx .rays{position:absolute;left:50%;top:50%;width:160vmax;height:160vmax;margin:-80vmax 0 0 -80vmax;background:repeating-conic-gradient(var(--gc) 0 6deg,transparent 6deg 18deg);-webkit-mask-image:radial-gradient(circle,#000,transparent 62%);mask-image:radial-gradient(circle,#000,transparent 62%);opacity:0;animation:gRays var(--gd) linear both}
+#fx .flash{position:absolute;inset:0;background:radial-gradient(circle,#fff,transparent 60%);opacity:0;animation:gFlash var(--gd) linear both}
+#fx i.p,#fx i.r{position:absolute;font-style:normal;opacity:0;font-size:var(--s,20px)}
+#fx i.p{left:50%;top:50%;animation:gBurst 2.4s ease-out var(--dl) both}
+#fx i.r{top:-10vh;left:var(--x);animation:gRain var(--rd) linear var(--dl) both}
+#fx .gban{position:absolute;left:0;right:0;bottom:16%;text-align:center;animation:gBan var(--gd) ease both}
+@keyframes gVig{0%{opacity:0}15%{opacity:.7}80%{opacity:.5}100%{opacity:0}}
+@keyframes gRays{0%{opacity:0;transform:rotate(0)}12%{opacity:.4}85%{opacity:.4}100%{opacity:0;transform:rotate(60deg)}}
+@keyframes gFlash{0%,8%{opacity:0}10%{opacity:.9}18%{opacity:0}60%{opacity:0}62%{opacity:.5}70%,100%{opacity:0}}
+@keyframes gBurst{0%{transform:translate(-50%,-50%) scale(.3);opacity:0}15%{opacity:1}100%{transform:translate(calc(-50% + var(--tx)),calc(-50% + var(--ty))) scale(1);opacity:0}}
+@keyframes gRain{0%{transform:translateY(0) rotate(0);opacity:0}8%{opacity:1}100%{transform:translateY(115vh) rotate(var(--rot,360deg));opacity:.9}}
+@keyframes gBan{0%,6%{opacity:0;transform:translateY(14px)}14%,82%{opacity:1;transform:none}100%{opacity:0}}
+@keyframes gShake{0%,100%{transform:translate(0,0)}25%{transform:translate(-5px,3px)}50%{transform:translate(4px,-3px)}75%{transform:translate(-3px,-2px)}}
+@keyframes m-vid{0%{opacity:0;transform:scale(.8)}8%{opacity:1;transform:scale(1)}100%{opacity:1}}
+@keyframes m-pop{0%{transform:scale(.2);opacity:0}15%{transform:scale(1.2);opacity:1}25%{transform:scale(1)}85%{opacity:1}100%{transform:scale(.8);opacity:0}}
+@keyframes m-rise{0%{transform:translateY(45vh) scale(.5);opacity:0}15%{transform:translateY(0) scale(1.1);opacity:1}80%{transform:translateY(-6vh) scale(1.05);opacity:1}100%{transform:translateY(-22vh) scale(.8);opacity:0}}
+@keyframes m-flame{0%{transform:translateY(40vh) scale(.4);opacity:0}15%{transform:translateY(0) scale(1.1) rotate(-4deg);opacity:1}30%{transform:scale(1.2) rotate(4deg)}45%{transform:scale(1) rotate(-4deg)}60%{transform:scale(1.18) rotate(3deg)}85%{opacity:1}100%{transform:translateY(-20vh) scale(.7);opacity:0}}
+@keyframes m-drop{0%{transform:translateY(-70vh) rotate(-20deg);opacity:0}18%{transform:translateY(0) rotate(6deg);opacity:1}26%{transform:translateY(-8vh)}34%{transform:translateY(0) rotate(0)}85%{opacity:1}100%{transform:translateY(10vh) scale(.8);opacity:0}}
+@keyframes m-rocket{0%{transform:translate(-45vw,55vh) scale(.6);opacity:0}12%{opacity:1}100%{transform:translate(45vw,-65vh) scale(1.3);opacity:0}}
+@keyframes m-beat{0%{transform:scale(.2);opacity:0}12%{transform:scale(1);opacity:1}22%{transform:scale(1.25)}32%{transform:scale(1)}42%{transform:scale(1.25)}52%{transform:scale(1)}85%{transform:scale(1.05);opacity:1}100%{transform:scale(1.4);opacity:0}}
+@keyframes m-shake{0%{transform:translateY(40vh) scale(.5);opacity:0}15%{transform:translateY(0) scale(1.1);opacity:1}25%{transform:rotate(-8deg)}35%{transform:rotate(8deg)}45%{transform:rotate(-8deg)}55%{transform:rotate(8deg) scale(1.15)}65%{transform:rotate(0) scale(1)}85%{opacity:1}100%{transform:translateY(-18vh) scale(.8);opacity:0}}
+@keyframes m-spin{0%{transform:scale(.1) rotate(-540deg);opacity:0}25%{transform:scale(1.15) rotate(0);opacity:1}35%{transform:scale(1)}85%{opacity:1}100%{transform:scale(1.6) rotate(25deg);opacity:0}}
+@keyframes m-shine{0%{transform:scale(.2) rotateY(0);opacity:0}25%{transform:scale(1.2) rotateY(360deg);opacity:1}40%{transform:scale(1) rotateY(360deg)}60%{transform:scale(1.1) rotateY(720deg)}85%{opacity:1}100%{transform:scale(1.5) rotateY(720deg);opacity:0}}
+@keyframes m-sway{0%{transform:translateY(40vh) rotate(-12deg);opacity:0}15%{transform:translateY(0) rotate(10deg);opacity:1}35%{transform:rotate(-10deg)}55%{transform:rotate(10deg)}75%{transform:rotate(-8deg);opacity:1}100%{transform:translateY(-20vh) rotate(6deg);opacity:0}}
+@keyframes m-drive{0%{transform:translateX(-95vw);opacity:0}8%,92%{opacity:1}100%{transform:translateX(95vw);opacity:0}}
+@keyframes m-gallop{0%{transform:translate(95vw,0);opacity:0}8%{opacity:1}15%{transform:translate(70vw,-8vh)}30%{transform:translate(45vw,0)}45%{transform:translate(20vw,-8vh)}60%{transform:translate(-5vw,0)}75%{transform:translate(-30vw,-8vh)}92%{opacity:1}100%{transform:translate(-95vw,0);opacity:0}}
+@keyframes m-fly{0%{transform:translate(-60vw,40vh) rotate(-15deg);opacity:0}12%{opacity:1}100%{transform:translate(60vw,-45vh) rotate(-15deg);opacity:0}}
+@keyframes m-swoop{0%{transform:translate(-95vw,-20vh);opacity:0}8%{opacity:1}25%{transform:translate(-45vw,15vh)}50%{transform:translate(0,-15vh)}75%{transform:translate(45vw,15vh)}92%{opacity:1}100%{transform:translate(95vw,-20vh);opacity:0}}
+@keyframes m-orbit{0%{transform:rotate(-360deg) scale(.1);opacity:0}25%{transform:rotate(0) scale(1.2);opacity:1}85%{transform:rotate(40deg) scale(1.05);opacity:1}100%{transform:rotate(120deg) scale(.4);opacity:0}}
+@keyframes m-meteor{0%{transform:translate(60vw,-70vh) scale(.5) rotate(-20deg);opacity:0}15%{opacity:1}30%{transform:translate(0,0) scale(1.3)}70%{transform:translate(-6vw,2vh) scale(1.1);opacity:1}100%{transform:translate(-50vw,60vh) scale(.5);opacity:0}}
+@keyframes m-ufo{0%{transform:translate(-80vw,-25vh);opacity:0}10%{opacity:1}25%{transform:translate(-20vw,-5vh) rotate(8deg)}40%{transform:translate(0,-12vh) rotate(-8deg)}60%{transform:translate(0,-5vh) rotate(8deg)}80%{transform:translate(30vw,-20vh) rotate(-6deg);opacity:1}100%{transform:translate(95vw,-35vh);opacity:0}}
+@keyframes m-wings{0%{transform:scale(.3);opacity:0}15%{transform:scale(1.1);opacity:1}25%{transform:scaleX(.7)}35%{transform:scaleX(1.1)}45%{transform:scaleX(.7)}55%{transform:scaleX(1.1)}65%{transform:scaleX(.75)}85%{transform:scale(1);opacity:1}100%{transform:translateY(-20vh);opacity:0}}
+@keyframes m-bounce{0%{transform:translateY(50vh) scale(.5);opacity:0}15%{transform:translateY(0);opacity:1}25%{transform:translateY(-10vh)}35%{transform:translateY(0)}45%{transform:translateY(-6vh)}55%{transform:translateY(0)}85%{opacity:1}100%{transform:translateY(-14vh);opacity:0}}
+@keyframes m-flutter{0%{transform:translate(-70vw,20vh);opacity:0}10%{opacity:1}30%{transform:translate(-30vw,-10vh)}50%{transform:translate(0,10vh)}70%{transform:translate(30vw,-12vh)}90%{opacity:1}100%{transform:translate(70vw,-5vh);opacity:0}}
+#entranceFX .ent-video.alpha{mix-blend-mode:normal}
+/* Hubungan */
+.relcard{padding:12px;border-radius:16px;margin:8px 0;background:var(--glass);border:1.5px solid var(--rc,#f5c15a55);box-shadow:0 0 12px var(--rg,transparent)}
+.relcard .rh{display:flex;align-items:center;gap:10px}
+.relcard .rh img{width:42px;height:42px;border-radius:50%;object-fit:cover;border:2px solid var(--rc,var(--gold))}
+.relcard .rh>div{flex:1;min-width:0}
+.relcard small{color:#a99d92;font-weight:700}
+.relcard .prog{width:100%}
+.relk{font-style:normal;font-size:10px;border-radius:8px;padding:1px 7px;background:var(--rc,var(--gold));color:#1a0f00}
+.rl1{--rc:#8fa3b8}.rl2{--rc:#5ec8ff}.rl3{--rc:#b48bff}.rl4{--rc:#ff8ad8;--rg:#ff8ad855}.rl5{--rc:#ffb36b;--rg:#ff6a3c66}.rl6{--rc:#ffd36e;--rg:#ffc34daa}
+#svipPop .rel-card{border-color:#ff8ad8;background:radial-gradient(circle at 50% 0%,#6a1b5a,#1d0a1a 58%,#100b08);box-shadow:0 0 28px #ff8ad899}
+.gi.lk>small.tkc{opacity:1;filter:none;color:#9fe3ff}
 #toast{position:fixed;left:50%;top:calc(14px + env(safe-area-inset-top));transform:translateX(-50%);z-index:50;background:#000d;border:1px solid var(--gold);border-radius:999px;padding:8px 18px;font-size:14px;opacity:0;transition:.25s;pointer-events:none;text-align:center;max-width:92vw}
 #toast.on{opacity:1}
 /* Popup kenaikan SVIP: tampil tepat di tengah layar untuk semua anggota room */
@@ -201,8 +248,8 @@ textarea.inp{resize:none;display:block}
 #entranceFX .ent{position:absolute;inset:0;display:grid;place-items:center}
 #entranceFX .ent-bg{position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,var(--c2),transparent 65%);opacity:0;animation:entBg var(--dur) ease-out both}
 #entranceFX .ent-rays,#entranceFX .ent-burst{display:none;position:absolute;left:50%;top:50%}
-#entranceFX .ent8 .ent-rays,#entranceFX .ent9 .ent-rays{display:block;width:150vmax;height:150vmax;margin:-75vmax 0 0 -75vmax;background:repeating-conic-gradient(var(--c1) 0 5deg,transparent 5deg 15deg);-webkit-mask-image:radial-gradient(circle,#000,transparent 60%);mask-image:radial-gradient(circle,#000,transparent 60%);opacity:0;animation:entRays var(--dur) linear both}
-#entranceFX .ent9 .ent-burst{display:block;width:40vmin;height:40vmin;margin:-20vmin 0 0 -20vmin;border-radius:50%;border:4px solid var(--c1);box-shadow:0 0 30px var(--c1),inset 0 0 30px var(--c1);opacity:0;animation:entBurst 1.5s ease-out .5s 3 both}
+#entranceFX .ent8 .ent-rays,#entranceFX .ent9 .ent-rays,#entranceFX .ent10 .ent-rays,#entranceFX .ent11 .ent-rays{display:block;width:150vmax;height:150vmax;margin:-75vmax 0 0 -75vmax;background:repeating-conic-gradient(var(--c1) 0 5deg,transparent 5deg 15deg);-webkit-mask-image:radial-gradient(circle,#000,transparent 60%);mask-image:radial-gradient(circle,#000,transparent 60%);opacity:0;animation:entRays var(--dur) linear both}
+#entranceFX .ent9 .ent-burst,#entranceFX .ent10 .ent-burst,#entranceFX .ent11 .ent-burst{display:block;width:40vmin;height:40vmin;margin:-20vmin 0 0 -20vmin;border-radius:50%;border:4px solid var(--c1);box-shadow:0 0 30px var(--c1),inset 0 0 30px var(--c1);opacity:0;animation:entBurst 1.5s ease-out .5s 3 both}
 #entranceFX .ent-sparks i{position:absolute;left:50%;top:50%;width:9px;height:9px;margin:-4px;border-radius:50%;background:var(--c1);box-shadow:0 0 12px 2px var(--c1);opacity:0;animation:entSpark 2.2s ease-out var(--dl) both}
 #entranceFX .ent-move{position:relative;will-change:transform}
 #entranceFX .ent-art{font-size:clamp(110px,34vw,220px);line-height:1;filter:drop-shadow(0 0 26px var(--c1)) drop-shadow(0 0 60px var(--c2))}
@@ -243,6 +290,21 @@ textarea.inp{resize:none;display:block}
 @keyframes flash8{0%,20%{opacity:0}22%{opacity:1}25%{opacity:.15}28%{opacity:.9}33%{opacity:.25}70%{opacity:.4}100%{opacity:0}}
 @keyframes mv9{0%{transform:scale(0) rotate(-200deg);opacity:0}22%{transform:scale(1.3) rotate(8deg);opacity:1}32%{transform:scale(1) rotate(0)}85%{transform:scale(1.1);opacity:1}100%{transform:scale(2);opacity:0}}
 @keyframes glow9{0%,100%{filter:drop-shadow(0 0 22px #fff1a8) drop-shadow(0 0 50px #ff8a00)}50%{filter:drop-shadow(0 0 40px #fff) drop-shadow(0 0 90px #ffb52b)}}
+/* 10 Eksklusif: mahkota kerajaan meledak ungu-emas */
+#entranceFX .ent10 .ent-move{animation:mv9 var(--dur) ease-out both}
+#entranceFX .ent10 .ent-art{animation:glow9 1.1s ease-in-out infinite}
+#entranceFX .ent10 .ent-art svg{width:clamp(220px,70vw,420px)}
+/* 11 Sultan: terbang naik, sayap emas mengepak, cahaya merah-emas */
+#entranceFX .ent11 .ent-move{animation:mv11 var(--dur) ease-out both}
+#entranceFX .ent11 .ent-art{animation:glow11 1.3s ease-in-out infinite}
+#entranceFX .ent11 .ent-art svg{width:clamp(250px,84vw,500px)}
+#entranceFX .ent11 .wl{transform-box:fill-box;transform-origin:100% 50%;animation:wing11L .9s ease-in-out infinite}
+#entranceFX .ent11 .wr{transform-box:fill-box;transform-origin:0% 50%;animation:wing11R .9s ease-in-out infinite}
+#entranceFX .ent-ban{margin:0 0 10px}#entranceFX .ent-label .svip,#entranceFX .ent-label .svip span{text-shadow:none}#entranceFX .ent-label .svip.big{font-size:clamp(20px,6.4vw,34px);margin:0}
+@keyframes mv11{0%{transform:translateY(55vh) scale(.3);opacity:0}20%{transform:translateY(-4vh) scale(1.25);opacity:1}30%{transform:translateY(0) scale(1)}85%{transform:translateY(-2vh) scale(1.08);opacity:1}100%{transform:translateY(-30vh) scale(1.5);opacity:0}}
+@keyframes glow11{0%,100%{filter:drop-shadow(0 0 24px #ffe27a) drop-shadow(0 0 60px #e0162f)}50%{filter:drop-shadow(0 0 42px #fff) drop-shadow(0 0 100px #ff3a52)}}
+@keyframes wing11L{0%,100%{transform:rotate(-7deg)}50%{transform:rotate(9deg)}}
+@keyframes wing11R{0%,100%{transform:rotate(7deg)}50%{transform:rotate(-9deg)}}
 /* posts & profile */
 .post{background:var(--glass);border:1px solid rgba(245,193,90,.18);border-radius:18px;padding:12px;margin-bottom:12px}
 .post .hd{display:flex;align-items:center;gap:10px;margin-bottom:8px}
@@ -260,6 +322,25 @@ textarea.inp{resize:none;display:block}
 .s7{background:linear-gradient(#7af0c8,#14a37f)}.s8{background:linear-gradient(#7fd6ff,#2b6dff 55%,#a84cff)}
 .s9{background:linear-gradient(90deg,#fff6c9,#ffc247,#ff4fd8,#6a4bff,#3fb4ff,#fff6c9);background-size:200% 100%;animation:s9shine 2.5s linear infinite;color:#1a0f00;box-shadow:0 0 10px #ffc34d}
 @keyframes s9shine{to{background-position:200% 0}}
+
+/* ===== SVIP 10 EKSKLUSIF & SVIP 11 SULTAN (banner gelar) ===== */
+@keyframes lxSheen{from{background-position:200% 0}to{background-position:-200% 0}}
+@keyframes wingL{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(7deg)}}
+@keyframes wingR{0%,100%{transform:rotate(6deg)}50%{transform:rotate(-7deg)}}
+.svip.s10,.svip.s11{display:inline-flex;align-items:center;position:relative;font-weight:900}
+.svip.s10{gap:4px;padding:2px 9px;margin:0 6px 0 2px;border-radius:9px;letter-spacing:.14em;border:1px solid #ffd36e;background:linear-gradient(135deg,#1b0636,#4b1590 48%,#1b0636);box-shadow:0 0 10px #ffd36eaa,0 0 20px #8a3dff77,inset 0 0 7px #ffe9a877}
+.svip.s10::before,.svip.s10::after{content:'\25C6';font-size:.7em;color:#ffd36e;text-shadow:0 0 6px #fff1a8}
+.svip.s11{gap:0;padding:3px 7px;margin:0 9px 0 5px;border-radius:12px;letter-spacing:.18em;border:1.5px solid #ffd36e;background:radial-gradient(circle at 50% 0,#b3162f,#4a0614 58%,#14030a);box-shadow:0 0 12px #ffc247cc,0 0 26px #e0162f88,inset 0 0 9px #ffe9a888}
+.svip.s10 span,.svip.s11 span{background:linear-gradient(100deg,#d99a22 0%,#fff6c9 20%,#ffd36e 36%,#fff 50%,#ffd36e 64%,#fff6c9 80%,#d99a22 100%);background-size:200% 100%;text-shadow:none;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;animation:lxSheen 2.8s linear infinite;filter:drop-shadow(0 0 3px #ffb52b)}
+.svip.s11 .wg{display:block;flex:none;width:2.7em;height:1.9em;margin:-.15em -.25em;background:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2060%2040'%3E%3Cdefs%3E%3ClinearGradient%20id='g'%20x1='0'%20y1='0'%20x2='1'%20y2='1'%3E%3Cstop%20offset='0'%20stop-color='%23fff9d6'/%3E%3Cstop%20offset='.45'%20stop-color='%23ffc247'/%3E%3Cstop%20offset='1'%20stop-color='%23a86a0a'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath%20d='M58%2017C46%206%2026%202%203%206C16%2010%2028%2013%2040%2022Z'%20fill='url(%23g)'%20stroke='%237a4a05'%20stroke-width='.7'/%3E%3Cpath%20d='M58%2019C44%2011%2024%2010%202%2017C15%2019%2028%2022%2042%2026Z'%20fill='url(%23g)'%20stroke='%237a4a05'%20stroke-width='.7'/%3E%3Cpath%20d='M58%2021C45%2016%2026%2018%204%2028C17%2027%2029%2029%2043%2030Z'%20fill='url(%23g)'%20stroke='%237a4a05'%20stroke-width='.7'/%3E%3Cpath%20d='M58%2023C47%2022%2032%2026%2014%2036C27%2033%2038%2033%2046%2031Z'%20fill='url(%23g)'%20stroke='%237a4a05'%20stroke-width='.7'/%3E%3Cpath%20d='M58%2025C50%2026%2040%2030%2030%2038C40%2035%2048%2034%2054%2030Z'%20fill='url(%23g)'%20stroke='%237a4a05'%20stroke-width='.7'/%3E%3Cpath%20d='M56%2018C44%2010%2026%207%208%209M56%2021C44%2015%2028%2015%208%2021M56%2024C46%2021%2034%2024%2018%2031'%20fill='none'%20stroke='%23fff'%20stroke-opacity='.75'%20stroke-width='1'/%3E%3C/svg%3E") center/contain no-repeat;filter:drop-shadow(0 0 3px #ffc34d);transform-origin:100% 55%;animation:wingL 1.6s ease-in-out infinite}
+.svip.s11 .wg.r{background-image:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2060%2040'%3E%3Cdefs%3E%3ClinearGradient%20id='g'%20x1='0'%20y1='0'%20x2='1'%20y2='1'%3E%3Cstop%20offset='0'%20stop-color='%23fff9d6'/%3E%3Cstop%20offset='.45'%20stop-color='%23ffc247'/%3E%3Cstop%20offset='1'%20stop-color='%23a86a0a'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg%20transform='matrix(-1%200%200%201%2060%200)'%3E%3Cpath%20d='M58%2017C46%206%2026%202%203%206C16%2010%2028%2013%2040%2022Z'%20fill='url(%23g)'%20stroke='%237a4a05'%20stroke-width='.7'/%3E%3Cpath%20d='M58%2019C44%2011%2024%2010%202%2017C15%2019%2028%2022%2042%2026Z'%20fill='url(%23g)'%20stroke='%237a4a05'%20stroke-width='.7'/%3E%3Cpath%20d='M58%2021C45%2016%2026%2018%204%2028C17%2027%2029%2029%2043%2030Z'%20fill='url(%23g)'%20stroke='%237a4a05'%20stroke-width='.7'/%3E%3Cpath%20d='M58%2023C47%2022%2032%2026%2014%2036C27%2033%2038%2033%2046%2031Z'%20fill='url(%23g)'%20stroke='%237a4a05'%20stroke-width='.7'/%3E%3Cpath%20d='M58%2025C50%2026%2040%2030%2030%2038C40%2035%2048%2034%2054%2030Z'%20fill='url(%23g)'%20stroke='%237a4a05'%20stroke-width='.7'/%3E%3Cpath%20d='M56%2018C44%2010%2026%207%208%209M56%2021C44%2015%2028%2015%208%2021M56%2024C46%2021%2034%2024%2018%2031'%20fill='none'%20stroke='%23fff'%20stroke-opacity='.75'%20stroke-width='1'/%3E%3C/g%3E%3C/svg%3E");transform-origin:0 55%;animation-name:wingR}
+.svip.big{font-size:26px}
+.nm .svip.s10,.nm .svip.s11{display:flex;width:max-content;max-width:100%;margin:0 auto 2px;font-size:7px}
+.svip-ban{display:flex;justify-content:center;margin:12px 0 6px}.svip-ban .svip.big{font-size:clamp(22px,7vw,34px);margin:6px 0}
+@media (prefers-reduced-motion:reduce){.svip.s10 span,.svip.s11 span,.svip.s11 .wg{animation:none}}
+/* border avatar SVIP 10 & 11 */
+.bd-svip10{--bg:conic-gradient(#fff6c9,#b36bff,#ffd36e,#6a1fd1,#fff6c9);--glow:#b36bffcc;--deco:'\1F48E';--spd:2.6s}
+.bd-svip11{--bg:conic-gradient(transparent 0 62%,rgba(255,255,255,.95) 76%,transparent 88%),conic-gradient(#fff6c9,#ffc247,#e0162f,#ffc247,#fff6c9);--glow:#ffc247;--deco:'\1F451';--spd:2.2s}
 @keyframes av9spin{to{transform:rotate(360deg)}}
 /* SVIP 9: border avatar eksklusif (cincin pelangi-emas berputar + mahkota) */
 .ring.vip9{background:none!important;box-shadow:0 0 16px var(--glow,#ffc34dcc),0 0 4px #fff6c9;--p:5px}
@@ -275,8 +356,8 @@ textarea.inp{resize:none;display:block}
 .prog{width:70%;height:8px;border-radius:99px;background:#ffffff18;overflow:hidden;margin:6px auto}
 .prog i{display:block;height:100%;background:linear-gradient(90deg,#ffd886,#d9962f)}
 .ib.off{opacity:.45}
-.lk{display:inline-flex;align-items:center;gap:6px;margin-top:6px;padding:5px 14px;border-radius:999px;background:#ffffff14;font-size:14px}
-.lk.on{background:#7a263088;border:1px solid #e0646b}
+.likebtn{display:inline-flex;align-items:center;gap:6px;margin-top:6px;padding:5px 14px;border-radius:999px;background:#ffffff14;font-size:14px}
+.likebtn.on{background:#7a263088;border:1px solid #e0646b}
 .pav{width:112px;height:112px;border-radius:50%;object-fit:cover;border:3px solid var(--gold);box-shadow:0 0 18px #f5c15a66;background:#1c1410}
 .pf h2{margin:10px 0 6px;font-size:22px}
 .stats{display:flex;gap:8px;justify-content:center;margin:8px 0 14px}
@@ -284,6 +365,25 @@ textarea.inp{resize:none;display:block}
 .sec{margin:18px 0 10px;color:var(--gold);font-size:17px}
 .empty-t{color:#8d8176;text-align:center;padding:24px 0;font-size:14px}
 @media(prefers-reduced-motion:reduce){.ring.talk,#fx .g{animation-duration:.01s}}
+/* ===== Notifikasi ===== */
+.bell{position:relative}
+.nb{position:absolute;top:-4px;right:-4px;min-width:17px;height:17px;padding:0 4px;border-radius:99px;background:#e11d48;color:#fff;font:900 10px/17px Nunito,system-ui,sans-serif;font-style:normal;text-align:center;box-shadow:0 0 0 2px #0c0806;pointer-events:none}
+.nb:empty{display:none}
+.nav button{position:relative}
+.nav button .nb{top:-1px;right:calc(50% - 26px)}
+.sm .nb{position:static;display:inline-block;margin-left:6px;box-shadow:none;vertical-align:middle}
+#nbanner{position:fixed;left:50%;top:calc(58px + env(safe-area-inset-top));transform:translate(-50%,-160%);z-index:55;width:min(94vw,480px);display:flex;align-items:center;gap:10px;padding:9px 14px;border-radius:18px;background:rgba(20,14,12,.97);border:1.5px solid var(--gold);box-shadow:0 8px 30px #000a;transition:transform .32s cubic-bezier(.2,.9,.3,1.15);cursor:pointer}
+#nbanner.on{transform:translate(-50%,0)}
+#nbanner img,.nitem img{width:38px;height:38px;border-radius:50%;object-fit:cover;background:#1c1410;flex:none}
+#nbanner .ni,.nitem .ni{font-size:26px;width:38px;text-align:center;flex:none}
+#nbanner div,.nitem div{flex:1;min-width:0}
+#nbanner b,.nitem b{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#nbanner small,.nitem small{display:block;color:#c9bdb0;font-size:12px;font-weight:700;overflow:hidden;text-overflow:ellipsis}
+#nbanner small{white-space:nowrap}
+.nlist{margin-top:10px}
+.nitem{display:flex;align-items:center;gap:10px;padding:10px 8px;border-top:1px solid #ffffff14;border-radius:12px;cursor:pointer}
+.nitem.un{background:rgba(245,193,90,.10)}
+.nitem .nt{flex:none;font-size:11px;color:#8d8176}
 </style>
 </head>
 <body>
@@ -292,7 +392,7 @@ textarea.inp{resize:none;display:block}
 <section id="setup" class="scr" style="display:flex;flex-direction:column;justify-content:center">
   <button class="ib" style="position:absolute;right:14px;top:calc(12px + env(safe-area-inset-top))" onclick="H.hostLogin()" title="Login Host">👑</button>
   <h1 style="font-size:30px;margin:0;color:var(--gold)">Welcome Penyelamat Bumi</h1>
-  <p class="sub" style="margin-top:4px">Upload foto profil dari HP-mu dan isi nama panggila.</p>
+  <p class="sub" style="margin-top:4px">Upload foto profil dari HP-mu dan isi nama panggilan.</p>
   <div class="avsel" id="avs"></div>
   <input id="nm" class="inp" maxlength="16" placeholder="Nama panggilan">
   <button class="btn" style="margin-top:16px" onclick="H.enter()">Masuk Room</button>
@@ -302,6 +402,7 @@ textarea.inp{resize:none;display:block}
 <section id="room" class="scr hn hidden" style="flex-direction:column">
   <div class="top">
     <div class="t"><b id="ttl"></b><small id="sub"></small></div>
+    <button class="ib bell" onclick="H.notifs()" title="Notifikasi">🔔<em class="nb"></em></button>
     <button class="ib" id="spkb" onclick="H.spk()" title="Speaker (dengar suara)">🔊</button>
     <button class="ib" onclick="H.panel()" title="Panel Host">👑</button>
     <button class="ib" onclick="H.exit()" title="Keluar / ubah profil">⏏</button>
@@ -326,6 +427,7 @@ textarea.inp{resize:none;display:block}
 <section id="pgPosts" class="scr hn col hidden">
   <div class="top">
     <div class="t"><b>Postingan</b><small>Dari semua anggota room</small></div>
+    <button class="ib bell" onclick="H.notifs()" title="Notifikasi">🔔<em class="nb"></em></button>
     <button class="ib plus" onclick="H.compose()" title="Buat postingan">＋</button>
   </div>
   <div class="pg"><div id="storyBar" class="storybar"></div><div id="plist"></div></div>
@@ -334,6 +436,7 @@ textarea.inp{resize:none;display:block}
 <!-- ================= TEMAN ================= -->
 <section id="pgFriends" class="scr hn col hidden">
   <div class="top"><div class="t"><b>Teman</b><small>Tambah teman dan mulai percakapan pribadi</small></div>
+    <button class="ib bell" onclick="H.notifs()" title="Notifikasi">🔔<em class="nb"></em></button>
     <button class="ib plus" onclick="H.findFriends()">＋</button></div>
   <div class="pg" id="friendBox"></div>
 </section>
@@ -342,19 +445,20 @@ textarea.inp{resize:none;display:block}
 <section id="pgMe" class="scr hn col hidden">
   <div class="top">
     <div class="t"><b>Profil</b><small>Kelola akunmu</small></div>
+    <button class="ib bell" onclick="H.notifs()" title="Notifikasi">🔔<em class="nb"></em></button>
     <button class="ib" onclick="H.panel()" title="Panel Host">👑</button>
   </div>
   <div class="pg" id="pfBox"></div>
 </section>
 
 <nav id="nav" class="nav hidden">
-  <button data-t="room" class="on" onclick="H.tab('room')"><i>💬</i>Room</button>
-  <button data-t="posts" onclick="H.tab('posts')"><i>📰</i>Postingan</button>
-  <button data-t="friends" onclick="H.tab('friends')"><i>👥</i>Teman</button>
-  <button data-t="me" onclick="H.tab('me')"><i>👤</i>Profil</button>
+  <button data-t="room" class="on" onclick="H.tab('room')"><i>💬</i>Room<em class="nb"></em></button>
+  <button data-t="posts" onclick="H.tab('posts')"><i>📰</i>Postingan<em class="nb"></em></button>
+  <button data-t="friends" onclick="H.tab('friends')"><i>👥</i>Teman<em class="nb"></em></button>
+  <button data-t="me" onclick="H.tab('me')"><i>👤</i>Profil<em class="nb"></em></button>
 </nav>
 
-<div id="sheet" class="hidden"></div><div id="fx"></div><div id="svipPop" class="hidden"></div><div id="entranceFX" class="hidden"></div><div id="storyView" class="hidden"></div><div id="toast"></div>
+<div id="sheet" class="hidden"></div><div id="fx"></div><div id="svipPop" class="hidden"></div><div id="entranceFX" class="hidden"></div><div id="storyView" class="hidden"></div><div id="toast"></div><div id="nbanner"></div>
 
 <script type="module">
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
@@ -381,6 +485,20 @@ const GIFTS = [
   {name:'Istana Kristal',e:'🏯',img:'',points:3200},{name:'Raja Phoenix',e:'🪽',img:'',points:6000},{name:'Naga Petir',e:'🐲',img:'',points:7500},
   {name:'Planet Cinta',e:'🪐',img:'',points:9000},{name:'Supernova',e:'☄️',img:'',points:12000},{name:'Singgasana Emas',e:'🪑',img:'',points:15000},
   {name:'Kapal Angkasa',e:'🛸',img:'',points:18000},{name:'Sayap Malaikat',e:'🪽',img:'',points:22000},{name:'Naga Kaisar',e:'🐉',img:'',points:30000}];
+const GIFT_FX = ['flame','drop','rocket','beat','shake','spin','sway','pop','shine','drive','gallop','rise','fly','swoop','orbit','shine','sway','drop','flutter','bounce','drive','rise','flame','swoop','orbit','meteor','rise','ufo','wings','swoop'];
+/* Harga gift dalam koin emas (g.coin) mengikuti EXP-nya: 1 koin = 1 EXP. Tabel gift_catalog di Supabase (kolom coins) bisa menimpa. */
+GIFTS.forEach((g, i) => { g.fx = GIFT_FX[i] || 'pop'; g.coin = g.points; });
+/* Hubungan: level naik dari total poin gift yang dikirim antar dua orang (hitungan di server) */
+const REL = {
+  sahabat:{name:'Sahabat',e:'💛',desc:'Teman dekat yang selalu ada.'},
+  pasangan:{name:'Pasangan',e:'💍',desc:'Anniversary dihitung otomatis. Maksimal 1 pasangan.'},
+  saudara:{name:'Kakak-Adik',e:'🤝',desc:'Keluarga di dalam room.'},
+  duet:{name:'Partner Duet',e:'🎤',desc:'Teman bernyanyi dan ngobrol di kursi.'}};
+const REL_LV = [0, 300, 1500, 5000, 15000, 40000];
+const REL_TITLES = ['Baru Kenal', 'Akrab', 'Dekat', 'Erat', 'Setia', 'Abadi'];
+const relLvl = s => REL_LV.reduce((l, t, i) => (s || 0) >= t ? i + 1 : l, 1);
+const relDays = t => Math.floor((Date.now() - Date.parse(t)) / 864e5) + 1;
+let HAS_REL = false, myRel = [], relNoted = false, relChannel = null;
 const EXCLUSIVE_GIFT_START = 15; // hadiah nomor 16–30 bisa diberi animasi video eksklusif oleh Host
 /* Tema background chat. `bg` = nilai CSS background. Tema 'default' selalu terbuka. */
 const THEMES = [
@@ -414,25 +532,70 @@ const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;
 const hash = id => [...id].reduce((a, c) => a + c.charCodeAt(0), 0);
 const ago = t => { const s = (Date.now() - new Date(t)) / 1000; return s < 60 ? 'baru saja' : s < 3600 ? Math.floor(s / 60) + ' mnt lalu' : s < 86400 ? Math.floor(s / 3600) + ' jam lalu' : new Date(t).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }) };
 /* Gelar SVIP dihitung dari poin hadiah yang DITERIMA. Ambang bisa diubah. */
-const SVIP = [100, 500, 1500, 3500, 7000, 15000, 30000, 60000, 100000]; /* SVIP 1..9 */
+const SVIP = [100, 500, 1500, 3500, 7000, 15000, 30000, 60000, 100000, 250000, 600000]; /* SVIP 1..9, lalu 10 = EKSKLUSIF, 11 = SULTAN (angka bisa diubah) */
+const TIER_NAME = { 10: 'EKSKLUSIF', 11: 'SULTAN' };
+const tierName = l => TIER_NAME[l] || `SVIP ${l}`;
 const lvl = n => SVIP.reduce((l, t, i) => (n || 0) >= t ? i + 1 : l, 0);
-const badge = n => { const l = lvl(n); return l ? `<i class="svip s${l}">SVIP ${l}</i>` : '' };
+/* Banner gelar. 10 = Eksklusif (emas-ungu berkilau), 11 = Sultan (sayap emas kiri-kanan, tulisan mengkilap) */
+const badgeOf = (l, big) => { const b = big ? ' big' : '';
+  return l >= 11 ? `<i class="svip s11${b}"><b class="wg"></b><span>SULTAN</span><b class="wg r"></b></i>`
+    : l === 10 ? `<i class="svip s10${b}"><span>EKSKLUSIF</span></i>`
+    : l ? `<i class="svip s${l}${b}">SVIP ${l}</i>` : '' };
+const badge = n => badgeOf(lvl(n));
 const isV9 = p => lvl(p) >= 9;
 /* Avatar: SVIP 9 mendapat border eksklusif (pembungkus .av9w) */
 /* Border aktif: pilihan koleksi (jika valid) > bawaan SVIP 9 > tidak ada */
-const bdOf = (points, border, host) => (BORDERS.some(b => b.id === border) || (host && HOST_BORDERS.some(b => b.id === border))) ? border : host ? 'host' : (lvl(points) >= 9 ? 'svip9' : '');
+const bdOf = (points, border, host) => (BORDERS.some(b => b.id === border) || (host && HOST_BORDERS.some(b => b.id === border))) ? border : host ? 'host' : (lvl(points) >= 11 ? 'svip11' : lvl(points) >= 10 ? 'svip10' : lvl(points) >= 9 ? 'svip9' : '');
 const ringBd = (points, border, host) => { const x = bdOf(points, border, host); return x ? ` vip9 bd-${x}` : '' };
 const bdImg = b => b === 'host' && HOST_BORDER_IMG ? `<img class="bdimg" src="${esc(HOST_BORDER_IMG)}" alt="">` : '';
-function avatarHTML(src, points, cls, size, attrs, border, host) {
-  const im = `<img${cls ? ` class="${cls}"` : ''} src="${esc(src)}"${attrs || ''}>`, b = bdOf(points, border, host);
+function avatarHTML(src, points, cls, size, attrs, border, host, who) {
+  const tag = who ? ` data-au="${esc(who)}" data-sz="${size}"` : '';
+  const im = `<img${cls ? ` class="${cls}"` : ''} src="${esc(src)}"${tag}${attrs || ''}>`, b = bdOf(points, border, host);
   return b ? `<span class="av9w bd-${b}" style="--sz:${size + 8}px">${im}${bdImg(b)}</span>` : im;
 }
+/* Perbarui border semua avatar milik satu user yang SUDAH tampil di layar (chat, postingan, profil) tanpa refresh halaman */
+function repaintAvatars(id) {
+  const p = prof[id]; if (!id || !p || p.points === undefined) return;
+  const b = bdOf(p.points, p.avatar_border, p.is_host);
+  document.querySelectorAll(`img[data-au="${id}"]`).forEach(im => {
+    const w = im.parentElement?.classList.contains('av9w') ? im.parentElement : null;
+    if (!b) { if (w) w.replaceWith(im); return }
+    if (w) {
+      w.className = 'av9w bd-' + b;
+      w.querySelectorAll(':scope>img.bdimg').forEach(x => x.remove());
+    } else {
+      const nw = document.createElement('span');
+      nw.className = 'av9w bd-' + b; nw.style.setProperty('--sz', ((+im.dataset.sz || 34) + 8) + 'px');
+      im.replaceWith(nw); nw.append(im);
+      var w2 = nw;
+    }
+    const bi = bdImg(b); if (bi) (w || w2).insertAdjacentHTML('beforeend', bi);
+  });
+}
+/* Border/host orang lain ikut presence room: berubah seketika walau realtime database terlambat */
+function syncBordersFromPresence() {
+  const ch = [];
+  for (const [k, v] of Object.entries(online)) {
+    const u = v[0], cur = prof[k]; if (!u || k === uid || !cur) continue;
+    const nb = u.border || null;
+    if ((cur.avatar_border || null) !== nb) { cur.avatar_border = nb; ch.push(k) }
+  }
+  if (ch.length) { renderSeats(); ch.forEach(repaintAvatars) }
+}
+function repaintMine() { renderProf(); renderSeats(); renderTop(); repaintAvatars(uid) }
 function titleHTML(n) {
   n = n || 0; const l = lvl(n), next = SVIP[l], base = SVIP[l - 1] || 0;
-  return `<div class="ttl">${badge(n) || '<span class="chip">Belum ada gelar</span>'} <small>${n} poin hadiah${next ? ` · ${next - n} poin lagi ke SVIP ${l + 1}` : ' · gelar tertinggi 👑'}</small></div>`
+  return `<div class="ttl">${badge(n) || '<span class="chip">Belum ada gelar</span>'} <small>${n} poin hadiah${next ? ` · ${next - n} poin lagi ke ${tierName(l + 1)}` : ' · gelar tertinggi 👑'}</small></div>`
     + (next ? `<div class="prog"><i style="width:${Math.min(100, (n - base) / (next - base) * 100)}%"></i></div>` : '');
 }
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+/* Simpan token login agar kursi bisa dihapus saat tab ditutup (fetch keepalive tetap jalan walau halaman sudah hilang) */
+let authToken = '';
+sb.auth.onAuthStateChange((_e, sess) => { authToken = sess?.access_token || '' });
+function freeMySeatNow() {
+  if (!uid) return;
+  try { fetch(`${SUPABASE_URL}/rest/v1/seats?user_id=eq.${encodeURIComponent(uid)}`, { method: 'DELETE', keepalive: true, headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${authToken || SUPABASE_KEY}` } }).catch(() => {}) } catch {}
+}
 const H = window.H = {};
 let uid, me, avatar = '', settings = {title:'Voice & Gift Room', seat_count:15, svip_videos:{}};
 let entranceVideos = {};
@@ -445,6 +608,12 @@ const pcs = {}, early = {};
 let dbChannel = null;
 let messageSyncTimer = null;
 const renderedMessageIds = new Set();
+const msgCache = new Map();
+let tagNames = [];
+/* notifikasi + sinkron border */
+let notifs = [], nSeen = new Set(), nBannerQ = [], nBannerBusy = false, nLastBeep = 0, nSound = true, bdBusy = 0, nAC = null;
+const acceptedIds = new Set(), pinfo = {};
+try { nSound = localStorage.getItem('nt_snd') !== '0' } catch {}
 
 function toast(t) { const e = $('#toast'); e.textContent = t; e.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(() => e.classList.remove('on'), 2600) }
 function sheet(h) { const s = $('#sheet'); s.innerHTML = `<div>${h}</div>`; s.classList.remove('hidden'); s.onclick = e => e.target === s && H.close() }
@@ -457,17 +626,29 @@ H.wa = msg => {
   }
 };
 H.close = () => $('#sheet').classList.add('hidden');
+const GFX_DUR = [3.6, 4.2, 4.8, 5.6, 6.8, 8.5];
+const GFX_COL = [['#ffd36e','#3a2a0066'],['#ffd36e','#3a2a0066'],['#ffd36e','#5b3a0099'],['#ffd36e','#8a5a1299'],['#ff8ad8','#6a1b5a99'],['#fff1a8','#b8420099']];
+const tierOf = p => p >= 15000 ? 5 : p >= 5000 ? 4 : p >= 1000 ? 3 : p >= 250 ? 2 : p >= 50 ? 1 : 0;
+/* Efek gift: gerakan khas tiap item (g.fx) + lapisan megah sesuai poin (tier 0-5). Efek kecil tidak memotong efek besar. */
 function showFx(g, who, to, giftIndex) {
-  const video = giftVideos?.[giftIndex]?.url || '';
-  const points = Number(g?.points || 0);
-  // 0–999 poin: efek biasa, 1.000–4.999: melayang, 5.000+: legenda.
-  const tier = points >= 5000 ? 'fx-legend' : points >= 1000 ? 'fx-float' : '';
-  const visual = video && /^https:\/\//i.test(video)
+  const named = !!g?.name, points = Number(g?.points || 0), tier = named ? tierOf(points) : 0;
+  const video = named ? (giftVideos?.[giftIndex]?.url || '') : '', hasVid = /^https:\/\//i.test(video);
+  if (showFx.until > Date.now() && tier < (showFx.tier ?? 0)) return;
+  const gd = hasVid ? 12 : GFX_DUR[tier], [gc, gc2] = GFX_COL[tier], mot = hasVid ? 'vid' : (g?.fx || 'pop');
+  showFx.tier = tier; showFx.until = Date.now() + gd * 1000;
+  const rnd = (a, b) => a + Math.random() * (b - a), pick1 = a => a[Math.floor(Math.random() * a.length)];
+  const burst = n => Array.from({ length: n }, () => { const a = Math.random() * 6.283, r = rnd(18, 48);
+    return `<i class="p" style="--tx:${Math.round(Math.cos(a) * r)}vmin;--ty:${Math.round(Math.sin(a) * r)}vmin;--dl:${rnd(.2, 1.8).toFixed(2)}s;--s:${Math.round(rnd(14, 30))}px">${pick1(['✨','⭐','💫','✦'])}</i>` }).join('');
+  const rain = (n, set) => Array.from({ length: n }, () => `<i class="r" style="--x:${Math.round(rnd(2, 96))}vw;--dl:${rnd(0, 2.8).toFixed(2)}s;--rd:${rnd(2.2, 3.6).toFixed(2)}s;--s:${Math.round(rnd(18, 34))}px;--rot:${Math.round(rnd(-360, 360))}deg">${pick1(set)}</i>`).join('');
+  const nR = [0, 0, 0, 12, 24, 40][tier], set = tier >= 5 ? ['🪙','💎','👑','✨'] : tier >= 4 ? ['🪙','✨','💎'] : ['✨','⭐'];
+  const layers = (tier >= 2 ? '<div class="vig"></div>' : '') + (tier >= 3 ? '<div class="rays"></div>' : '') + (tier >= 4 ? '<div class="flash"></div>' : '')
+    + burst([0, 8, 14, 20, 24, 30][tier]) + (nR ? rain(nR, set) : '');
+  const visual = hasVid
     ? `<video class="gift-fx-video" src="${esc(video)}" autoplay muted playsinline preload="auto" onended="H.hideGiftFx()" onerror="H.hideGiftFx()"></video>`
-    : (g.img ? `<img src="${esc(g.img)}">` : `<div class="big">${g.e}</div>`);
-  const label = `${esc(who)} mengirim ${esc(g?.name || 'hadiah')}${to ? ' ke ' + esc(to) : ''} · ${points.toLocaleString('id-ID')} poin!`;
-  $('#fx').innerHTML = `<div class="g ${tier}">${visual}<br><span class="ban">${label}</span></div>`;
-  clearTimeout(showFx.t); showFx.t = setTimeout(() => $('#fx').innerHTML = '', video ? 12000 : (tier ? 6500 : 4000));
+    : (g?.img ? `<img src="${esc(g.img)}">` : `<div class="big">${g?.e || '🎁'}</div>`);
+  const label = named ? `${esc(who)} mengirim ${esc(g.name)}${to ? ' ke ' + esc(to) : ''} · ${points.toLocaleString('id-ID')} poin!` : esc(who);
+  $('#fx').innerHTML = `<div class="gs t${tier}" style="--gd:${gd}s;--gc:${gc};--gc2:${gc2}">${layers}<div class="gm" style="animation-name:m-${mot}">${visual}</div><div class="gban"><span class="ban">${label}</span></div></div>`;
+  clearTimeout(showFx.t); showFx.t = setTimeout(() => { $('#fx').innerHTML = ''; showFx.until = 0 }, hasVid ? 12000 : gd * 1000 + 500);
   const player = $('#fx video'); if (player) player.play().catch(() => {});
 }
 H.hideGiftFx = () => { clearTimeout(showFx.t); $('#fx').innerHTML = ''; };
@@ -478,7 +659,9 @@ const ENTRANCE = {
   6: { img: '', t: 'GOLDEN DRAGON', c1: '#ffd36e', c2: '#c87918', dur: 4.4 },
   7: { img: '', t: 'MYSTIC UNICORN', c1: '#ff9bf0', c2: '#6a4bff', dur: 4.4 },
   8: { img: '', t: 'THUNDER DRAGON', c1: '#7fd6ff', c2: '#2b6dff', dur: 4.6 },
-  9: { img: '', t: 'IMPERIAL CELESTIAL DRAGON', c1: '#fff1a8', c2: '#ff8a00', dur: 5.6 }};
+  9: { img: '', t: 'IMPERIAL CELESTIAL DRAGON', c1: '#fff1a8', c2: '#ff8a00', dur: 5.6 },
+  10: { img: '', t: 'EXCLUSIVE ROYAL CROWN', c1: '#e6c8ff', c2: '#7a2fe0', dur: 6 },
+  11: { img: '', t: 'SULTAN · WINGS OF GOLD', c1: '#ffe27a', c2: '#e0162f', dur: 7 }};
 const SVG_DEFS = '<defs><linearGradient id="eg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset=".45" style="stop-color:var(--c1)"/><stop offset="1" style="stop-color:var(--c2)"/></linearGradient><linearGradient id="eg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--c1)"/><stop offset="1" style="stop-color:var(--c2)"/></linearGradient><linearGradient id="egm" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ff7ab8"/><stop offset=".5" stop-color="#a259ff"/><stop offset="1" stop-color="#3fb4ff"/></linearGradient></defs>';
 const svgWrap = b => `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">${SVG_DEFS}${b}</svg>`;
 function phoenixSVG() {
@@ -518,29 +701,89 @@ function unicornSVG() {
     <circle cx="70" cy="78" r="3.6" fill="#1a0f00"/><circle cx="71.2" cy="76.8" r="1.2" fill="#fff"/>
     <circle cx="50" cy="96" r="2" fill="#7a3a6a"/>`);
 }
-const ART = { 5: phoenixSVG, 6: () => dragonSVG(), 7: unicornSVG, 8: () => dragonSVG({ wings: 1, bolts: 1 }), 9: () => dragonSVG({ wings: 1, crown: 1, halo: 1 }) };
+const GOLD_DEFS = '<defs><linearGradient id="egw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fffbe0"/><stop offset=".4" stop-color="#ffd36e"/><stop offset="1" stop-color="#b8760f"/></linearGradient><linearGradient id="egw2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe9a8"/><stop offset="1" stop-color="#a86a0a"/></linearGradient></defs>';
+function crownG() {
+  return `<path d="M44 146L34 74L68 104L100 56L132 104L166 74L156 146Z" fill="url(#egw)" stroke="#fff" stroke-opacity=".7"/>
+    <rect x="42" y="146" width="116" height="20" rx="5" fill="url(#egw2)" stroke="#fff" stroke-opacity=".6"/>
+    <circle cx="34" cy="70" r="7" fill="#fff6c9"/><circle cx="100" cy="52" r="8.5" fill="#fff6c9"/><circle cx="166" cy="70" r="7" fill="#fff6c9"/>
+    <circle cx="64" cy="156" r="4.5" fill="#ff4d6a"/><circle cx="82" cy="156" r="4.5" fill="#6be0ff"/><circle cx="100" cy="156" r="6" fill="#fff"/><circle cx="118" cy="156" r="4.5" fill="#6be0ff"/><circle cx="136" cy="156" r="4.5" fill="#ff4d6a"/>
+    <path d="M100 92l7 15l-7 15l-7-15Z" fill="#fff" opacity=".85"/>`;
+}
+const SPARKS = '<path d="M30 30l4 10l10 4l-10 4l-4 10l-4-10l-10-4l10-4Z M172 24l3 8l8 3l-8 3l-3 8l-3-8l-8-3l8-3Z M178 150l3 8l8 3l-8 3l-3 8l-3-8l-8-3l8-3Z M22 150l3 8l8 3l-8 3l-3 8l-3-8l-8-3l8-3Z" fill="#fff6c9"/>';
+/* 10 Eksklusif: mahkota kerajaan berhalo */
+function exclusiveSVG() {
+  return svgWrap(`${GOLD_DEFS}<circle cx="100" cy="106" r="92" fill="none" style="stroke:var(--c1)" stroke-opacity=".55" stroke-width="2" stroke-dasharray="4 8"/><circle cx="100" cy="106" r="78" fill="none" style="stroke:var(--c2)" stroke-opacity=".6" stroke-width="1.5"/>${crownG()}${SPARKS}`);
+}
+/* 11 Sultan: sepasang sayap emas besar + mahkota di tengah (sayap mengepak lewat CSS .wl/.wr) */
+const WING_F = ['M92 90C70 52 36 36 4 44C30 54 52 64 74 98Z', 'M92 100C66 70 34 68 2 82C28 88 52 98 76 112Z', 'M92 110C66 90 36 94 4 114C30 114 54 122 78 126Z', 'M92 120C70 110 44 120 14 146C40 140 62 142 82 138Z', 'M92 130C74 130 54 142 34 166C58 158 76 156 90 148Z'];
+function sultanSVG() {
+  const wing = WING_F.map(d => `<path d="${d}" fill="url(#egw)" stroke="#fff" stroke-opacity=".65" stroke-width="1"/>`).join('')
+    + '<path d="M88 92C66 60 38 48 12 52M88 104C66 80 40 80 14 90M88 116C68 100 44 104 18 118" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1.6"/>';
+  return svgWrap(`${GOLD_DEFS}<circle cx="100" cy="112" r="94" fill="none" style="stroke:var(--c1)" stroke-opacity=".45" stroke-width="2" stroke-dasharray="3 7"/>
+    <g class="wl">${wing}</g><g class="wr"><g transform="matrix(-1 0 0 1 200 0)">${wing}</g></g>
+    <g transform="translate(100 104) scale(.62) translate(-100 -109)">${crownG()}</g>${SPARKS}`);
+}
+const ART = { 5: phoenixSVG, 6: () => dragonSVG(), 7: unicornSVG, 8: () => dragonSVG({ wings: 1, bolts: 1 }), 9: () => dragonSVG({ wings: 1, crown: 1, halo: 1 }), 10: exclusiveSVG, 11: sultanSVG };
 const artHTML = lv => ENTRANCE[lv].img ? `<img src="${ENTRANCE[lv].img}" alt="">` : ART[lv]();
+const entQueue = []; let entBusy = false, entResolve = null, entLoadedAt = 0; const entSeen = {};
 function hideEntranceFx() {
   const e = $('#entranceFX'); e.classList.add('hidden'); e.innerHTML = '';
-  clearTimeout(showEntranceFx.t);
+  clearTimeout(playEntrance.t);
+  const r = entResolve; entResolve = null; if (r) r();
 }
+/* Video gagal dimuat/diputar: pakai animasi bawaan level itu supaya entrance tetap muncul */
+H.entVideoFail = () => {
+  const cur = $('#entranceFX .ent'), w = cur?.querySelector('.ent-video-wrap'); if (!w) return;
+  const lv = Number(cur.dataset.lv);
+  w.outerHTML = `<div class="ent-move"><div class="ent-art">${artHTML(lv)}</div></div>`;
+  const lab = cur.querySelector('.ent-label small'); if (lab) lab.textContent = ENTRANCE[lv].t;
+  clearTimeout(playEntrance.t); playEntrance.t = setTimeout(hideEntranceFx, ENTRANCE[lv].dur * 1000);
+};
+/* Entrance masuk antrean: beberapa SVIP yang masuk bersamaan tampil bergantian, tidak saling menimpa */
 function showEntranceFx(name, level) {
-  const lv = Math.min(9, Math.max(5, Number(level) || 5)), v = ENTRANCE[lv];
-  const video = entranceVideos?.[lv]?.url || entranceVideos?.[lv] || '';
-  const sp = Array.from({ length: 18 }, () => { const a = Math.random() * 6.283, r = 22 + Math.random() * 40;
+  entQueue.push({ name, level }); if (entQueue.length > 5) entQueue.shift();
+  pumpEntrance();
+}
+async function pumpEntrance() {
+  if (entBusy) return; entBusy = true;
+  try { while (entQueue.length) { const x = entQueue.shift(); await playEntrance(x.name, x.level); } }
+  finally { entBusy = false; }
+}
+async function playEntrance(name, level) {
+  const lv = Math.min(11, Math.max(5, Number(level) || 5)), v = ENTRANCE[lv];
+  if (!entranceVideos?.[lv]?.url && Date.now() - entLoadedAt > 30000) { entLoadedAt = Date.now(); await loadEntranceVideos(); }
+  const video = entranceVideos?.[lv]?.url || '', ok = /^https:\/\//i.test(video), alpha = /\.webm(\?|$)/i.test(video);
+  const sp = ok ? '' : Array.from({ length: 18 }, () => { const a = Math.random() * 6.283, r = 22 + Math.random() * 40;
     return `<i style="--tx:${Math.round(Math.cos(a) * r)}vmin;--ty:${Math.round(Math.sin(a) * r)}vmin;--dl:${(Math.random() * 2).toFixed(2)}s"></i>` }).join('');
-  const e = $('#entranceFX');
-  const visual = video && /^https:\/\//i.test(video)
-    ? `<div class="ent-video-wrap"><video class="ent-video" src="${esc(video)}" autoplay muted playsinline preload="auto" onended="H.hideEntranceFx()" onerror="H.hideEntranceFx()"></video></div>`
+  const visual = ok
+    ? `<div class="ent-video-wrap"><video class="ent-video${alpha ? ' alpha' : ''}" src="${esc(video)}" autoplay muted playsinline preload="auto" onended="H.hideEntranceFx()" onerror="H.entVideoFail()"></video></div>`
     : `<div class="ent-move"><div class="ent-art">${artHTML(lv)}</div></div>`;
-  e.innerHTML = `<div class="ent ent${lv}" style="--dur:${v.dur}s;--c1:${v.c1};--c2:${v.c2}"><div class="ent-bg"></div><div class="ent-rays"></div><div class="ent-burst"></div><div class="ent-sparks">${sp}</div>${visual}<div class="ent-label">${esc(name)} · SVIP ${lv}<small>${video ? 'SPECIAL VIDEO ENTRANCE' : v.t}</small></div></div>`;
-  e.classList.remove('hidden'); clearTimeout(showEntranceFx.t);
-  showEntranceFx.t = setTimeout(hideEntranceFx, (video ? 15 : v.dur) * 1000);
-  const player = e.querySelector('video'); if (player) player.play().catch(() => toast('Browser memblokir autoplay video. Ketuk layar untuk memulai.'));
+  const e = $('#entranceFX');
+  await new Promise(res => {
+    entResolve = res;
+    e.innerHTML = `<div class="ent ent${lv}" data-lv="${lv}" style="--dur:${ok ? 6 : v.dur}s;--c1:${v.c1};--c2:${v.c2}">${ok ? '' : `<div class="ent-bg"></div><div class="ent-rays"></div><div class="ent-burst"></div><div class="ent-sparks">${sp}</div>`}${visual}<div class="ent-label">${lv >= 10 ? `<div class="ent-ban">${badgeOf(lv, true)}</div>${esc(name)}` : `${esc(name)} · SVIP ${lv}`}<small>${ok ? 'SPECIAL VIDEO ENTRANCE' : v.t}</small></div></div>`;
+    e.classList.remove('hidden');
+    clearTimeout(playEntrance.t); playEntrance.t = setTimeout(hideEntranceFx, (ok ? 45 : v.dur) * 1000);
+    const player = e.querySelector('video'); if (player) player.play().catch(() => H.entVideoFail());
+  });
+}
+/* Dipanggil untuk setiap anggota yang masuk (lewat broadcast, pesan [ENT], atau lokal). Level diverifikasi dari poin di database. */
+async function entranceFor(id, name, claimed) {
+  if (!id || Date.now() - (entSeen[id] || 0) < 20000) return;
+  entSeen[id] = Date.now();
+  await ensureProf([id], true);
+  const pts = prof[id]?.points, lv = Math.min(11, pts === undefined ? Number(claimed) || 0 : lvl(pts));
+  if (lv >= 5) showEntranceFx(name || prof[id]?.name || 'Anggota', lv);
+}
+function showRelPopup(text) {
+  const e = $('#svipPop');
+  e.innerHTML = `<div class="svip-card rel-card"><div class="svip-crown">💞✨</div><div class="svip-title">HUBUNGAN SPESIAL</div><div class="svip-name" style="font-size:18px">${esc(text)}</div></div>`;
+  e.classList.remove('hidden'); clearTimeout(showSvipPopup.t);
+  showSvipPopup.t = setTimeout(() => { e.classList.add('hidden'); e.innerHTML = ''; }, 4500);
 }
 function showSvipPopup(name, level) {
   const e = $('#svipPop');
-  e.innerHTML = `<div class="svip-card"><div class="svip-crown">👑✨</div><div class="svip-title">SELAMAT ATAS PENINGKATAN GELAR</div><div class="svip-level">SVIP ${level}</div><div class="svip-name">${esc(name)}</div><div class="svip-desc">berhasil naik ke level SVIP ${level}!</div></div>`;
+  e.innerHTML = `<div class="svip-card"><div class="svip-crown">👑✨</div><div class="svip-title">SELAMAT ATAS PENINGKATAN GELAR</div>${level >= 10 ? `<div class="svip-ban">${badgeOf(level, true)}</div>` : `<div class="svip-level">SVIP ${level}</div>`}<div class="svip-name">${esc(name)}</div><div class="svip-desc">berhasil naik ke ${level >= 10 ? 'tingkat' : 'level'} ${tierName(level)}!</div></div>`;
   e.classList.remove('hidden'); clearTimeout(showSvipPopup.t);
   showSvipPopup.t = setTimeout(() => { e.classList.add('hidden'); e.innerHTML = ''; }, 5000);
 }
@@ -623,7 +866,14 @@ async function ensureProfile() {
   me = (await sb.from('profiles').select('*').eq('id', uid).single()).data; return me;
 }
 H.enter = async () => { if (await ensureProfile()) startRoom() };
-H.exit = async () => { await stopMessageSync(); await room?.untrack(); await sb.from('seats').delete().eq('user_id', uid); location.reload() };
+H.exit = async () => {
+  await stopMessageSync();
+  try { await sb.from('seats').delete().eq('user_id', uid) } catch {} /* kursi dikosongkan DULU supaya langsung hilang di semua anggota */
+  stopMic(); closeAll();
+  try { await room?.untrack() } catch {}
+  try { room && await sb.removeChannel(room); dbChannel && await sb.removeChannel(dbChannel); relChannel && await sb.removeChannel(relChannel) } catch {}
+  location.reload();
+};
 
 /* ---------- 2. Host ---------- */
 H.hostLogin = () => sheet(`<h3>Login Host</h3><p class="sub">Masukkan sandi host.</p>
@@ -643,24 +893,26 @@ H.panel = async () => {
    <div class="cnt"><button onclick="H.seatN(-1)">−</button><b id="sc" style="font-size:24px">${settings.seat_count}</b><button onclick="H.seatN(1)">+</button></div>
    <h3 class="sec">🎬 Video Entrance SVIP</h3>
    <p class="sub">Upload MP4/WebM maksimal 30 MB per level. Video akan diputar untuk semua anggota saat pemilik level bergabung.</p>
-   ${[5,6,7,8,9].map(n => `<div class="mrow" style="align-items:flex-start"><span style="flex:1"><b>SVIP ${n} · ${esc(ENTRANCE[n].t)}</b><small style="display:block;color:#a99d92;overflow-wrap:anywhere">${entranceVideos[n]?.name || (entranceVideos[n]?.url ? 'Video tersimpan' : 'Belum ada video — memakai animasi bawaan')}</small></span><div class="bt"><button class="sm" onclick="H.uploadEntrance(${n})">⬆ Upload</button><button class="sm o" onclick="H.previewEnt(${n})">▶ Preview</button>${entranceVideos[n]?.url ? `<button class="sm o" onclick="H.removeEntrance(${n})">Hapus</button>` : ''}</div></div>`).join('')}
+   ${[5,6,7,8,9,10,11].map(n => `<div class="mrow" style="align-items:flex-start"><span style="flex:1"><b>${tierName(n)} · ${esc(ENTRANCE[n].t)}</b><small style="display:block;color:#a99d92;overflow-wrap:anywhere">${entranceVideos[n]?.name || (entranceVideos[n]?.url ? 'Video tersimpan' : 'Belum ada video — memakai animasi bawaan')}</small></span><div class="bt"><button class="sm" onclick="H.uploadEntrance(${n})">⬆ Upload</button><button class="sm o" onclick="H.previewEnt(${n})">▶ Preview</button>${entranceVideos[n]?.url ? `<button class="sm o" onclick="H.removeEntrance(${n})">Hapus</button>` : ''}</div></div>`).join('')}
    <p class="sub" style="margin-top:12px">Tes animasi masuk SVIP (hanya kamu yang melihat)</p>
-   <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">${[5, 6, 7, 8, 9].map(n => `<button class="sm o" onclick="H.previewEnt(${n})">SVIP ${n}</button>`).join('')}</div>
+   <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">${[5, 6, 7, 8, 9, 10, 11].map(n => `<button class="sm o" onclick="H.previewEnt(${n})">${tierName(n)}</button>`).join('')}</div>
+   <h3 class="sec">✨ Tes Efek Gift</h3><p class="sub">Ketuk gift untuk melihat efeknya (hanya kamu yang melihat). Makin besar poin, makin megah.</p>
+   <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">${GIFTS.map((g, i) => `<button class="sm o" onclick="H.previewGift(${i})" title="${esc(g.name)} · ${g.points} poin">${g.e}</button>`).join('')}</div>
    <h3 class="sec">🎞️ Video Gift Eksklusif</h3>
    <p class="sub">Pilih video MP4/WebM maksimal 30 MB untuk hadiah eksklusif nomor 16–30. Saat gift dikirim, video diputar di room semua anggota.</p>
    ${GIFTS.slice(EXCLUSIVE_GIFT_START).map((g,j)=>{const i=j+EXCLUSIVE_GIFT_START;return `<div class="mrow" style="align-items:flex-start"><span style="flex:1"><b>${g.e} ${esc(g.name)}</b><small style="display:block;color:#a99d92">${giftVideos[i]?.name || (giftVideos[i]?.url ? 'Video tersimpan' : 'Belum ada video')}</small></span><div class="bt"><button class="sm" onclick="H.uploadGiftVideo(${i})">⬆ Video</button>${giftVideos[i]?.url ? `<button class="sm o" onclick="H.previewGift(${i})">▶</button><button class="sm o" onclick="H.removeGiftVideo(${i})">Hapus</button>` : ''}</div></div>`}).join('')}
    <p class="sub">Anggota online</p>
-   ${(data || []).map(u => `<div class="mrow"><img src="${esc(u.avatar)}"><span>${esc(u.name)} <small style="color:#a99d92">🎟️${u.gift_tickets} ${u.theme_ok ? '🎨✔' : ''}</small></span>
-     <div class="bt"><button class="sm" onclick="H.tix('${u.id}')">+1 Tiket Gift</button><button class="sm" onclick="H.hostBorder('${u.id}')">🖼 Border</button>${u.theme_ok ? '' : `<button class="sm" onclick="H.thm('${u.id}')">🎨 Buka Tema</button>`}</div></div>`).join('')}
+   ${(data || []).map(u => `<div class="mrow"><img src="${esc(u.avatar)}"><span>${esc(u.name)} <small style="color:#a99d92">🪙${Number(u.gift_tickets || 0).toLocaleString('id-ID')} ${u.theme_ok ? '🎨✔' : ''}</small></span>
+     <div class="bt"><button class="sm" onclick="H.tix('${u.id}',100)">+100 🪙</button><button class="sm" onclick="H.tix('${u.id}',1000)">+1rb</button><button class="sm" onclick="H.tix('${u.id}',10000)">+10rb</button><button class="sm" onclick="H.tix('${u.id}',50000)">+50rb</button><button class="sm" onclick="H.hostBorder('${u.id}')">🖼 Border</button>${u.theme_ok ? '' : `<button class="sm" onclick="H.thm('${u.id}')">🎨 Buka Tema</button>`}</div></div>`).join('')}
    <div style="display:flex;gap:8px;margin-top:14px"><button class="sm o" onclick="H.reset()">Kosongkan kursi</button><button class="sm o" onclick="H.clear()">Bersihkan chat</button></div>
    <button class="btn" style="margin-top:16px;background:linear-gradient(#e0646b,#9c2a33);color:#fff" onclick="H.unhost()">🚪 Keluar Host</button>`);
 };
 H.previewEnt = n => { H.close(); showEntranceFx(me.name, n) };
 H.uploadEntrance = level => {
-  if (!me?.is_host || ![5,6,7,8,9].includes(Number(level))) return;
+  if (!me?.is_host || ![5,6,7,8,9,10,11].includes(Number(level))) return;
   pickVideo(async file => {
     try {
-      toast(`Mengunggah video SVIP ${level}…`);
+      toast(`Mengunggah video ${tierName(Number(level))}…`);
       const uploaded = await upEntranceVideo(file, level);
       const { error } = await sb.from('svip_entrances').upsert({
         level, video_url: uploaded.url, video_path: uploaded.path, video_name: uploaded.name, updated_by: uid
@@ -672,18 +924,18 @@ H.uploadEntrance = level => {
       const previous = entranceVideos[level];
       entranceVideos = { ...(entranceVideos || {}), [level]: uploaded };
       if (previous?.path) sb.storage.from('media').remove([previous.path]).then(() => {});
-      toast(`Video SVIP ${level} berhasil disimpan untuk semua anggota ✅`); H.panel();
+      toast(`Video ${tierName(Number(level))} berhasil disimpan untuk semua anggota ✅`); H.panel();
     } catch (e) { toast(e.message || 'Gagal mengunggah video'); }
   });
 };
 H.removeEntrance = async level => {
-  if (!me?.is_host || !confirm(`Hapus video entrance SVIP ${level}?`)) return;
+  if (!me?.is_host || !confirm(`Hapus video entrance ${tierName(Number(level))}?`)) return;
   const old = entranceVideos?.[level];
   const { error } = await sb.from('svip_entrances').delete().eq('level', level);
   if (error) return toast(error.message);
   const next = { ...(entranceVideos || {}) }; delete next[level]; entranceVideos = next;
   if (old?.path) sb.storage.from('media').remove([old.path]).then(() => {});
-  toast(`Video SVIP ${level} dihapus. Animasi bawaan akan digunakan.`); H.panel();
+  toast(`Video ${tierName(Number(level))} dihapus. Animasi bawaan akan digunakan.`); H.panel();
 };
 H.uploadGiftVideo = giftIndex => {
   if (!me?.is_host || giftIndex < EXCLUSIVE_GIFT_START || giftIndex >= GIFTS.length) return;
@@ -710,26 +962,36 @@ H.removeGiftVideo = async i => {
 };
 H.hideEntranceFx = hideEntranceFx;
 H.seatN = async d => { const n = Math.min(30, Math.max(4, settings.seat_count + d)); settings.seat_count = n; $('#sc').textContent = n; renderSeats(); await sb.from('room_settings').update({ seat_count: n }).eq('id', 1) };
-H.tix = async id => { const { error } = await sb.rpc('give_ticket', { target: id }); toast(error ? error.message : '+1 tiket terkirim 🎟️') };
+H.tix = async (id, n = 100) => {
+  const { error } = await sb.rpc('give_coins', { target: id, amount: n });
+  if (error && (error.code === 'PGRST202' || /Could not find the function/i.test(error.message || ''))) return toast('Jalankan gift_relation_migration.sql terbaru dulu 🪙');
+  toast(error ? error.message : `+${n.toLocaleString('id-ID')} koin emas terkirim 🪙`);
+};
 H.thm = async id => { const { error } = await sb.rpc('give_theme', { target: id }); toast(error ? error.message : 'Tema chat dibuka untuk dia 🎨'); if (!error) H.panel() };
 H.unhost = async () => { const { error } = await sb.rpc('release_host'); if (error) return toast(error.message); me = { ...me, is_host: false }; prof[uid] = { ...prof[uid], is_host: false }; room?.track(presence()); renderSeats(); H.close(); renderProf(); renderPosts(); toast('Kamu keluar dari mode Host') };
-H.reset = async () => { await sb.from('seats').delete().neq('seat_no', 0); toast('Semua kursi dikosongkan') };
+H.reset = async () => { await sb.from('seats').delete().neq('seat_no', 0); await loadSeats(); toast('Semua kursi dikosongkan') };
 H.clear = async () => { await sb.from('messages').delete().neq('id', 0); $('#chat').innerHTML = ''; toast('Chat dibersihkan') };
 
 /* ---------- 3. Room ---------- */
 let joined = false;
+let msgReady = false, msgSyncBusy = false;
 async function syncRecentMessages() {
-  if (!inRoom) return;
-  const { data, error } = await sb.from('messages').select('*').order('id', { ascending: false }).limit(80);
-  if (error) { console.warn('Message sync:', error.message); return; }
-  const rows = (data || []).reverse();
-  await ensureProf(rows.map(m => m.user_id));
-  rows.forEach(m => addRoomMessage(m, false));
+  if (!inRoom || msgSyncBusy) return;
+  msgSyncBusy = true;
+  try {
+    const { data, error } = await sb.from('messages').select('*').order('id', { ascending: false }).limit(msgReady ? 30 : 80);
+    if (error) { console.warn('Message sync:', error.message); return; }
+    const rows = (data || []).reverse().filter(m => !renderedMessageIds.has(String(m.id)));
+    if (!rows.length) return;
+    await ensureProf(rows.map(m => m.user_id));
+    /* Pesan baru yang lebih dulu ditangkap polling tetap memicu efek gift/entrance (live) */
+    rows.forEach(m => addRoomMessage(m, msgReady && Date.now() - Date.parse(m.created_at) < 20000));
+  } finally { msgSyncBusy = false; }
 }
 function startMessageSync() {
   clearInterval(messageSyncTimer);
   // Fallback for projects where messages is not enabled in supabase_realtime.
-  messageSyncTimer = setInterval(syncRecentMessages, 500);
+  messageSyncTimer = setInterval(syncRecentMessages, 2000);
 }
 async function stopMessageSync() {
   clearInterval(messageSyncTimer); messageSyncTimer = null;
@@ -737,15 +999,27 @@ async function stopMessageSync() {
 async function startRoom() {
   if (inRoom) return;
   $('#setup').classList.add('hidden'); $('#room').classList.remove('hidden'); $('#room').style.display = 'flex'; $('#nav').classList.remove('hidden'); inRoom = true;
-  prof[uid] = { ...prof[uid], ...me }; applyTheme();
+  prof[uid] = { ...prof[uid], ...me }; applyTheme(); nLoad();
   settings = (await sb.from('room_settings').select('*').single()).data || settings;
   await loadEntranceVideos();
   await loadGiftVideos();
+  await loadGiftCatalog();
+  HAS_REL = !(await sb.from('relations').select('id').limit(1)).error;
+  if (HAS_REL) { /* channel terpisah: tabel opsional tidak merusak channel utama */
+    loadMyRelations();
+    relChannel = sb.channel('rel')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'relation_requests', filter: `recipient_id=eq.${uid}` }, p => { pushNotif({ key: 'rr:' + p.new.id, type: 'rel', icon: '💞', from: p.new.sender_id, text: 'mengajakmu menjalin hubungan', tab: 'friends', act: { k: 'tab', t: 'friends' } }); if (!$('#pgFriends').classList.contains('hidden')) loadFriends(); })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'relations', filter: `user_a=eq.${uid}` }, () => loadMyRelations())
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'relations', filter: `user_b=eq.${uid}` }, () => loadMyRelations())
+      .subscribe();
+  }
   refreshMySocialStats();
+  await sb.from('seats').delete().eq('user_id', uid); /* masuk baru = belum duduk; buang sisa kursi dari sesi lama yang tidak sempat terhapus */
   await loadSeats();
-  renderedMessageIds.clear();
-  await syncRecentMessages();
+  renderedMessageIds.clear(); msgReady = false;
+  await syncRecentMessages(); msgReady = true;
   startMessageSync();
+  clearInterval(startRoom.bt); startRoom.bt = setInterval(() => { if (!document.hidden) refreshMyBorders() }, 10000);
   loadMyGifts();
   loadPosts(true); loadStories();
 
@@ -753,8 +1027,11 @@ async function startRoom() {
     .on('postgres_changes', { event: '*', schema: 'public', table: 'seats' }, loadSeats)
     .on('postgres_changes', { event: '*', schema: 'public', table: 'posts' }, () => loadPosts(true))
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'stories' }, () => loadStories())
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'post_likes' }, () => loadPosts(true))
-    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'gift_log', filter: `to_id=eq.${uid}` }, () => loadMyGifts())
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'post_likes' }, p => { loadPosts(true); if (p.eventType === 'INSERT' && p.new?.user_id !== uid) notifyLike(p.new) })
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'gift_log', filter: `to_id=eq.${uid}` }, p => {
+      loadMyGifts();
+      if (p.new.from_id !== uid) { const g = GIFTS[p.new.gift]; pushNotif({ key: 'gift:' + p.new.id, type: 'gift', icon: g?.e || '🎁', from: p.new.from_id, text: `mengirim ${g?.name || 'hadiah'} untukmu`, tab: 'me', act: { k: 'user', id: p.new.from_id } }) }
+    })
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, p => {
       mq = mq.then(async () => {
         await ensureProf([p.new.user_id]);
@@ -771,30 +1048,42 @@ async function startRoom() {
       document.querySelector(`#chat [data-message-id="${CSS.escape(String(id))}"]`)?.remove();
       renderedMessageIds.delete(String(id));
     })
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'friend_requests', filter: `recipient_id=eq.${uid}` }, () => { if(!$('#pgFriends').classList.contains('hidden')) loadFriends(); })
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'friends', filter: `user_id=eq.${uid}` }, () => refreshMySocialStats())
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'follows', filter: `following_id=eq.${uid}` }, () => refreshMySocialStats())
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'friend_requests', filter: `recipient_id=eq.${uid}` }, p => {
+      if (!$('#pgFriends').classList.contains('hidden')) loadFriends();
+      if (p.eventType === 'INSERT' && (p.new.status || 'pending') === 'pending') pushNotif({ key: 'fr:' + p.new.id, type: 'friend', icon: '👥', from: p.new.sender_id, text: 'ingin berteman denganmu', tab: 'friends', act: { k: 'tab', t: 'friends' } });
+    })
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'friends', filter: `user_id=eq.${uid}` }, p => {
+      refreshMySocialStats();
+      if (!$('#pgFriends').classList.contains('hidden')) loadFriends();
+      if (p.eventType === 'INSERT' && !acceptedIds.has(p.new.friend_id)) pushNotif({ key: 'fa:' + p.new.friend_id, type: 'friend', icon: '🎉', from: p.new.friend_id, text: 'sekarang berteman denganmu', tab: 'friends', act: { k: 'user', id: p.new.friend_id } });
+    })
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'follows', filter: `following_id=eq.${uid}` }, p => {
+      refreshMySocialStats();
+      if (p.eventType === 'INSERT') pushNotif({ key: 'fl:' + p.new.follower_id + ':' + (p.new.created_at || ''), type: 'follow', icon: '👤', from: p.new.follower_id, text: 'mulai mengikutimu', tab: 'me', act: { k: 'user', id: p.new.follower_id } });
+    })
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'direct_messages', filter: `recipient_id=eq.${uid}` }, p => {
-      if(dmPeer && p.new.sender_id===dmPeer.id){ dmMessages.push(p.new); renderDM(); }
-      toast('Pesan pribadi baru 💬');
+      const fromPeer = dmPeer && p.new.sender_id === dmPeer.id;
+      if (fromPeer) dmMessages.push(p.new);
+      if (fromPeer && dmVisible()) renderDM(); /* hanya gambar ulang jika jendela chat memang sedang terbuka */
+      else pushNotif({ key: 'dm:' + p.new.id, type: 'dm', icon: '💬', from: p.new.sender_id, text: String(p.new.body || '').slice(0, 80) || 'Pesan baru', tab: 'friends', act: { k: 'dm', id: p.new.sender_id } });
     })
     .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'room_settings' }, p => { settings = p.new; renderSeats(); renderTop() })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'svip_entrances' }, () => { loadEntranceVideos(); })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'gift_videos' }, () => { loadGiftVideos(); })
     .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'profiles' }, p => {
-      const previous = p.new.id === uid ? me : (prof[p.new.id] || p.old || null);
-      const oldLevel = previous ? lvl(previous.points) : 0;
-      const newLevel = lvl(p.new.points);
-      prof[p.new.id] = { ...prof[p.new.id], ...p.new }; refreshBubbles(p.new.id);
+      const previous = p.new.id === uid ? me : (prof[p.new.id] || null);
+      const knownPts = previous?.points ?? online[p.new.id]?.[0]?.points;
+      const oldLevel = lvl(knownPts), newLevel = lvl(p.new.points);
+      prof[p.new.id] = { ...prof[p.new.id], ...p.new }; delete pinfo[p.new.id]; refreshBubbles(p.new.id); repaintAvatars(p.new.id);
       // Popup ditampilkan di tengah layar seluruh anggota yang sedang berada di room.
-      if (newLevel > oldLevel) showSvipPopup(p.new.name || (p.new.id === uid ? me.name : 'Anggota'), newLevel);
+      if (knownPts !== undefined && newLevel > oldLevel) { showSvipPopup(p.new.name || (p.new.id === uid ? me.name : 'Anggota'), newLevel); if (p.new.id === uid) pushNotif({ key: 'lv:' + newLevel, type: 'level', icon: '⭐', title: 'Selamat! 🎉', text: `Kamu naik ke ${tierName(newLevel)}`, tab: 'me', act: { k: 'tab', t: 'me' } }) }
       if (p.new.id === uid) {
-        if (p.new.gift_tickets > me.gift_tickets) showFx({ e: '🎉' }, 'Kamu dapat +1 Tiket Gift! 🎟️ dari Host');
-        if (p.new.theme_ok && !me.theme_ok) showFx({ e: '🎨' }, 'Tema chat terbuka! Semua tema bebas dipakai');
-        if ((p.new.borders || []).length > (me.borders || []).length) toast('Border baru terbuka dari Host! 🖼️');
+        if (p.new.gift_tickets > me.gift_tickets) { const add = (p.new.gift_tickets - (me.gift_tickets || 0)).toLocaleString('id-ID'); showFx({ e: '🎉' }, `Kamu dapat +${add} Koin Emas 🪙 dari Host`); pushNotif({ type: 'host', icon: '🪙', title: 'Host 👑', text: `memberimu +${add} Koin Emas`, tab: 'me', act: { k: 'tab', t: 'me' } }) }
+        if (p.new.theme_ok && !me.theme_ok) { showFx({ e: '🎨' }, 'Tema chat terbuka! Semua tema bebas dipakai'); pushNotif({ type: 'host', icon: '🎨', title: 'Host 👑', text: 'membuka semua tema chat untukmu', tab: 'me', act: { k: 'tab', t: 'me' } }) }
+        if ((p.new.borders || []).length > (me.borders || []).length) pushNotif({ type: 'host', icon: '🖼️', title: 'Host 👑', text: 'membuka border baru untukmu', tab: 'me', act: { k: 'tab', t: 'me' } });
         me = { ...me, ...p.new }; room?.track(presence()); renderProf();
       }
-      renderSeats();
+      renderSeats(); renderTop();
     }).subscribe(async status => {
       if (status === 'SUBSCRIBED') {
         await syncRecentMessages();
@@ -806,13 +1095,16 @@ async function startRoom() {
 
   /* Presence = pengganti onDisconnect: saat tab ditutup, kursi otomatis kosong + muncul keterangan keluar */
   room = sb.channel('room', { config: { presence: { key: uid }, broadcast: { self: false } } })
-    .on('presence', { event: 'sync' }, () => { online = room.presenceState(); renderTop() })
+    .on('presence', { event: 'sync' }, () => { online = room.presenceState(); syncBordersFromPresence(); renderTop() })
     .on('presence', { event: 'leave' }, ({ key, leftPresences, currentPresences }) => {
       if (key === uid || currentPresences?.length) return; /* currentPresences > 0 = hanya ganti profil, bukan keluar */
       addMsg({ type: 'leave', name: leftPresences?.[0]?.name || 'Seseorang' }, false);
-      sb.from('seats').delete().eq('user_id', key).then(() => {});
+      purgeUser(key); /* kursi + suara + cache orang itu langsung dibersihkan di layar ini */
+      sb.from('seats').delete().eq('user_id', key).then(() => {}); /* dan di database */
     })
     .on('broadcast', { event: 'sig' }, ({ payload }) => onSig(payload))
+    .on('broadcast', { event: 'bd' }, ({ payload }) => { if (payload?.uid === uid) refreshMyBorders() })
+    .on('broadcast', { event: 'ent' }, ({ payload }) => payload?.uid && entranceFor(payload.uid, String(payload.name || 'Anggota'), Number(payload.level) || 5))
     .subscribe(async s => {
       if (s !== 'SUBSCRIBED') return;
       await room.track(presence());
@@ -820,9 +1112,16 @@ async function startRoom() {
       if (joined) return; /* sambung ulang jaringan: jangan umumkan 'bergabung' dan jangan buat timer lagi */
       joined = true;
       sb.rpc('cleanup_room').then(() => {});
-      setTimeout(sweep, 4000); setInterval(sweep, 60000);
+      setTimeout(sweep, 4000); setInterval(sweep, 10000);
       await sb.from('messages').insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'join' });
-      const myLevel = lvl(me.points || 0); if (myLevel >= 5) await sb.from('messages').insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'entrance', body: String(myLevel) });
+      /* Entrance SVIP 5-9: broadcast langsung ke semua anggota + pesan type 'chat' bertanda [ENT] (lolos RLS seperti pesan suara) */
+      const myLevel = Math.min(11, lvl(me.points || 0));
+      if (myLevel >= 5) {
+        entranceFor(uid, me.name, myLevel);
+        room.send({ type: 'broadcast', event: 'ent', payload: { uid, name: me.name, level: myLevel } });
+        const { error: entErr } = await sb.from('messages').insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'chat', body: '[ENT]' + myLevel });
+        if (entErr) console.warn('Entrance message:', entErr.message);
+      }
     });
   $('#msg').onkeydown = e => { if (e.key === 'Enter') H.sendMsg() };
 }
@@ -831,9 +1130,10 @@ H.sendMsg = async () => {
   const i = $('#msg'), body = i.value.trim(); if (!body || H.sendMsg.busy) return;
   H.sendMsg.busy = true; setTimeout(() => H.sendMsg.busy = false, 400);
   i.value = ''; i.focus();
-  const { data: inserted, error } = await sb.from('messages')
-    .insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'chat', body, reply_to_id: roomReply?.id || null, reply_preview: roomReply?.body || null })
-    .select('*').single();
+  const row = { user_id: uid, name: me.name, avatar: me.avatar, type: 'chat', body };
+  const withReply = roomReply ? { ...row, reply_to_id: roomReply.id, reply_preview: roomReply.body } : row;
+  let { data: inserted, error } = await sb.from('messages').insert(withReply).select('*').single();
+  if (error && /reply_/.test(error.message || '')) ({ data: inserted, error } = await sb.from('messages').insert(row).select('*').single());
   if (error) { toast(error.message); i.value = body }
   else {
     if (inserted) addRoomMessage(inserted, true);
@@ -843,69 +1143,75 @@ H.sendMsg = async () => {
 
 /* Rekam pesan suara room. Path Storage memakai folder pertama = UID,
    sama seperti upImg(), agar sesuai dengan policy Storage yang sudah dipakai foto profil. */
-H.voiceMsg = async () => {
-  const btn = $('#voiceMsgBtn');
-  if (voiceRecorder && voiceRecorder.state === 'recording') { voiceRecorder.stop(); return; }
-  if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) return toast('Browser belum mendukung rekam suara. Gunakan Chrome terbaru dan HTTPS.');
-  if (!uid || !me) return toast('Masuk ke room terlebih dahulu.');
-  try {
-    voiceStream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation:true, noiseSuppression:true, autoGainControl:true } });
-    voiceChunks = [];
-    const candidates = ['audio/webm;codecs=opus','audio/webm','audio/mp4','audio/ogg;codecs=opus'];
-    const mimeType = candidates.find(t => MediaRecorder.isTypeSupported?.(t));
-    voiceRecorder = new MediaRecorder(voiceStream, mimeType ? { mimeType } : undefined);
-    const activeRecorder = voiceRecorder;
-    activeRecorder.ondataavailable = e => { if (e.data?.size) voiceChunks.push(e.data); };
-    activeRecorder.onerror = () => {
-      toast('Gagal merekam suara. Coba lagi.');
-      voiceStream?.getTracks().forEach(t=>t.stop()); voiceStream=null; voiceRecorder=null; voiceChunks=[];
-      btn?.classList.remove('rec'); if(btn)btn.textContent='🎤';
-    };
-    activeRecorder.onstop = async () => {
-      const chunks = voiceChunks.slice(), recordedType = activeRecorder.mimeType || chunks[0]?.type || 'audio/webm';
-      voiceStream?.getTracks().forEach(t=>t.stop()); voiceStream=null; voiceRecorder=null; voiceChunks=[];
-      btn?.classList.remove('rec'); if(btn)btn.textContent='🎤';
-      const blob = new Blob(chunks, { type: recordedType });
-      if (blob.size < 1000) return toast('Rekaman terlalu singkat. Coba bicara sedikit lebih lama.');
-      if (blob.size > 12*1024*1024) return toast('Ukuran pesan suara terlalu besar (maksimal 12 MB).');
-
-      toast('Mengunggah pesan suara…');
-      const mime = (blob.type || 'audio/webm').split(';')[0].toLowerCase();
-      const ext = mime === 'audio/mp4' ? 'm4a' : mime === 'audio/ogg' ? 'ogg' : mime === 'audio/mpeg' ? 'mp3' : 'webm';
-      /* Penting: jangan pakai voice/${uid}/... karena policy Storage lama umumnya
-         memeriksa folder pertama = auth.uid(). */
-      const path = `${uid}/voice-${Date.now()}.${ext}`;
-      const { error: upErr } = await sb.storage.from('media').upload(path, blob, {
-        contentType: mime, upsert: false, cacheControl: '3600'
-      });
-      if (upErr) return toast('Upload audio ke Storage gagal: ' + upErr.message);
-
-      const { data: pub } = sb.storage.from('media').getPublicUrl(path);
-      const audioUrl = pub?.publicUrl;
-      if (!audioUrl) return toast('Audio terunggah, tetapi URL audio tidak berhasil dibuat.');
-
-      /* Gunakan type='chat' yang sama dengan pesan teks agar lolos policy RLS
-         messages yang sudah ada. Penanda body membedakan audio dari teks tanpa SQL baru. */
-      const { data: voiceMessage, error: msgErr } = await sb.from('messages').insert({
-        user_id: uid, name: me.name, avatar: me.avatar,
-        type: 'chat', body: '[VOICE_MSG]' + audioUrl
-      }).select('*').single();
-      if (msgErr) {
-        /* Jangan tinggalkan file yatim jika insert pesan ditolak. */
-        await sb.storage.from('media').remove([path]).catch(() => {});
-        return toast('Audio berhasil diunggah, tetapi insert pesan ditolak RLS: ' + msgErr.message);
-      }
-      if (voiceMessage) addRoomMessage(voiceMessage, true);
-      toast('Pesan suara terkirim 🎧');
-    };
-    activeRecorder.start(250);
-    btn?.classList.add('rec'); if(btn)btn.textContent='⏹';
-    toast('Sedang merekam… tekan ⏹ untuk mengirim');
-  } catch (e) {
-    voiceStream?.getTracks().forEach(t=>t.stop()); voiceStream=null; voiceRecorder=null; voiceChunks=[];
-    btn?.classList.remove('rec'); if(btn)btn.textContent='🎤';
-    toast(e.name==='NotAllowedError' ? 'Izin mikrofon ditolak. Izinkan akses mikrofon di browser.' : (e.message||'Tidak bisa mengakses mikrofon.'));
+/* Rekam PCM langsung (tanpa MediaRecorder) lalu simpan sebagai WAV mono 16 kHz. WAV bisa diputar di semua
+   browser/HP (Chrome, Safari iPhone, Firefox), jadi semua anggota bisa merekam DAN mendengarkan. */
+const VOICE_MAX_SEC = 60, VOICE_RATE = 16000;
+function wavBlob(chunks, inRate) {
+  let len = 0; chunks.forEach(c => len += c.length);
+  const all = new Float32Array(len); let o = 0; chunks.forEach(c => { all.set(c, o); o += c.length; });
+  let peak = 0; for (let i = 0; i < len; i++) { const a = Math.abs(all[i]); if (a > peak) peak = a; }
+  const gain = peak > .02 ? Math.min(4, .9 / peak) : 1; /* suara kecil dinaikkan otomatis */
+  const ratio = inRate / VOICE_RATE, n = Math.floor(len / ratio), pcm = new Int16Array(n);
+  for (let i = 0; i < n; i++) {
+    const a = Math.floor(i * ratio), b = Math.max(a + 1, Math.min(len, Math.floor((i + 1) * ratio)));
+    let sum = 0; for (let k = a; k < b; k++) sum += all[k];
+    const v = Math.max(-1, Math.min(1, sum / (b - a) * gain)); pcm[i] = v < 0 ? v * 0x8000 : v * 0x7fff;
   }
+  const buf = new ArrayBuffer(44 + n * 2), dv = new DataView(buf), w = (p, t) => [...t].forEach((c, i) => dv.setUint8(p + i, c.charCodeAt(0)));
+  w(0, 'RIFF'); dv.setUint32(4, 36 + n * 2, true); w(8, 'WAVE'); w(12, 'fmt '); dv.setUint32(16, 16, true); dv.setUint16(20, 1, true); dv.setUint16(22, 1, true);
+  dv.setUint32(24, VOICE_RATE, true); dv.setUint32(28, VOICE_RATE * 2, true); dv.setUint16(32, 2, true); dv.setUint16(34, 16, true); w(36, 'data'); dv.setUint32(40, n * 2, true);
+  new Int16Array(buf, 44).set(pcm);
+  return new Blob([buf], { type: 'audio/wav' });
+}
+function voiceReset() {
+  clearInterval(voiceReset.t);
+  try { voiceRecorder?.node.disconnect(); voiceRecorder?.src.disconnect(); } catch {}
+  try { voiceRecorder?.ac.close(); } catch {}
+  voiceStream?.getTracks().forEach(t => t.stop()); voiceStream = null; voiceRecorder = null; voiceChunks = [];
+  const b = $('#voiceMsgBtn'); if (b) { b.classList.remove('rec'); b.textContent = '🎤'; }
+}
+H.voiceMsg = async () => {
+  if (voiceRecorder) return H.voiceStop();
+  if (!uid || !me) return toast('Masuk ke room terlebih dahulu.');
+  if (!navigator.mediaDevices?.getUserMedia || !(window.AudioContext || window.webkitAudioContext)) return toast('Rekam suara butuh HTTPS dan browser terbaru.');
+  try {
+    let st; const seatTrack = stream?.getAudioTracks()[0];
+    if (seatTrack && seatTrack.readyState === 'live') { const t = seatTrack.clone(); t.enabled = true; st = new MediaStream([t]); } /* sedang duduk: pakai mikrofon yang sama, tetap terekam walau mic dimute */
+    else st = await navigator.mediaDevices.getUserMedia(GUM);
+    voiceStream = st;
+    const ac = new (window.AudioContext || window.webkitAudioContext)(); if (ac.resume) await ac.resume();
+    const src = ac.createMediaStreamSource(st), node = ac.createScriptProcessor(4096, 1, 1), mute = ac.createGain(); mute.gain.value = 0;
+    voiceChunks = []; const t0 = Date.now();
+    node.onaudioprocess = e => voiceChunks.push(new Float32Array(e.inputBuffer.getChannelData(0)));
+    src.connect(node); node.connect(mute); mute.connect(ac.destination);
+    voiceRecorder = { ac, src, node, rate: ac.sampleRate, t0 };
+    const btn = $('#voiceMsgBtn'); btn.classList.add('rec'); btn.textContent = '⏹';
+    voiceReset.t = setInterval(() => {
+      const sec = Math.floor((Date.now() - t0) / 1000);
+      if (sec >= VOICE_MAX_SEC) return H.voiceStop();
+      toast(`🔴 Merekam ${sec} dtk · ketuk ⏹ untuk kirim`);
+    }, 1000);
+    toast('🔴 Merekam… ketuk ⏹ untuk kirim');
+  } catch (e) {
+    voiceReset();
+    toast(e.name === 'NotAllowedError' ? 'Izin mikrofon ditolak. Izinkan akses mikrofon di browser lalu coba lagi.' : (e.message || 'Tidak bisa mengakses mikrofon.'));
+  }
+};
+H.voiceStop = async () => {
+  const r = voiceRecorder; if (!r) return;
+  const chunks = voiceChunks.slice(), rate = r.rate, dur = (Date.now() - r.t0) / 1000;
+  voiceReset();
+  if (dur < .7) return toast('Rekaman terlalu singkat. Tahan sedikit lebih lama.');
+  toast('Mengunggah pesan suara…');
+  const path = `${uid}/voice-${Date.now()}.wav`; /* folder pertama = UID, sama seperti foto profil */
+  const { error: upErr } = await sb.storage.from('media').upload(path, wavBlob(chunks, rate), { contentType: 'audio/wav', upsert: false, cacheControl: '3600' });
+  if (upErr) return toast('Upload suara gagal: ' + upErr.message + ' (jalankan voice_fix.sql di Supabase)');
+  const audioUrl = sb.storage.from('media').getPublicUrl(path).data?.publicUrl;
+  if (!audioUrl) return toast('Audio terunggah, tetapi URL audio tidak berhasil dibuat.');
+  const { data: vm, error: msgErr } = await sb.from('messages').insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'chat', body: '[VOICE_MSG]' + audioUrl }).select('*').single();
+  if (msgErr) { await sb.storage.from('media').remove([path]).catch(() => {}); return toast('Pesan suara ditolak: ' + msgErr.message); }
+  if (vm) addRoomMessage(vm, true);
+  toast('Pesan suara terkirim 🎧');
 };
 
 H.toggleVoice = async id => {
@@ -915,7 +1221,7 @@ H.toggleVoice = async id => {
   if (audio.paused) {
     document.querySelectorAll('.voicebubble audio').forEach(a => { if (a !== audio) { a.pause(); a.currentTime = 0; const b=document.getElementById('voice-play-' + a.dataset.msgid); if(b)b.textContent='▶'; } });
     try { await audio.play(); button.textContent = '❚❚'; }
-    catch (e) { toast('Audio tidak bisa diputar. Periksa akses Storage/bucket media.'); }
+    catch (e) { audio.load(); toast('Audio tidak bisa diputar. Coba ketuk lagi, atau periksa bucket media (voice_fix.sql).'); }
   } else { audio.pause(); button.textContent = '▶'; }
 };
 H.voiceEnded = id => {
@@ -924,26 +1230,49 @@ H.voiceEnded = id => {
   if (button) button.textContent = '▶';
 };
 
-/* Bersihkan kursi 'hantu': pemilik kursi yang sudah tidak online (browser ditutup) */
+/* Hapus semua jejak satu user yang sudah keluar: kursi (lokal), koneksi suara, audio, cache sinyal */
+function purgeUser(id) {
+  if (!id || id === uid) return;
+  let hadSeat = false;
+  for (const n of Object.keys(seats)) if (seats[n].user_id === id) { delete seats[n]; hadSeat = true }
+  drop(id); /* tutup WebRTC + hapus elemen <audio> */
+  document.getElementById('a' + id)?.remove(); unwatch(id); /* audio + pemantau suara orang itu */
+  delete early[id]; delete online[id];
+  if (hadSeat) renderSeats();
+  renderTop();
+}
+/* Jaring pengaman: kursi 'hantu' (pemilik sudah tidak online tapi event keluar terlewat).
+   Harus terlihat hilang di 2 pengecekan berturut-turut agar koneksi yang berkedip sebentar tidak menendang orang. */
+let ghostPrev = new Set();
 async function sweep() {
   if (!room) return;
   const on = new Set(Object.keys(room.presenceState()));
-  const stale = Object.values(seats).map(s => s.user_id).filter(i => i !== uid && !on.has(i));
-  if (stale.length) await sb.from('seats').delete().in('user_id', stale);
+  if (!on.has(uid)) return; /* presence kita sendiri belum tersambung: jangan hapus kursi siapa pun */
+  const stale = [...new Set(Object.values(seats).map(s => s.user_id))].filter(i => i !== uid && !on.has(i));
+  const confirmed = stale.filter(i => ghostPrev.has(i));
+  ghostPrev = new Set(stale);
+  if (!confirmed.length) return;
+  confirmed.forEach(purgeUser);
+  await sb.from('seats').delete().in('user_id', confirmed);
 }
-window.addEventListener('pagehide', () => { if (inRoom) { stopMessageSync(); room?.untrack(); sb.from('seats').delete().eq('user_id', uid).then(() => {}) } });
-async function ensureProf(ids) {
-  const miss = [...new Set(ids)].filter(i => i && prof[i]?.points === undefined); if (!miss.length) return;
+window.addEventListener('pagehide', () => { if (inRoom) { stopMessageSync(); room?.untrack(); freeMySeatNow() } });
+async function ensureProf(ids, force) {
+  const miss = [...new Set(ids)].filter(i => i && (force || prof[i]?.points === undefined)); if (!miss.length) return;
   const { data } = await sb.from('profiles').select('id,points,gifts_sent,chat_theme,is_host' + BC()).in('id', miss);
   (data || []).forEach(x => prof[x.id] = { ...prof[x.id], ...x });
 }
+let seatLoadSeq = 0;
 async function loadSeats() {
-  const { data } = (await sb.from('seats').select('*')) ; seats = {};
+  const mine = ++seatLoadSeq;
+  const { data } = (await sb.from('seats').select('*'));
+  if (mine !== seatLoadSeq) return; /* ada pemuatan yang lebih baru: hasil lama dibuang agar kursi yang baru dikosongkan tidak muncul lagi */
+  seats = {};
   (data || []).forEach(s => seats[s.seat_no] = s);
   mySeat = (data || []).find(s => s.user_id === uid)?.seat_no || null;
   if (!mySeat && stream && !sitting) stopMic();
   const ids = (data || []).map(s => s.user_id);
-  if (ids.length) (await sb.from('profiles').select('id,points,gifts_sent,chat_theme,is_host' + BC()).in('id', ids)).data.forEach(x => prof[x.id] = { ...prof[x.id], ...x });
+  if (ids.length) ((await sb.from('profiles').select('id,points,gifts_sent,chat_theme,is_host' + BC()).in('id', ids)).data || []).forEach(x => prof[x.id] = { ...prof[x.id], ...x });
+  if (mine !== seatLoadSeq) return;
   renderSeats(); renderTop(); syncPeers();
 }
 
@@ -982,7 +1311,7 @@ async function sit(n) {
   } finally { sitting = false; await loadSeats() }
 }
 async function leaveSeat() { await sb.from('seats').delete().eq('user_id', uid); stopMic(); closeAll(); await loadSeats() }
-function stopMic() { stream?.getTracks().forEach(t => t.stop()); stream = null }
+function stopMic() { stream?.getTracks().forEach(t => t.stop()); stream = null; unwatch(uid) }
 H.mic = async () => {
   if (!mySeat) return toast('Duduk di kursi dulu untuk bicara');
   if (!stream) { /* mikrofon belum aktif (ditolak tadi): coba lagi, lalu sambung ulang suara */
@@ -999,7 +1328,8 @@ const PAGES = { room: '#room', posts: '#pgPosts', friends: '#pgFriends', me: '#p
 H.tab = t => {
   Object.entries(PAGES).forEach(([k, sel]) => $(sel).classList.toggle('hidden', k !== t));
   document.querySelectorAll('#nav button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
-  if (t === 'posts') { loadPosts(); loadStories(); } if (t === 'friends') loadFriends(); if (t === 'me') { renderProf(); loadMyGifts(); refreshMySocialStats() } if (t === 'room') { const c = $('#chat'); c.scrollTop = c.scrollHeight }
+  if (t === 'posts') { loadPosts(); loadStories(); } if (t === 'friends') loadFriends(); if (t === 'me') { renderProf(); loadMyGifts(); refreshMySocialStats(); loadMyRelations() } if (t === 'room') { const c = $('#chat'); c.scrollTop = c.scrollHeight }
+  nMarkTab(t); if (t === 'me') refreshMyBorders();
 };
 
 /* ---------- 5. Postingan ---------- */
@@ -1023,10 +1353,10 @@ async function loadPosts(quiet) {
 }
 function postHTML(p) {
   const u = p.profiles || {}, can = p.user_id === uid || me.is_host, L = p.post_likes || [], n = L.length, liked = L.some(l => l.user_id === uid);
-  return `<article class="post"><div class="hd">${avatarHTML(u.avatar, u.points, '', 40, ` onclick="H.view('${p.user_id}')" style="cursor:pointer"`, u.avatar_border, u.is_host)}<div><b>${u.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(u.points)}${esc(u.name)}</b><small>${ago(p.created_at)}</small></div>
+  return `<article class="post"><div class="hd">${avatarHTML(u.avatar, u.points, '', 40, ` onclick="H.view('${p.user_id}')" style="cursor:pointer"`, u.avatar_border, u.is_host, p.user_id)}<div><b>${u.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(u.points)}${esc(u.name)}</b><small>${ago(p.created_at)}</small></div>
     ${can ? `<button class="del" onclick="H.delPost(${p.id})" title="Hapus">🗑</button>` : ''}</div>
     ${p.body ? `<p>${esc(p.body)}</p>` : ''}${p.image ? `<img class="pi" loading="lazy" src="${esc(p.image)}">` : ''}
-    <button class="lk ${liked ? 'on' : ''}" onclick="H.like(${p.id})">${liked ? '❤️' : '🤍'} ${n}</button></article>`;
+    <button class="likebtn ${liked ? 'on' : ''}" onclick="H.like(${p.id})">${liked ? '❤️' : '🤍'} ${n}</button></article>`;
 }
 function renderPosts() { $('#plist').innerHTML = posts.map(postHTML).join('') || '<p class="empty-t">Belum ada postingan. Jadilah yang pertama! 📝</p>' }
 H.like = async id => {
@@ -1073,7 +1403,7 @@ function giftHTML(rows) {
   const em = g => GIFTS[g]?.e || '🎁';
   return `<div class="stats" style="flex-wrap:wrap">${Object.entries(tot).map(([g, n]) => `<span class="chip">${em(g)} ×${n}</span>`).join('')}</div>
     <p class="sub" style="text-align:center">Total ${rows.length} hadiah dari ${Object.keys(by).length} orang</p>
-    ${Object.entries(by).sort((a, b) => b[1].n - a[1].n).map(([id, b]) => `<div class="mrow" onclick="H.view('${id}')">${avatarHTML(b.u.avatar, b.u.points, '', 34, '', b.u.avatar_border, b.u.is_host)}<span>${badge(b.u.points)}${esc(b.u.name)}<br><small style="color:#a99d92">${Object.entries(b.g).map(([g, n]) => `${em(g)}×${n}`).join(' ')}</small></span><b>${b.n}</b></div>`).join('')}`;
+    ${Object.entries(by).sort((a, b) => b[1].n - a[1].n).map(([id, b]) => `<div class="mrow" onclick="H.view('${id}')">${avatarHTML(b.u.avatar, b.u.points, '', 34, '', b.u.avatar_border, b.u.is_host, id)}<span>${badge(b.u.points)}${esc(b.u.name)}<br><small style="color:#a99d92">${Object.entries(b.g).map(([g, n]) => `${em(g)}×${n}`).join(' ')}</small></span><b>${b.n}</b></div>`).join('')}`;
 }
 /* Statistik sosial: teman memakai relasi friends yang sudah ada; followers memakai tabel follows. */
 let mySocialStats = { friends: 0, followers: 0, ready: false };
@@ -1095,19 +1425,20 @@ H.view = async id => {
   const { data: u } = await sb.from('profiles').select('id,name,avatar,is_host,gifts_sent,points' + BC()).eq('id', id).maybeSingle();
   if (!u) return toast('Profil tidak ditemukan');
   viewU = u;
-  const [rows, fr, ps, social, following] = await Promise.all([getGifts(id),
+  const [rows, fr, ps, social, following, rels] = await Promise.all([getGifts(id),
     sb.from('friends').select('friend_id').eq('user_id', uid).eq('friend_id', id).maybeSingle(),
     sb.from('posts').select('id,body,image,created_at').eq('user_id', id).order('created_at', { ascending: false }).limit(10),
     socialStats(id),
-    sb.from('follows').select('follower_id').eq('follower_id', uid).eq('following_id', id).maybeSingle()]);
+    sb.from('follows').select('follower_id').eq('follower_id', uid).eq('following_id', id).maybeSingle(),
+    HAS_REL ? loadRelations(id) : Promise.resolve(null)]);
   const isFriend = !!fr.data, isFollowing = !!following.data, seated = Object.values(seats).some(x => x.user_id === id), on = !!online[id], list = ps.data || [];
-  sheet(`<div class="pf" style="padding-top:0">${avatarHTML(u.avatar, u.points, 'pav', 112, '', u.avatar_border, u.is_host)}<h2>${u.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(u.points)}${esc(u.name)}</h2>${titleHTML(u.points)}
+  sheet(`<div class="pf" style="padding-top:0">${avatarHTML(u.avatar, u.points, 'pav', 112, '', u.avatar_border, u.is_host, u.id)}<h2>${u.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(u.points)}${esc(u.name)}</h2>${titleHTML(u.points)}
     <div class="stats" style="flex-wrap:wrap"><span class="chip">${seated ? '🎙️ Di kursi' : on ? '🟢 Online' : '⚪ Offline'}</span><span class="chip">👥 ${social.friends ?? '—'} Teman</span><span class="chip">👤 ${social.followers ?? '—'} Followers</span><span class="chip">⭐ ${u.points ?? 0}</span><span class="chip">🎁 ${u.gifts_sent ?? 0} dikirim</span><span class="chip">📝 ${list.length}</span></div></div>
     <div class="acts">${isFriend ? `<button class="btn" onclick="H.openDM('${u.id}')">💬 Chat</button>` : `<button class="btn" onclick="H.requestFriend('${u.id}')">＋ Tambah Teman</button>`}
       <button class="btn" onclick="H.toggleFollow('${u.id}',${isFollowing})">${isFollowing ? '✓ Mengikuti' : '＋ Follow'}</button>
-      <button class="btn" onclick="H.giftView()">🎁 Kirim Gift</button></div>
+      <button class="btn" onclick="H.giftView()">🎁 Kirim Gift</button>${HAS_REL ? `<button class="btn" onclick="H.relPick('${u.id}')">💞 Ajak Hubungan</button>` : ''}</div>
     ${me.is_host ? `<button class="btn" style="margin-bottom:6px;background:linear-gradient(#a98bff,#6a4bff);color:#fff" onclick="H.hostBorder('${u.id}')">🖼 Beri Border</button>` : ''}
-    <h3 class="sec">🎁 Koleksi Hadiah</h3>${giftHTML(rows)}
+    ${HAS_REL ? `<h3 class="sec">💞 Hubungan</h3>${(rels || []).map(r => relCardHTML(r, false)).join('') || '<p class="empty-t">Belum ada hubungan.</p>'}` : ''}<h3 class="sec">🎁 Koleksi Hadiah</h3>${giftHTML(rows)}
     <h3 class="sec">📝 Postingan</h3>${list.map(q => `<div class="post"><p>${esc(q.body || '')}</p>${q.image ? `<img class="pi" loading="lazy" src="${esc(q.image)}">` : ''}<small style="color:#9a8f86">${ago(q.created_at)}</small></div>`).join('') || '<p class="empty-t">Belum ada postingan.</p>'}`);
 };
 H.seatMenu = id => {
@@ -1119,12 +1450,12 @@ H.giftView = () => { if (viewU) { gT = { id: viewU.id, name: viewU.name, avatar:
 function renderProf() {
   if (!me) return;
   const mine = posts.filter(p => p.user_id === uid);
-  $('#pfBox').innerHTML = `<div class="pf">${avatarHTML(me.avatar, me.points, 'pav', 112, '', me.avatar_border, me.is_host)}
+  $('#pfBox').innerHTML = `<div class="pf">${avatarHTML(me.avatar, me.points, 'pav', 112, '', me.avatar_border, me.is_host, uid)}
     <h2>${me.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(me.points)}${esc(me.name)}</h2>${titleHTML(me.points)}
-    <div class="stats" style="flex-wrap:wrap"><span class="chip">👥 ${mySocialStats.friends ?? '—'} Teman</span><span class="chip">👤 ${mySocialStats.followers ?? '—'} Followers</span><span class="chip">🎟️ ${me.gift_tickets ?? 0}</span><span class="chip">⭐ ${me.points ?? 0}</span><span class="chip">📝 ${mine.length}</span></div></div>
+    <div class="stats" style="flex-wrap:wrap"><span class="chip">👥 ${mySocialStats.friends ?? '—'} Teman</span><span class="chip">👤 ${mySocialStats.followers ?? '—'} Followers</span><span class="chip">🪙 ${Number(me.gift_tickets ?? 0).toLocaleString('id-ID')}</span><span class="chip">⭐ ${me.points ?? 0}</span><span class="chip">📝 ${mine.length}</span></div></div>
     <div class="acts"><button class="btn" onclick="H.editAv()">📷 Ubah Foto</button><button class="btn" onclick="H.editNm()">✏️ Ubah Nama</button></div>
     <button class="btn" onclick="H.compose()">➕ Buat Postingan</button>
-    ${borderGridHTML()}
+    ${relSectionHTML()}${borderGridHTML()}
     <h3 class="sec">🎁 Koleksi Hadiah</h3>${giftHTML(myGifts)}
     <h3 class="sec">Postingan Saya</h3>${mine.map(postHTML).join('') || '<p class="empty-t">Belum ada postingan.</p>'}`;
 }
@@ -1176,12 +1507,32 @@ function borderGridHTML() {
    ${BORDERS.map(b => { const o = ownsBorder(b.id);
      return `<button class="gi ${o ? '' : 'lk'} ${cur === b.id ? 'sel' : ''}" onclick="${o ? `H.useBorder('${b.id}')` : `H.borderLocked('${b.id}')`}"><div style="display:grid;place-items:center;padding:14px 0 6px">${avatarHTML(me.avatar, 0, 'bp', 52, '', b.id)}</div><small>${b.name}</small></button>` }).join('')}</div>${me.is_host ? `<h3 class="sec">👑 Eksklusif Host</h3><div class="gg">${HOST_BORDERS.map(b => `<button class="gi ${cur === b.id ? 'sel' : ''}" onclick="H.useBorder('${b.id}')"><div style="display:grid;place-items:center;padding:14px 0 6px">${avatarHTML(me.avatar, 0, 'bp', 52, '', b.id, true)}</div><small>${b.name}</small></button>`).join('')}</div>` : ''}`;
 }
+/* Langsung tampil di layar (optimistis), server menyusul; jika gagal dikembalikan lagi */
 H.useBorder = async id => {
+  const prev = me.avatar_border || null, nb = id || null;
+  bdBusy++;
+  me = { ...me, avatar_border: nb }; prof[uid] = { ...prof[uid], avatar_border: nb };
+  room?.track(presence()); repaintMine();
   const { error } = await sb.rpc('set_border', { b: id });
-  if (error) return toast(error.message);
-  me = { ...me, avatar_border: id || null }; prof[uid] = { ...prof[uid], avatar_border: id || null };
-  room?.track(presence()); renderProf(); renderSeats(); toast(id ? 'Border dipakai ✨' : 'Border dilepas');
+  bdBusy--;
+  if (error) {
+    me = { ...me, avatar_border: prev }; prof[uid] = { ...prof[uid], avatar_border: prev };
+    room?.track(presence()); repaintMine(); return toast(error.message);
+  }
+  toast(id ? 'Border dipakai ✨' : 'Border dilepas');
 };
+/* Ambil ulang border & daftar border terbuka milikku (dipanggil oleh broadcast Host, polling ringan, dan saat tab aktif lagi) */
+async function refreshMyBorders() {
+  if (!HAS_BORDER || !me || !uid || bdBusy) return;
+  const { data } = await sb.from('profiles').select('avatar_border,borders').eq('id', uid).maybeSingle();
+  if (!data || bdBusy) return;
+  const nb = data.borders || [], ob = me.borders || [];
+  if (JSON.stringify(nb) === JSON.stringify(ob) && (data.avatar_border || null) === (me.avatar_border || null)) return;
+  const more = nb.length > ob.length;
+  me = { ...me, borders: nb, avatar_border: data.avatar_border }; prof[uid] = { ...prof[uid], avatar_border: data.avatar_border };
+  if (more) pushNotif({ type: 'host', icon: '🖼️', title: 'Host 👑', text: 'membuka border baru untukmu', tab: 'me', act: { k: 'tab', t: 'me' } });
+  room?.track(presence()); repaintMine();
+}
 H.borderLocked = id => {
   const b = BORDERS.find(x => x.id === id); if (!b) return;
   sheet(`<h3>🔒 ${b.name}</h3><p class="sub">${b.desc}</p>
@@ -1201,6 +1552,7 @@ H.hostBorder = async id => {
 H.giveBorder = async (id, b) => {
   const { error } = await sb.rpc('give_border', { target: id, b });
   if (error) return toast(error.message);
+  try { room?.send({ type: 'broadcast', event: 'bd', payload: { uid: id } }) } catch {} /* beri tahu penerima agar langsung terbuka, tanpa refresh */
   toast('Border dibuka ✅'); H.hostBorder(id);
 };
 
@@ -1212,28 +1564,38 @@ function addRoomMessage(m, live) {
     renderedMessageIds.add(key);
   }
   addMsg(m, live);
+  if (live) checkRoomMention(m);
 }
 
 function addMsg(m, live) {
   const c = $('#chat'), d = document.createElement('div'), hb = m.is_host ? '<i class="bdg">👑 HOST</i>' : '';
-  const head = avatarHTML(m.avatar, prof[m.user_id]?.points, 'av', 34, m.user_id ? ` onclick="H.view('${m.user_id}')" style="cursor:pointer"` : '', prof[m.user_id]?.avatar_border, m.is_host || prof[m.user_id]?.is_host), meta = `<div class="meta">${hb}${badge(prof[m.user_id]?.points)}${esc(m.name)}</div>`;
+  const head = avatarHTML(m.avatar, prof[m.user_id]?.points, 'av', 34, m.user_id ? ` onclick="H.view('${m.user_id}')" style="cursor:pointer"` : '', prof[m.user_id]?.avatar_border, m.is_host || prof[m.user_id]?.is_host, m.user_id), meta = `<div class="meta">${hb}${badge(prof[m.user_id]?.points)}${esc(m.name)}</div>`;
   d.className = 'row';
   if (m?.id != null) d.dataset.messageId = String(m.id);
   if (m.type === 'join') d.innerHTML = `<div class="bub">${hb}<b>${esc(m.name)}</b> sedang bergabung</div>`;
   else if (m.type === 'leave') d.innerHTML = `<div class="bub sys">🚪 <b>${esc(m.name)}</b> keluar dari room</div>`;
-  else if (m.type === 'entrance') { d.innerHTML = `<div class="bub sys">✨ ${esc(m.name)} memasuki room dengan efek SVIP ${esc(m.body)}!</div>`; if(live) showEntranceFx(m.name, Number(m.body)||5); }
+  else if (m.type === 'entrance' || (m.type === 'chat' && String(m.body || '').startsWith('[ENT]'))) {
+    const claimed = Math.min(11, Number(String(m.body || '').replace('[ENT]', '')) || 5);
+    d.innerHTML = `<div class="bub sys">✨ ${esc(m.name)} memasuki room dengan efek ${tierName(claimed)}!</div>`;
+    if (live) entranceFor(m.user_id, m.name, claimed);
+  }
   else if (m.type === 'gift') {
     const g = GIFTS[m.gift] || GIFTS[0];
     d.innerHTML = `${head}<div>${meta}<div class="gbub"><span>Kirim ${esc(g.name)}${m.to_name ? `<small>untuk ${esc(m.to_name)}</small>` : ''}</span><span class="e">${g.e}</span><b class="x">x1</b></div></div>`;
     if (live) showFx(g, m.name, m.to_name, Number(m.gift));
+  } else if (m.type === 'chat' && String(m.body || '').startsWith('[REL]')) {
+    const txt = String(m.body).slice(5);
+    d.innerHTML = `<div class="bub sys">💞 ${esc(txt)}</div>`;
+    if (live) showRelPopup(txt);
   } else if (m.type === 'voice' || (m.type === 'chat' && String(m.body || '').startsWith('[VOICE_MSG]'))) {
     const audioUrl = m.type === 'voice' ? m.body : String(m.body).slice('[VOICE_MSG]'.length);
     const safeUrl = /^https:\/\//i.test(audioUrl) ? audioUrl : '';
-    d.innerHTML = `${head}<div>${meta}<div class="voicebubble"${bubStyle(m.user_id)} data-bu="${m.user_id}"><small>🎙️ Pesan suara</small><div class="voiceplayer"><button class="voiceplay" id="voice-play-${Number(m.id)}" onclick="H.toggleVoice(${Number(m.id)})" title="Putar pesan suara">▶</button><span>Putar audio</span><audio id="voice-audio-${Number(m.id)}" data-msgid="${Number(m.id)}" preload="none" src="${esc(safeUrl)}" onended="H.voiceEnded(${Number(m.id)})" onerror="this.previousElementSibling && (this.previousElementSibling.textContent='⚠');"></audio></div></div></div>`;
+    d.innerHTML = `${head}<div>${meta}<div class="voicebubble"${bubStyle(m.user_id)} data-bu="${m.user_id}"><small>🎙️ Pesan suara</small><div class="voiceplayer"><button class="voiceplay" id="voice-play-${Number(m.id)}" onclick="H.toggleVoice(${Number(m.id)})" title="Putar pesan suara">▶</button><span>Putar audio</span><audio id="voice-audio-${Number(m.id)}" data-msgid="${Number(m.id)}" preload="none" src="${esc(safeUrl)}" onended="H.voiceEnded(${Number(m.id)})" onerror="document.getElementById('voice-play-${Number(m.id)}').textContent='⚠'"></audio></div></div></div>`;
   } else {
+    if (m.id != null) { msgCache.set(String(m.id), { id: m.id, body: m.body || '', name: m.name || '', user_id: m.user_id }); if (msgCache.size > 300) msgCache.delete(msgCache.keys().next().value); }
     const quoted = m.reply_to_id ? `<div class="replybox"><b>↩ Membalas pesan</b>${esc(m.reply_preview || 'Pesan sebelumnya')}</div>` : '';
     const body = esc(m.body).replace(/(@[\w.-]+)/g,'<span class="tagged">$1</span>');
-    d.innerHTML = `${head}<div>${meta}<div class="bub"${bubStyle(m.user_id)} data-bu="${m.user_id}">${quoted}${body}</div><div class="msgtools"><button onclick="H.replyRoom(${Number(m.id)},'${esc((m.body||'').slice(0,90)).replace(/'/g,'&#39;')}','${esc(m.name).replace(/'/g,'&#39;')}')">↩ Balas</button><button onclick="H.forwardRoom(${Number(m.id)})">↗ Teruskan</button></div></div>`;
+    d.innerHTML = `${head}<div>${meta}<div class="bub"${bubStyle(m.user_id)} data-bu="${m.user_id}">${quoted}${body}</div><div class="msgtools"><button onclick="H.replyRoom(${Number(m.id)})">↩ Balas</button><button onclick="H.forwardRoom(${Number(m.id)})">↗ Teruskan</button></div></div>`;
   }
   c.append(d); while (c.children.length > 80) c.firstChild.remove(); c.scrollTop = c.scrollHeight;
 }
@@ -1253,19 +1615,72 @@ H.giftTo = id => {
   const s = Object.values(seats).find(x => x.user_id === id); if (!s) return;
   gT = { id, name: s.name, avatar: s.avatar }; giftSheet();
 };
+async function loadGiftCatalog() {
+  const { data, error } = await sb.from('gift_catalog').select('idx,points,coins');
+  if (error) return false;
+  (data || []).forEach(r => { const g = GIFTS[r.idx]; if (g) { g.points = Number(r.points); if (Number(r.coins) > 0) g.coin = Number(r.coins); } });
+  return true;
+}
+const kfmt = n => Number(n || 0).toLocaleString('id-ID');
 function giftSheet() {
-  const lock = !me.is_host && me.gift_tickets < 1;
-  sheet(`<h3>Kirim Gift</h3><p class="sub">${me.is_host ? '👑 Host: unlimited gratis' : `🎟️ Tiket kamu: ${me.gift_tickets}`}</p>
+  const own = me.gift_tickets || 0, cheapest = Math.min(...GIFTS.map(g => g.coin));
+  sheet(`<h3>Kirim Gift</h3><p class="sub">${me.is_host ? '👑 Host: unlimited gratis' : `🪙 Koin emasmu: ${kfmt(own)} · makin mahal gift, makin besar EXP`}</p>
    <div class="mrow" style="border-top:0;padding-top:0"><img src="${esc(gT.avatar)}"><span>Untuk: <b>${esc(gT.name)}</b></span><button class="sm o" onclick="H.gift()">Ganti</button></div>
-   <div class="gg">${GIFTS.map((g, i) => `<button class="gi ${lock ? 'lk' : ''}" onclick="H.send(${i})">${g.img ? `<img src="${esc(g.img)}">` : `<span class="e">${g.e}</span>`}<small>${g.name}</small>${i>=EXCLUSIVE_GIFT_START?'<small style="display:block;color:#d7b6ff">✦ EKSKLUSIF</small>':''}<small style="display:block;color:#ffd886">+${g.points} poin</small></button>`).join('')}</div>
-   ${lock ? `<button class="btn" onclick="H.wa('Hay Host, mau buka gift dong!')">Buka 1 Gift (Chat Owner)</button>` : ''}`);
+   <div class="gg">${GIFTS.map((g, i) => { const lock = !me.is_host && own < g.coin; return `<button class="gi ${lock ? 'lk' : ''}" onclick="H.send(${i})">${g.img ? `<img src="${esc(g.img)}">` : `<span class="e">${g.e}</span>`}<small>${g.name}</small>${i >= EXCLUSIVE_GIFT_START ? '<small style="display:block;color:#d7b6ff">✦ EKSKLUSIF</small>' : ''}<small style="display:block;color:#ffd886">+${kfmt(g.points)} EXP</small><small class="tkc" style="display:block">🪙 ${kfmt(g.coin)}</small></button>` }).join('')}</div>
+   ${!me.is_host && own < cheapest ? `<button class="btn" onclick="H.wa('Hay Host, mau isi koin emas dong!')">Isi Koin Emas (Chat Owner)</button>` : ''}`);
 }
 H.send = async i => {
   if (!gT) return H.gift();
-  if (!me.is_host && me.gift_tickets < 1) return toast('Gift terkunci. Chat owner dulu 🔒');
-  const { error } = await sb.rpc('send_gift_to', { g: i, target: gT.id });
+  const g = GIFTS[i]; if (!g) return;
+  if (!me.is_host && (me.gift_tickets || 0) < g.coin) return toast(`Koin emas kurang 🔒 Butuh ${kfmt(g.coin)}, kamu punya ${kfmt(me.gift_tickets)}`);
+  const { error } = await sb.rpc('send_gift_v2', { g: i, target: gT.id });
+  if (error && (error.code === 'PGRST202' || /Could not find the function/i.test(error.message || ''))) return toast('Jalankan gift_relation_migration.sql terbaru dulu 🪙');
   error ? toast(error.message) : H.close();
 };
+
+/* ---------- 8B. Hubungan: Sahabat, Pasangan (anniversary), Kakak-Adik, Partner Duet ---------- */
+async function loadRelations(id) {
+  const { data, error } = await sb.from('relations').select('id,user_a,user_b,kind,score,created_at').or(`user_a.eq.${id},user_b.eq.${id}`).order('score', { ascending: false });
+  if (error) return null;
+  const rows = data || [], pid = r => r.user_a === id ? r.user_b : r.user_a, pids = rows.map(pid);
+  const { data: ps } = pids.length ? await sb.from('profiles').select('id,name,avatar').in('id', pids) : { data: [] };
+  return rows.map(r => ({ ...r, partner: (ps || []).find(p => p.id === pid(r)) || {} }));
+}
+function relCardHTML(r, mine) {
+  const k = REL[r.kind] || REL.sahabat, l = relLvl(r.score), base = REL_LV[l - 1], next = REL_LV[l], p = r.partner || {};
+  const days = relDays(r.created_at), pct = next ? Math.min(100, (r.score - base) / (next - base) * 100) : 100;
+  const ann = days > 1 && days % 365 === 0 ? `🎉 Anniversary ${days / 365} tahun!` : days > 1 && days % 100 === 0 ? `🎉 ${days} hari bersama!` : '';
+  return `<div class="relcard rl${l}"><div class="rh"><img src="${esc(p.avatar || '')}"${p.id ? ` onclick="H.view('${p.id}')" style="cursor:pointer"` : ''}><div><b>${esc(p.name || 'Anggota')}</b><br><i class="relk">${k.e} ${k.name} · Lv.${l} ${REL_TITLES[l - 1]}</i></div>${mine ? `<button class="sm o" onclick="H.endRel(${Number(r.id)})">Akhiri</button>` : ''}</div>
+    <div class="prog"><i style="width:${pct}%"></i></div>
+    <small>${next ? `${Number(r.score).toLocaleString('id-ID')} / ${next.toLocaleString('id-ID')} poin hubungan` : 'Level tertinggi 👑'} · Hari ke-${days}${ann ? ' · ' + ann : ''}</small></div>`;
+}
+function relSectionHTML() {
+  if (!HAS_REL) return '<h3 class="sec">💞 Hubungan</h3><p class="sub">Fitur hubungan belum aktif. Jalankan gift_relation_migration.sql di Supabase.</p>';
+  return `<h3 class="sec">💞 Hubungan</h3>${myRel.map(r => relCardHTML(r, true)).join('') || '<p class="empty-t">Belum ada hubungan. Buka profil temanmu lalu ketuk "💞 Ajak Hubungan".</p>'}`;
+}
+async function loadMyRelations() {
+  if (!HAS_REL) return;
+  const r = await loadRelations(uid); if (!r) return;
+  myRel = r; renderProf();
+  if (!relNoted) { relNoted = true; r.forEach(x => { const d = relDays(x.created_at);
+    if (d > 1 && (d % 100 === 0 || d % 365 === 0)) toast(`🎉 Hari ini ${d % 365 === 0 ? d / 365 + ' tahun' : d + ' hari'} ${REL[x.kind]?.name || 'hubungan'} dengan ${x.partner?.name || 'dia'}!`) }) }
+}
+async function relReqHTML() {
+  if (!HAS_REL) return '';
+  const { data, error } = await sb.from('relation_requests').select('id,sender_id,kind').eq('recipient_id', uid).order('created_at', { ascending: false });
+  if (error || !data?.length) return '';
+  const ids = data.map(x => x.sender_id), { data: ps } = await sb.from('profiles').select('id,name,avatar').in('id', ids);
+  return `<h3 class="sec">💞 Ajakan Hubungan (${data.length})</h3>` + data.map(x => { const u = (ps || []).find(p => p.id === x.sender_id) || {}, k = REL[x.kind] || REL.sahabat;
+    return `<div class="friendcard"><img src="${esc(u.avatar || '')}" onclick="H.view('${x.sender_id}')" style="cursor:pointer"><div class="finfo"><b>${esc(u.name || 'Anggota')}</b><small>${k.e} Ingin jadi ${k.name} denganmu</small></div><button class="sm" onclick="H.acceptRel(${Number(x.id)})">Terima</button><button class="sm o" onclick="H.declineRel(${Number(x.id)})">Tolak</button></div>` }).join('');
+}
+H.relPick = id => {
+  const u = viewU && viewU.id === id ? viewU : { name: 'dia' };
+  sheet(`<h3>💞 Ajak Hubungan</h3><p class="sub">Pilih jenis hubungan dengan ${esc(u.name)}. Level naik saat kalian saling kirim gift.</p>${Object.entries(REL).map(([k, v]) => `<div class="mrow"><span style="font-size:28px;flex:none">${v.e}</span><span><b>${v.name}</b><br><small style="color:#a99d92">${v.desc}</small></span><button class="sm" onclick="H.requestRel('${id}','${k}')">Ajak</button></div>`).join('')}`);
+};
+H.requestRel = async (id, k) => { const { error } = await sb.rpc('request_relation', { target: id, rel_kind: k }); if (error) return toast(error.message); H.close(); toast('Ajakan hubungan terkirim 💞') };
+H.acceptRel = async id => { const { error } = await sb.rpc('accept_relation', { request_id: id }); if (error) return toast(error.message); toast('Hubungan resmi dimulai 💞'); loadFriends(); loadMyRelations() };
+H.declineRel = async id => { const { error } = await sb.rpc('decline_relation', { request_id: id }); if (error) return toast(error.message); loadFriends() };
+H.endRel = async id => { if (!confirm('Akhiri hubungan ini? Level dan poinnya akan hilang.')) return; const { error } = await sb.rpc('end_relation', { rel_id: id }); if (error) return toast(error.message); toast('Hubungan diakhiri'); loadMyRelations() };
 
 /* ---------- 8A. Teman, permintaan pertemanan, chat pribadi ---------- */
 async function loadFriends() {
@@ -1279,11 +1694,13 @@ async function loadFriends() {
   const rids=(req||[]).map(x=>x.sender_id);
   const {data:senders}=rids.length?await sb.from('profiles').select('id,name,avatar').in('id',rids):{data:[]};
   pendingRows=(req||[]).map(x=>({...x,user:(senders||[]).find(u=>u.id===x.sender_id)}));
+  const relHtml=await relReqHTML();
   $('#friendBox').innerHTML=`<button class="btn" onclick="H.findFriends()">＋ Tambah Teman</button>
     <h3 class="sec">Permintaan Pertemanan (${pendingRows.length})</h3>
     ${pendingRows.map(x=>`<div class="friendcard"><img src="${esc(x.user?.avatar||'')}" onclick="H.view('${x.sender_id}')" style="cursor:pointer"><div class="finfo"><b>${esc(x.user?.name||'Anggota')}</b><small>Ingin berteman denganmu</small></div><button class="sm" onclick="H.acceptFriend('${x.id}')">Terima</button></div>`).join('')||'<p class="empty-t">Tidak ada permintaan baru.</p>'}
+    ${relHtml}
     <h3 class="sec">Daftar Teman (${friendRows.length})</h3>
-    ${friendRows.map(u=>`<div class="friendcard"><img src="${esc(u.avatar||'')}" onclick="H.view('${u.id}')" style="cursor:pointer"><div class="finfo"><b>${esc(u.name)}</b><small>Teman</small></div><button class="sm" onclick="H.openDM('${u.id}')">💬 Chat</button></div>`).join('')||'<p class="empty-t">Belum ada teman. Tambahkan teman untuk mulai chat.</p>'}`;
+    ${friendRows.map(u=>`<div class="friendcard"><img src="${esc(u.avatar||'')}" onclick="H.view('${u.id}')" style="cursor:pointer"><div class="finfo"><b>${esc(u.name)}</b><small>Teman</small></div><button class="sm" onclick="H.openDM('${u.id}')">💬 Chat${dmBadge(u.id)}</button></div>`).join('')||'<p class="empty-t">Belum ada teman. Tambahkan teman untuk mulai chat.</p>'}`;
 }
 H.findFriends=()=>sheet(`<h3>Tambah Teman</h3><p class="sub">Cari anggota menggunakan nama profilnya.</p><input id="friendSearch" class="inp" placeholder="Ketik nama teman..." oninput="H.searchFriends()" autocomplete="off"><div id="friendResults" style="margin-top:10px"><p class="empty-t">Masukkan nama untuk mencari.</p></div>`);
 H.searchFriends=async()=>{
@@ -1309,24 +1726,26 @@ H.toggleFollow = async (id, currentlyFollowing) => {
   refreshMySocialStats();
 };
 H.acceptFriend=async id=>{
+  const rq=pendingRows.find(x=>String(x.id)===String(id));if(rq)acceptedIds.add(rq.sender_id);
   const {error}=await sb.rpc('accept_friend_request',{request_id:id});
   if(error)return toast(error.message);toast('Sekarang kalian berteman! 🎉');loadFriends();refreshMySocialStats();
 };
 H.openDM=async id=>{
   const u=friendRows.find(x=>x.id===id)||(await sb.from('profiles').select('id,name,avatar').eq('id',id).maybeSingle()).data;
-  if(!u)return toast('Teman tidak ditemukan');dmPeer=u;dmReply=null;
+  if(!u)return toast('Teman tidak ditemukan');dmPeer=u;dmReply=null;nMarkDM(id);
   const {data,error}=await sb.from('direct_messages').select('*').or(`and(sender_id.eq.${uid},recipient_id.eq.${id}),and(sender_id.eq.${id},recipient_id.eq.${uid})`).order('created_at',{ascending:true}).limit(100);
   if(error)return toast('Chat pribadi: '+error.message);dmMessages=data||[];renderDM();
 };
 function renderDM(){
   if(!dmPeer)return;
+  const keep=$('#dmInput')?.value||'',foc=document.activeElement?.id==='dmInput';
   const lines=dmMessages.map(m=>{
     const mine=m.sender_id===uid,quoted=m.reply_to_id?dmMessages.find(x=>x.id===m.reply_to_id):null;
     const body=esc(m.body).replace(/(@[\w.-]+)/g,'<span class="tagged">$1</span>');
     return `<div class="dmline ${mine?'mine':''}">${quoted?`<div class="replybox"><b>↩ ${quoted.sender_id===uid?'Kamu':esc(dmPeer.name)}</b>${esc(quoted.body.slice(0,100))}</div>`:''}${m.forwarded_from_id?'<small>↗ Pesan diteruskan</small>':''}${body}<small>${new Date(m.created_at).toLocaleString('id-ID',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'short'})}</small><div class="msgtools"><button onclick="H.replyDM('${m.id}')">↩ Balas</button><button onclick="H.forwardDM('${m.id}')">↗ Teruskan</button></div></div>`;
   }).join('');
   sheet(`<div class="dmhead"><img src="${esc(dmPeer.avatar||'')}"><div style="flex:1"><h3 style="margin:0">${esc(dmPeer.name)}</h3><p class="sub" style="margin:0">Pesan pribadi</p></div><button class="sm o" onclick="H.close()">Tutup</button></div><div class="dmfeed" id="dmFeed">${lines||'<p class="empty-t">Belum ada pesan. Mulai percakapan! 👋</p>'}</div><div id="dmReplyHint"></div><div class="dmcomposer"><button class="ib" onclick="H.tagDM()" title="Tag teman">@</button><input id="dmInput" class="inp" maxlength="200" placeholder="Tulis pesan..." onkeydown="if(event.key==='Enter')H.sendDM()"><button class="ib sendb" onclick="H.sendDM()">➤</button></div>`);
-  const f=$('#dmFeed');if(f)f.scrollTop=f.scrollHeight;renderDMReplyHint();
+  const f=$('#dmFeed');if(f)f.scrollTop=f.scrollHeight;renderDMReplyHint();const di=$('#dmInput');if(di&&keep){di.value=keep;if(foc)di.focus()}
 }
 function renderDMReplyHint(){const e=$('#dmReplyHint');if(!e)return;const m=dmMessages.find(x=>x.id===dmReply);e.innerHTML=m?`<div class="replyhint">↩ Membalas: ${esc(m.body.slice(0,70))}<button onclick="H.cancelReplyDM()">✕</button></div>`:'';}
 H.replyDM=id=>{dmReply=id;renderDMReplyHint();$('#dmInput')?.focus()};
@@ -1335,21 +1754,21 @@ H.tagDM=()=>{if(!dmPeer)return;const i=$('#dmInput');i.value=(i.value?i.value+' 
 H.sendDM=async()=>{
   if(!dmPeer)return;const i=$('#dmInput'),body=i.value.trim();if(!body)return;
   const {data,error}=await sb.from('direct_messages').insert({sender_id:uid,recipient_id:dmPeer.id,body,reply_to_id:dmReply||null}).select().single();
-  if(error)return toast(error.message);dmMessages.push(data);dmReply=null;renderDM();
+  if(error)return toast(error.message);dmMessages.push(data);dmReply=null;i.value='';renderDM();
 };
 H.forwardDM=async id=>{
   const m=dmMessages.find(x=>x.id===id);if(!m)return;
   const {data,error}=await sb.from('direct_messages').insert({sender_id:uid,recipient_id:dmPeer.id,body:m.body,forwarded_from_id:m.id}).select().single();
   if(error)return toast(error.message);dmMessages.push(data);renderDM();toast('Pesan diteruskan');
 };
-H.replyRoom=(id,body,name)=>{roomReply={id,body,name};renderRoomReplyHint();$('#msg').focus()};
+H.replyRoom=id=>{const m=msgCache.get(String(id));if(!m)return;roomReply={id:m.id,body:m.body.slice(0,90),name:m.name};renderRoomReplyHint();$('#msg').focus()};
 H.cancelReplyRoom=()=>{roomReply=null;renderRoomReplyHint()};
 function renderRoomReplyHint(){const e=$('#roomReplyHint');if(!e)return;e.innerHTML=roomReply?`<div class="replyhint">↩ Membalas ${esc(roomReply.name)}: ${esc(roomReply.body)}<button onclick="H.cancelReplyRoom()">✕</button></div>`:'';}
 H.tagRoom=async()=>{
-  const {data,error}=await sb.from('profiles').select('id,name').neq('id',uid).limit(40);if(error)return toast(error.message);
-  sheet(`<h3>Tag Anggota</h3><p class="sub">Pilih anggota untuk menambahkan tag ke pesan.</p>${(data||[]).map(u=>`<div class="mrow"><span>${esc(u.name)}</span><button class="sm" onclick="H.insertRoomTag('${esc(u.name).replace(/'/g,'&#39;')}')">@ Tag</button></div>`).join('')||'<p class="empty-t">Belum ada anggota lain.</p>'}`);
+  const {data,error}=await sb.from('profiles').select('id,name').neq('id',uid).limit(40);if(error)return toast(error.message);tagNames=(data||[]).map(u=>u.name);
+  sheet(`<h3>Tag Anggota</h3><p class="sub">Pilih anggota untuk menambahkan tag ke pesan.</p>${(data||[]).map((u,k)=>`<div class="mrow"><span>${esc(u.name)}</span><button class="sm" onclick="H.insertRoomTag(${k})">@ Tag</button></div>`).join('')||'<p class="empty-t">Belum ada anggota lain.</p>'}`);
 };
-H.insertRoomTag=name=>{const i=$('#msg');i.value=(i.value?i.value+' ':'')+'@'+name.replace(/\s+/g,'')+' ';H.close();i.focus()};
+H.insertRoomTag=k=>{const name=tagNames[k]||'';const i=$('#msg');i.value=(i.value?i.value+' ':'')+'@'+name.replace(/\s+/g,'')+' ';H.close();i.focus()};
 H.forwardRoom=async id=>{
   const {data,error}=await sb.from('messages').select('id,body,name').eq('id',id).maybeSingle();if(error||!data)return toast('Pesan tidak ditemukan');
   H.doForwardRoom.sourceId=id;
@@ -1362,6 +1781,118 @@ H.doForwardRoom=async friendId=>{
   const {error}=await sb.from('direct_messages').insert({sender_id:uid,recipient_id:friendId,body:`↗ Diteruskan dari ${src.name}: ${src.body||''}`});
   if(error)return toast(error.message);H.close();toast('Pesan berhasil diteruskan ✅');
 };
+
+/* ---------- 8B. Notifikasi: pesan pribadi, like, follow, teman, hadiah, tag/balasan, hadiah Host ---------- */
+const nKey = () => 'nt_' + uid;
+const curTab = () => document.querySelector('#nav button.on')?.dataset.t || 'room';
+const dmVisible = () => !$('#sheet').classList.contains('hidden') && !!$('#dmFeed');
+const dmBadge = id => { const n = notifs.filter(x => !x.read && x.type === 'dm' && x.from === id).length; return n ? `<em class="nb">${n}</em>` : '' };
+function nLoad() {
+  try { notifs = JSON.parse(localStorage.getItem(nKey()) || '[]') } catch { notifs = [] }
+  notifs.forEach(n => n.key && nSeen.add(n.key)); nRender();
+}
+function nSave() { try { localStorage.setItem(nKey(), JSON.stringify(notifs.slice(0, 60))) } catch {} }
+function nRender() {
+  const un = notifs.filter(n => !n.read), per = {};
+  un.forEach(n => per[n.tab || 'room'] = (per[n.tab || 'room'] || 0) + 1);
+  const fmt = c => c ? (c > 99 ? '99+' : String(c)) : '';
+  document.querySelectorAll('.bell .nb').forEach(e => e.textContent = fmt(un.length));
+  document.querySelectorAll('#nav button').forEach(b => { const e = b.querySelector('.nb'); if (e) e.textContent = fmt(per[b.dataset.t]) });
+  document.title = (un.length ? `(${un.length}) ` : '') + (settings?.title || 'Voice & Gift Room');
+}
+function nMarkTab(t) {
+  let c = 0; notifs.forEach(n => { if (!n.read && n.tab === t && n.type !== 'dm') { n.read = true; c++ } });
+  if (c) { nSave(); nRender() }
+}
+function nMarkDM(id) {
+  let c = 0; notifs.forEach(n => { if (!n.read && n.type === 'dm' && n.from === id) { n.read = true; c++ } });
+  if (c) { nSave(); nRender() }
+}
+async function whoIs(id) {
+  if (!id) return null;
+  if (pinfo[id]) return pinfo[id];
+  const o = online[id]?.[0]; if (o?.name) return (pinfo[id] = { name: o.name, avatar: o.avatar });
+  try { const { data } = await sb.from('profiles').select('name,avatar').eq('id', id).maybeSingle(); if (data) return (pinfo[id] = { name: data.name, avatar: data.avatar }) } catch {}
+  return { name: 'Seseorang', avatar: '' };
+}
+/* o: { key, type, icon, from, who:{name,avatar}, title, text, tab, act } — satu pintu untuk semua jenis notifikasi */
+async function pushNotif(o) {
+  if (!uid) return;
+  if (o.key) { if (nSeen.has(o.key)) return; nSeen.add(o.key) }
+  const who = o.who || (o.from ? await whoIs(o.from) : null);
+  const tab = o.tab || 'room';
+  const here = tab === 'room' && curTab() === 'room' && !document.hidden; /* tag/balasan di room yang sedang dibuka: sudah terlihat di chat */
+  const n = { id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), key: o.key, type: o.type, icon: o.icon || '🔔',
+    title: o.title || who?.name || 'Notifikasi', text: o.text || '', from: o.from || '', avatar: who?.avatar || '', t: Date.now(), read: here, tab, act: o.act || null };
+  notifs.unshift(n); notifs = notifs.slice(0, 60); nSave(); nRender();
+  if (here) return;
+  nBannerQ.push(n); if (nBannerQ.length > 4) nBannerQ.shift();
+  if (!nBannerBusy) nBannerNext();
+  nAlert(n);
+}
+function nBannerNext() {
+  const n = nBannerQ.shift(), e = $('#nbanner');
+  if (!n) { nBannerBusy = false; return }
+  nBannerBusy = true;
+  e.innerHTML = `${n.avatar ? `<img src="${esc(n.avatar)}">` : `<span class="ni">${n.icon}</span>`}<div><b>${esc(n.title)}</b><small>${n.icon} ${esc(n.text)}</small></div>`;
+  e.onclick = () => { e.classList.remove('on'); H.nOpen(n.id) };
+  e.classList.add('on');
+  clearTimeout(nBannerNext.t);
+  nBannerNext.t = setTimeout(() => { e.classList.remove('on'); setTimeout(nBannerNext, 380) }, 3800);
+}
+function nBeep() {
+  try {
+    nAC ||= new (window.AudioContext || window.webkitAudioContext)(); if (nAC.state === 'suspended') nAC.resume();
+    const t = nAC.currentTime, o = nAC.createOscillator(), g = nAC.createGain();
+    o.type = 'sine'; o.frequency.setValueAtTime(880, t); o.frequency.setValueAtTime(1175, t + .09);
+    g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.12, t + .02); g.gain.exponentialRampToValueAtTime(.0001, t + .3);
+    o.connect(g).connect(nAC.destination); o.start(t); o.stop(t + .32);
+  } catch {}
+}
+function nAlert(n) {
+  const now = Date.now();
+  if (nSound && now - nLastBeep > 1200) { nLastBeep = now; nBeep() }
+  try { navigator.vibrate?.(n.type === 'dm' ? [60, 40, 60] : 40) } catch {}
+  if (document.hidden && 'Notification' in window && Notification.permission === 'granted') {
+    try { new Notification(n.title, { body: `${n.icon} ${n.text}`, icon: n.avatar || undefined, tag: n.type }) } catch {}
+  }
+}
+const nItemHTML = n => `<div class="nitem ${n.read ? '' : 'un'}" onclick="H.nOpen('${n.id}')">${n.avatar ? `<img src="${esc(n.avatar)}">` : `<span class="ni">${n.icon}</span>`}<div><b>${esc(n.title)}</b><small>${n.icon} ${esc(n.text)}</small></div><small class="nt">${ago(n.t)}</small></div>`;
+H.notifs = () => {
+  const perm = 'Notification' in window ? Notification.permission : 'unsupported';
+  sheet(`<div class="dmhead"><div style="flex:1"><h3 style="margin:0">🔔 Notifikasi</h3><p class="sub" style="margin:0">${notifs.filter(n => !n.read).length} belum dibaca</p></div><button class="sm o" onclick="H.close()">Tutup</button></div>
+   <div class="nlist">${notifs.map(nItemHTML).join('') || '<p class="empty-t">Belum ada notifikasi.</p>'}</div>
+   <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px"><button class="sm o" onclick="H.nSnd()">${nSound ? '🔊 Suara nyala' : '🔇 Suara mati'}</button>${perm === 'default' ? '<button class="sm o" onclick="H.nPerm()">📲 Aktifkan notifikasi HP</button>' : ''}${notifs.length ? '<button class="sm o" onclick="H.nClear()">🗑 Hapus semua</button>' : ''}</div>`);
+  notifs.forEach(n => n.read = true); nSave(); nRender(); /* dibuka = dianggap dibaca (item baru tetap tersorot di daftar ini) */
+};
+H.nOpen = id => {
+  const n = notifs.find(x => x.id === id); if (!n) return;
+  if (!n.read) { n.read = true; nSave(); nRender() }
+  H.close(); const a = n.act; if (!a) return;
+  if (a.k === 'dm') { H.tab('friends'); H.openDM(a.id) } else if (a.k === 'user') H.view(a.id); else if (a.k === 'tab') H.tab(a.t);
+};
+H.nSnd = () => { nSound = !nSound; try { localStorage.setItem('nt_snd', nSound ? '1' : '0') } catch {} H.notifs() };
+H.nPerm = () => { try { Notification.requestPermission().then(() => H.notifs()) } catch { toast('Browser ini tidak mendukung notifikasi') } };
+H.nClear = () => { notifs = []; nSave(); nRender(); H.notifs() };
+async function notifyLike(r) {
+  if (!r) return;
+  let owner = posts.find(x => String(x.id) === String(r.post_id))?.user_id;
+  if (!owner) { const { data } = await sb.from('posts').select('user_id').eq('id', r.post_id).maybeSingle(); owner = data?.user_id }
+  if (owner !== uid) return;
+  pushNotif({ key: 'lk:' + r.post_id + ':' + r.user_id + ':' + (r.created_at || ''), type: 'like', icon: '❤️', from: r.user_id, text: 'menyukai postinganmu', tab: 'posts', act: { k: 'tab', t: 'posts' } });
+}
+function checkRoomMention(m) {
+  if (!me || !m || m.user_id === uid || m.type !== 'chat') return;
+  const body = String(m.body || ''); if (!body || body.startsWith('[')) return;
+  const who = { name: m.name || 'Seseorang', avatar: m.avatar || '' };
+  const tag = '@' + String(me.name || '').replace(/\s+/g, '');
+  if (tag.length > 1 && new RegExp('(^|\\s)' + tag.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?![\\w.-])', 'i').test(body))
+    return pushNotif({ key: 'mn:' + m.id, type: 'mention', icon: '🏷️', from: m.user_id, who, text: 'menyebutmu: ' + body.slice(0, 70), tab: 'room', act: { k: 'tab', t: 'room' } });
+  if (m.reply_to_id && msgCache.get(String(m.reply_to_id))?.user_id === uid)
+    pushNotif({ key: 'rp:' + m.id, type: 'reply', icon: '↩️', from: m.user_id, who, text: 'membalas pesanmu: ' + body.slice(0, 70), tab: 'room', act: { k: 'tab', t: 'room' } });
+}
+document.addEventListener('pointerdown', () => { try { nAC ||= new (window.AudioContext || window.webkitAudioContext)(); nAC.state === 'suspended' && nAC.resume() } catch {} }, { once: true });
+document.addEventListener('visibilitychange', () => { if (!document.hidden && inRoom) { refreshMyBorders(); nRender() } });
 
 /* ---------- 9. Suara: WebRTC (signaling via Supabase Broadcast) ----------
    Aturan: pendengar (tidak duduk) selalu menelepon penghuni kursi; antar penghuni kursi, uid lebih kecil yang menelepon.
@@ -1383,12 +1914,17 @@ H.spk = () => {
   const b = $('#spkb'); b.textContent = spk ? '🔊' : '🔈'; b.classList.toggle('off', !spk);
   toast(spk ? 'Speaker aktif 🔊' : 'Speaker dimatikan: kamu tidak mendengar suara');
 };
+const WK = {};
+/* Hentikan pemantau suara satu user (interval + AudioContext) agar tidak menggantung setelah orangnya keluar */
+function unwatch(id) { WK[id]?.(); delete WK[id]; delete W[id] }
 function watch(st, id) {
-  if (W[id] === st) return; W[id] = st;
+  if (W[id] === st) return; unwatch(id); W[id] = st;
   const ac = new (window.AudioContext || window.webkitAudioContext)(), an = ac.createAnalyser(); an.fftSize = 256; ACS.add(ac);
   ac.createMediaStreamSource(st).connect(an); const b = new Uint8Array(an.frequencyBinCount);
+  const stop = () => { clearInterval(iv); ACS.delete(ac); try { ac.close() } catch {} document.querySelectorAll(`[data-uid="${id}"]`).forEach(e => e.classList.remove('talk')) };
+  WK[id] = stop;
   const iv = setInterval(() => {
-    if (!st.active) { clearInterval(iv); ACS.delete(ac); return ac.close() }
+    if (!st.active) { stop(); return }
     an.getByteFrequencyData(b); const v = b.reduce((a, c) => a + c, 0) / b.length;
     document.querySelectorAll(`[data-uid="${id}"]`).forEach(e => e.classList.toggle('talk', v > 12));
   }, 150);
@@ -1402,9 +1938,9 @@ const sig = (to, p) => room?.send({ type: 'broadcast', event: 'sig', payload: { 
 const seatedOthers = () => Object.values(seats).map(s => s.user_id).filter(i => i !== uid);
 function drop(k, notify) {
   const o = pcs[k]; if (!o) return;
-  clearTimeout(o.t); delete pcs[k]; try { o.pc.close() } catch {}
+  clearTimeout(o.t); delete pcs[k]; delete early[k]; try { o.pc.close() } catch {}
   if (notify) sig(k, { bye: 1 }); /* beri tahu lawan agar langsung menyambung ulang, tidak menunggu timeout */
-  document.getElementById('a' + k)?.remove(); delete W[k];
+  document.getElementById('a' + k)?.remove(); unwatch(k);
 }
 function redo(id, o) { if (pcs[id] !== o) return; if (o.init && seatedOthers().includes(id)) connect(id); else drop(id) }
 function mkpc(id, init) {
@@ -1467,6 +2003,7 @@ function syncPeers() {
     if (init && !pcs[id]) connect(id);
   });
 }
+
 </script>
 </body>
 </html>
