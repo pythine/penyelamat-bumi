@@ -987,69 +987,75 @@ H.sendMsg = async () => {
 
 /* Rekam pesan suara room. Path Storage memakai folder pertama = UID,
    sama seperti upImg(), agar sesuai dengan policy Storage yang sudah dipakai foto profil. */
-H.voiceMsg = async () => {
-  const btn = $('#voiceMsgBtn');
-  if (voiceRecorder && voiceRecorder.state === 'recording') { voiceRecorder.stop(); return; }
-  if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) return toast('Browser belum mendukung rekam suara. Gunakan Chrome terbaru dan HTTPS.');
-  if (!uid || !me) return toast('Masuk ke room terlebih dahulu.');
-  try {
-    voiceStream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation:true, noiseSuppression:true, autoGainControl:true } });
-    voiceChunks = [];
-    const candidates = ['audio/webm;codecs=opus','audio/webm','audio/mp4','audio/ogg;codecs=opus'];
-    const mimeType = candidates.find(t => MediaRecorder.isTypeSupported?.(t));
-    voiceRecorder = new MediaRecorder(voiceStream, mimeType ? { mimeType } : undefined);
-    const activeRecorder = voiceRecorder;
-    activeRecorder.ondataavailable = e => { if (e.data?.size) voiceChunks.push(e.data); };
-    activeRecorder.onerror = () => {
-      toast('Gagal merekam suara. Coba lagi.');
-      voiceStream?.getTracks().forEach(t=>t.stop()); voiceStream=null; voiceRecorder=null; voiceChunks=[];
-      btn?.classList.remove('rec'); if(btn)btn.textContent='🎤';
-    };
-    activeRecorder.onstop = async () => {
-      const chunks = voiceChunks.slice(), recordedType = activeRecorder.mimeType || chunks[0]?.type || 'audio/webm';
-      voiceStream?.getTracks().forEach(t=>t.stop()); voiceStream=null; voiceRecorder=null; voiceChunks=[];
-      btn?.classList.remove('rec'); if(btn)btn.textContent='🎤';
-      const blob = new Blob(chunks, { type: recordedType });
-      if (blob.size < 1000) return toast('Rekaman terlalu singkat. Coba bicara sedikit lebih lama.');
-      if (blob.size > 12*1024*1024) return toast('Ukuran pesan suara terlalu besar (maksimal 12 MB).');
-
-      toast('Mengunggah pesan suara…');
-      const mime = (blob.type || 'audio/webm').split(';')[0].toLowerCase();
-      const ext = mime === 'audio/mp4' ? 'm4a' : mime === 'audio/ogg' ? 'ogg' : mime === 'audio/mpeg' ? 'mp3' : 'webm';
-      /* Penting: jangan pakai voice/${uid}/... karena policy Storage lama umumnya
-         memeriksa folder pertama = auth.uid(). */
-      const path = `${uid}/voice-${Date.now()}.${ext}`;
-      const { error: upErr } = await sb.storage.from('media').upload(path, blob, {
-        contentType: mime, upsert: false, cacheControl: '3600'
-      });
-      if (upErr) return toast('Upload audio ke Storage gagal: ' + upErr.message);
-
-      const { data: pub } = sb.storage.from('media').getPublicUrl(path);
-      const audioUrl = pub?.publicUrl;
-      if (!audioUrl) return toast('Audio terunggah, tetapi URL audio tidak berhasil dibuat.');
-
-      /* Gunakan type='chat' yang sama dengan pesan teks agar lolos policy RLS
-         messages yang sudah ada. Penanda body membedakan audio dari teks tanpa SQL baru. */
-      const { data: voiceMessage, error: msgErr } = await sb.from('messages').insert({
-        user_id: uid, name: me.name, avatar: me.avatar,
-        type: 'chat', body: '[VOICE_MSG]' + audioUrl
-      }).select('*').single();
-      if (msgErr) {
-        /* Jangan tinggalkan file yatim jika insert pesan ditolak. */
-        await sb.storage.from('media').remove([path]).catch(() => {});
-        return toast('Audio berhasil diunggah, tetapi insert pesan ditolak RLS: ' + msgErr.message);
-      }
-      if (voiceMessage) addRoomMessage(voiceMessage, true);
-      toast('Pesan suara terkirim 🎧');
-    };
-    activeRecorder.start(250);
-    btn?.classList.add('rec'); if(btn)btn.textContent='⏹';
-    toast('Sedang merekam… tekan ⏹ untuk mengirim');
-  } catch (e) {
-    voiceStream?.getTracks().forEach(t=>t.stop()); voiceStream=null; voiceRecorder=null; voiceChunks=[];
-    btn?.classList.remove('rec'); if(btn)btn.textContent='🎤';
-    toast(e.name==='NotAllowedError' ? 'Izin mikrofon ditolak. Izinkan akses mikrofon di browser.' : (e.message||'Tidak bisa mengakses mikrofon.'));
+/* Rekam PCM langsung (tanpa MediaRecorder) lalu simpan sebagai WAV mono 16 kHz. WAV bisa diputar di semua
+   browser/HP (Chrome, Safari iPhone, Firefox), jadi semua anggota bisa merekam DAN mendengarkan. */
+const VOICE_MAX_SEC = 60, VOICE_RATE = 16000;
+function wavBlob(chunks, inRate) {
+  let len = 0; chunks.forEach(c => len += c.length);
+  const all = new Float32Array(len); let o = 0; chunks.forEach(c => { all.set(c, o); o += c.length; });
+  let peak = 0; for (let i = 0; i < len; i++) { const a = Math.abs(all[i]); if (a > peak) peak = a; }
+  const gain = peak > .02 ? Math.min(4, .9 / peak) : 1; /* suara kecil dinaikkan otomatis */
+  const ratio = inRate / VOICE_RATE, n = Math.floor(len / ratio), pcm = new Int16Array(n);
+  for (let i = 0; i < n; i++) {
+    const a = Math.floor(i * ratio), b = Math.max(a + 1, Math.min(len, Math.floor((i + 1) * ratio)));
+    let sum = 0; for (let k = a; k < b; k++) sum += all[k];
+    const v = Math.max(-1, Math.min(1, sum / (b - a) * gain)); pcm[i] = v < 0 ? v * 0x8000 : v * 0x7fff;
   }
+  const buf = new ArrayBuffer(44 + n * 2), dv = new DataView(buf), w = (p, t) => [...t].forEach((c, i) => dv.setUint8(p + i, c.charCodeAt(0)));
+  w(0, 'RIFF'); dv.setUint32(4, 36 + n * 2, true); w(8, 'WAVE'); w(12, 'fmt '); dv.setUint32(16, 16, true); dv.setUint16(20, 1, true); dv.setUint16(22, 1, true);
+  dv.setUint32(24, VOICE_RATE, true); dv.setUint32(28, VOICE_RATE * 2, true); dv.setUint16(32, 2, true); dv.setUint16(34, 16, true); w(36, 'data'); dv.setUint32(40, n * 2, true);
+  new Int16Array(buf, 44).set(pcm);
+  return new Blob([buf], { type: 'audio/wav' });
+}
+function voiceReset() {
+  clearInterval(voiceReset.t);
+  try { voiceRecorder?.node.disconnect(); voiceRecorder?.src.disconnect(); } catch {}
+  try { voiceRecorder?.ac.close(); } catch {}
+  voiceStream?.getTracks().forEach(t => t.stop()); voiceStream = null; voiceRecorder = null; voiceChunks = [];
+  const b = $('#voiceMsgBtn'); if (b) { b.classList.remove('rec'); b.textContent = '🎤'; }
+}
+H.voiceMsg = async () => {
+  if (voiceRecorder) return H.voiceStop();
+  if (!uid || !me) return toast('Masuk ke room terlebih dahulu.');
+  if (!navigator.mediaDevices?.getUserMedia || !(window.AudioContext || window.webkitAudioContext)) return toast('Rekam suara butuh HTTPS dan browser terbaru.');
+  try {
+    let st; const seatTrack = stream?.getAudioTracks()[0];
+    if (seatTrack && seatTrack.readyState === 'live') { const t = seatTrack.clone(); t.enabled = true; st = new MediaStream([t]); } /* sedang duduk: pakai mikrofon yang sama, tetap terekam walau mic dimute */
+    else st = await navigator.mediaDevices.getUserMedia(GUM);
+    voiceStream = st;
+    const ac = new (window.AudioContext || window.webkitAudioContext)(); if (ac.resume) await ac.resume();
+    const src = ac.createMediaStreamSource(st), node = ac.createScriptProcessor(4096, 1, 1), mute = ac.createGain(); mute.gain.value = 0;
+    voiceChunks = []; const t0 = Date.now();
+    node.onaudioprocess = e => voiceChunks.push(new Float32Array(e.inputBuffer.getChannelData(0)));
+    src.connect(node); node.connect(mute); mute.connect(ac.destination);
+    voiceRecorder = { ac, src, node, rate: ac.sampleRate, t0 };
+    const btn = $('#voiceMsgBtn'); btn.classList.add('rec'); btn.textContent = '⏹';
+    voiceReset.t = setInterval(() => {
+      const sec = Math.floor((Date.now() - t0) / 1000);
+      if (sec >= VOICE_MAX_SEC) return H.voiceStop();
+      toast(`🔴 Merekam ${sec} dtk · ketuk ⏹ untuk kirim`);
+    }, 1000);
+    toast('🔴 Merekam… ketuk ⏹ untuk kirim');
+  } catch (e) {
+    voiceReset();
+    toast(e.name === 'NotAllowedError' ? 'Izin mikrofon ditolak. Izinkan akses mikrofon di browser lalu coba lagi.' : (e.message || 'Tidak bisa mengakses mikrofon.'));
+  }
+};
+H.voiceStop = async () => {
+  const r = voiceRecorder; if (!r) return;
+  const chunks = voiceChunks.slice(), rate = r.rate, dur = (Date.now() - r.t0) / 1000;
+  voiceReset();
+  if (dur < .7) return toast('Rekaman terlalu singkat. Tahan sedikit lebih lama.');
+  toast('Mengunggah pesan suara…');
+  const path = `${uid}/voice-${Date.now()}.wav`; /* folder pertama = UID, sama seperti foto profil */
+  const { error: upErr } = await sb.storage.from('media').upload(path, wavBlob(chunks, rate), { contentType: 'audio/wav', upsert: false, cacheControl: '3600' });
+  if (upErr) return toast('Upload suara gagal: ' + upErr.message + ' (jalankan voice_fix.sql di Supabase)');
+  const audioUrl = sb.storage.from('media').getPublicUrl(path).data?.publicUrl;
+  if (!audioUrl) return toast('Audio terunggah, tetapi URL audio tidak berhasil dibuat.');
+  const { data: vm, error: msgErr } = await sb.from('messages').insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'chat', body: '[VOICE_MSG]' + audioUrl }).select('*').single();
+  if (msgErr) { await sb.storage.from('media').remove([path]).catch(() => {}); return toast('Pesan suara ditolak: ' + msgErr.message); }
+  if (vm) addRoomMessage(vm, true);
+  toast('Pesan suara terkirim 🎧');
 };
 
 H.toggleVoice = async id => {
@@ -1059,7 +1065,7 @@ H.toggleVoice = async id => {
   if (audio.paused) {
     document.querySelectorAll('.voicebubble audio').forEach(a => { if (a !== audio) { a.pause(); a.currentTime = 0; const b=document.getElementById('voice-play-' + a.dataset.msgid); if(b)b.textContent='▶'; } });
     try { await audio.play(); button.textContent = '❚❚'; }
-    catch (e) { toast('Audio tidak bisa diputar. Periksa akses Storage/bucket media.'); }
+    catch (e) { audio.load(); toast('Audio tidak bisa diputar. Coba ketuk lagi, atau periksa bucket media (voice_fix.sql).'); }
   } else { audio.pause(); button.textContent = '▶'; }
 };
 H.voiceEnded = id => {
