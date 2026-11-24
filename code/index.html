@@ -716,7 +716,7 @@ async function syncRecentMessages() {
 function startMessageSync() {
   clearInterval(messageSyncTimer);
   // Fallback for projects where messages is not enabled in supabase_realtime.
-  messageSyncTimer = setInterval(syncRecentMessages, 1500);
+  messageSyncTimer = setInterval(syncRecentMessages, 500);
 }
 async function stopMessageSync() {
   clearInterval(messageSyncTimer); messageSyncTimer = null;
