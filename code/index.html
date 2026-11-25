@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Voice & Gift Room</title>
 <script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,0..1,0&display=block" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
 <style>
 :root{--gold:#f5c15a;--gold2:#b8802a;--ink:#07060a;--glass:rgba(20,14,12,.62);--cy:#3fb4ff}
@@ -180,7 +181,7 @@ textarea.inp{resize:none;display:block}
 .replybox{border-left:3px solid var(--gold);background:#0003;border-radius:8px;padding:5px 9px;margin:0 0 6px;font-size:12px;color:#e8c98e}
 .replybox b{display:block;color:#ffd886;margin-bottom:2px}
 .msgtools{display:flex;gap:10px;flex-wrap:wrap;margin-top:5px}
-.msgtools button{font-size:11px;color:#e8c98e;background:#ffffff12;border-radius:999px;padding:3px 9px}
+.msgtools button{display:inline-flex;align-items:center;gap:3px;font-size:11px;color:#e8c98e;background:#ffffff12;border-radius:999px;padding:3px 9px}
 .tagged{color:#ffd886;font-weight:900}
 .friendcard{display:flex;align-items:center;gap:10px;padding:10px;background:var(--glass);border:1px solid #f5c15a30;border-radius:14px;margin:8px 0}
 .friendcard img{width:42px;height:42px;border-radius:50%;object-fit:cover}
@@ -396,6 +397,36 @@ textarea.inp{resize:none;display:block}
 .svip-ban{display:flex;justify-content:center;max-width:100%;margin:12px 0 6px;overflow:visible}
 .svip-ban .svip.big{font-size:clamp(18px,5.6vw,28px);margin:8px 0;max-width:100%}
 #svipPop .svip-card{overflow:visible}
+/* Ikon Google (Material Symbols Rounded) */
+.ms{font-family:'Material Symbols Rounded';font-weight:500;font-style:normal;font-size:1.2em;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;width:1em;height:1em;overflow:hidden;white-space:nowrap;direction:ltr;vertical-align:middle;-webkit-font-smoothing:antialiased;font-feature-settings:'liga';font-variation-settings:'FILL' 1,'wght' 500,'GRAD' 0,'opsz' 24}
+.ms.o{font-variation-settings:'FILL' 0,'wght' 500,'GRAD' 0,'opsz' 24}
+.ib .ms{font-size:22px}
+.pav.ph .ms{font-size:46px}
+.btn .ms,.sm .ms{font-size:1.25em;margin-right:2px}
+.chip .ms,.sec .ms{font-size:1.2em}
+.sec .ms{margin-right:4px}
+.voiceplay .ms{font-size:22px}.msgtools .ms,.replybox .ms,.dmline small .ms{font-size:14px}
+.ms.on{color:#3ddc84}.ms.off{color:#8d8176}
+.nav button i .ms{font-size:26px;font-variation-settings:'FILL' 0,'wght' 500,'GRAD' 0,'opsz' 24}
+.nav button.on i .ms{font-variation-settings:'FILL' 1,'wght' 500,'GRAD' 0,'opsz' 24}
+.mic .ms{font-size:14px}
+.likebtn .ms{font-size:19px}.likebtn.on .ms{color:#ff4d6a}
+.del .ms,.sv-who button .ms{font-size:20px}
+.replyhint button .ms{font-size:16px}
+/* Peti Room */
+.chestchip{display:inline-flex;align-items:center;gap:6px;cursor:pointer;border-color:var(--ck,#f5c15a88)}
+.chestchip .ms{font-size:19px;color:var(--ck,var(--gold))}
+.chestchip .cl{font-size:12px}
+.chestchip .cbar{display:block;width:34px;height:5px;border-radius:9px;background:#ffffff22;overflow:hidden}
+.chestchip .cbar b{display:block;height:100%;width:0;background:linear-gradient(90deg,#ffd886,#ff8a00);transition:width .5s}
+.chestchip.full{animation:ckPulse 1s ease-in-out infinite}
+@keyframes ckPulse{50%{box-shadow:0 0 12px var(--ck,#f5c15a)}}
+#chestFX{position:fixed;inset:0;z-index:66;display:grid;place-items:center;pointer-events:none;background:rgba(0,0,0,.5);backdrop-filter:blur(3px)}
+#chestFX.hidden{display:none!important}
+#chestFX .cx{text-align:center;padding:24px 22px;width:min(88vw,340px);border-radius:26px;border:2px solid var(--ck,#ffd36e);background:radial-gradient(circle at 50% 0,#76501c,#211306 58%,#100b08);box-shadow:0 0 40px var(--ck,#ffc34d);animation:svipPopIn .55s cubic-bezier(.18,.9,.25,1.3) both}
+#chestFX .cxi{font-size:92px;line-height:1;color:var(--ck,#ffd36e);filter:drop-shadow(0 0 18px var(--ck,#ffc34d));animation:cxShake .45s ease-in-out 3}
+#chestFX .cxr{margin-top:12px;font-size:26px;color:#ffe9a8;text-shadow:0 0 14px #ffb52b;animation:svipPopIn .5s ease-out both}
+@keyframes cxShake{0%,100%{transform:rotate(0)}25%{transform:rotate(-9deg)}75%{transform:rotate(9deg)}}
 /* ===== Notifikasi ===== */
 .bell{position:relative}
 .nb{position:absolute;top:-4px;right:-4px;min-width:17px;height:17px;padding:0 4px;border-radius:99px;background:#e11d48;color:#fff;font:900 10px/17px Nunito,system-ui,sans-serif;font-style:normal;text-align:center;box-shadow:0 0 0 2px #0c0806;pointer-events:none}
@@ -433,7 +464,7 @@ textarea.inp{resize:none;display:block}
 
 <!-- ================= SETUP PROFIL ================= -->
 <section id="setup" class="scr" style="display:flex;flex-direction:column;justify-content:center">
-  <button class="ib" style="position:absolute;right:14px;top:calc(12px + env(safe-area-inset-top))" onclick="H.hostLogin()" title="Login Host">👑</button>
+  <button class="ib" style="position:absolute;right:14px;top:calc(12px + env(safe-area-inset-top))" onclick="H.hostLogin()" title="Login Host"><span class="ms">admin_panel_settings</span></button>
   <h1 style="font-size:30px;margin:0;color:var(--gold)">Welcome Penyelamat Bumi</h1>
   <p class="sub" style="margin-top:4px">Upload foto profil dari HP-mu dan isi nama panggilan.</p>
   <div class="avsel" id="avs"></div>
@@ -445,24 +476,24 @@ textarea.inp{resize:none;display:block}
 <section id="room" class="scr hn hidden" style="flex-direction:column">
   <div class="top">
     <div class="t"><b id="ttl"></b><small id="sub"></small></div>
-    <button class="ib bell" onclick="H.notifs()" title="Notifikasi">🔔<em class="nb"></em></button>
-    <button class="ib" id="spkb" onclick="H.spk()" title="Speaker (dengar suara)">🔊</button>
-    <button class="ib" onclick="H.panel()" title="Panel Host">👑</button>
-    <button class="ib" onclick="H.exit()" title="Keluar / ubah profil">⏏</button>
+    <button class="ib bell" onclick="H.notifs()" title="Notifikasi"><span class="ms">notifications</span><em class="nb"></em></button>
+    <button class="ib" id="spkb" onclick="H.spk()" title="Speaker (dengar suara)"><span class="ms">volume_up</span></button>
+    <button class="ib" onclick="H.panel()" title="Panel Host"><span class="ms">admin_panel_settings</span></button>
+    <button class="ib" onclick="H.exit()" title="Keluar / ubah profil"><span class="ms">logout</span></button>
   </div>
-  <div class="chips"><span class="chip">🏆 PENYELAMAT BUMI</span><span class="mini" id="mini"></span><span class="chip" id="onl" style="margin-left:auto"></span></div>
+  <div class="chips"><span class="chip"><span class="ms">emoji_events</span> PENYELAMAT BUMI</span><button class="chip chestchip hidden" id="chestChip" onclick="H.chest()" title="Peti Room"><span class="ms">inventory_2</span><span class="cl">Lv.1</span><i class="cbar"><b></b></i></button><span class="mini" id="mini"></span><span class="chip" id="onl" style="margin-left:auto"></span></div>
   <div id="grid"></div>
   <div class="listen" id="listen"></div>
   <div id="chatw"><div id="chat"></div></div>
   <div id="roomReplyHint"></div>
   <div class="bar">
-    <button class="ib" onclick="H.tagRoom()" title="Tag anggota">@</button>
+    <button class="ib" onclick="H.tagRoom()" title="Tag anggota"><span class="ms">alternate_email</span></button>
     <input id="msg" class="inp" maxlength="200" placeholder="Katakan sesuatu" autocomplete="off" enterkeyhint="send">
-    <button class="ib sendb" onpointerdown="event.preventDefault()" onclick="H.sendMsg()" title="Kirim pesan">➤</button>
-    <button class="ib voiceb" id="voiceMsgBtn" onclick="H.voiceMsg()" title="Rekam / kirim pesan suara">🎤</button>
-    <button class="ib themeb" onclick="H.themes()" title="Tema chat">🎨</button>
-    <button class="ib micb" id="micb" onclick="H.mic()">🎙️</button>
-    <button class="ib giftb" onclick="H.gift()">🎁</button>
+    <button class="ib sendb" onpointerdown="event.preventDefault()" onclick="H.sendMsg()" title="Kirim pesan"><span class="ms">send</span></button>
+    <button class="ib voiceb" id="voiceMsgBtn" onclick="H.voiceMsg()" title="Rekam / kirim pesan suara"><span class="ms">keyboard_voice</span></button>
+    <button class="ib themeb" onclick="H.themes()" title="Tema chat"><span class="ms">palette</span></button>
+    <button class="ib micb" id="micb" onclick="H.mic()"><span class="ms">mic</span></button>
+    <button class="ib giftb" onclick="H.gift()"><span class="ms">redeem</span></button>
   </div>
 </section>
 
@@ -470,8 +501,8 @@ textarea.inp{resize:none;display:block}
 <section id="pgPosts" class="scr hn col hidden">
   <div class="top">
     <div class="t"><b>Postingan</b><small>Dari semua anggota room</small></div>
-    <button class="ib bell" onclick="H.notifs()" title="Notifikasi">🔔<em class="nb"></em></button>
-    <button class="ib plus" onclick="H.compose()" title="Buat postingan">＋</button>
+    <button class="ib bell" onclick="H.notifs()" title="Notifikasi"><span class="ms">notifications</span><em class="nb"></em></button>
+    <button class="ib plus" onclick="H.compose()" title="Buat postingan"><span class="ms">add</span></button>
   </div>
   <div class="pg"><div id="storyBar" class="storybar"></div><div id="plist"></div></div>
 </section>
@@ -479,8 +510,8 @@ textarea.inp{resize:none;display:block}
 <!-- ================= TEMAN ================= -->
 <section id="pgFriends" class="scr hn col hidden">
   <div class="top"><div class="t"><b>Teman</b><small>Tambah teman dan mulai percakapan pribadi</small></div>
-    <button class="ib bell" onclick="H.notifs()" title="Notifikasi">🔔<em class="nb"></em></button>
-    <button class="ib plus" onclick="H.findFriends()">＋</button></div>
+    <button class="ib bell" onclick="H.notifs()" title="Notifikasi"><span class="ms">notifications</span><em class="nb"></em></button>
+    <button class="ib plus" onclick="H.findFriends()"><span class="ms">add</span></button></div>
   <div class="pg" id="friendBox"></div>
 </section>
 
@@ -488,20 +519,20 @@ textarea.inp{resize:none;display:block}
 <section id="pgMe" class="scr hn col hidden">
   <div class="top">
     <div class="t"><b>Profil</b><small>Kelola akunmu</small></div>
-    <button class="ib bell" onclick="H.notifs()" title="Notifikasi">🔔<em class="nb"></em></button>
-    <button class="ib" onclick="H.panel()" title="Panel Host">👑</button>
+    <button class="ib bell" onclick="H.notifs()" title="Notifikasi"><span class="ms">notifications</span><em class="nb"></em></button>
+    <button class="ib" onclick="H.panel()" title="Panel Host"><span class="ms">admin_panel_settings</span></button>
   </div>
   <div class="pg" id="pfBox"></div>
 </section>
 
 <nav id="nav" class="nav hidden">
-  <button data-t="room" class="on" onclick="H.tab('room')"><i>💬</i>Room<em class="nb"></em></button>
-  <button data-t="posts" onclick="H.tab('posts')"><i>📰</i>Postingan<em class="nb"></em></button>
-  <button data-t="friends" onclick="H.tab('friends')"><i>👥</i>Teman<em class="nb"></em></button>
-  <button data-t="me" onclick="H.tab('me')"><i>👤</i>Profil<em class="nb"></em></button>
+  <button data-t="room" class="on" onclick="H.tab('room')"><i><span class="ms">chat</span></i>Room<em class="nb"></em></button>
+  <button data-t="posts" onclick="H.tab('posts')"><i><span class="ms">newspaper</span></i>Postingan<em class="nb"></em></button>
+  <button data-t="friends" onclick="H.tab('friends')"><i><span class="ms">group</span></i>Teman<em class="nb"></em></button>
+  <button data-t="me" onclick="H.tab('me')"><i><span class="ms">person</span></i>Profil<em class="nb"></em></button>
 </nav>
 
-<div id="sheet" class="hidden"></div><div id="fx"></div><div id="svipPop" class="hidden"></div><div id="entranceFX" class="hidden"></div><div id="storyView" class="storyview hidden"></div><div id="toast"></div><div id="nbanner"></div>
+<div id="sheet" class="hidden"></div><div id="fx"></div><div id="svipPop" class="hidden"></div><div id="entranceFX" class="hidden"></div><div id="chestFX" class="hidden"></div><div id="storyView" class="storyview hidden"></div><div id="toast"></div><div id="nbanner"></div>
 
 <script type="module">
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
@@ -571,6 +602,7 @@ const HOST_BORDERS = [
 /* Sandi host ada di server: lihat tabel host_secret di schema.sql */
 
 const $ = s => document.querySelector(s);
+const ms = (n, c = '') => `<span class="ms ${c}">${n}</span>`; /* ikon Google */
 const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const hash = id => [...id].reduce((a, c) => a + c.charCodeAt(0), 0);
 const ago = t => { const s = (Date.now() - new Date(t)) / 1000; return s < 60 ? 'baru saja' : s < 3600 ? Math.floor(s / 60) + ' mnt lalu' : s < 86400 ? Math.floor(s / 3600) + ' jam lalu' : new Date(t).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }) };
@@ -615,15 +647,33 @@ function repaintAvatars(id) {
     const bi = bdImg(b); if (bi) (w || w2).insertAdjacentHTML('beforeend', bi);
   });
 }
+/* Satu user bisa punya >1 entri presence (sambung ulang jaringan meninggalkan entri lama). Selalu pakai entri TERBARU (t terbesar),
+   bukan v[0] yang bisa basi dan menimpa border yang benar sehingga border "hilang" padahal orangnya masih di room. */
+const pmeta = v => (v || []).reduce((a, b) => (b.t || 0) >= (a.t || 0) ? b : a, v?.[0]);
+/* Database = sumber kebenaran border/host orang lain. Presence hanya mempercepat tampilan, lalu diverifikasi ke database. */
+let bdDbBusy = false;
+async function syncBordersDb() {
+  if (!HAS_BORDER || !inRoom || bdDbBusy) return; bdDbBusy = true;
+  try {
+    const ids = [...new Set([...Object.keys(online), ...Object.values(seats).map(x => x.user_id)])].filter(i => i && i !== uid);
+    if (!ids.length) return;
+    const { data } = await sb.from('profiles').select('id,avatar_border,is_host').in('id', ids);
+    const ch = [];
+    (data || []).forEach(x => { const cur = prof[x.id]; if (!cur) return;
+      if ((cur.avatar_border || null) !== (x.avatar_border || null) || !!cur.is_host !== !!x.is_host) { cur.avatar_border = x.avatar_border || null; cur.is_host = x.is_host; ch.push(x.id) } });
+    if (ch.length) { renderSeats(); renderTop(); ch.forEach(repaintAvatars) }
+  } finally { bdDbBusy = false }
+}
 /* Border/host orang lain ikut presence room: berubah seketika walau realtime database terlambat */
 function syncBordersFromPresence() {
   const ch = [];
   for (const [k, v] of Object.entries(online)) {
-    const u = v[0], cur = prof[k]; if (!u || k === uid || !cur) continue;
+    const u = pmeta(v), cur = prof[k]; if (!u || k === uid || !cur) continue;
     const nb = u.border || null;
     if ((cur.avatar_border || null) !== nb) { cur.avatar_border = nb; ch.push(k) }
   }
-  if (ch.length) { renderSeats(); ch.forEach(repaintAvatars) }
+  if (ch.length) { renderSeats(); ch.forEach(repaintAvatars); setTimeout(syncBordersDb, 2500) }
+  if (!syncBordersFromPresence.iv) syncBordersFromPresence.iv = setInterval(syncBordersDb, 15000);
 }
 /* Poin & level SVIP diambil ulang setiap ada hadiah (dan berkala), jadi naik level tetap realtime
    walau event realtime tabel profiles terlambat / tidak terkirim. */
@@ -933,11 +983,11 @@ if (!uid) toast('Gagal login anonim. Aktifkan Anonymous Sign-Ins di Supabase.');
 let HAS_BORDER = false;
 try { HAS_BORDER = !(await sb.from('profiles').select('avatar_border,borders').limit(1)).error } catch {}
 const BC = () => HAS_BORDER ? ',avatar_border' : '';
-const presence = () => ({ name: me.name, avatar: me.avatar, points: me.points || 0, border: me.avatar_border || '', host: !!me.is_host });
+const presence = () => ({ name: me.name, avatar: me.avatar, points: me.points || 0, border: me.avatar_border || '', host: !!me.is_host, t: Date.now() });
 const { data: old } = await sb.from('profiles').select('*').eq('id', uid).maybeSingle();
 if (old) { $('#nm').value = old.name; avatar = old.avatar || ''; me = old }
 function drawAv() {
-  $('#avs').innerHTML = (avatar ? `<button class="pav" onclick="H.upSetup()"><img class="pav" src="${esc(avatar)}"></button>` : `<button class="pav ph" onclick="H.upSetup()">📷</button>`)
+  $('#avs').innerHTML = (avatar ? `<button class="pav" onclick="H.upSetup()"><img class="pav" src="${esc(avatar)}"></button>` : `<button class="pav ph" onclick="H.upSetup()"><span class="ms">photo_camera</span> </button>`)
     + `<button class="sm" onclick="H.upSetup()">${avatar ? 'Ganti foto' : 'Pilih foto dari HP'}</button>`;
 }
 drawAv();
@@ -975,21 +1025,21 @@ H.panel = async () => {
   const { data } = ids.length ? await sb.from('profiles').select('id,name,avatar,gift_tickets,theme_ok' + (HAS_BORDER ? ',borders' : '')).in('id', ids) : { data: [] };
   sheet(`<h3>Panel Host</h3><p class="sub">Jumlah kursi</p>
    <div class="cnt"><button onclick="H.seatN(-1)">−</button><b id="sc" style="font-size:24px">${settings.seat_count}</b><button onclick="H.seatN(1)">+</button></div>
-   <h3 class="sec">🎬 Video Entrance SVIP</h3>
+   <h3 class="sec"><span class="ms">movie</span> Video Entrance SVIP</h3>
    <p class="sub">Upload MP4/WebM maksimal 30 MB per level. Video akan diputar untuk semua anggota saat pemilik level bergabung.</p>
-   ${[5,6,7,8,9,10,11].map(n => `<div class="mrow" style="align-items:flex-start"><span style="flex:1"><b>${tierName(n)} · ${esc(ENTRANCE[n].t)}</b><small style="display:block;color:#a99d92;overflow-wrap:anywhere">${entranceVideos[n]?.name || (entranceVideos[n]?.url ? 'Video tersimpan' : 'Belum ada video — memakai animasi bawaan')}</small></span><div class="bt"><button class="sm" onclick="H.uploadEntrance(${n})">⬆ Upload</button><button class="sm o" onclick="H.previewEnt(${n})">▶ Preview</button>${entranceVideos[n]?.url ? `<button class="sm o" onclick="H.removeEntrance(${n})">Hapus</button>` : ''}</div></div>`).join('')}
+   ${[5,6,7,8,9,10,11].map(n => `<div class="mrow" style="align-items:flex-start"><span style="flex:1"><b>${tierName(n)} · ${esc(ENTRANCE[n].t)}</b><small style="display:block;color:#a99d92;overflow-wrap:anywhere">${entranceVideos[n]?.name || (entranceVideos[n]?.url ? 'Video tersimpan' : 'Belum ada video — memakai animasi bawaan')}</small></span><div class="bt"><button class="sm" onclick="H.uploadEntrance(${n})"><span class="ms">upload</span> Upload</button><button class="sm o" onclick="H.previewEnt(${n})"><span class="ms">play_arrow</span> Preview</button>${entranceVideos[n]?.url ? `<button class="sm o" onclick="H.removeEntrance(${n})">Hapus</button>` : ''}</div></div>`).join('')}
    <p class="sub" style="margin-top:12px">Tes animasi masuk SVIP (hanya kamu yang melihat)</p>
    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">${[5, 6, 7, 8, 9, 10, 11].map(n => `<button class="sm o" onclick="H.previewEnt(${n})">${tierName(n)}</button>`).join('')}</div>
-   <h3 class="sec">✨ Tes Efek Gift</h3><p class="sub">Ketuk gift untuk melihat efeknya (hanya kamu yang melihat). Makin besar poin, makin megah.</p>
+   <h3 class="sec"><span class="ms">auto_awesome</span> Tes Efek Gift</h3><p class="sub">Ketuk gift untuk melihat efeknya (hanya kamu yang melihat). Makin besar poin, makin megah.</p>
    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">${GIFTS.map((g, i) => `<button class="sm o" onclick="H.previewGift(${i})" title="${esc(g.name)} · ${g.points} poin">${g.e}</button>`).join('')}</div>
-   <h3 class="sec">🎞️ Video Gift Eksklusif</h3>
+   <h3 class="sec"><span class="ms">movie</span> Video Gift Eksklusif</h3>
    <p class="sub">Pilih video MP4/WebM maksimal 30 MB untuk hadiah eksklusif nomor 16–30. Saat gift dikirim, video diputar di room semua anggota.</p>
-   ${GIFTS.slice(EXCLUSIVE_GIFT_START).map((g,j)=>{const i=j+EXCLUSIVE_GIFT_START;return `<div class="mrow" style="align-items:flex-start"><span style="flex:1"><b>${g.e} ${esc(g.name)}</b><small style="display:block;color:#a99d92">${giftVideos[i]?.name || (giftVideos[i]?.url ? 'Video tersimpan' : 'Belum ada video')}</small></span><div class="bt"><button class="sm" onclick="H.uploadGiftVideo(${i})">⬆ Video</button>${giftVideos[i]?.url ? `<button class="sm o" onclick="H.previewGift(${i})">▶</button><button class="sm o" onclick="H.removeGiftVideo(${i})">Hapus</button>` : ''}</div></div>`}).join('')}
+   ${GIFTS.slice(EXCLUSIVE_GIFT_START).map((g,j)=>{const i=j+EXCLUSIVE_GIFT_START;return `<div class="mrow" style="align-items:flex-start"><span style="flex:1"><b>${g.e} ${esc(g.name)}</b><small style="display:block;color:#a99d92">${giftVideos[i]?.name || (giftVideos[i]?.url ? 'Video tersimpan' : 'Belum ada video')}</small></span><div class="bt"><button class="sm" onclick="H.uploadGiftVideo(${i})"><span class="ms">upload</span> Video</button>${giftVideos[i]?.url ? `<button class="sm o" onclick="H.previewGift(${i})"><span class="ms">play_arrow</span></button><button class="sm o" onclick="H.removeGiftVideo(${i})">Hapus</button>` : ''}</div></div>`}).join('')}
    <p class="sub">Anggota online</p>
    ${(data || []).map(u => `<div class="mrow"><img src="${esc(u.avatar)}"><span>${esc(u.name)} <small style="color:#a99d92">🪙${Number(u.gift_tickets || 0).toLocaleString('id-ID')} ${u.theme_ok ? '🎨✔' : ''}</small></span>
-     <div class="bt"><button class="sm" onclick="H.tix('${u.id}',100)">+100 🪙</button><button class="sm" onclick="H.tix('${u.id}',1000)">+1rb</button><button class="sm" onclick="H.tix('${u.id}',10000)">+10rb</button><button class="sm" onclick="H.tix('${u.id}',50000)">+50rb</button><button class="sm" onclick="H.hostBorder('${u.id}')">🖼 Border</button>${u.theme_ok ? '' : `<button class="sm" onclick="H.thm('${u.id}')">🎨 Buka Tema</button>`}</div></div>`).join('')}
+     <div class="bt"><button class="sm" onclick="H.tix('${u.id}',100)">+100 <span class="ms">toll</span></button><button class="sm" onclick="H.tix('${u.id}',1000)">+1rb</button><button class="sm" onclick="H.tix('${u.id}',10000)">+10rb</button><button class="sm" onclick="H.tix('${u.id}',50000)">+50rb</button><button class="sm" onclick="H.hostBorder('${u.id}')"><span class="ms">image</span> Border</button>${u.theme_ok ? '' : `<button class="sm" onclick="H.thm('${u.id}')"><span class="ms">palette</span> Buka Tema</button>`}</div></div>`).join('')}
    <div style="display:flex;gap:8px;margin-top:14px"><button class="sm o" onclick="H.reset()">Kosongkan kursi</button><button class="sm o" onclick="H.clear()">Bersihkan chat</button></div>
-   <button class="btn" style="margin-top:16px;background:linear-gradient(#e0646b,#9c2a33);color:#fff" onclick="H.unhost()">🚪 Keluar Host</button>`);
+   <button class="btn" style="margin-top:16px;background:linear-gradient(#e0646b,#9c2a33);color:#fff" onclick="H.unhost()"><span class="ms">logout</span> Keluar Host</button>`);
 };
 H.previewEnt = n => { H.close(); showEntranceFx(me.name, n) };
 H.uploadEntrance = level => {
@@ -1106,6 +1156,11 @@ async function startRoom() {
   clearInterval(startRoom.bt); startRoom.bt = setInterval(() => { if (!document.hidden) { refreshMyBorders(); syncPoints() } }, 10000);
   loadMyGifts();
   loadPosts(true); loadStories();
+  loadChestLevels().then(loadChest).then(() => {
+    if (!HAS_CHEST) return;
+    sb.channel('chest').on('postgres_changes', { event: '*', schema: 'public', table: 'room_chest' }, p => { if (p.new?.level) { chest = { level: p.new.level, progress: Number(p.new.progress) }; renderChest() } }).subscribe();
+    setInterval(() => { if (inRoom) loadChest() }, 40000);
+  });
   sb.from('post_comments').select('id').limit(1).then(r => { /* channel terpisah: tabel opsional tidak merusak channel utama */
     if (r.error) return; HAS_CMT = true; loadCmtCounts();
     sb.channel('cmt').on('postgres_changes', { event: '*', schema: 'public', table: 'post_comments' }, p => {
@@ -1165,13 +1220,13 @@ async function startRoom() {
     .on('postgres_changes', { event: '*', schema: 'public', table: 'gift_videos' }, () => { loadGiftVideos(); })
     .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'profiles' }, p => {
       const previous = p.new.id === uid ? me : (prof[p.new.id] || null);
-      const knownPts = previous?.points ?? online[p.new.id]?.[0]?.points;
+      const knownPts = previous?.points ?? pmeta(online[p.new.id])?.points;
       const oldLevel = lvl(knownPts), newLevel = lvl(p.new.points);
       prof[p.new.id] = { ...prof[p.new.id], ...p.new }; delete pinfo[p.new.id]; refreshBubbles(p.new.id); repaintAvatars(p.new.id);
       // Popup ditampilkan di tengah layar seluruh anggota yang sedang berada di room.
       if (knownPts !== undefined && newLevel > oldLevel) { showSvipPopup(p.new.name || (p.new.id === uid ? me.name : 'Anggota'), newLevel, p.new.id === uid); if (p.new.id === uid) pushNotif({ key: 'lv:' + newLevel, type: 'level', icon: '⭐', title: 'Selamat! 🎉', text: `Kamu naik ke ${tierName(newLevel)}`, tab: 'me', act: { k: 'tab', t: 'me' } }) }
       if (p.new.id === uid) {
-        if (p.new.gift_tickets > me.gift_tickets) { const add = (p.new.gift_tickets - (me.gift_tickets || 0)).toLocaleString('id-ID'); showFx({ e: '🎉' }, `Kamu dapat +${add} Koin Emas 🪙 dari Host`); pushNotif({ type: 'host', icon: '🪙', title: 'Host 👑', text: `memberimu +${add} Koin Emas`, tab: 'me', act: { k: 'tab', t: 'me' } }) }
+        if (p.new.gift_tickets > me.gift_tickets && Date.now() > chestQuiet) { const add = (p.new.gift_tickets - (me.gift_tickets || 0)).toLocaleString('id-ID'); showFx({ e: '🎉' }, `Kamu dapat +${add} Koin Emas 🪙 dari Host`); pushNotif({ type: 'host', icon: '🪙', title: 'Host 👑', text: `memberimu +${add} Koin Emas`, tab: 'me', act: { k: 'tab', t: 'me' } }) }
         if (p.new.theme_ok && !me.theme_ok) { showFx({ e: '🎨' }, 'Tema chat terbuka! Semua tema bebas dipakai'); pushNotif({ type: 'host', icon: '🎨', title: 'Host 👑', text: 'membuka semua tema chat untukmu', tab: 'me', act: { k: 'tab', t: 'me' } }) }
         if ((p.new.borders || []).length > (me.borders || []).length) pushNotif({ type: 'host', icon: '🖼️', title: 'Host 👑', text: 'membuka border baru untukmu', tab: 'me', act: { k: 'tab', t: 'me' } });
         me = { ...me, ...p.new }; room?.track(presence()); renderProf();
@@ -1261,7 +1316,7 @@ function voiceReset() {
   try { voiceRecorder?.node.disconnect(); voiceRecorder?.src.disconnect(); } catch {}
   try { voiceRecorder?.ac.close(); } catch {}
   voiceStream?.getTracks().forEach(t => t.stop()); voiceStream = null; voiceRecorder = null; voiceChunks = [];
-  const b = $('#voiceMsgBtn'); if (b) { b.classList.remove('rec'); b.textContent = '🎤'; }
+  const b = $('#voiceMsgBtn'); if (b) { b.classList.remove('rec'); b.innerHTML = ms('keyboard_voice'); }
 }
 H.voiceMsg = async () => {
   if (voiceRecorder) return H.voiceStop();
@@ -1278,13 +1333,13 @@ H.voiceMsg = async () => {
     node.onaudioprocess = e => voiceChunks.push(new Float32Array(e.inputBuffer.getChannelData(0)));
     src.connect(node); node.connect(mute); mute.connect(ac.destination);
     voiceRecorder = { ac, src, node, rate: ac.sampleRate, t0 };
-    const btn = $('#voiceMsgBtn'); btn.classList.add('rec'); btn.textContent = '⏹';
+    const btn = $('#voiceMsgBtn'); btn.classList.add('rec'); btn.innerHTML = ms('stop');
     voiceReset.t = setInterval(() => {
       const sec = Math.floor((Date.now() - t0) / 1000);
       if (sec >= VOICE_MAX_SEC) return H.voiceStop();
-      toast(`🔴 Merekam ${sec} dtk · ketuk ⏹ untuk kirim`);
+      toast(`Merekam ${sec} dtk · ketuk tombol stop untuk kirim`);
     }, 1000);
-    toast('🔴 Merekam… ketuk ⏹ untuk kirim');
+    toast('Merekam… ketuk tombol stop untuk kirim');
   } catch (e) {
     voiceReset();
     toast(e.name === 'NotAllowedError' ? 'Izin mikrofon ditolak. Izinkan akses mikrofon di browser lalu coba lagi.' : (e.message || 'Tidak bisa mengakses mikrofon.'));
@@ -1312,15 +1367,15 @@ H.toggleVoice = async id => {
   const button = document.getElementById('voice-play-' + id);
   if (!audio || !button) return;
   if (audio.paused) {
-    document.querySelectorAll('.voicebubble audio').forEach(a => { if (a !== audio) { a.pause(); a.currentTime = 0; const b=document.getElementById('voice-play-' + a.dataset.msgid); if(b)b.textContent='▶'; } });
-    try { await audio.play(); button.textContent = '❚❚'; }
+    document.querySelectorAll('.voicebubble audio').forEach(a => { if (a !== audio) { a.pause(); a.currentTime = 0; const b=document.getElementById('voice-play-' + a.dataset.msgid); if(b)b.innerHTML=ms('play_arrow'); } });
+    try { await audio.play(); button.innerHTML = ms('pause'); }
     catch (e) { audio.load(); toast('Audio tidak bisa diputar. Coba ketuk lagi, atau periksa bucket media (voice_fix.sql).'); }
-  } else { audio.pause(); button.textContent = '▶'; }
+  } else { audio.pause(); button.innerHTML = ms('play_arrow'); }
 };
 H.voiceEnded = id => {
   const audio = document.getElementById('voice-audio-' + id), button = document.getElementById('voice-play-' + id);
   if (audio) audio.currentTime = 0;
-  if (button) button.textContent = '▶';
+  if (button) button.innerHTML = ms('play_arrow');
 };
 
 /* Hapus semua jejak satu user yang sudah keluar: kursi (lokal), koneksi suara, audio, cache sinyal */
@@ -1374,7 +1429,7 @@ function renderSeats() {
   for (let i = 1; i <= settings.seat_count; i++) {
     const s = seats[i], d = document.createElement('div'); d.className = 'seat';
     d.innerHTML = s
-      ? `<div class="ring r${hash(s.user_id) % 5}${ringBd(prof[s.user_id]?.points, prof[s.user_id]?.avatar_border, prof[s.user_id]?.is_host)}" data-uid="${s.user_id}"><img src="${esc(s.avatar)}">${bdImg(bdOf(prof[s.user_id]?.points, prof[s.user_id]?.avatar_border, prof[s.user_id]?.is_host))}<span class="mic">${s.muted ? '🔇' : '🎙️'}</span></div>${lvl(prof[s.user_id]?.points) >= 10 ? `<div class="nm2">${badge(prof[s.user_id]?.points)}</div><div class="nm" style="margin-top:2px">${esc(s.name)}</div>` : `<div class="nm">${badge(prof[s.user_id]?.points)}${esc(s.name)}</div>`}<div class="pill">${prof[s.user_id]?.points ?? 0}</div>`
+      ? `<div class="ring r${hash(s.user_id) % 5}${ringBd(prof[s.user_id]?.points, prof[s.user_id]?.avatar_border, prof[s.user_id]?.is_host)}" data-uid="${s.user_id}"><img src="${esc(s.avatar)}">${bdImg(bdOf(prof[s.user_id]?.points, prof[s.user_id]?.avatar_border, prof[s.user_id]?.is_host))}<span class="mic">${ms(s.muted ? 'mic_off' : 'mic')}</span></div>${lvl(prof[s.user_id]?.points) >= 10 ? `<div class="nm2">${badge(prof[s.user_id]?.points)}</div><div class="nm" style="margin-top:2px">${esc(s.name)}</div>` : `<div class="nm">${badge(prof[s.user_id]?.points)}${esc(s.name)}</div>`}<div class="pill">${prof[s.user_id]?.points ?? 0}</div>`
       : `<div class="ring empty">＋</div><div class="nm dim">${i}</div>`;
     /* tap kursi sendiri = turun; tap kursi orang lain = menu (lihat profil / kirim gift); tap kursi kosong = duduk */
     d.onclick = () => s ? (s.user_id === uid ? leaveSeat() : H.seatMenu(s.user_id)) : sit(i);
@@ -1385,7 +1440,7 @@ function renderTop() {
   $('#ttl').textContent = settings.title; const n = Object.keys(online).length;
   $('#sub').textContent = `${n} online`; $('#onl').textContent = `👥 ${n}`;
   const seated = new Set(Object.values(seats).map(s => s.user_id));
-  const L = Object.entries(online).filter(([k]) => !seated.has(k)).map(([k, v]) => ({ k, ...v[0] }));
+  const L = Object.entries(online).filter(([k]) => !seated.has(k)).map(([k, v]) => ({ k, ...pmeta(v) }));
   $('#mini').innerHTML = L.slice(0, 3).map(u => `<img src="${esc(u.avatar)}">`).join('');
   $('#listen').innerHTML = L.slice(0, 7).map(u => `<div class="ring r${hash(u.k) % 5}${ringBd(prof[u.k]?.points ?? u.points, prof[u.k]?.avatar_border ?? u.border, prof[u.k]?.is_host ?? u.host)}" onclick="H.view('${u.k}')" style="cursor:pointer"><img src="${esc(u.avatar)}"></div>`).join('') + `<b>${L.length || ''}</b>`;
 }
@@ -1396,8 +1451,8 @@ async function sit(n) {
   try {
     await sb.from('seats').delete().eq('user_id', uid);
     stopMic();
-    try { stream = await navigator.mediaDevices.getUserMedia(GUM); muted = false; $('#micb').textContent = '🎙️'; watch(stream, uid) }
-    catch { toast('Mikrofon ditolak. Izinkan mikrofon, lalu ketuk tombol 🎙️ untuk mencoba lagi.') }
+    try { stream = await navigator.mediaDevices.getUserMedia(GUM); muted = false; $('#micb').innerHTML = ms('mic'); watch(stream, uid) }
+    catch { toast('Mikrofon ditolak. Izinkan mikrofon, lalu ketuk tombol mic untuk mencoba lagi.') }
     closeAll(); /* tutup koneksi lama SEBELUM duduk */
     const { error } = await sb.from('seats').insert({ seat_no: n, user_id: uid, name: me.name, avatar: me.avatar });
     if (error) { stopMic(); toast('Kursi sudah terisi') }
@@ -1408,11 +1463,11 @@ function stopMic() { stream?.getTracks().forEach(t => t.stop()); stream = null; 
 H.mic = async () => {
   if (!mySeat) return toast('Duduk di kursi dulu untuk bicara');
   if (!stream) { /* mikrofon belum aktif (ditolak tadi): coba lagi, lalu sambung ulang suara */
-    try { stream = await navigator.mediaDevices.getUserMedia(GUM); muted = false; watch(stream, uid); closeAll(); syncPeers(); $('#micb').textContent = '🎙️'; await sb.from('seats').update({ muted: false }).eq('user_id', uid); return toast('Mikrofon aktif 🎙️') }
+    try { stream = await navigator.mediaDevices.getUserMedia(GUM); muted = false; watch(stream, uid); closeAll(); syncPeers(); $('#micb').innerHTML = ms('mic'); await sb.from('seats').update({ muted: false }).eq('user_id', uid); return toast('Mikrofon aktif 🎙️') }
     catch { return toast('Mikrofon diblokir. Izinkan di pengaturan browser (ikon gembok di alamat).') }
   }
   muted = !muted; stream.getAudioTracks().forEach(t => t.enabled = !muted);
-  $('#micb').textContent = muted ? '🔇' : '🎙️';
+  $('#micb').innerHTML = ms(muted ? 'mic_off' : 'mic');
   await sb.from('seats').update({ muted }).eq('user_id', uid);
 };
 
@@ -1448,7 +1503,7 @@ async function loadStories(){
   if(!loadStories.purged){loadStories.purged=1;purgeMyStories().catch(()=>{})}
   if(!loadStories.iv)loadStories.iv=setInterval(()=>{if(inRoom)loadStories()},120000); /* story yang lewat 24 jam hilang otomatis */
 }
-H.addStory=()=>{draftImg=null;sheet(`<h3>Buat Story</h3><p class="sub">Story akan hilang otomatis setelah 24 jam.</p><textarea id="storyCaption" class="inp" rows="2" maxlength="180" placeholder="Tulis cerita singkat..."></textarea><div id="storyPrev"></div><button class="sm o" style="margin-top:10px" onclick="H.pickStory()">📷 Pilih Foto</button><button class="btn" style="margin-top:14px" onclick="H.publishStory()">Bagikan Story</button>`)};
+H.addStory=()=>{draftImg=null;sheet(`<h3>Buat Story</h3><p class="sub">Story akan hilang otomatis setelah 24 jam.</p><textarea id="storyCaption" class="inp" rows="2" maxlength="180" placeholder="Tulis cerita singkat..."></textarea><div id="storyPrev"></div><button class="sm o" style="margin-top:10px" onclick="H.pickStory()"><span class="ms">photo_camera</span> Pilih Foto</button><button class="btn" style="margin-top:14px" onclick="H.publishStory()">Bagikan Story</button>`)};
 H.pickStory=()=>pick(async f=>{try{toast('Mengunggah foto…');draftImg=await upImg(f,1080);$('#storyPrev').innerHTML=`<img class="pi" style="margin-top:10px" src="${esc(draftImg)}">`;toast('Foto siap ✅')}catch(e){toast(e.message||'Upload gagal')}});
 H.publishStory=async()=>{if(!draftImg)return toast('Pilih foto untuk story dulu');const {error}=await sb.from('stories').insert({user_id:uid,media_url:draftImg,caption:($('#storyCaption')?.value||'').trim(),expires_at:new Date(Date.now()+STORY_MS).toISOString()});if(error)return toast(error.message);H.close();draftImg=null;toast('Story dibagikan! ✨');loadStories()};
 /* Ketuk lingkaran story → tampil layar penuh; ketuk kanan/kiri untuk lanjut/kembali, otomatis lanjut tiap 5 detik */
@@ -1461,7 +1516,7 @@ function drawStory(){
   const c=stCur;if(!c)return;const st=c.list[c.i],e=$('#storyView'),own=st.user_id===uid;
   clearTimeout(drawStory.t);stSeen.add(String(st.id));
   e.innerHTML=`<div class="sv-top"><div class="sv-bars">${c.list.map((_,k)=>`<span><i class="${k<c.i?'done':k===c.i?'run':''}"></i></span>`).join('')}</div>
-    <div class="sv-who"><img src="${esc(st.profiles?.avatar||'')}"><div><b>${esc(st.profiles?.name||'Anggota')}</b><small>${ago(st.created_at)} · hilang dalam ${Math.max(1,Math.ceil((STORY_MS-(Date.now()-Date.parse(st.created_at)))/36e5))} jam</small></div>${own?'<button onclick="H.delStory()" title="Hapus story">🗑</button>':''}<button onclick="H.closeStory()">✕</button></div></div>
+    <div class="sv-who"><img src="${esc(st.profiles?.avatar||'')}"><div><b>${esc(st.profiles?.name||'Anggota')}</b><small>${ago(st.created_at)} · hilang dalam ${Math.max(1,Math.ceil((STORY_MS-(Date.now()-Date.parse(st.created_at)))/36e5))} jam</small></div>${own?'<button onclick="H.delStory()" title="Hapus story"><span class="ms">delete</span></button>':''}<button onclick="H.closeStory()"><span class="ms">close</span></button></div></div>
     <div class="sv-body"><img src="${esc(st.media_url)}">${st.caption?`<div class="sv-cap">${esc(st.caption)}</div>`:''}<button class="sv-nav l" onclick="H.stepStory(-1)"></button><button class="sv-nav r" onclick="H.stepStory(1)"></button></div>`;
   e.classList.remove('hidden');
   drawStory.t=setTimeout(()=>H.stepStory(1),5000);
@@ -1489,15 +1544,15 @@ async function loadCmtCounts() {
 }
 function cmtHTML(c) {
   const u = c.profiles || {}, can = c.user_id === uid || me.is_host || cmtPost?.user_id === uid;
-  return `<div class="cmt"><img src="${esc(u.avatar || '')}" onclick="H.view('${c.user_id}')"><div class="cb"><b>${u.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(u.points)}${esc(u.name || 'Anggota')}</b> <small>${ago(c.created_at)}</small><p>${esc(c.body).replace(/(@[\w.-]+)/g, '<span class="tagged">$1</span>')}</p></div>${can ? `<button class="del" onclick="H.delCmt(${Number(c.id)})" title="Hapus">🗑</button>` : ''}</div>`;
+  return `<div class="cmt"><img src="${esc(u.avatar || '')}" onclick="H.view('${c.user_id}')"><div class="cb"><b>${u.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(u.points)}${esc(u.name || 'Anggota')}</b> <small>${ago(c.created_at)}</small><p>${esc(c.body).replace(/(@[\w.-]+)/g, '<span class="tagged">$1</span>')}</p></div>${can ? `<button class="del" onclick="H.delCmt(${Number(c.id)})" title="Hapus"><span class="ms">delete</span></button>` : ''}</div>`;
 }
 async function renderCmts() {
   if (!cmtPost) return;
   const { data, error } = await sb.from('post_comments').select('id,user_id,body,created_at,profiles!user_id(name,avatar,points,is_host' + BC() + ')').eq('post_id', cmtPost.id).order('created_at', { ascending: true }).limit(200);
-  if (error) { sheet(`<h3>💬 Komentar</h3><p class="sub">${esc(error.message)}<br>Jalankan stories_comments_migration.sql di Supabase.</p>`); return }
+  if (error) { sheet(`<h3><span class="ms">chat</span> Komentar</h3><p class="sub">${esc(error.message)}<br>Jalankan stories_comments_migration.sql di Supabase.</p>`); return }
   const old = $('#cmtInput'), keep = old?.value || '', focused = document.activeElement === old;
-  sheet(`<h3>💬 Komentar (${(data || []).length})</h3><div class="cmtfeed" id="cmtFeed">${(data || []).map(cmtHTML).join('') || '<p class="empty-t">Belum ada komentar. Jadilah yang pertama! 💬</p>'}</div>
-   <div class="dmcomposer"><input id="cmtInput" class="inp" maxlength="300" placeholder="Tulis komentar..." autocomplete="off" onkeydown="if(event.key==='Enter')H.sendCmt()"><button class="ib sendb" onclick="H.sendCmt()">➤</button></div>`);
+  sheet(`<h3><span class="ms">chat</span> Komentar (${(data || []).length})</h3><div class="cmtfeed" id="cmtFeed">${(data || []).map(cmtHTML).join('') || '<p class="empty-t">Belum ada komentar. Jadilah yang pertama! 💬</p>'}</div>
+   <div class="dmcomposer"><input id="cmtInput" class="inp" maxlength="300" placeholder="Tulis komentar..." autocomplete="off" onkeydown="if(event.key==='Enter')H.sendCmt()"><button class="ib sendb" onclick="H.sendCmt()"><span class="ms">send</span></button></div>`);
   const i = $('#cmtInput'); if (i) { i.value = keep; if (focused) i.focus() }
   const f = $('#cmtFeed'); if (f) f.scrollTop = f.scrollHeight;
 }
@@ -1522,9 +1577,9 @@ async function loadPosts(quiet) {
 function postHTML(p) {
   const u = p.profiles || {}, can = p.user_id === uid || me.is_host, L = p.post_likes || [], n = L.length, liked = L.some(l => l.user_id === uid);
   return `<article class="post"><div class="hd">${avatarHTML(u.avatar, u.points, '', 40, ` onclick="H.view('${p.user_id}')" style="cursor:pointer"`, u.avatar_border, u.is_host, p.user_id)}<div><b>${u.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(u.points)}${esc(u.name)}</b><small>${ago(p.created_at)}</small></div>
-    ${can ? `<button class="del" onclick="H.delPost(${p.id})" title="Hapus">🗑</button>` : ''}</div>
+    ${can ? `<button class="del" onclick="H.delPost(${p.id})" title="Hapus"><span class="ms">delete</span></button>` : ''}</div>
     ${p.body ? `<p>${esc(p.body)}</p>` : ''}${p.image ? `<img class="pi" loading="lazy" src="${esc(p.image)}">` : ''}
-    <div class="postbar"><button class="likebtn ${liked ? 'on' : ''}" onclick="H.like(${p.id})">${liked ? '❤️' : '🤍'} ${n}</button><button class="likebtn" onclick="H.comments(${p.id})">💬 ${cmtCount[p.id] || 0}</button></div></article>`;
+    <div class="postbar"><button class="likebtn ${liked ? 'on' : ''}" onclick="H.like(${p.id})">${ms('favorite', liked ? '' : 'o')} ${n}</button><button class="likebtn" onclick="H.comments(${p.id})">${ms('chat_bubble', 'o')} ${cmtCount[p.id] || 0}</button></div></article>`;
 }
 function renderPosts() { $('#plist').innerHTML = posts.map(postHTML).join('') || '<p class="empty-t">Belum ada postingan. Jadilah yang pertama! 📝</p>' }
 H.like = async id => {
@@ -1541,7 +1596,7 @@ H.compose = () => {
   sheet(`<h3>Postingan Baru</h3><p class="sub">Semua anggota bisa melihatnya.</p>
    <textarea id="pbody" class="inp" rows="4" maxlength="500" placeholder="Apa yang ingin kamu bagikan?"></textarea>
    <div id="pprev"></div>
-   <div style="margin-top:12px"><button class="sm o" onclick="H.pickPost()">🖼 Tambah Foto</button></div>
+   <div style="margin-top:12px"><button class="sm o" onclick="H.pickPost()"><span class="ms">image</span> Tambah Foto</button></div>
    <button class="btn" style="margin-top:14px" onclick="H.doPost()">Kirim</button>`);
 };
 H.pickPost = () => pick(async f => {
@@ -1601,18 +1656,18 @@ H.view = async id => {
     HAS_REL ? loadRelations(id) : Promise.resolve(null)]);
   const isFriend = !!fr.data, isFollowing = !!following.data, seated = Object.values(seats).some(x => x.user_id === id), on = !!online[id], list = ps.data || [];
   sheet(`<div class="pf" style="padding-top:0">${avatarHTML(u.avatar, u.points, 'pav', 112, '', u.avatar_border, u.is_host, u.id)}<h2>${u.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(u.points)}${esc(u.name)}</h2>${titleHTML(u.points)}
-    <div class="stats" style="flex-wrap:wrap"><span class="chip">${seated ? '🎙️ Di kursi' : on ? '🟢 Online' : '⚪ Offline'}</span><span class="chip">👥 ${social.friends ?? '—'} Teman</span><span class="chip">👤 ${social.followers ?? '—'} Followers</span><span class="chip">⭐ ${u.points ?? 0}</span><span class="chip">🎁 ${u.gifts_sent ?? 0} dikirim</span><span class="chip">📝 ${list.length}</span></div></div>
-    <div class="acts">${isFriend ? `<button class="btn" onclick="H.openDM('${u.id}')">💬 Chat</button>` : `<button class="btn" onclick="H.requestFriend('${u.id}')">＋ Tambah Teman</button>`}
-      <button class="btn" onclick="H.toggleFollow('${u.id}',${isFollowing})">${isFollowing ? '✓ Mengikuti' : '＋ Follow'}</button>
-      <button class="btn" onclick="H.giftView()">🎁 Kirim Gift</button>${HAS_REL ? `<button class="btn" onclick="H.relPick('${u.id}')">💞 Ajak Hubungan</button>` : ''}</div>
-    ${me.is_host ? `<button class="btn" style="margin-bottom:6px;background:linear-gradient(#a98bff,#6a4bff);color:#fff" onclick="H.hostBorder('${u.id}')">🖼 Beri Border</button>` : ''}
-    ${HAS_REL ? `<h3 class="sec">💞 Hubungan</h3>${(rels || []).map(r => relCardHTML(r, false)).join('') || '<p class="empty-t">Belum ada hubungan.</p>'}` : ''}<h3 class="sec">🎁 Koleksi Hadiah</h3>${giftHTML(rows)}
-    <h3 class="sec">📝 Postingan</h3>${list.map(q => `<div class="post"><p>${esc(q.body || '')}</p>${q.image ? `<img class="pi" loading="lazy" src="${esc(q.image)}">` : ''}<small style="color:#9a8f86">${ago(q.created_at)}</small></div>`).join('') || '<p class="empty-t">Belum ada postingan.</p>'}`);
+    <div class="stats" style="flex-wrap:wrap"><span class="chip">${seated ? ms('mic') + ' Di kursi' : on ? ms('circle', 'on') + ' Online' : ms('circle', 'o off') + ' Offline'}</span><span class="chip"><span class="ms">group</span> ${social.friends ?? '—'} Teman</span><span class="chip"><span class="ms">person</span> ${social.followers ?? '—'} Followers</span><span class="chip"><span class="ms">star</span> ${u.points ?? 0}</span><span class="chip"><span class="ms">redeem</span> ${u.gifts_sent ?? 0} dikirim</span><span class="chip"><span class="ms">edit_note</span> ${list.length}</span></div></div>
+    <div class="acts">${isFriend ? `<button class="btn" onclick="H.openDM('${u.id}')"><span class="ms">chat</span> Chat</button>` : `<button class="btn" onclick="H.requestFriend('${u.id}')"><span class="ms">add</span> Tambah Teman</button>`}
+      <button class="btn" onclick="H.toggleFollow('${u.id}',${isFollowing})">${isFollowing ? ms('check') + ' Mengikuti' : ms('person_add') + ' Follow'}</button>
+      <button class="btn" onclick="H.giftView()"><span class="ms">redeem</span> Kirim Gift</button>${HAS_REL ? `<button class="btn" onclick="H.relPick('${u.id}')"><span class="ms">favorite</span> Ajak Hubungan</button>` : ''}</div>
+    ${me.is_host ? `<button class="btn" style="margin-bottom:6px;background:linear-gradient(#a98bff,#6a4bff);color:#fff" onclick="H.hostBorder('${u.id}')"><span class="ms">image</span> Beri Border</button>` : ''}
+    ${HAS_REL ? `<h3 class="sec"><span class="ms">favorite</span> Hubungan</h3>${(rels || []).map(r => relCardHTML(r, false)).join('') || '<p class="empty-t">Belum ada hubungan.</p>'}` : ''}<h3 class="sec"><span class="ms">redeem</span> Koleksi Hadiah</h3>${giftHTML(rows)}
+    <h3 class="sec"><span class="ms">edit_note</span> Postingan</h3>${list.map(q => `<div class="post"><p>${esc(q.body || '')}</p>${q.image ? `<img class="pi" loading="lazy" src="${esc(q.image)}">` : ''}<small style="color:#9a8f86">${ago(q.created_at)}</small></div>`).join('') || '<p class="empty-t">Belum ada postingan.</p>'}`);
 };
 H.seatMenu = id => {
   const x = Object.values(seats).find(v => v.user_id === id); if (!x) return;
   sheet(`<div class="dmhead"><img src="${esc(x.avatar)}"><div style="flex:1"><h3 style="margin:0">${esc(x.name)}</h3><p class="sub" style="margin:0">Sedang di kursi</p></div></div>
-    <div class="acts"><button class="btn" onclick="H.view('${id}')">👤 Lihat Profil</button><button class="btn" onclick="H.giftTo('${id}')">🎁 Kirim Gift</button></div>`);
+    <div class="acts"><button class="btn" onclick="H.view('${id}')"><span class="ms">person</span> Lihat Profil</button><button class="btn" onclick="H.giftTo('${id}')"><span class="ms">redeem</span> Kirim Gift</button></div>`);
 };
 H.giftView = () => { if (viewU) { gT = { id: viewU.id, name: viewU.name, avatar: viewU.avatar }; giftSheet() } };
 function renderProf() {
@@ -1620,11 +1675,11 @@ function renderProf() {
   const mine = posts.filter(p => p.user_id === uid);
   $('#pfBox').innerHTML = `<div class="pf">${avatarHTML(me.avatar, me.points, 'pav', 112, '', me.avatar_border, me.is_host, uid)}
     <h2>${me.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(me.points)}${esc(me.name)}</h2>${titleHTML(me.points)}
-    <div class="stats" style="flex-wrap:wrap"><span class="chip">👥 ${mySocialStats.friends ?? '—'} Teman</span><span class="chip">👤 ${mySocialStats.followers ?? '—'} Followers</span><span class="chip">🪙 ${Number(me.gift_tickets ?? 0).toLocaleString('id-ID')}</span><span class="chip">⭐ ${me.points ?? 0}</span><span class="chip">📝 ${mine.length}</span></div></div>
-    <div class="acts"><button class="btn" onclick="H.editAv()">📷 Ubah Foto</button><button class="btn" onclick="H.editNm()">✏️ Ubah Nama</button></div>
-    <button class="btn" onclick="H.compose()">➕ Buat Postingan</button>
+    <div class="stats" style="flex-wrap:wrap"><span class="chip"><span class="ms">group</span> ${mySocialStats.friends ?? '—'} Teman</span><span class="chip"><span class="ms">person</span> ${mySocialStats.followers ?? '—'} Followers</span><span class="chip"><span class="ms">toll</span> ${Number(me.gift_tickets ?? 0).toLocaleString('id-ID')}</span><span class="chip"><span class="ms">star</span> ${me.points ?? 0}</span><span class="chip"><span class="ms">edit_note</span> ${mine.length}</span></div></div>
+    <div class="acts"><button class="btn" onclick="H.editAv()"><span class="ms">photo_camera</span> Ubah Foto</button><button class="btn" onclick="H.editNm()"><span class="ms">edit</span> Ubah Nama</button></div>
+    <button class="btn" onclick="H.compose()"><span class="ms">add</span> Buat Postingan</button>
     ${relSectionHTML()}${borderGridHTML()}
-    <h3 class="sec">🎁 Koleksi Hadiah</h3>${giftHTML(myGifts)}
+    <h3 class="sec"><span class="ms">redeem</span> Koleksi Hadiah</h3>${giftHTML(myGifts)}
     <h3 class="sec">Postingan Saya</h3>${mine.map(postHTML).join('') || '<p class="empty-t">Belum ada postingan.</p>'}`;
 }
 H.editAv = () => pick(async f => { toast('Mengunggah foto…'); try { setAvatar(await upImg(f, 256)) } catch (e) { toast(e.message || 'Gagal mengunggah foto') } });
@@ -1668,12 +1723,12 @@ H.setTheme = async id => {
 /* ---------- 7B. Border avatar koleksi ---------- */
 const ownsBorder = id => me.is_host || (me.borders || []).includes(id);
 function borderGridHTML() {
-  if (!HAS_BORDER) return '<h3 class="sec">🖼 Border Avatar</h3><p class="sub">Fitur border belum aktif. Jalankan border_migration.sql di Supabase.</p>';
+  if (!HAS_BORDER) return '<h3 class="sec"><span class="ms">image</span> Border Avatar</h3><p class="sub">Fitur border belum aktif. Jalankan border_migration.sql di Supabase.</p>';
   const cur = me.avatar_border || '';
-  return `<h3 class="sec">🖼 Border Avatar</h3><p class="sub">${me.is_host ? '👑 Host: semua border terbuka' : '🔒 Semua border terkunci. Chat host untuk membuka; setiap konfirmasi host membuka 1 border.'}</p>
+  return `<h3 class="sec"><span class="ms">image</span> Border Avatar</h3><p class="sub">${me.is_host ? '👑 Host: semua border terbuka' : '🔒 Semua border terkunci. Chat host untuk membuka; setiap konfirmasi host membuka 1 border.'}</p>
    <div class="gg"><button class="gi ${!cur ? 'sel' : ''}" onclick="H.useBorder('')"><div style="display:grid;place-items:center;padding:14px 0 6px">${avatarHTML(me.avatar, me.points, 'bp', 52, '', '', me.is_host)}</div><small>${me.is_host ? 'Bawaan Host 👑' : lvl(me.points) >= 9 ? 'Bawaan SVIP 9' : 'Tanpa border'}</small></button>
    ${BORDERS.map(b => { const o = ownsBorder(b.id);
-     return `<button class="gi ${o ? '' : 'lk'} ${cur === b.id ? 'sel' : ''}" onclick="${o ? `H.useBorder('${b.id}')` : `H.borderLocked('${b.id}')`}"><div style="display:grid;place-items:center;padding:14px 0 6px">${avatarHTML(me.avatar, 0, 'bp', 52, '', b.id)}</div><small>${b.name}</small></button>` }).join('')}</div>${me.is_host ? `<h3 class="sec">👑 Eksklusif Host</h3><div class="gg">${HOST_BORDERS.map(b => `<button class="gi ${cur === b.id ? 'sel' : ''}" onclick="H.useBorder('${b.id}')"><div style="display:grid;place-items:center;padding:14px 0 6px">${avatarHTML(me.avatar, 0, 'bp', 52, '', b.id, true)}</div><small>${b.name}</small></button>`).join('')}</div>` : ''}`;
+     return `<button class="gi ${o ? '' : 'lk'} ${cur === b.id ? 'sel' : ''}" onclick="${o ? `H.useBorder('${b.id}')` : `H.borderLocked('${b.id}')`}"><div style="display:grid;place-items:center;padding:14px 0 6px">${avatarHTML(me.avatar, 0, 'bp', 52, '', b.id)}</div><small>${b.name}</small></button>` }).join('')}</div>${me.is_host ? `<h3 class="sec"><span class="ms">workspace_premium</span> Eksklusif Host</h3><div class="gg">${HOST_BORDERS.map(b => `<button class="gi ${cur === b.id ? 'sel' : ''}" onclick="H.useBorder('${b.id}')"><div style="display:grid;place-items:center;padding:14px 0 6px">${avatarHTML(me.avatar, 0, 'bp', 52, '', b.id, true)}</div><small>${b.name}</small></button>`).join('')}</div>` : ''}`;
 }
 /* Langsung tampil di layar (optimistis), server menyusul; jika gagal dikembalikan lagi */
 H.useBorder = async id => {
@@ -1703,7 +1758,7 @@ async function refreshMyBorders() {
 }
 H.borderLocked = id => {
   const b = BORDERS.find(x => x.id === id); if (!b) return;
-  sheet(`<h3>🔒 ${b.name}</h3><p class="sub">${b.desc}</p>
+  sheet(`<h3><span class="ms">lock</span> ${b.name}</h3><p class="sub">${b.desc}</p>
    <div style="display:grid;place-items:center;padding:22px 0">${avatarHTML(me.avatar, 0, 'bp', 96, '', b.id)}</div>
    <p class="sub" style="text-align:center">Border ini masih terkunci. Chat host, dan setelah dikonfirmasi 1 border terbuka untukmu.</p>
    <button class="btn" onclick="H.askBorder('${b.id}')">Buka Border (Chat Host)</button>`);
@@ -1733,7 +1788,7 @@ function addRoomMessage(m, live) {
   }
   addMsg(m, live);
   if (live) checkRoomMention(m);
-  if (live && m.type === 'gift') syncPointsSoon(500);
+  if (live && m.type === 'gift') { syncPointsSoon(500); loadChestSoon(800) }
 }
 
 function addMsg(m, live) {
@@ -1752,6 +1807,10 @@ function addMsg(m, live) {
     const g = GIFTS[m.gift] || GIFTS[0];
     d.innerHTML = `${head}<div>${meta}<div class="gbub"><span>Kirim ${esc(g.name)}${m.to_name ? `<small>untuk ${esc(m.to_name)}</small>` : ''}</span><span class="e">${g.e}</span><b class="x">x1</b></div></div>`;
     if (live) showFx(g, m.name, m.to_name, Number(m.gift));
+  } else if (m.type === 'chat' && String(m.body || '').startsWith('[CHEST]')) {
+    const [evId, lv] = String(m.body).slice(7).split('|');
+    d.innerHTML = `<div class="bub sys">${ms('inventory_2')} Peti ${Number(lv) >= 10 ? 'EKSKLUSIF' : 'Level ' + Number(lv)} terbuka! Semua anggota room mendapat hadiah</div>`;
+    if (live) onChestOpen(evId, Number(lv));
   } else if (m.type === 'chat' && String(m.body || '').startsWith('[REL]')) {
     const txt = String(m.body).slice(5);
     d.innerHTML = `<div class="bub sys">💞 ${esc(txt)}</div>`;
@@ -1759,12 +1818,12 @@ function addMsg(m, live) {
   } else if (m.type === 'voice' || (m.type === 'chat' && String(m.body || '').startsWith('[VOICE_MSG]'))) {
     const audioUrl = m.type === 'voice' ? m.body : String(m.body).slice('[VOICE_MSG]'.length);
     const safeUrl = /^https:\/\//i.test(audioUrl) ? audioUrl : '';
-    d.innerHTML = `${head}<div>${meta}<div class="voicebubble"${bubStyle(m.user_id)} data-bu="${m.user_id}"><small>🎙️ Pesan suara</small><div class="voiceplayer"><button class="voiceplay" id="voice-play-${Number(m.id)}" onclick="H.toggleVoice(${Number(m.id)})" title="Putar pesan suara">▶</button><span>Putar audio</span><audio id="voice-audio-${Number(m.id)}" data-msgid="${Number(m.id)}" preload="none" src="${esc(safeUrl)}" onended="H.voiceEnded(${Number(m.id)})" onerror="document.getElementById('voice-play-${Number(m.id)}').textContent='⚠'"></audio></div></div></div>`;
+    d.innerHTML = `${head}<div>${meta}<div class="voicebubble"${bubStyle(m.user_id)} data-bu="${m.user_id}"><small>${ms('keyboard_voice')} Pesan suara</small><div class="voiceplayer"><button class="voiceplay" id="voice-play-${Number(m.id)}" onclick="H.toggleVoice(${Number(m.id)})" title="Putar pesan suara"><span class="ms">play_arrow</span></button><span>Putar audio</span><audio id="voice-audio-${Number(m.id)}" data-msgid="${Number(m.id)}" preload="none" src="${esc(safeUrl)}" onended="H.voiceEnded(${Number(m.id)})" onerror="this.parentNode.querySelector('.voiceplay .ms').textContent='error'"></audio></div></div></div>`;
   } else {
     if (m.id != null) { msgCache.set(String(m.id), { id: m.id, body: m.body || '', name: m.name || '', user_id: m.user_id }); if (msgCache.size > 300) msgCache.delete(msgCache.keys().next().value); }
     const quoted = m.reply_to_id ? `<div class="replybox"><b>↩ Membalas pesan</b>${esc(m.reply_preview || 'Pesan sebelumnya')}</div>` : '';
     const body = esc(m.body).replace(/(@[\w.-]+)/g,'<span class="tagged">$1</span>');
-    d.innerHTML = `${head}<div>${meta}<div class="bub"${bubStyle(m.user_id)} data-bu="${m.user_id}">${quoted}${body}</div><div class="msgtools"><button onclick="H.replyRoom(${Number(m.id)})">↩ Balas</button><button onclick="H.forwardRoom(${Number(m.id)})">↗ Teruskan</button></div></div>`;
+    d.innerHTML = `${head}<div>${meta}<div class="bub"${bubStyle(m.user_id)} data-bu="${m.user_id}">${quoted}${body}</div><div class="msgtools"><button onclick="H.replyRoom(${Number(m.id)})">${ms('reply')} Balas</button><button onclick="H.forwardRoom(${Number(m.id)})">${ms('forward')} Teruskan</button></div></div>`;
   }
   c.append(d); while (c.children.length > 80) c.firstChild.remove(); c.scrollTop = c.scrollHeight;
 }
@@ -1772,12 +1831,12 @@ function addMsg(m, live) {
 H.gift = () => {
   gT = null;
   const seated = new Set(Object.values(seats).map(s => s.user_id));
-  const L = Object.entries(online).filter(([k]) => k !== uid).map(([k, v]) => ({ id: k, name: v[0]?.name, avatar: v[0]?.avatar, seat: seated.has(k) })).sort((a, b) => b.seat - a.seat);
+  const L = Object.entries(online).filter(([k]) => k !== uid).map(([k, v]) => ({ id: k, name: pmeta(v)?.name, avatar: pmeta(v)?.avatar, seat: seated.has(k) })).sort((a, b) => b.seat - a.seat);
   sheet(`<h3>Kirim Gift</h3><p class="sub">Pilih dulu siapa yang mau diberi hadiah</p>
    ${L.map(u => `<div class="mrow"><img src="${esc(u.avatar)}" onclick="H.view('${u.id}')" style="cursor:pointer"><span>${esc(u.name)} ${u.seat ? '<small style="color:#a99d92">🎙️ di kursi</small>' : ''}</span><button class="sm" onclick="H.pick('${u.id}')">Pilih</button></div>`).join('') || '<p class="empty-t">Belum ada orang lain di room.</p>'}`);
 };
 H.pick = id => {
-  const u = online[id]?.[0]; if (!u) return toast('Orang itu sudah keluar');
+  const u = pmeta(online[id]); if (!u) return toast('Orang itu sudah keluar');
   gT = { id, name: u.name, avatar: u.avatar }; giftSheet();
 };
 H.giftTo = id => {
@@ -1824,8 +1883,8 @@ function relCardHTML(r, mine) {
     <small>${next ? `${Number(r.score).toLocaleString('id-ID')} / ${next.toLocaleString('id-ID')} poin hubungan` : 'Level tertinggi 👑'} · Hari ke-${days}${ann ? ' · ' + ann : ''}</small></div>`;
 }
 function relSectionHTML() {
-  if (!HAS_REL) return '<h3 class="sec">💞 Hubungan</h3><p class="sub">Fitur hubungan belum aktif. Jalankan gift_relation_migration.sql di Supabase.</p>';
-  return `<h3 class="sec">💞 Hubungan</h3>${myRel.map(r => relCardHTML(r, true)).join('') || '<p class="empty-t">Belum ada hubungan. Buka profil temanmu lalu ketuk "💞 Ajak Hubungan".</p>'}`;
+  if (!HAS_REL) return '<h3 class="sec"><span class="ms">favorite</span> Hubungan</h3><p class="sub">Fitur hubungan belum aktif. Jalankan gift_relation_migration.sql di Supabase.</p>';
+  return `<h3 class="sec"><span class="ms">favorite</span> Hubungan</h3>${myRel.map(r => relCardHTML(r, true)).join('') || '<p class="empty-t">Belum ada hubungan. Buka profil temanmu lalu ketuk "💞 Ajak Hubungan".</p>'}`;
 }
 async function loadMyRelations() {
   if (!HAS_REL) return;
@@ -1839,18 +1898,65 @@ async function relReqHTML() {
   const { data, error } = await sb.from('relation_requests').select('id,sender_id,kind').eq('recipient_id', uid).order('created_at', { ascending: false });
   if (error || !data?.length) return '';
   const ids = data.map(x => x.sender_id), { data: ps } = await sb.from('profiles').select('id,name,avatar').in('id', ids);
-  return `<h3 class="sec">💞 Ajakan Hubungan (${data.length})</h3>` + data.map(x => { const u = (ps || []).find(p => p.id === x.sender_id) || {}, k = REL[x.kind] || REL.sahabat;
+  return `<h3 class="sec"><span class="ms">favorite</span> Ajakan Hubungan (${data.length})</h3>` + data.map(x => { const u = (ps || []).find(p => p.id === x.sender_id) || {}, k = REL[x.kind] || REL.sahabat;
     return `<div class="friendcard"><img src="${esc(u.avatar || '')}" onclick="H.view('${x.sender_id}')" style="cursor:pointer"><div class="finfo"><b>${esc(u.name || 'Anggota')}</b><small>${k.e} Ingin jadi ${k.name} denganmu</small></div><button class="sm" onclick="H.acceptRel(${Number(x.id)})">Terima</button><button class="sm o" onclick="H.declineRel(${Number(x.id)})">Tolak</button></div>` }).join('');
 }
 H.relPick = id => {
   const u = viewU && viewU.id === id ? viewU : { name: 'dia' };
-  sheet(`<h3>💞 Ajak Hubungan</h3><p class="sub">Pilih jenis hubungan dengan ${esc(u.name)}. Level naik saat kalian saling kirim gift.</p>${Object.entries(REL).map(([k, v]) => `<div class="mrow"><span style="font-size:28px;flex:none">${v.e}</span><span><b>${v.name}</b><br><small style="color:#a99d92">${v.desc}</small></span><button class="sm" onclick="H.requestRel('${id}','${k}')">Ajak</button></div>`).join('')}`);
+  sheet(`<h3><span class="ms">favorite</span> Ajak Hubungan</h3><p class="sub">Pilih jenis hubungan dengan ${esc(u.name)}. Level naik saat kalian saling kirim gift.</p>${Object.entries(REL).map(([k, v]) => `<div class="mrow"><span style="font-size:28px;flex:none">${v.e}</span><span><b>${v.name}</b><br><small style="color:#a99d92">${v.desc}</small></span><button class="sm" onclick="H.requestRel('${id}','${k}')">Ajak</button></div>`).join('')}`);
 };
 H.requestRel = async (id, k) => { const { error } = await sb.rpc('request_relation', { target: id, rel_kind: k }); if (error) return toast(error.message); H.close(); toast('Ajakan hubungan terkirim 💞') };
 H.acceptRel = async id => { const { error } = await sb.rpc('accept_relation', { request_id: id }); if (error) return toast(error.message); toast('Hubungan resmi dimulai 💞'); loadFriends(); loadMyRelations() };
 H.declineRel = async id => { const { error } = await sb.rpc('decline_relation', { request_id: id }); if (error) return toast(error.message); loadFriends() };
 H.endRel = async id => { if (!confirm('Akhiri hubungan ini? Level dan poinnya akan hilang.')) return; const { error } = await sb.rpc('end_relation', { rel_id: id }); if (error) return toast(error.message); toast('Hubungan diakhiri'); loadMyRelations() };
 
+/* ---------- 8C. Peti Room: terisi dari semua gift; penuh = terbuka, semua anggota room dapat hadiah acak (level 1-9, lalu EKSKLUSIF) ---------- */
+const CHEST_DEF = [1000, 3000, 8000, 20000, 40000, 80000, 150000, 300000, 600000, 1200000];
+const CHEST_COL = ['#cfd6e4', '#5ec8ff', '#7cf0b0', '#b48bff', '#ff8ad8', '#ffb36b', '#ff6a3c', '#ffd36e', '#fff1a8', '#ff3fb1'];
+let HAS_CHEST = false, chest = { level: 1, progress: 0 }, chestLv = [], chestQuiet = 0; const chestSeen = new Set();
+const chestName = l => l >= 10 ? 'EKSKLUSIF' : 'Lv.' + l;
+const chestTarget = l => Number(chestLv.find(x => x.level === l)?.target) || CHEST_DEF[l - 1] || 1;
+async function loadChestLevels() { const { data } = await sb.from('chest_levels').select('*').order('level'); if (data) chestLv = data }
+async function loadChest() {
+  const { data, error } = await sb.from('room_chest').select('level,progress').eq('id', 1).maybeSingle();
+  HAS_CHEST = !error;
+  if (data) chest = { level: data.level, progress: Number(data.progress) };
+  renderChest();
+}
+let chestSoonT = null; const loadChestSoon = d => { clearTimeout(chestSoonT); chestSoonT = setTimeout(loadChest, d || 500) };
+function renderChest() {
+  const c = $('#chestChip'); if (!c) return; c.classList.toggle('hidden', !HAS_CHEST); if (!HAS_CHEST) return;
+  const pct = Math.min(100, chest.progress / chestTarget(chest.level) * 100);
+  c.style.setProperty('--ck', CHEST_COL[chest.level - 1]);
+  c.querySelector('.cl').textContent = chestName(chest.level);
+  c.querySelector('.cbar b').style.width = pct + '%';
+  c.classList.toggle('full', pct >= 90);
+}
+H.chest = () => {
+  const t = chestTarget(chest.level), pct = Math.min(100, chest.progress / t * 100);
+  const rows = CHEST_DEF.map((d, i) => { const l = i + 1, c = chestLv.find(x => x.level === l);
+    return `<div class="mrow" style="${l === chest.level ? 'background:#ffffff10;border-radius:12px;padding-left:8px' : ''}"><span style="flex:none;font-size:26px;color:${CHEST_COL[i]}">${ms('inventory_2')}</span><span><b>Peti ${chestName(l)}</b><br><small style="color:#a99d92">${kfmt(c?.target ?? d)} poin gift${c ? ` · ${kfmt(c.coin_min)}–${kfmt(c.coin_max)} koin · ${kfmt(c.exp_min)}–${kfmt(c.exp_max)} EXP` : ''}</small></span>${l < chest.level ? ms('check', 'on') : ''}</div>` }).join('');
+  sheet(`<h3>${ms('inventory_2')} Peti Room</h3><p class="sub">Terisi dari semua gift yang dikirim di room. Saat penuh, peti terbuka otomatis dan semua anggota yang ada di room mendapat hadiah acak: koin emas, EXP, atau (jarang) border.</p>
+   <div class="pf" style="padding:6px 0 10px"><div style="font-size:74px;line-height:1;color:${CHEST_COL[chest.level - 1]}">${ms('inventory_2')}</div><h2 style="margin:6px 0">Peti ${chestName(chest.level)}</h2><div class="prog" style="width:90%"><i style="width:${pct}%"></i></div><small style="color:#a99d92">${kfmt(chest.progress)} / ${kfmt(t)} poin gift · ${Math.floor(pct)}%</small></div>
+   <h3 class="sec">Semua level</h3>${rows}${me.is_host ? `<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button class="sm o" onclick="H.hostChest(1000)">+1rb poin</button><button class="sm o" onclick="H.hostChest(10000)">+10rb</button><button class="sm o" onclick="H.hostChest(100000)">+100rb</button></div>` : ''}`);
+};
+H.hostChest = async n => { const { error } = await sb.rpc('chest_fill', { amount: n }); toast(error ? error.message : `Peti diisi +${kfmt(n)} poin`); loadChest() };
+const chestRewardText = r => !r ? '' : r.kind === 'coin' ? `+${kfmt(r.amount)} Koin Emas` : r.kind === 'exp' ? `+${kfmt(r.amount)} EXP` : r.kind === 'border' ? `Border baru: ${BORDERS.find(b => b.id === r.border)?.name || r.border}` : '';
+function showChestFx(level, r) {
+  const e = $('#chestFX'); clearTimeout(showChestFx.t);
+  e.innerHTML = `<div class="cx" style="--ck:${CHEST_COL[level - 1]}"><div class="cxi">${ms('inventory_2')}</div><div class="svip-title">PETI ${level >= 10 ? 'EKSKLUSIF' : 'LEVEL ' + level} TERBUKA!</div><p class="sub" style="margin:6px 0 0">Semua anggota room mendapat hadiah acak</p>${r ? `<div class="cxr">${esc(chestRewardText(r))}</div>` : ''}</div>`;
+  e.classList.remove('hidden'); showChestFx.t = setTimeout(() => { e.classList.add('hidden'); e.innerHTML = '' }, r ? 6000 : 3500);
+}
+/* Dipanggil di setiap perangkat yang ada di room saat peti terbuka; server menjamin 1 hadiah per orang per peti */
+async function onChestOpen(evId, level) {
+  if (chestSeen.has(String(evId))) return; chestSeen.add(String(evId));
+  loadChestSoon(300); chestQuiet = Date.now() + 8000; showChestFx(level, null);
+  const { data, error } = await sb.rpc('claim_chest', { ev: Number(evId) });
+  if (error || !data) return;
+  showChestFx(level, data);
+  pushNotif({ key: 'ch:' + evId, type: 'host', icon: '🎁', title: `Peti ${chestName(level)} terbuka`, text: chestRewardText(data), tab: 'room' });
+  if (data.kind === 'border') refreshMyBorders(); else syncPointsSoon(400);
+}
 /* ---------- 8A. Teman, permintaan pertemanan, chat pribadi ---------- */
 async function loadFriends() {
   const {data,error}=await sb.from('friends').select('friend_id,created_at').eq('user_id',uid).order('created_at',{ascending:false});
@@ -1864,12 +1970,12 @@ async function loadFriends() {
   const {data:senders}=rids.length?await sb.from('profiles').select('id,name,avatar').in('id',rids):{data:[]};
   pendingRows=(req||[]).map(x=>({...x,user:(senders||[]).find(u=>u.id===x.sender_id)}));
   const relHtml=await relReqHTML();
-  $('#friendBox').innerHTML=`<button class="btn" onclick="H.findFriends()">＋ Tambah Teman</button>
+  $('#friendBox').innerHTML=`<button class="btn" onclick="H.findFriends()"><span class="ms">add</span> Tambah Teman</button>
     <h3 class="sec">Permintaan Pertemanan (${pendingRows.length})</h3>
     ${pendingRows.map(x=>`<div class="friendcard"><img src="${esc(x.user?.avatar||'')}" onclick="H.view('${x.sender_id}')" style="cursor:pointer"><div class="finfo"><b>${esc(x.user?.name||'Anggota')}</b><small>Ingin berteman denganmu</small></div><button class="sm" onclick="H.acceptFriend('${x.id}')">Terima</button></div>`).join('')||'<p class="empty-t">Tidak ada permintaan baru.</p>'}
     ${relHtml}
     <h3 class="sec">Daftar Teman (${friendRows.length})</h3>
-    ${friendRows.map(u=>`<div class="friendcard"><img src="${esc(u.avatar||'')}" onclick="H.view('${u.id}')" style="cursor:pointer"><div class="finfo"><b>${esc(u.name)}</b><small>Teman</small></div><button class="sm" onclick="H.openDM('${u.id}')">💬 Chat${dmBadge(u.id)}</button></div>`).join('')||'<p class="empty-t">Belum ada teman. Tambahkan teman untuk mulai chat.</p>'}`;
+    ${friendRows.map(u=>`<div class="friendcard"><img src="${esc(u.avatar||'')}" onclick="H.view('${u.id}')" style="cursor:pointer"><div class="finfo"><b>${esc(u.name)}</b><small>Teman</small></div><button class="sm" onclick="H.openDM('${u.id}')"><span class="ms">chat</span> Chat${dmBadge(u.id)}</button></div>`).join('')||'<p class="empty-t">Belum ada teman. Tambahkan teman untuk mulai chat.</p>'}`;
 }
 H.findFriends=()=>sheet(`<h3>Tambah Teman</h3><p class="sub">Cari anggota menggunakan nama profilnya.</p><input id="friendSearch" class="inp" placeholder="Ketik nama teman..." oninput="H.searchFriends()" autocomplete="off"><div id="friendResults" style="margin-top:10px"><p class="empty-t">Masukkan nama untuk mencari.</p></div>`);
 H.searchFriends=async()=>{
@@ -1877,7 +1983,7 @@ H.searchFriends=async()=>{
   const {data,error}=await sb.from('profiles').select('id,name,avatar').ilike('name',`%${q}%`).neq('id',uid).limit(15);
   if(error){$('#friendResults').textContent=error.message;return;}
   const ids=new Set(friendRows.map(x=>x.id));
-  $('#friendResults').innerHTML=(data||[]).map(u=>`<div class="friendcard"><img src="${esc(u.avatar||'')}" onclick="H.view('${u.id}')" style="cursor:pointer"><div class="finfo"><b>${esc(u.name)}</b></div>${ids.has(u.id)?'<span class="sm o">Sudah teman</span>':`<button class="sm" onclick="H.requestFriend('${u.id}')">＋ Tambah</button>`}</div>`).join('')||'<p class="empty-t">Anggota tidak ditemukan.</p>';
+  $('#friendResults').innerHTML=(data||[]).map(u=>`<div class="friendcard"><img src="${esc(u.avatar||'')}" onclick="H.view('${u.id}')" style="cursor:pointer"><div class="finfo"><b>${esc(u.name)}</b></div>${ids.has(u.id)?'<span class="sm o">Sudah teman</span>':`<button class="sm" onclick="H.requestFriend('${u.id}')"><span class="ms">add</span> Tambah</button>`}</div>`).join('')||'<p class="empty-t">Anggota tidak ditemukan.</p>';
 };
 H.requestFriend=async id=>{
   const {error}=await sb.from('friend_requests').insert({sender_id:uid,recipient_id:id,status:'pending'});
@@ -1911,12 +2017,12 @@ function renderDM(){
   const lines=dmMessages.map(m=>{
     const mine=m.sender_id===uid,quoted=m.reply_to_id?dmMessages.find(x=>x.id===m.reply_to_id):null;
     const body=esc(m.body).replace(/(@[\w.-]+)/g,'<span class="tagged">$1</span>');
-    return `<div class="dmline ${mine?'mine':''}">${quoted?`<div class="replybox"><b>↩ ${quoted.sender_id===uid?'Kamu':esc(dmPeer.name)}</b>${esc(quoted.body.slice(0,100))}</div>`:''}${m.forwarded_from_id?'<small>↗ Pesan diteruskan</small>':''}${body}<small>${new Date(m.created_at).toLocaleString('id-ID',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'short'})}</small><div class="msgtools"><button onclick="H.replyDM('${m.id}')">↩ Balas</button><button onclick="H.forwardDM('${m.id}')">↗ Teruskan</button></div></div>`;
+    return `<div class="dmline ${mine?'mine':''}">${quoted?`<div class="replybox"><b>${ms('reply')} ${quoted.sender_id===uid?'Kamu':esc(dmPeer.name)}</b>${esc(quoted.body.slice(0,100))}</div>`:''}${m.forwarded_from_id?`<small>${ms('forward')} Pesan diteruskan</small>`:''}${body}<small>${new Date(m.created_at).toLocaleString('id-ID',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'short'})}</small><div class="msgtools"><button onclick="H.replyDM('${m.id}')">${ms('reply')} Balas</button><button onclick="H.forwardDM('${m.id}')">${ms('forward')} Teruskan</button></div></div>`;
   }).join('');
-  sheet(`<div class="dmhead"><img src="${esc(dmPeer.avatar||'')}"><div style="flex:1"><h3 style="margin:0">${esc(dmPeer.name)}</h3><p class="sub" style="margin:0">Pesan pribadi</p></div><button class="sm o" onclick="H.close()">Tutup</button></div><div class="dmfeed" id="dmFeed">${lines||'<p class="empty-t">Belum ada pesan. Mulai percakapan! 👋</p>'}</div><div id="dmReplyHint"></div><div class="dmcomposer"><button class="ib" onclick="H.tagDM()" title="Tag teman">@</button><input id="dmInput" class="inp" maxlength="200" placeholder="Tulis pesan..." onkeydown="if(event.key==='Enter')H.sendDM()"><button class="ib sendb" onclick="H.sendDM()">➤</button></div>`);
+  sheet(`<div class="dmhead"><img src="${esc(dmPeer.avatar||'')}"><div style="flex:1"><h3 style="margin:0">${esc(dmPeer.name)}</h3><p class="sub" style="margin:0">Pesan pribadi</p></div><button class="sm o" onclick="H.close()">Tutup</button></div><div class="dmfeed" id="dmFeed">${lines||'<p class="empty-t">Belum ada pesan. Mulai percakapan! 👋</p>'}</div><div id="dmReplyHint"></div><div class="dmcomposer"><button class="ib" onclick="H.tagDM()" title="Tag teman"><span class="ms">alternate_email</span></button><input id="dmInput" class="inp" maxlength="200" placeholder="Tulis pesan..." onkeydown="if(event.key==='Enter')H.sendDM()"><button class="ib sendb" onclick="H.sendDM()"><span class="ms">send</span></button></div>`);
   const f=$('#dmFeed');if(f)f.scrollTop=f.scrollHeight;renderDMReplyHint();const di=$('#dmInput');if(di&&keep){di.value=keep;if(foc)di.focus()}
 }
-function renderDMReplyHint(){const e=$('#dmReplyHint');if(!e)return;const m=dmMessages.find(x=>x.id===dmReply);e.innerHTML=m?`<div class="replyhint">↩ Membalas: ${esc(m.body.slice(0,70))}<button onclick="H.cancelReplyDM()">✕</button></div>`:'';}
+function renderDMReplyHint(){const e=$('#dmReplyHint');if(!e)return;const m=dmMessages.find(x=>x.id===dmReply);e.innerHTML=m?`<div class="replyhint">↩ Membalas: ${esc(m.body.slice(0,70))}<button onclick="H.cancelReplyDM()"><span class="ms">close</span></button></div>`:'';}
 H.replyDM=id=>{dmReply=id;renderDMReplyHint();$('#dmInput')?.focus()};
 H.cancelReplyDM=()=>{dmReply=null;renderDMReplyHint()};
 H.tagDM=()=>{if(!dmPeer)return;const i=$('#dmInput');i.value=(i.value?i.value+' ':'')+'@'+dmPeer.name.replace(/\s+/g,'')+' ';i.focus()};
@@ -1932,7 +2038,7 @@ H.forwardDM=async id=>{
 };
 H.replyRoom=id=>{const m=msgCache.get(String(id));if(!m)return;roomReply={id:m.id,body:m.body.slice(0,90),name:m.name};renderRoomReplyHint();$('#msg').focus()};
 H.cancelReplyRoom=()=>{roomReply=null;renderRoomReplyHint()};
-function renderRoomReplyHint(){const e=$('#roomReplyHint');if(!e)return;e.innerHTML=roomReply?`<div class="replyhint">↩ Membalas ${esc(roomReply.name)}: ${esc(roomReply.body)}<button onclick="H.cancelReplyRoom()">✕</button></div>`:'';}
+function renderRoomReplyHint(){const e=$('#roomReplyHint');if(!e)return;e.innerHTML=roomReply?`<div class="replyhint">↩ Membalas ${esc(roomReply.name)}: ${esc(roomReply.body)}<button onclick="H.cancelReplyRoom()"><span class="ms">close</span></button></div>`:'';}
 H.tagRoom=async()=>{
   const {data,error}=await sb.from('profiles').select('id,name').neq('id',uid).limit(40);if(error)return toast(error.message);tagNames=(data||[]).map(u=>u.name);
   sheet(`<h3>Tag Anggota</h3><p class="sub">Pilih anggota untuk menambahkan tag ke pesan.</p>${(data||[]).map((u,k)=>`<div class="mrow"><span>${esc(u.name)}</span><button class="sm" onclick="H.insertRoomTag(${k})">@ Tag</button></div>`).join('')||'<p class="empty-t">Belum ada anggota lain.</p>'}`);
@@ -1980,7 +2086,7 @@ function nMarkDM(id) {
 async function whoIs(id) {
   if (!id) return null;
   if (pinfo[id]) return pinfo[id];
-  const o = online[id]?.[0]; if (o?.name) return (pinfo[id] = { name: o.name, avatar: o.avatar });
+  const o = pmeta(online[id]); if (o?.name) return (pinfo[id] = { name: o.name, avatar: o.avatar });
   try { const { data } = await sb.from('profiles').select('name,avatar').eq('id', id).maybeSingle(); if (data) return (pinfo[id] = { name: data.name, avatar: data.avatar }) } catch {}
   return { name: 'Seseorang', avatar: '' };
 }
@@ -2031,7 +2137,7 @@ H.notifs = () => {
   const perm = 'Notification' in window ? Notification.permission : 'unsupported';
   sheet(`<div class="dmhead"><div style="flex:1"><h3 style="margin:0">🔔 Notifikasi</h3><p class="sub" style="margin:0">${notifs.filter(n => !n.read).length} belum dibaca</p></div><button class="sm o" onclick="H.close()">Tutup</button></div>
    <div class="nlist">${notifs.map(nItemHTML).join('') || '<p class="empty-t">Belum ada notifikasi.</p>'}</div>
-   <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px"><button class="sm o" onclick="H.nSnd()">${nSound ? '🔊 Suara nyala' : '🔇 Suara mati'}</button>${perm === 'default' ? '<button class="sm o" onclick="H.nPerm()">📲 Aktifkan notifikasi HP</button>' : ''}${notifs.length ? '<button class="sm o" onclick="H.nClear()">🗑 Hapus semua</button>' : ''}</div>`);
+   <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px"><button class="sm o" onclick="H.nSnd()">${nSound ? ms('volume_up') + ' Suara nyala' : ms('volume_off') + ' Suara mati'}</button>${perm === 'default' ? '<button class="sm o" onclick="H.nPerm()"><span class="ms">notifications_active</span> Aktifkan notifikasi HP</button>' : ''}${notifs.length ? '<button class="sm o" onclick="H.nClear()"><span class="ms">delete</span> Hapus semua</button>' : ''}</div>`);
   notifs.forEach(n => n.read = true); nSave(); nRender(); /* dibuka = dianggap dibaca (item baru tetap tersorot di daftar ini) */
 };
 H.nOpen = id => {
@@ -2080,7 +2186,7 @@ const W = {}, ACS = new Set();
 let spk = true; /* speaker: dengar suara orang lain. Terpisah dari mic. */
 H.spk = () => {
   spk = !spk; document.querySelectorAll('audio.rtc').forEach(a => a.muted = !spk);
-  const b = $('#spkb'); b.textContent = spk ? '🔊' : '🔈'; b.classList.toggle('off', !spk);
+  const b = $('#spkb'); b.innerHTML = ms(spk ? 'volume_up' : 'volume_off'); b.classList.toggle('off', !spk);
   toast(spk ? 'Speaker aktif 🔊' : 'Speaker dimatikan: kamu tidak mendengar suara');
 };
 const WK = {};
