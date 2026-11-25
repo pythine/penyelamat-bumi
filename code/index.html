@@ -198,6 +198,17 @@ textarea.inp{resize:none;display:block}
 .dmline.mine{align-self:flex-end;background:#76501f88}
 .dmline small{display:block;color:#d6b98a;font-size:10px;margin-top:4px}
 .dmcomposer{display:flex;gap:6px;align-items:center;margin-top:8px}
+/* Status teman: online / mengetik / dibaca */
+.fst{display:flex!important;align-items:center;font-weight:700}
+.fst .sd{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;background:#6a6058;flex:none}
+.fst.on{color:#6be07a!important}.fst.on .sd{background:#38e06a;box-shadow:0 0 6px #38e06a}
+.fst.typ{color:#ffd886!important}.fst.typ .sd{background:#ffd886;animation:pulse .7s ease-in-out infinite}
+.fst.off{color:#a99d92}
+.tk{margin-left:6px;color:#b9a98f;font-weight:700}.tk.rd{color:#5ec8ff}
+.dmline.typ{display:flex;gap:4px;align-items:center;padding:12px 14px;width:max-content}
+.dmline.typ i{width:7px;height:7px;border-radius:50%;background:#d6b98a;animation:tdot 1s infinite ease-in-out}
+.dmline.typ i:nth-child(2){animation-delay:.15s}.dmline.typ i:nth-child(3){animation-delay:.3s}
+@keyframes tdot{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-5px);opacity:1}}
 .dmcomposer .inp{min-width:0}
 .replyhint{display:flex;justify-content:space-between;align-items:center;background:#5b431e88;border-radius:10px;padding:7px 10px;margin:5px 0;font-size:12px;color:#ffe0a0}
 /* Stories 24 jam */
@@ -851,6 +862,7 @@ let entranceVideos = {};
 let giftVideos = {};
 let seats = {}, prof = {}, online = {}, mySeat = null, stream = null, muted = false, room, inRoom = false;
 let posts = [], gT = null, draftImg = null, myGifts = [], mq = Promise.resolve(), viewU = null;
+let gp = null, gOnline = {}, typIn = {}, typOut = 0, HAS_READ = false;
 let friendRows = [], pendingRows = [], dmPeer = null, dmMessages = [], dmReply = null, roomReply = null;
 let voiceRecorder = null, voiceStream = null, voiceChunks = [];
 const pcs = {}, early = {};
@@ -1134,6 +1146,7 @@ H.exit = async () => {
   try { await sb.from('seats').delete().eq('user_id', uid) } catch {} /* kursi dikosongkan DULU supaya langsung hilang di semua anggota */
   stopMic(); closeAll();
   try { await room?.untrack() } catch {}
+  try { await gp?.untrack() } catch {}
   try { room && await sb.removeChannel(room); dbChannel && await sb.removeChannel(dbChannel); relChannel && await sb.removeChannel(relChannel) } catch {}
   location.reload();
 };
@@ -1279,7 +1292,7 @@ async function startRoom() {
       .on('postgres_changes', { event: '*', schema: 'public', table: 'relations', filter: `user_b=eq.${uid}` }, () => loadMyRelations())
       .subscribe();
   }
-  refreshMySocialStats();
+  refreshMySocialStats(); startGlobalPresence();
   clearInterval(startRoom.bt); startRoom.bt = setInterval(() => { if (!document.hidden) { refreshMyBorders(); syncPoints() } }, 10000);
   loadMyGifts();
   loadPosts(true); loadStories();
@@ -1355,7 +1368,8 @@ async function startRoom() {
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'direct_messages', filter: `recipient_id=eq.${uid}` }, p => {
       const fromPeer = dmPeer && p.new.sender_id === dmPeer.id;
       if (fromPeer) dmMessages.push(p.new);
-      if (fromPeer && dmVisible()) renderDM(); /* hanya gambar ulang jika jendela chat memang sedang terbuka */
+      if (fromPeer) { clearTimeout(typIn[p.new.sender_id]); delete typIn[p.new.sender_id] }
+      if (fromPeer && dmVisible()) { renderDM(); markDMRead() } /* hanya gambar ulang jika jendela chat memang sedang terbuka */
       else pushNotif({ key: 'dm:' + p.new.id, type: 'dm', icon: '💬', from: p.new.sender_id, text: String(p.new.body || '').slice(0, 80) || 'Pesan baru', tab: 'friends', act: { k: 'dm', id: p.new.sender_id } });
     })
     .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'room_settings' }, p => { if (HAS_ROOMS) return; settings = p.new; renderSeats(); renderTop() })
@@ -1934,7 +1948,7 @@ H.view = async id => {
     socialStats(id),
     sb.from('follows').select('follower_id').eq('follower_id', uid).eq('following_id', id).maybeSingle(),
     HAS_REL ? loadRelations(id) : Promise.resolve(null)]);
-  const isFriend = !!fr.data, isFollowing = !!following.data, seated = Object.values(seats).some(x => x.user_id === id), on = !!online[id], list = ps.data || [];
+  const isFriend = !!fr.data, isFollowing = !!following.data, seated = Object.values(seats).some(x => x.user_id === id), on = isOn(id), list = ps.data || [];
   sheet(`<div class="pf" style="padding-top:0">${avatarHTML(u.avatar, u.points, 'pav', 112, '', u.avatar_border, u.is_host, u.id)}<h2>${u.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(u.points)}${esc(u.name)}</h2>${titleHTML(u.points)}
     <div class="stats" style="flex-wrap:wrap"><span class="chip">${seated ? ms('mic') + ' Di kursi' : on ? ms('circle', 'on') + ' Online' : ms('circle', 'o off') + ' Offline'}</span><span class="chip"><span class="ms">group</span> ${social.friends ?? '—'} Teman</span><span class="chip"><span class="ms">person</span> ${social.followers ?? '—'} Followers</span><span class="chip"><span class="ms">star</span> ${u.points ?? 0}</span><span class="chip"><span class="ms">redeem</span> ${u.gifts_sent ?? 0} dikirim</span><span class="chip"><span class="ms">edit_note</span> ${list.length}</span></div></div>
     <div class="acts">${isFriend ? `<button class="btn" onclick="H.openDM('${u.id}')"><span class="ms">chat</span> Chat</button>` : `<button class="btn" onclick="H.requestFriend('${u.id}')"><span class="ms">add</span> Tambah Teman</button>`}
@@ -2255,7 +2269,8 @@ async function loadFriends() {
     ${pendingRows.map(x=>`<div class="friendcard"><img src="${esc(x.user?.avatar||'')}" onclick="H.view('${x.sender_id}')" style="cursor:pointer"><div class="finfo"><b>${esc(x.user?.name||'Anggota')}</b><small>Ingin berteman denganmu</small></div><button class="sm" onclick="H.acceptFriend('${x.id}')">Terima</button></div>`).join('')||'<p class="empty-t">Tidak ada permintaan baru.</p>'}
     ${relHtml}
     <h3 class="sec">Daftar Teman (${friendRows.length})</h3>
-    ${friendRows.map(u=>`<div class="friendcard"><img src="${esc(u.avatar||'')}" onclick="H.view('${u.id}')" style="cursor:pointer"><div class="finfo"><b>${esc(u.name)}</b><small>Teman</small></div><button class="sm" onclick="H.openDM('${u.id}')"><span class="ms">chat</span> Chat${dmBadge(u.id)}</button></div>`).join('')||'<p class="empty-t">Belum ada teman. Tambahkan teman untuk mulai chat.</p>'}`;
+    ${[...friendRows].sort((a,b)=>isOn(b.id)-isOn(a.id)).map(u=>`<div class="friendcard"><img src="${esc(u.avatar||'')}" onclick="H.view('${u.id}')" style="cursor:pointer"><div class="finfo"><b>${esc(u.name)}</b><small class="fst off" data-fst="${u.id}"></small></div><button class="sm" onclick="H.openDM('${u.id}')"><span class="ms">chat</span> Chat${dmBadge(u.id)}</button></div>`).join('')||'<p class="empty-t">Belum ada teman. Tambahkan teman untuk mulai chat.</p>'}`;
+  refreshFriendStatus();
 }
 H.findFriends=()=>sheet(`<h3>Tambah Teman</h3><p class="sub">Cari anggota menggunakan nama profilnya.</p><input id="friendSearch" class="inp" placeholder="Ketik nama teman..." oninput="H.searchFriends()" autocomplete="off"><div id="friendResults" style="margin-top:10px"><p class="empty-t">Masukkan nama untuk mencari.</p></div>`);
 H.searchFriends=async()=>{
@@ -2289,7 +2304,7 @@ H.openDM=async id=>{
   const u=friendRows.find(x=>x.id===id)||(await sb.from('profiles').select('id,name,avatar').eq('id',id).maybeSingle()).data;
   if(!u)return toast('Teman tidak ditemukan');dmPeer=u;dmReply=null;nMarkDM(id);
   const {data,error}=await sb.from('direct_messages').select('*').or(`and(sender_id.eq.${uid},recipient_id.eq.${id}),and(sender_id.eq.${id},recipient_id.eq.${uid})`).order('created_at',{ascending:true}).limit(100);
-  if(error)return toast('Chat pribadi: '+error.message);dmMessages=data||[];renderDM();
+  if(error)return toast('Chat pribadi: '+error.message);dmMessages=data||[];renderDM();markDMRead();
 };
 function renderDM(){
   if(!dmPeer)return;
@@ -2297,10 +2312,11 @@ function renderDM(){
   const lines=dmMessages.map(m=>{
     const mine=m.sender_id===uid,quoted=m.reply_to_id?dmMessages.find(x=>x.id===m.reply_to_id):null;
     const body=esc(m.body).replace(/(@[\w.-]+)/g,'<span class="tagged">$1</span>');
-    return `<div class="dmline ${mine?'mine':''}">${quoted?`<div class="replybox"><b>${ms('reply')} ${quoted.sender_id===uid?'Kamu':esc(dmPeer.name)}</b>${esc(quoted.body.slice(0,100))}</div>`:''}${m.forwarded_from_id?`<small>${ms('forward')} Pesan diteruskan</small>`:''}${body}<small>${new Date(m.created_at).toLocaleString('id-ID',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'short'})}</small><div class="msgtools"><button onclick="H.replyDM('${m.id}')">${ms('reply')} Balas</button><button onclick="H.forwardDM('${m.id}')">${ms('forward')} Teruskan</button></div></div>`;
+    return `<div class="dmline ${mine?'mine':''}">${quoted?`<div class="replybox"><b>${ms('reply')} ${quoted.sender_id===uid?'Kamu':esc(dmPeer.name)}</b>${esc(quoted.body.slice(0,100))}</div>`:''}${m.forwarded_from_id?`<small>${ms('forward')} Pesan diteruskan</small>`:''}${body}<small>${new Date(m.created_at).toLocaleString('id-ID',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'short'})}${mine?`<span class="tk${m.read_at?' rd':''}" data-tk="${m.id}">${m.read_at?'✓✓ Dibaca':'✓ Terkirim'}</span>`:''}</small><div class="msgtools"><button onclick="H.replyDM('${m.id}')">${ms('reply')} Balas</button><button onclick="H.forwardDM('${m.id}')">${ms('forward')} Teruskan</button></div></div>`;
   }).join('');
-  sheet(`<div class="dmhead"><button class="ib" onclick="H.close()" title="Kembali"><span class="ms">arrow_back</span></button><img src="${esc(dmPeer.avatar||'')}"><div style="flex:1;min-width:0"><h3 style="margin:0">${esc(dmPeer.name)}</h3><p class="sub" style="margin:0">Pesan pribadi</p></div></div><div class="dmfeed" id="dmFeed">${lines||'<p class="empty-t">Belum ada pesan. Mulai percakapan! 👋</p>'}</div><div id="dmReplyHint"></div><div class="dmcomposer"><button class="ib" onclick="H.tagDM()" title="Tag teman"><span class="ms">alternate_email</span></button><input id="dmInput" class="inp" maxlength="200" placeholder="Tulis pesan..." onkeydown="if(event.key==='Enter')H.sendDM()"><button class="ib sendb" onclick="H.sendDM()"><span class="ms">send</span></button></div>`, true);
+  sheet(`<div class="dmhead"><button class="ib" onclick="H.close()" title="Kembali"><span class="ms">arrow_back</span></button><img src="${esc(dmPeer.avatar||'')}"><div style="flex:1;min-width:0"><h3 style="margin:0">${esc(dmPeer.name)}</h3><p class="sub fst off" id="dmStatus" data-fst="${esc(dmPeer.id)}" style="margin:0"></p></div></div><div class="dmfeed" id="dmFeed">${lines||'<p class="empty-t">Belum ada pesan. Mulai percakapan! 👋</p>'}<div class="dmline typ hidden" id="dmTyp"><i></i><i></i><i></i></div></div><div id="dmReplyHint"></div><div class="dmcomposer"><button class="ib" onclick="H.tagDM()" title="Tag teman"><span class="ms">alternate_email</span></button><input id="dmInput" class="inp" maxlength="200" placeholder="Tulis pesan..." oninput="H.dmTyping()" onkeydown="if(event.key==='Enter')H.sendDM()"><button class="ib sendb" onclick="H.sendDM()"><span class="ms">send</span></button></div>`, true);
   const f=$('#dmFeed');if(f)f.scrollTop=f.scrollHeight;renderDMReplyHint();const di=$('#dmInput');if(di&&keep){di.value=keep;if(foc)di.focus()}
+  refreshFriendStatus();
 }
 function renderDMReplyHint(){const e=$('#dmReplyHint');if(!e)return;const m=dmMessages.find(x=>x.id===dmReply);e.innerHTML=m?`<div class="replyhint">↩ Membalas: ${esc(m.body.slice(0,70))}<button onclick="H.cancelReplyDM()"><span class="ms">close</span></button></div>`:'';}
 H.replyDM=id=>{dmReply=id;renderDMReplyHint();$('#dmInput')?.focus()};
@@ -2309,7 +2325,7 @@ H.tagDM=()=>{if(!dmPeer)return;const i=$('#dmInput');i.value=(i.value?i.value+' 
 H.sendDM=async()=>{
   if(!dmPeer)return;const i=$('#dmInput'),body=i.value.trim();if(!body)return;
   const {data,error}=await sb.from('direct_messages').insert({sender_id:uid,recipient_id:dmPeer.id,body,reply_to_id:dmReply||null}).select().single();
-  if(error)return toast(error.message);dmMessages.push(data);dmReply=null;i.value='';renderDM();
+  if(error)return toast(error.message);dmMessages.push(data);dmReply=null;i.value='';H.dmStopTyping();renderDM();
 };
 H.forwardDM=async id=>{
   const m=dmMessages.find(x=>x.id===id);if(!m)return;
@@ -2336,6 +2352,72 @@ H.doForwardRoom=async friendId=>{
   const {error}=await sb.from('direct_messages').insert({sender_id:uid,recipient_id:friendId,body:`↗ Diteruskan dari ${src.name}: ${src.body||''}`});
   if(error)return toast(error.message);H.close();toast('Pesan berhasil diteruskan ✅');
 };
+
+/* ---------- 8A+. Status teman: online, mengetik, dibaca ----------
+   Channel 'gp' = presence GLOBAL (semua pengguna yang membuka aplikasi), jadi status online teman tampil
+   walau mereka sedang tidak berada di room yang sama. 'typ' dan 'seen' dikirim lewat broadcast channel yang sama. */
+function isOn(id) { return !!gOnline[id] || !!online[id] }
+function stOf(id) { return typIn[id] ? ['typ', 'mengetik…'] : isOn(id) ? ['on', 'Online'] : ['off', 'Offline'] }
+function refreshFriendStatus() {
+  document.querySelectorAll('[data-fst]').forEach(e => {
+    const [c, t] = stOf(e.dataset.fst);
+    e.className = e.className.replace(/\b(on|off|typ)\b/g, '').trim() + ' ' + c;
+    e.innerHTML = `<i class="sd"></i>${t}`;
+  });
+  const tb = $('#dmTyp');
+  if (tb && dmPeer) {
+    const was = !tb.classList.contains('hidden'), now = !!typIn[dmPeer.id];
+    tb.classList.toggle('hidden', !now);
+    const f = $('#dmFeed'); if (now && !was && f) f.scrollTop = f.scrollHeight;
+  }
+}
+function updateTicks() {
+  dmMessages.forEach(m => {
+    if (m.sender_id !== uid) return;
+    const e = document.querySelector(`[data-tk="${CSS.escape(String(m.id))}"]`);
+    if (e) { e.className = 'tk' + (m.read_at ? ' rd' : ''); e.textContent = m.read_at ? '✓✓ Dibaca' : '✓ Terkirim' }
+  });
+}
+function markDMRead() {
+  if (!dmPeer || document.hidden || !dmVisible()) return;
+  if (!dmMessages.some(m => m.sender_id === dmPeer.id && m.recipient_id === uid && !m.read_at)) return;
+  const now = new Date().toISOString();
+  dmMessages.forEach(m => { if (m.sender_id === dmPeer.id && !m.read_at) m.read_at = now });
+  if (HAS_READ) sb.from('direct_messages').update({ read_at: now }).eq('sender_id', dmPeer.id).eq('recipient_id', uid).is('read_at', null).then(() => {});
+  gp?.send({ type: 'broadcast', event: 'seen', payload: { from: uid, to: dmPeer.id } });
+}
+H.dmTyping = () => {
+  if (!dmPeer || !gp) return;
+  const n = Date.now(), to = dmPeer.id;
+  if (n - typOut > 2500) { typOut = n; gp.send({ type: 'broadcast', event: 'typ', payload: { from: uid, to, on: true } }) }
+  clearTimeout(H.dmTyping.t);
+  H.dmTyping.t = setTimeout(() => { typOut = 0; gp?.send({ type: 'broadcast', event: 'typ', payload: { from: uid, to, on: false } }) }, 3000);
+};
+H.dmStopTyping = () => {
+  clearTimeout(H.dmTyping.t);
+  if (dmPeer && gp && typOut) gp.send({ type: 'broadcast', event: 'typ', payload: { from: uid, to: dmPeer.id, on: false } });
+  typOut = 0;
+};
+function startGlobalPresence() {
+  if (gp || !uid) return;
+  sb.from('direct_messages').select('read_at').limit(1).then(r => { HAS_READ = !r.error });
+  gp = sb.channel('gp', { config: { presence: { key: uid }, broadcast: { self: false } } })
+    .on('presence', { event: 'sync' }, () => { gOnline = gp.presenceState(); refreshFriendStatus() })
+    .on('broadcast', { event: 'typ' }, ({ payload }) => {
+      if (!payload || payload.to !== uid) return;
+      const f = String(payload.from); clearTimeout(typIn[f]); delete typIn[f];
+      if (payload.on) typIn[f] = setTimeout(() => { delete typIn[f]; refreshFriendStatus() }, 4500);
+      refreshFriendStatus();
+    })
+    .on('broadcast', { event: 'seen' }, ({ payload }) => {
+      if (!payload || payload.to !== uid) return;
+      const now = new Date().toISOString(); let ch = false;
+      dmMessages.forEach(m => { if (m.sender_id === uid && m.recipient_id === payload.from && !m.read_at) { m.read_at = now; ch = true } });
+      if (ch && dmPeer?.id === payload.from && dmVisible()) updateTicks();
+    })
+    .subscribe(async st => { if (st === 'SUBSCRIBED') { try { await gp.track({ t: Date.now() }) } catch {} } });
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) { markDMRead(); try { gp?.track({ t: Date.now() }) } catch {} } });
+}
 
 /* ---------- 8B. Notifikasi: pesan pribadi, like, follow, teman, hadiah, tag/balasan, hadiah Host ---------- */
 const nKey = () => 'nt_' + uid;

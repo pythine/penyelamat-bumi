@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <title>Voice & Gift Room</title>
-<link rel="manifest" href="/manifest.json">
+<link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0c0806">
 <meta name="mobile-web-app-capable" content="yes">
-<link rel="icon" type="image/png" href="/icon-192.png">
-<link rel="apple-touch-icon" href="/icon-192.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,0..1,0&display=block" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
@@ -198,6 +198,17 @@ textarea.inp{resize:none;display:block}
 .dmline.mine{align-self:flex-end;background:#76501f88}
 .dmline small{display:block;color:#d6b98a;font-size:10px;margin-top:4px}
 .dmcomposer{display:flex;gap:6px;align-items:center;margin-top:8px}
+/* Status teman: online / mengetik / dibaca */
+.fst{display:flex!important;align-items:center;font-weight:700}
+.fst .sd{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;background:#6a6058;flex:none}
+.fst.on{color:#6be07a!important}.fst.on .sd{background:#38e06a;box-shadow:0 0 6px #38e06a}
+.fst.typ{color:#ffd886!important}.fst.typ .sd{background:#ffd886;animation:pulse .7s ease-in-out infinite}
+.fst.off{color:#a99d92}
+.tk{margin-left:6px;color:#b9a98f;font-weight:700}.tk.rd{color:#5ec8ff}
+.dmline.typ{display:flex;gap:4px;align-items:center;padding:12px 14px;width:max-content}
+.dmline.typ i{width:7px;height:7px;border-radius:50%;background:#d6b98a;animation:tdot 1s infinite ease-in-out}
+.dmline.typ i:nth-child(2){animation-delay:.15s}.dmline.typ i:nth-child(3){animation-delay:.3s}
+@keyframes tdot{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-5px);opacity:1}}
 .dmcomposer .inp{min-width:0}
 .replyhint{display:flex;justify-content:space-between;align-items:center;background:#5b431e88;border-radius:10px;padding:7px 10px;margin:5px 0;font-size:12px;color:#ffe0a0}
 /* Stories 24 jam */
@@ -482,9 +493,90 @@ textarea.inp{resize:none;display:block}
 .sv-panel .cmtfeed{max-height:38dvh}
 .sv-ph{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;color:var(--gold)}
 .sv-ph button{width:32px;height:32px;border-radius:50%;background:#ffffff18;display:grid;place-items:center}
+/* ===== 3 border eksklusif beranimasi: Sayap Emas, Naga Api, Malam Elegan ===== */
+.bd-sayap{--bg:conic-gradient(#fff6c9,#ffd36e,#ffffff,#e0a526,#fff6c9,#ffc247,#fff6c9);--glow:#ffd36e;--deco:'';--spd:2.2s}
+.bd-nagaapi{--bg:conic-gradient(#fff3a0,#ff9a1f,#e11d00,#ff5a00,#fff3a0);--glow:#ff5a1f;--deco:'';--spd:1.1s}
+.bd-malam{--bg:conic-gradient(#1a0836,#5b2bb8,#d9c2ff,#5b2bb8,#1a0836);--glow:#8a5bff;--deco:'';--spd:5s}
+.bdx{position:absolute;left:-40%;right:-40%;top:-30%;bottom:-24%;z-index:5;pointer-events:none}
+.bdx svg{display:block;width:100%;height:100%;overflow:visible}
+.mrow .bdx{display:none}
+.bdx-sayap{animation:bdxGold 2s ease-in-out infinite}
+.bdx-nagaapi{animation:bdxNaga .9s ease-in-out infinite alternate}
+.bdx-malam{filter:drop-shadow(0 0 3px #b79bff) drop-shadow(0 0 8px #6d3bd199)}
+@keyframes bdxGold{0%,100%{filter:drop-shadow(0 0 3px #ffd36e) drop-shadow(0 0 7px #ffb52b88)}50%{filter:drop-shadow(0 0 6px #fff1a8) drop-shadow(0 0 15px #ffb52bcc)}}
+@keyframes bdxNaga{from{filter:drop-shadow(0 0 3px #ff7a1f) drop-shadow(0 0 7px #ff3b0088)}to{filter:drop-shadow(0 0 6px #ffd36e) drop-shadow(0 0 14px #ff5a00cc)}}
+.bdx .wg{transform-origin:46px 78px;animation:wflap 1.5s ease-in-out infinite}
+@keyframes wflap{0%,100%{transform:rotate(0)}50%{transform:rotate(15deg)}}
+.bdx .f1{fill:url(#gGold);stroke:#8a5a12;stroke-width:.6}
+.bdx .f2{fill:#fff3b8;stroke:#c98a1f;stroke-width:.5}
+.bdx .tw,.bdx .st{transform-box:fill-box;transform-origin:center;animation:twk 1.8s ease-in-out infinite}
+.bdx .tw{fill:#fff6c9}.bdx .st{fill:#efe4ff}
+@keyframes twk{0%,100%{opacity:.15;transform:scale(.4)}50%{opacity:1;transform:scale(1.25)}}
+.bdx .dg{transform-origin:46px 132px;animation:dwave 2.6s ease-in-out infinite}
+@keyframes dwave{0%,100%{transform:rotate(-2.5deg)}50%{transform:rotate(3.5deg)}}
+.bdx .db{fill:none;stroke:url(#gFire);stroke-width:9;stroke-linecap:round;stroke-linejoin:round}
+.bdx .ds{fill:none;stroke:#ffe9a8;stroke-width:1.6;stroke-linecap:round;stroke-dasharray:.1 6;opacity:.9}
+.bdx .dhd{fill:url(#gFire);stroke:#7a1200;stroke-width:.9;stroke-linejoin:round}
+.bdx .dhr{fill:#ffd36e;stroke:#7a1200;stroke-width:.7;stroke-linejoin:round}
+.bdx .de{fill:#fff7a8;animation:deye 1.1s ease-in-out infinite}
+@keyframes deye{0%,100%{opacity:.6}50%{opacity:1}}
+.bdx .dfl{fill:url(#gFlame);transform-box:fill-box;transform-origin:0 50%;animation:dflick .3s ease-in-out infinite alternate}
+@keyframes dflick{from{transform:scale(.8,.85)}to{transform:scale(1.15,1.1)}}
+.bdx .em{fill:#ffd36e;animation:ember 1.8s ease-out infinite}
+@keyframes ember{0%{transform:translateY(0);opacity:0}20%{opacity:1}100%{transform:translateY(-20px);opacity:0}}
+.bdx .mo{fill:url(#gMoon);stroke:#2a0a52;stroke-width:.6}
+.bdx .mn{transform-box:fill-box;transform-origin:center;animation:moonf 3.2s ease-in-out infinite}
+.bdx .mn.m2{animation-delay:-1.6s}
+@keyframes moonf{0%,100%{transform:translateY(-2px) rotate(-4deg)}50%{transform:translateY(2px) rotate(4deg)}}
+.bdx .dm{transform-box:fill-box;transform-origin:center;animation:dmP 1.8s ease-in-out infinite;filter:drop-shadow(0 0 3px #9fe3ff)}
+@keyframes dmP{0%,100%{transform:scale(.94)}50%{transform:scale(1.1)}}
+.bdx .dmf{fill:url(#gDia);stroke:#cfeaff;stroke-width:.6;stroke-linejoin:round}
+.bdx .dml{fill:none;stroke:#fff;stroke-width:.5;opacity:.85}
+.bdx .dsp{fill:#fff;transform-box:fill-box;transform-origin:center;animation:twk 1.4s ease-in-out infinite}
+@media(prefers-reduced-motion:reduce){.bdx *,.bdx{animation:none!important}}
+/* ===== Emoji gerak di foto kursi ===== */
+.chip.emochip{padding:3px 8px;display:inline-grid;place-items:center;cursor:pointer}
+.chip.emochip .ms{font-size:18px}
+.emg{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:6px}
+.emg button{aspect-ratio:1;border-radius:14px;background:#ffffff0f;border:1px solid #ffffff14;display:grid;place-items:center;font-size:28px;line-height:1}
+.emg button.lk{opacity:.4}
+.emg button span{display:inline-block}
+.emoav{position:absolute;inset:var(--p,4px);border-radius:50%;z-index:6;display:grid;place-items:center;background:radial-gradient(circle at 50% 38%,#3d2c19,#0d0907);font-size:min(9vw,44px);line-height:1;overflow:hidden;animation:emoIn .25s ease-out both}
+.emoav.out{animation:emoOut .3s ease-in forwards}
+.emoav span{display:inline-block}
+@keyframes emoIn{from{transform:scale(.3);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes emoOut{to{transform:scale(.4);opacity:0}}
+.ea-shake{animation:eShake .5s ease-in-out infinite}@keyframes eShake{0%,100%{transform:rotate(-10deg)}50%{transform:rotate(10deg)}}
+.ea-roll{animation:eRoll 1.2s ease-in-out infinite}@keyframes eRoll{0%,100%{transform:rotate(-25deg) translateX(-8%)}50%{transform:rotate(25deg) translateX(8%)}}
+.ea-pulse{animation:ePulse .8s ease-in-out infinite}@keyframes ePulse{0%,100%{transform:scale(1)}50%{transform:scale(1.28)}}
+.ea-float{animation:eFloat 1.4s ease-in-out infinite}@keyframes eFloat{0%,100%{transform:translateY(8%) scale(.95)}50%{transform:translateY(-10%) scale(1.1)}}
+.ea-kiss{animation:eKiss 1s ease-in-out infinite}@keyframes eKiss{0%,100%{transform:rotate(-8deg) scale(1)}50%{transform:rotate(10deg) scale(1.2)}}
+.ea-bounce{animation:eBounce .7s cubic-bezier(.3,.7,.4,1) infinite}@keyframes eBounce{0%,100%{transform:translateY(8%)}50%{transform:translateY(-16%)}}
+.ea-spin{animation:eSpin 1.1s linear infinite}@keyframes eSpin{to{transform:rotate(360deg)}}
+.ea-zoom{animation:eZoom .6s ease-in-out infinite alternate}@keyframes eZoom{from{transform:scale(.7)}to{transform:scale(1.3)}}
+.ea-cry{animation:eCry .5s ease-in-out infinite}@keyframes eCry{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(7%) rotate(4deg)}}
+.ea-rage{animation:eRage .22s linear infinite}@keyframes eRage{0%,100%{transform:translate(-3%,0) scale(1.1)}25%{transform:translate(3%,-3%) scale(1.15)}50%{transform:translate(-3%,3%) scale(1.1)}75%{transform:translate(3%,0) scale(1.15)}}
+.ea-sway{animation:eSway 1.8s ease-in-out infinite}@keyframes eSway{0%,100%{transform:rotate(-14deg)}50%{transform:rotate(14deg)}}
+.ea-tilt{animation:eTilt 1.2s ease-in-out infinite}@keyframes eTilt{0%,100%{transform:rotate(-18deg)}50%{transform:rotate(18deg) scale(1.1)}}
+.ea-clap{animation:eClap .4s ease-in-out infinite alternate}@keyframes eClap{from{transform:scale(1.2,.85)}to{transform:scale(.85,1.2)}}
+.ea-thumb{animation:eThumb .9s ease-in-out infinite}@keyframes eThumb{0%,100%{transform:rotate(0) translateY(0)}50%{transform:rotate(-22deg) translateY(-12%) scale(1.15)}}
+.ea-flame{animation:eFlame .35s ease-in-out infinite alternate}@keyframes eFlame{from{transform:scale(.9,1.1) rotate(-4deg)}to{transform:scale(1.1,.95) rotate(4deg)}}
+@media(prefers-reduced-motion:reduce){.emoav span,.emg button span{animation:none!important}}
+/* Layar Room (file rooms.html dibuka di dalam index.html, tanpa meninggalkan halaman) */
+#roomsOv{position:fixed;inset:0;z-index:45;background:#0c0806}
+#updBar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(78px + env(safe-area-inset-bottom));z-index:58;display:flex;align-items:center;gap:10px;padding:8px 10px 8px 14px;border-radius:999px;background:rgba(20,14,12,.97);border:1.5px solid var(--gold);box-shadow:0 8px 30px #000a;font-size:14px}
+#updBar button{background:var(--gold);color:#2a1700;border-radius:999px;padding:6px 14px;font-weight:900}
+#roomsOv iframe{display:block;width:100%;height:100%;border:0;background:#0c0806}
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<linearGradient id="gGold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6c9"/><stop offset=".5" stop-color="#ffc247"/><stop offset="1" stop-color="#b8802a"/></linearGradient>
+<linearGradient id="gFire" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3a0"/><stop offset=".45" stop-color="#ff8a1f"/><stop offset="1" stop-color="#c41500"/></linearGradient>
+<linearGradient id="gFlame" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffffff"/><stop offset=".35" stop-color="#ffe45c"/><stop offset=".7" stop-color="#ff6a1f"/><stop offset="1" stop-color="#d11f00" stop-opacity=".25"/></linearGradient>
+<linearGradient id="gMoon" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f6efff"/><stop offset=".55" stop-color="#b79bff"/><stop offset="1" stop-color="#6d3bd1"/></linearGradient>
+<linearGradient id="gDia" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".45" stop-color="#9fe3ff"/><stop offset="1" stop-color="#6a7bff"/></linearGradient>
+</defs></svg>
 
 <!-- ================= SETUP PROFIL ================= -->
 <section id="setup" class="scr" style="display:flex;flex-direction:column;justify-content:center">
@@ -493,7 +585,7 @@ textarea.inp{resize:none;display:block}
   <p class="sub" style="margin-top:4px">Upload foto profil dari HP-mu dan isi nama panggilan.</p>
   <div class="avsel" id="avs"></div>
   <input id="nm" class="inp" maxlength="16" placeholder="Nama panggilan">
-  <button class="btn" style="margin-top:16px" onclick="H.enter()">Masuk Room</button>
+  <button class="btn" style="margin-top:16px" onclick="H.enter()">Masuk</button>
 </section>
 
 <!-- ================= ROOM ================= -->
@@ -503,9 +595,10 @@ textarea.inp{resize:none;display:block}
     <button class="ib bell" onclick="H.notifs()" title="Notifikasi"><span class="ms">notifications</span><em class="nb"></em></button>
     <button class="ib" id="spkb" onclick="H.spk()" title="Speaker (dengar suara)"><span class="ms">volume_up</span></button>
     <button class="ib" onclick="H.panel()" title="Panel Host"><span class="ms">admin_panel_settings</span></button>
-    <button class="ib" onclick="H.exit()" title="Keluar / ubah profil"><span class="ms">logout</span></button>
+    <button class="ib hidden" id="rsetb" onclick="H.roomSettings()" title="Pengaturan room"><span class="ms">tune</span></button>
+    <button class="ib" onclick="H.leaveRoom()" title="Keluar dari room"><span class="ms">exit_to_app</span></button>
   </div>
-  <div class="chips"><span class="chip"><span class="ms">emoji_events</span> PENYELAMAT BUMI</span><button class="chip chestchip" id="chestChip" onclick="H.chest()" title="Peti Room"><span class="em">🪎</span><span class="cl">Lv.1</span><i class="cbar"><b></b></i></button><span class="mini" id="mini"></span><span class="chip" id="onl" style="margin-left:auto"></span></div>
+  <div class="chips"><span class="chip"><span class="ms">emoji_events</span> PENYELAMAT BUMI</span><button class="chip chestchip" id="chestChip" onclick="H.chest()" title="Peti Room"><span class="em">🪎</span><span class="cl">Lv.1</span><i class="cbar"><b></b></i></button><span class="mini" id="mini"></span><span class="chip" id="onl" style="margin-left:auto"></span><button class="chip emochip" onclick="H.emojiMenu()" title="Emoji gerak"><span class="ms">add_reaction</span></button></div>
   <div id="grid"></div>
   <div class="listen" id="listen"></div>
   <div id="chatw"><div id="chat"></div></div>
@@ -550,13 +643,13 @@ textarea.inp{resize:none;display:block}
 </section>
 
 <nav id="nav" class="nav hidden">
-  <button data-t="room" class="on" onclick="H.tab('room')"><i><span class="ms">chat</span></i>Room<em class="nb"></em></button>
-  <button data-t="posts" onclick="H.tab('posts')"><i><span class="ms">newspaper</span></i>Postingan<em class="nb"></em></button>
+  <button data-t="room" onclick="H.tab('room')"><i><span class="ms">meeting_room</span></i>Room<em class="nb"></em></button>
+  <button data-t="posts" class="on" onclick="H.tab('posts')"><i><span class="ms">newspaper</span></i>Postingan<em class="nb"></em></button>
   <button data-t="friends" onclick="H.tab('friends')"><i><span class="ms">group</span></i>Teman<em class="nb"></em></button>
   <button data-t="me" onclick="H.tab('me')"><i><span class="ms">person</span></i>Profil<em class="nb"></em></button>
 </nav>
 
-<div id="sheet" class="hidden"></div><div id="fx"></div><div id="svipPop" class="hidden"></div><div id="entranceFX" class="hidden"></div><div id="chestFX" class="hidden"></div><div id="storyView" class="storyview hidden"></div><div id="toast"></div><div id="nbanner"></div>
+<div id="roomsOv" class="hidden"><iframe id="roomsFrame" title="Room" allow="microphone"></iframe></div><div id="sheet" class="hidden"></div><div id="fx"></div><div id="svipPop" class="hidden"></div><div id="entranceFX" class="hidden"></div><div id="chestFX" class="hidden"></div><div id="storyView" class="storyview hidden"></div><div id="toast"></div><div id="nbanner"></div><div id="updBar" class="hidden"><span class="ms">system_update</span><b>Versi baru tersedia</b><button onclick="H.reloadApp()">Perbarui</button></div>
 
 <script type="module">
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
@@ -618,7 +711,10 @@ const BORDERS = [
   {id:'samudra',name:'Samudra',desc:'Ombak biru-tosca yang bergulung.'},
   {id:'bulan',name:'Bulan Perak',desc:'Perak dingin diterangi cahaya bulan.'},
   {id:'ratu',name:'Mahkota Ratu',desc:'Magenta dan emas bertabur permata.'},
-  {id:'naga',name:'Sisik Naga',desc:'Merah-emas sisik naga yang garang.'}];
+  {id:'naga',name:'Sisik Naga',desc:'Merah-emas sisik naga yang garang.'},
+  {id:'sayap',name:'Sayap Emas',desc:'Cahaya keemasan dengan sayap yang terus mengepak.'},
+  {id:'nagaapi',name:'Naga Api',desc:'Api menyala dengan dua naga penjaga di kanan dan kiri.'},
+  {id:'malam',name:'Malam Elegan',desc:'Ungu malam, bulan sabit saling berhadapan, berlian di bawah.'}];
 /* Border eksklusif khusus Host (orisinal, efek CSS) */
 const HOST_BORDERS = [
   {id:'hx-flame',name:'Api Kaisar'},{id:'hx-crown',name:'Mahkota Emas'},
@@ -646,7 +742,24 @@ const isV9 = p => lvl(p) >= 9;
 /* Border aktif: pilihan koleksi (jika valid) > bawaan SVIP 9 > tidak ada */
 const bdOf = (points, border, host) => (BORDERS.some(b => b.id === border) || (host && HOST_BORDERS.some(b => b.id === border))) ? border : host ? 'host' : (lvl(points) >= 11 ? 'svip11' : lvl(points) >= 10 ? 'svip10' : lvl(points) >= 9 ? 'svip9' : '');
 const ringBd = (points, border, host) => { const x = bdOf(points, border, host); return x ? ` vip9 bd-${x}` : '' };
-const bdImg = b => b === 'host' && HOST_BORDER_IMG ? `<img class="bdimg" src="${esc(HOST_BORDER_IMG)}" alt="">` : '';
+/* Ilustrasi border eksklusif (SVG inline, beranimasi lewat CSS). Kotak 180x154: cincin avatar = pusat (90,80), jari-jari 50 */
+const BD_ART = (() => {
+  const F = [[66,.62],[48,.8],[30,1],[12,1.08],[-6,1],[-22,.82]], I = [[56,.5],[38,.62],[20,.7],[2,.72],[-14,.6]];
+  const ft = (a, k, c) => `<path class="${c}" d="M0 0C-8-5-30-8-44-1C-32 4-14 6 0 0Z" transform="translate(46 78) rotate(${a}) scale(${k * 1.14})"/>`;
+  const wing = `<g class="wg">${F.map(x => ft(x[0], x[1], 'f1')).join('')}${I.map(x => ft(x[0], x[1], 'f2')).join('')}</g>`;
+  const tw = [[12,34,1.6,0],[22,18,1.2,.5],[168,34,1.6,.9],[158,18,1.2,.3],[90,12,1.3,.7]].map(p => `<circle class="tw" cx="${p[0]}" cy="${p[1]}" r="${p[2]}" style="animation-delay:${p[3]}s"/>`).join('');
+  const dragon = `<g class="dg"><path class="db" d="M46 132C16 124 10 96 24 76C36 60 26 44 42 34"/><path class="ds" d="M46 132C16 124 10 96 24 76C36 60 26 44 42 34"/>
+    <g transform="translate(37 34) rotate(-16) scale(1.2)"><path class="dhr" d="M-9-4L-18-9-10 0Z"/><path class="dhr" d="M-9 2L-19 2-10 7Z"/><path class="dhr" d="M-3-10L-12-23 3-13Z"/><path class="dhr" d="M4-11L0-24 9-12Z"/><path class="dhd" d="M-9 5C-9-6-3-12 6-10L19-6Q28-5 31-1L25 0 29 4 14 6Q3 11-9 5Z"/><path class="dhd" d="M12 6L29 5Q25 13 10 12Z" style="fill:#c41500"/><path d="M20-5L22-1 24-5ZM25-4L26 0 28-4Z" fill="#fff"/><circle class="de" cx="9" cy="-3" r="2.2"/><path class="dfl" d="M31 0C39-7 44-1 52-6 49 0 47 3 55 7 46 4 40 8 31 3Z"/></g></g>`;
+  const em = [[60,24,0],[120,26,.6],[90,16,1.1],[28,54,.3],[152,56,.9]].map(p => `<circle class="em" cx="${p[0]}" cy="${p[1]}" r="1.5" style="animation-delay:${p[2]}s"/>`).join('');
+  const moon = 'M7.333-11.925A14 14 0 1 0 7.333 11.925A12 12 0 1 1 7.333-11.925Z';
+  const st = [[34,26,0],[146,26,.7],[14,52,1.1],[166,52,.4],[90,14,.9]].map(p => `<path class="st" d="M0-4L1-1 4 0 1 1 0 4-1 1-4 0-1-1Z" transform="translate(${p[0]} ${p[1]})" style="animation-delay:${p[2]}s"/>`).join('');
+  return {
+    sayap: `<svg viewBox="0 0 180 154" aria-hidden="true">${wing}<g transform="translate(180 0) scale(-1 1)">${wing}</g>${tw}</svg>`,
+    nagaapi: `<svg viewBox="0 0 180 154" aria-hidden="true">${dragon}<g transform="translate(180 0) scale(-1 1)">${dragon}</g>${em}</svg>`,
+    malam: `<svg viewBox="0 0 180 154" aria-hidden="true">${st}<g transform="translate(24 78) scale(1.15)"><g class="mn"><path class="mo" d="${moon}"/></g></g><g transform="translate(156 78) scale(-1.15 1.15)"><g class="mn m2"><path class="mo" d="${moon}"/></g></g><g transform="translate(90 142)"><g class="dm"><path class="dmf" d="M-8-10L8-10 14-2 0 12-14-2Z"/><path class="dml" d="M-14-2L14-2M-8-10L-4-2 0 12M8-10L4-2 0 12M-4-2L0-10 4-2"/><path class="dsp" d="M9-9L10-6 13-5 10-4 9-1 8-4 5-5 8-6Z"/></g></g></svg>`
+  };
+})();
+const bdImg = b => b === 'host' && HOST_BORDER_IMG ? `<img class="bdimg" src="${esc(HOST_BORDER_IMG)}" alt="">` : BD_ART[b] ? `<span class="bdx bdx-${b}">${BD_ART[b]}</span>` : '';
 function avatarHTML(src, points, cls, size, attrs, border, host, who) {
   const tag = who ? ` data-au="${esc(who)}" data-sz="${size}"` : '';
   const im = `<img${cls ? ` class="${cls}"` : ''} src="${esc(src)}"${tag}${attrs || ''}>`, b = bdOf(points, border, host);
@@ -661,7 +774,7 @@ function repaintAvatars(id) {
     if (!b) { if (w) w.replaceWith(im); return }
     if (w) {
       w.className = 'av9w bd-' + b;
-      w.querySelectorAll(':scope>img.bdimg').forEach(x => x.remove());
+      w.querySelectorAll(':scope>img.bdimg,:scope>.bdx').forEach(x => x.remove());
     } else {
       const nw = document.createElement('span');
       nw.className = 'av9w bd-' + b; nw.style.setProperty('--sz', ((+im.dataset.sz || 34) + 8) + 'px');
@@ -741,11 +854,15 @@ function freeMySeatNow() {
   try { fetch(`${SUPABASE_URL}/rest/v1/seats?user_id=eq.${encodeURIComponent(uid)}`, { method: 'DELETE', keepalive: true, headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${authToken || SUPABASE_KEY}` } }).catch(() => {}) } catch {}
 }
 const H = window.H = {};
+let HAS_ROOMS = false, RID = null, inRm = false, curRoom = null; /* HAS_ROOMS: tabel rooms ada; RID: id room aktif; inRm: sedang berada di sebuah room */
+const ridp = () => RID ? { room_id: RID } : {};
+const rmErr = e => { const m = e?.message || String(e); return (e?.code === 'PGRST202' || /Could not find the function|schema cache|does not exist/i.test(m)) ? 'Fitur room belum aktif di server. Jalankan rooms_migration.sql di Supabase SQL Editor.' : m };
 let uid, me, avatar = '', settings = {title:'Voice & Gift Room', seat_count:15, svip_videos:{}};
 let entranceVideos = {};
 let giftVideos = {};
 let seats = {}, prof = {}, online = {}, mySeat = null, stream = null, muted = false, room, inRoom = false;
 let posts = [], gT = null, draftImg = null, myGifts = [], mq = Promise.resolve(), viewU = null;
+let gp = null, gOnline = {}, typIn = {}, typOut = 0, HAS_READ = false;
 let friendRows = [], pendingRows = [], dmPeer = null, dmMessages = [], dmReply = null, roomReply = null;
 let voiceRecorder = null, voiceStream = null, voiceChunks = [];
 const pcs = {}, early = {};
@@ -1029,6 +1146,7 @@ H.exit = async () => {
   try { await sb.from('seats').delete().eq('user_id', uid) } catch {} /* kursi dikosongkan DULU supaya langsung hilang di semua anggota */
   stopMic(); closeAll();
   try { await room?.untrack() } catch {}
+  try { await gp?.untrack() } catch {}
   try { room && await sb.removeChannel(room); dbChannel && await sb.removeChannel(dbChannel); relChannel && await sb.removeChannel(relChannel) } catch {}
   location.reload();
 };
@@ -1119,7 +1237,8 @@ H.removeGiftVideo = async i => {
   toast('Video gift dihapus. Efek emoji bawaan digunakan.');H.panel();
 };
 H.hideEntranceFx = hideEntranceFx;
-H.seatN = async d => { const n = Math.min(30, Math.max(4, settings.seat_count + d)); settings.seat_count = n; $('#sc').textContent = n; renderSeats(); await sb.from('room_settings').update({ seat_count: n }).eq('id', 1) };
+H.seatN = async d => { const n = Math.min(30, Math.max(4, settings.seat_count + d)); settings.seat_count = n; $('#sc').textContent = n; renderSeats();
+  if (HAS_ROOMS && RID) { const { error } = await sb.rpc('update_room', { p_id: RID, p_seats: n }); if (error) toast(rmErr(error)) } else await sb.from('room_settings').update({ seat_count: n }).eq('id', 1) };
 H.tix = async (id, n = 100) => {
   const { error } = await sb.rpc('give_coins', { target: id, amount: n });
   if (error && (error.code === 'PGRST202' || /Could not find the function/i.test(error.message || ''))) return toast('Jalankan gift_relation_migration.sql terbaru dulu 🪙');
@@ -1127,17 +1246,18 @@ H.tix = async (id, n = 100) => {
 };
 H.thm = async id => { const { error } = await sb.rpc('give_theme', { target: id }); toast(error ? error.message : 'Tema chat dibuka untuk dia 🎨'); if (!error) H.panel() };
 H.unhost = async () => { const { error } = await sb.rpc('release_host'); if (error) return toast(error.message); me = { ...me, is_host: false }; prof[uid] = { ...prof[uid], is_host: false }; room?.track(presence()); renderSeats(); H.close(); renderProf(); renderPosts(); toast('Kamu keluar dari mode Host') };
-H.reset = async () => { await sb.from('seats').delete().neq('seat_no', 0); await loadSeats(); toast('Semua kursi dikosongkan') };
-H.clear = async () => { await sb.from('messages').delete().neq('id', 0); $('#chat').innerHTML = ''; toast('Chat dibersihkan') };
+H.reset = async () => { let q = sb.from('seats').delete().neq('seat_no', 0); if (RID) q = q.eq('room_id', RID); await q; await loadSeats(); toast('Semua kursi dikosongkan') };
+H.clear = async () => { let q = sb.from('messages').delete().neq('id', 0); if (RID) q = q.eq('room_id', RID); await q; $('#chat').innerHTML = ''; toast('Chat dibersihkan') };
 
 /* ---------- 3. Room ---------- */
 let joined = false;
 let msgReady = false, msgSyncBusy = false;
 async function syncRecentMessages() {
-  if (!inRoom || msgSyncBusy) return;
+  if (!inRoom || !inRm || msgSyncBusy) return;
   msgSyncBusy = true;
   try {
-    const { data, error } = await sb.from('messages').select('*').order('id', { ascending: false }).limit(msgReady ? 30 : 80);
+    let mq0 = sb.from('messages').select('*'); if (RID) mq0 = mq0.eq('room_id', RID);
+    const { data, error } = await mq0.order('id', { ascending: false }).limit(msgReady ? 30 : 80);
     if (error) { console.warn('Message sync:', error.message); return; }
     const rows = (data || []).reverse().filter(m => !renderedMessageIds.has(String(m.id)));
     if (!rows.length) return;
@@ -1156,9 +1276,10 @@ async function stopMessageSync() {
 }
 async function startRoom() {
   if (inRoom) return;
-  $('#setup').classList.add('hidden'); $('#room').classList.remove('hidden'); $('#room').style.display = 'flex'; $('#nav').classList.remove('hidden'); inRoom = true;
+  $('#setup').classList.add('hidden'); $('#room').style.display = 'flex'; $('#nav').classList.remove('hidden'); inRoom = true;
   prof[uid] = { ...prof[uid], ...me }; applyTheme(); nLoad();
   settings = (await sb.from('room_settings').select('*').single()).data || settings;
+  HAS_ROOMS = !(await sb.from('rooms').select('id').limit(1)).error; /* tabel rooms ada = mode banyak room */
   await loadEntranceVideos();
   await loadGiftVideos();
   await loadGiftCatalog();
@@ -1171,12 +1292,7 @@ async function startRoom() {
       .on('postgres_changes', { event: '*', schema: 'public', table: 'relations', filter: `user_b=eq.${uid}` }, () => loadMyRelations())
       .subscribe();
   }
-  refreshMySocialStats();
-  await sb.from('seats').delete().eq('user_id', uid); /* masuk baru = belum duduk; buang sisa kursi dari sesi lama yang tidak sempat terhapus */
-  await loadSeats();
-  renderedMessageIds.clear(); msgReady = false;
-  await syncRecentMessages(); msgReady = true;
-  startMessageSync();
+  refreshMySocialStats(); startGlobalPresence();
   clearInterval(startRoom.bt); startRoom.bt = setInterval(() => { if (!document.hidden) { refreshMyBorders(); syncPoints() } }, 10000);
   loadMyGifts();
   loadPosts(true); loadStories();
@@ -1205,6 +1321,11 @@ async function startRoom() {
     }).subscribe();
   });
 
+  if (HAS_ROOMS) sb.channel('roomcfg').on('postgres_changes', { event: '*', schema: 'public', table: 'rooms' }, p => { /* pengaturan room berubah / room dihapus */
+    if (!inRm || !RID) return;
+    if (p.eventType === 'DELETE' && p.old?.id === RID) { toast('Room ini dihapus oleh pemiliknya'); H.leaveRoom(); return }
+    if (p.new?.id === RID) { curRoom = { ...curRoom, ...p.new }; settings = { ...settings, title: p.new.name, seat_count: p.new.seat_count }; renderSeats(); renderTop() }
+  }).subscribe();
   dbChannel = sb.channel('db')
     .on('postgres_changes', { event: '*', schema: 'public', table: 'seats' }, loadSeats)
     .on('postgres_changes', { event: '*', schema: 'public', table: 'posts' }, () => loadPosts(true))
@@ -1215,6 +1336,7 @@ async function startRoom() {
       if (p.new.from_id !== uid) { const g = GIFTS[p.new.gift]; pushNotif({ key: 'gift:' + p.new.id, type: 'gift', icon: g?.e || '🎁', from: p.new.from_id, text: `mengirim ${g?.name || 'hadiah'} untukmu`, tab: 'me', act: { k: 'user', id: p.new.from_id } }) }
     })
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, p => {
+      if (!inRm || (RID && p.new.room_id !== RID)) return; /* hanya pesan dari room yang sedang dimasuki */
       mq = mq.then(async () => {
         await ensureProf([p.new.user_id]);
         addRoomMessage(p.new, true);
@@ -1246,10 +1368,11 @@ async function startRoom() {
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'direct_messages', filter: `recipient_id=eq.${uid}` }, p => {
       const fromPeer = dmPeer && p.new.sender_id === dmPeer.id;
       if (fromPeer) dmMessages.push(p.new);
-      if (fromPeer && dmVisible()) renderDM(); /* hanya gambar ulang jika jendela chat memang sedang terbuka */
+      if (fromPeer) { clearTimeout(typIn[p.new.sender_id]); delete typIn[p.new.sender_id] }
+      if (fromPeer && dmVisible()) { renderDM(); markDMRead() } /* hanya gambar ulang jika jendela chat memang sedang terbuka */
       else pushNotif({ key: 'dm:' + p.new.id, type: 'dm', icon: '💬', from: p.new.sender_id, text: String(p.new.body || '').slice(0, 80) || 'Pesan baru', tab: 'friends', act: { k: 'dm', id: p.new.sender_id } });
     })
-    .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'room_settings' }, p => { settings = p.new; renderSeats(); renderTop() })
+    .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'room_settings' }, p => { if (HAS_ROOMS) return; settings = p.new; renderSeats(); renderTop() })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'svip_entrances' }, () => { loadEntranceVideos(); })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'gift_videos' }, () => { loadGiftVideos(); })
     .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'profiles' }, p => {
@@ -1275,44 +1398,114 @@ async function startRoom() {
       }
     });
 
-  /* Presence = pengganti onDisconnect: saat tab ditutup, kursi otomatis kosong + muncul keterangan keluar */
-  room = sb.channel('room', { config: { presence: { key: uid }, broadcast: { self: false } } })
-    .on('presence', { event: 'sync' }, () => { online = room.presenceState(); syncBordersFromPresence(); renderTop() })
-    .on('presence', { event: 'leave' }, ({ key, leftPresences, currentPresences }) => {
-      if (key === uid || currentPresences?.length) return; /* currentPresences > 0 = hanya ganti profil, bukan keluar */
-      addMsg({ type: 'leave', name: leftPresences?.[0]?.name || 'Seseorang' }, false);
-      purgeUser(key); /* kursi + suara + cache orang itu langsung dibersihkan di layar ini */
-      sb.from('seats').delete().eq('user_id', key).then(() => {}); /* dan di database */
-    })
-    .on('broadcast', { event: 'sig' }, ({ payload }) => onSig(payload))
-    .on('broadcast', { event: 'bd' }, ({ payload }) => { if (payload?.uid === uid) refreshMyBorders() })
-    .on('broadcast', { event: 'ent' }, ({ payload }) => payload?.uid && entranceFor(payload.uid, String(payload.name || 'Anggota'), Number(payload.level) || 5))
-    .subscribe(async s => {
-      if (s !== 'SUBSCRIBED') return;
-      await room.track(presence());
-      syncPeers(); /* pendengar langsung menyambung ke yang sudah duduk */
-      if (joined) return; /* sambung ulang jaringan: jangan umumkan 'bergabung' dan jangan buat timer lagi */
-      joined = true;
-      sb.rpc('cleanup_room').then(() => {});
-      setTimeout(sweep, 4000); setInterval(sweep, 10000);
-      await sb.from('messages').insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'join' });
-      /* Entrance SVIP 5-9: broadcast langsung ke semua anggota + pesan type 'chat' bertanda [ENT] (lolos RLS seperti pesan suara) */
-      const myLevel = Math.min(11, lvl(me.points || 0));
-      if (myLevel >= 5) {
-        entranceFor(uid, me.name, myLevel);
-        room.send({ type: 'broadcast', event: 'ent', payload: { uid, name: me.name, level: myLevel } });
-        const { error: entErr } = await sb.from('messages').insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'chat', body: '[ENT]' + myLevel });
-        if (entErr) console.warn('Entrance message:', entErr.message);
-      }
-    });
   $('#msg').onkeydown = e => { if (e.key === 'Enter') H.sendMsg() };
+  H.tab('posts'); /* masuk aplikasi = langsung ke Postingan, bukan ke room */
 }
+/* ---------- 2B. Banyak room: daftar/buat/pengaturan ada di rooms.html (dibuka sebagai layar di dalam halaman ini) ---------- */
+function openRooms(mode, id) {
+  $('#roomsFrame').src = 'rooms.html?mode=' + (mode || 'list') + (id ? '&id=' + encodeURIComponent(id) : '');
+  $('#roomsOv').classList.remove('hidden');
+}
+function closeRooms() { $('#roomsOv').classList.add('hidden'); $('#roomsFrame').src = 'about:blank' }
+const canEditRoom = () => !!(me?.is_host || (curRoom && curRoom.owner_id === uid));
+function renderRoomBtns() { $('#rsetb')?.classList.toggle('hidden', !(HAS_ROOMS && RID && canEditRoom())) }
+async function enterRoom(rid, pass) {
+  if (enterRoom.busy) throw new Error('Sedang masuk room, tunggu sebentar…');
+  if (inRm && (RID || null) === (rid || null)) { closeRooms(); H.tab('room'); return }
+  enterRoom.busy = true;
+  try {
+    let row = null;
+    if (HAS_ROOMS) { /* server memeriksa password & batas anggota; error dilempar ke pemanggil */
+      const { data, error } = await sb.rpc('join_room', { p_id: rid, p_pass: pass || null });
+      if (error) throw new Error(error.message);
+      row = data;
+    }
+    if (inRm) await leaveRoomCore(true);
+    RID = HAS_ROOMS ? rid : null; curRoom = row; inRm = true; joined = false;
+    if (row) settings = { ...settings, title: row.name, seat_count: row.seat_count };
+    renderRoomBtns();
+  await sb.from('seats').delete().eq('user_id', uid); /* masuk baru = belum duduk; buang sisa kursi dari sesi lama yang tidak sempat terhapus */
+    await loadSeats();
+    renderedMessageIds.clear(); msgReady = false;
+    await syncRecentMessages(); msgReady = true;
+    startMessageSync();
+    clearInterval(enterRoom.hb);
+    if (HAS_ROOMS) enterRoom.hb = setInterval(async () => { /* denyut: tetap tercatat sebagai anggota; keluar otomatis jika room dihapus */
+      if (!inRm || !RID) return;
+      const { error } = await sb.rpc('join_room', { p_id: RID });
+      if (error && /tidak ditemukan|dihapus|penuh/i.test(error.message)) { toast(error.message); H.leaveRoom() }
+    }, 30000);
+  /* Presence = pengganti onDisconnect: saat tab ditutup, kursi otomatis kosong + muncul keterangan keluar */
+    room = sb.channel('room:' + (RID || 'main'), { config: { presence: { key: uid }, broadcast: { self: false } } })
+      .on('presence', { event: 'sync' }, () => { online = room.presenceState(); syncBordersFromPresence(); renderTop() })
+      .on('presence', { event: 'leave' }, ({ key, leftPresences, currentPresences }) => {
+        if (key === uid || currentPresences?.length) return; /* currentPresences > 0 = hanya ganti profil, bukan keluar */
+        addMsg({ type: 'leave', name: leftPresences?.[0]?.name || 'Seseorang' }, false);
+        purgeUser(key); /* kursi + suara + cache orang itu langsung dibersihkan di layar ini */
+        sb.from('seats').delete().eq('user_id', key).then(() => {}); /* dan di database */
+      })
+      .on('broadcast', { event: 'sig' }, ({ payload }) => onSig(payload))
+      .on('broadcast', { event: 'bd' }, ({ payload }) => { if (payload?.uid === uid) refreshMyBorders() })
+      .on('broadcast', { event: 'emo' }, ({ payload }) => payload?.uid && showEmo(String(payload.uid), Number(payload.i)))
+      .on('broadcast', { event: 'ent' }, ({ payload }) => payload?.uid && entranceFor(payload.uid, String(payload.name || 'Anggota'), Number(payload.level) || 5))
+      .subscribe(async s => {
+        if (s !== 'SUBSCRIBED') return;
+        await room.track(presence());
+        syncPeers(); /* pendengar langsung menyambung ke yang sudah duduk */
+        if (joined) return; /* sambung ulang jaringan: jangan umumkan 'bergabung' dan jangan buat timer lagi */
+        joined = true;
+        sb.rpc('cleanup_room').then(() => {});
+        setTimeout(sweep, 4000); clearInterval(enterRoom.sw); enterRoom.sw = setInterval(sweep, 10000);
+        await sb.from('messages').insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'join', ...ridp() });
+        /* Entrance SVIP 5-9: broadcast langsung ke semua anggota + pesan type 'chat' bertanda [ENT] (lolos RLS seperti pesan suara) */
+        const myLevel = Math.min(11, lvl(me.points || 0));
+        if (myLevel >= 5) {
+          entranceFor(uid, me.name, myLevel);
+          room.send({ type: 'broadcast', event: 'ent', payload: { uid, name: me.name, level: myLevel } });
+          const { error: entErr } = await sb.from('messages').insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'chat', body: '[ENT]' + myLevel, ...ridp() });
+          if (entErr) console.warn('Entrance message:', entErr.message);
+        }
+      });
+    closeRooms(); H.tab('room'); renderTop();
+  } finally { enterRoom.busy = false }
+}
+async function leaveRoomCore(noRpc) {
+  clearInterval(enterRoom.hb); clearInterval(enterRoom.sw);
+  await stopMessageSync();
+  try { await sb.from('seats').delete().eq('user_id', uid) } catch {}
+  stopMic(); closeAll();
+  Object.keys(online).forEach(k => { document.getElementById('a' + k)?.remove(); unwatch(k) });
+  try { await room?.untrack() } catch {}
+  try { room && await sb.removeChannel(room) } catch {}
+  room = null; online = {}; seats = {}; mySeat = null; joined = false; ghostPrev = new Set();
+  if (HAS_ROOMS && !noRpc) sb.rpc('leave_room').then(() => {});
+  inRm = false; RID = null; curRoom = null; msgReady = false;
+  $('#chat').innerHTML = ''; renderedMessageIds.clear(); renderRoomBtns();
+}
+H.leaveRoom = async () => { if (!inRm) return; await leaveRoomCore(); H.tab('posts'); toast('Kamu keluar dari room') };
+H.roomSettings = () => { if (HAS_ROOMS && RID && canEditRoom()) openRooms('edit', RID) };
+/* Jembatan untuk rooms.html (satu origin, dipanggil lewat window.parent.RoomsAPI) */
+window.RoomsAPI = {
+  me: () => ({ id: uid, name: me?.name, host: !!me?.is_host }),
+  enabled: () => HAS_ROOMS, current: () => RID, close: closeRooms,
+  async list() { const { data, error } = await sb.rpc('list_rooms'); return error ? { error: rmErr(error) } : { data: data || [] } },
+  async get(id) { const { data, error } = await sb.from('rooms').select('*').eq('id', id).maybeSingle(); return error ? { error: rmErr(error) } : { data } },
+  async create(o) { const { data, error } = await sb.rpc('create_room', { p_name: o.name, p_seats: o.seats, p_max: o.max, p_private: !!o.priv, p_pass: o.priv ? (o.pass || null) : null }); return error ? { error: rmErr(error) } : { id: data } },
+  async update(id, o) {
+    const { error } = await sb.rpc('update_room', { p_id: id, p_name: o.name, p_seats: o.seats, p_max: o.max, p_private: !!o.priv, p_pass: o.pass || null });
+    if (error) return { error: rmErr(error) };
+    if (id === RID) { const { data } = await sb.from('rooms').select('*').eq('id', id).maybeSingle(); if (data) { curRoom = { ...curRoom, ...data }; settings = { ...settings, title: data.name, seat_count: data.seat_count }; renderSeats(); renderTop() } }
+    return { ok: true };
+  },
+  async remove(id) { const { error } = await sb.rpc('delete_room', { p_id: id }); if (error) return { error: rmErr(error) }; if (id === RID) await H.leaveRoom(); return { ok: true } },
+  async join(id, pass) { try { await enterRoom(id, pass); return { ok: true } } catch (e) { return { error: rmErr(e) } } }
+};
 
 H.sendMsg = async () => {
-  const i = $('#msg'), body = i.value.trim(); if (!body || H.sendMsg.busy) return;
+  const i = $('#msg'), body = i.value.trim(); if (!body || !inRm || H.sendMsg.busy) return;
   H.sendMsg.busy = true; setTimeout(() => H.sendMsg.busy = false, 400);
   i.value = ''; i.focus();
-  const row = { user_id: uid, name: me.name, avatar: me.avatar, type: 'chat', body };
+  const row = { user_id: uid, name: me.name, avatar: me.avatar, type: 'chat', body, ...ridp() };
   const withReply = roomReply ? { ...row, reply_to_id: roomReply.id, reply_preview: roomReply.body } : row;
   let { data: inserted, error } = await sb.from('messages').insert(withReply).select('*').single();
   if (error && /reply_/.test(error.message || '')) ({ data: inserted, error } = await sb.from('messages').insert(row).select('*').single());
@@ -1390,7 +1583,7 @@ H.voiceStop = async () => {
   if (upErr) return toast('Upload suara gagal: ' + upErr.message + ' (jalankan voice_fix.sql di Supabase)');
   const audioUrl = sb.storage.from('media').getPublicUrl(path).data?.publicUrl;
   if (!audioUrl) return toast('Audio terunggah, tetapi URL audio tidak berhasil dibuat.');
-  const { data: vm, error: msgErr } = await sb.from('messages').insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'chat', body: '[VOICE_MSG]' + audioUrl }).select('*').single();
+  const { data: vm, error: msgErr } = await sb.from('messages').insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'chat', body: '[VOICE_MSG]' + audioUrl, ...ridp() }).select('*').single();
   if (msgErr) { await sb.storage.from('media').remove([path]).catch(() => {}); return toast('Pesan suara ditolak: ' + msgErr.message); }
   if (vm) addRoomMessage(vm, true);
   toast('Pesan suara terkirim 🎧');
@@ -1445,8 +1638,10 @@ async function ensureProf(ids, force) {
 }
 let seatLoadSeq = 0;
 async function loadSeats() {
+  if (!inRm) return;
   const mine = ++seatLoadSeq;
-  const { data } = (await sb.from('seats').select('*'));
+  let sq = sb.from('seats').select('*'); if (RID) sq = sq.eq('room_id', RID);
+  const { data } = await sq;
   if (mine !== seatLoadSeq) return; /* ada pemuatan yang lebih baru: hasil lama dibuang agar kursi yang baru dikosongkan tidak muncul lagi */
   seats = {};
   (data || []).forEach(s => seats[s.seat_no] = s);
@@ -1460,10 +1655,11 @@ async function loadSeats() {
 
 function renderSeats() {
   const g = $('#grid'); g.innerHTML = '';
+  Object.keys(emoState).forEach(u => { if (!Object.values(seats).some(x => x.user_id === u)) { clearTimeout(emoState[u].t); delete emoState[u] } });
   for (let i = 1; i <= settings.seat_count; i++) {
     const s = seats[i], d = document.createElement('div'); d.className = 'seat';
     d.innerHTML = s
-      ? `<div class="ring r${hash(s.user_id) % 5}${ringBd(prof[s.user_id]?.points, prof[s.user_id]?.avatar_border, prof[s.user_id]?.is_host)}" data-uid="${s.user_id}"><img src="${esc(s.avatar)}">${bdImg(bdOf(prof[s.user_id]?.points, prof[s.user_id]?.avatar_border, prof[s.user_id]?.is_host))}<span class="mic">${ms(s.muted ? 'mic_off' : 'mic')}</span></div>${lvl(prof[s.user_id]?.points) >= 10 ? `<div class="nm2">${badge(prof[s.user_id]?.points)}</div><div class="nm" style="margin-top:2px">${esc(s.name)}</div>` : `<div class="nm">${badge(prof[s.user_id]?.points)}${esc(s.name)}</div>`}<div class="pill">${prof[s.user_id]?.points ?? 0}</div>`
+      ? `<div class="ring r${hash(s.user_id) % 5}${ringBd(prof[s.user_id]?.points, prof[s.user_id]?.avatar_border, prof[s.user_id]?.is_host)}" data-uid="${s.user_id}"><img src="${esc(s.avatar)}">${bdImg(bdOf(prof[s.user_id]?.points, prof[s.user_id]?.avatar_border, prof[s.user_id]?.is_host))}${emoState[s.user_id] ? emoHTML(emoState[s.user_id].i) : ''}<span class="mic">${ms(s.muted ? 'mic_off' : 'mic')}</span></div>${lvl(prof[s.user_id]?.points) >= 10 ? `<div class="nm2">${badge(prof[s.user_id]?.points)}</div><div class="nm" style="margin-top:2px">${esc(s.name)}</div>` : `<div class="nm">${badge(prof[s.user_id]?.points)}${esc(s.name)}</div>`}<div class="pill">${prof[s.user_id]?.points ?? 0}</div>`
       : `<div class="ring empty">＋</div><div class="nm dim">${i}</div>`;
     /* tap kursi sendiri = turun; tap kursi orang lain = menu (lihat profil / kirim gift); tap kursi kosong = duduk */
     d.onclick = () => s ? (s.user_id === uid ? leaveSeat() : H.seatMenu(s.user_id)) : sit(i);
@@ -1472,7 +1668,7 @@ function renderSeats() {
 }
 function renderTop() {
   $('#ttl').textContent = settings.title; const n = Object.keys(online).length;
-  $('#sub').textContent = `${n} online`; $('#onl').textContent = `👥 ${n}`;
+  $('#sub').textContent = `${n}${curRoom?.max_members ? ' / ' + curRoom.max_members : ''} online${curRoom?.is_private ? ' · privat' : ''}`; $('#onl').textContent = `👥 ${n}`;
   const seated = new Set(Object.values(seats).map(s => s.user_id));
   const L = Object.entries(online).filter(([k]) => !seated.has(k)).map(([k, v]) => ({ k, ...pmeta(v) }));
   $('#mini').innerHTML = L.slice(0, 3).map(u => `<img src="${esc(u.avatar)}">`).join('');
@@ -1488,7 +1684,7 @@ async function sit(n) {
     try { stream = await navigator.mediaDevices.getUserMedia(GUM); muted = false; $('#micb').innerHTML = ms('mic'); watch(stream, uid) }
     catch { toast('Mikrofon ditolak. Izinkan mikrofon, lalu ketuk tombol mic untuk mencoba lagi.') }
     closeAll(); /* tutup koneksi lama SEBELUM duduk */
-    const { error } = await sb.from('seats').insert({ seat_no: n, user_id: uid, name: me.name, avatar: me.avatar });
+    const { error } = await sb.from('seats').insert({ seat_no: n, user_id: uid, name: me.name, avatar: me.avatar, ...ridp() });
     if (error) { stopMic(); toast('Kursi sudah terisi') }
   } finally { sitting = false; await loadSeats() }
 }
@@ -1508,6 +1704,7 @@ H.mic = async () => {
 /* ---------- 4. Menu (tab) ---------- */
 const PAGES = { room: '#room', posts: '#pgPosts', friends: '#pgFriends', me: '#pgMe' };
 H.tab = t => {
+  if (t === 'room' && !inRm) { if (HAS_ROOMS) return openRooms('list'); return enterRoom(null).catch(e => toast(rmErr(e))) }
   Object.entries(PAGES).forEach(([k, sel]) => $(sel).classList.toggle('hidden', k !== t));
   document.querySelectorAll('#nav button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
   if (t === 'posts') { loadPosts(); loadStories(); } if (t === 'friends') loadFriends(); if (t === 'me') { renderProf(); loadMyGifts(); refreshMySocialStats(); loadMyRelations() } if (t === 'room') { const c = $('#chat'); c.scrollTop = c.scrollHeight }
@@ -1751,7 +1948,7 @@ H.view = async id => {
     socialStats(id),
     sb.from('follows').select('follower_id').eq('follower_id', uid).eq('following_id', id).maybeSingle(),
     HAS_REL ? loadRelations(id) : Promise.resolve(null)]);
-  const isFriend = !!fr.data, isFollowing = !!following.data, seated = Object.values(seats).some(x => x.user_id === id), on = !!online[id], list = ps.data || [];
+  const isFriend = !!fr.data, isFollowing = !!following.data, seated = Object.values(seats).some(x => x.user_id === id), on = isOn(id), list = ps.data || [];
   sheet(`<div class="pf" style="padding-top:0">${avatarHTML(u.avatar, u.points, 'pav', 112, '', u.avatar_border, u.is_host, u.id)}<h2>${u.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(u.points)}${esc(u.name)}</h2>${titleHTML(u.points)}
     <div class="stats" style="flex-wrap:wrap"><span class="chip">${seated ? ms('mic') + ' Di kursi' : on ? ms('circle', 'on') + ' Online' : ms('circle', 'o off') + ' Offline'}</span><span class="chip"><span class="ms">group</span> ${social.friends ?? '—'} Teman</span><span class="chip"><span class="ms">person</span> ${social.followers ?? '—'} Followers</span><span class="chip"><span class="ms">star</span> ${u.points ?? 0}</span><span class="chip"><span class="ms">redeem</span> ${u.gifts_sent ?? 0} dikirim</span><span class="chip"><span class="ms">edit_note</span> ${list.length}</span></div></div>
     <div class="acts">${isFriend ? `<button class="btn" onclick="H.openDM('${u.id}')"><span class="ms">chat</span> Chat</button>` : `<button class="btn" onclick="H.requestFriend('${u.id}')"><span class="ms">add</span> Tambah Teman</button>`}
@@ -1958,7 +2155,7 @@ H.send = async i => {
   if (!gT) return H.gift();
   const g = GIFTS[i]; if (!g) return;
   if (!me.is_host && (me.gift_tickets || 0) < g.coin) return toast(`Koin emas kurang 🔒 Butuh ${kfmt(g.coin)}, kamu punya ${kfmt(me.gift_tickets)}`);
-  const { error } = await sb.rpc('send_gift_v2', { g: i, target: gT.id });
+  const { error } = await sb.rpc('send_gift_v2', { g: i, target: gT.id, ...(RID ? { rid: RID } : {}) });
   if (error && (error.code === 'PGRST202' || /Could not find the function/i.test(error.message || ''))) return toast('Jalankan gift_relation_migration.sql terbaru dulu 🪙');
   error ? toast(error.message) : (H.close(), syncPointsSoon(500));
 };
@@ -2038,7 +2235,7 @@ H.chest = () => {
    <div class="pf" style="padding:6px 0 10px"><div style="font-size:74px;line-height:1;color:${CHEST_COL[chest.level - 1]}">${'📦'}</div><h2 style="margin:6px 0">Peti ${chestName(chest.level)}</h2><div class="prog" style="width:90%"><i style="width:${pct}%"></i></div><small style="color:#a99d92">${kfmt(chest.progress)} / ${kfmt(t)} poin gift · ${Math.floor(pct)}%</small></div>
    <h3 class="sec">Semua level</h3>${rows}${me.is_host ? `<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button class="sm o" onclick="H.hostChest(1000)">+1rb poin</button><button class="sm o" onclick="H.hostChest(10000)">+10rb</button><button class="sm o" onclick="H.hostChest(100000)">+100rb</button></div>` : ''}`);
 };
-H.hostChest = async n => { const { error } = await sb.rpc('chest_fill', { amount: n }); toast(error ? error.message : `Peti diisi +${kfmt(n)} poin`); loadChest() };
+H.hostChest = async n => { const { error } = await sb.rpc('chest_fill', { amount: n, ...(RID ? { rid: RID } : {}) }); toast(error ? error.message : `Peti diisi +${kfmt(n)} poin`); loadChest() };
 const chestRewardText = r => !r ? '' : r.kind === 'coin' ? `+${kfmt(r.amount)} Koin Emas` : r.kind === 'exp' ? `+${kfmt(r.amount)} EXP` : r.kind === 'border' ? `Border baru: ${BORDERS.find(b => b.id === r.border)?.name || r.border}` : '';
 function showChestFx(level, r) {
   const e = $('#chestFX'); clearTimeout(showChestFx.t);
@@ -2072,7 +2269,8 @@ async function loadFriends() {
     ${pendingRows.map(x=>`<div class="friendcard"><img src="${esc(x.user?.avatar||'')}" onclick="H.view('${x.sender_id}')" style="cursor:pointer"><div class="finfo"><b>${esc(x.user?.name||'Anggota')}</b><small>Ingin berteman denganmu</small></div><button class="sm" onclick="H.acceptFriend('${x.id}')">Terima</button></div>`).join('')||'<p class="empty-t">Tidak ada permintaan baru.</p>'}
     ${relHtml}
     <h3 class="sec">Daftar Teman (${friendRows.length})</h3>
-    ${friendRows.map(u=>`<div class="friendcard"><img src="${esc(u.avatar||'')}" onclick="H.view('${u.id}')" style="cursor:pointer"><div class="finfo"><b>${esc(u.name)}</b><small>Teman</small></div><button class="sm" onclick="H.openDM('${u.id}')"><span class="ms">chat</span> Chat${dmBadge(u.id)}</button></div>`).join('')||'<p class="empty-t">Belum ada teman. Tambahkan teman untuk mulai chat.</p>'}`;
+    ${[...friendRows].sort((a,b)=>isOn(b.id)-isOn(a.id)).map(u=>`<div class="friendcard"><img src="${esc(u.avatar||'')}" onclick="H.view('${u.id}')" style="cursor:pointer"><div class="finfo"><b>${esc(u.name)}</b><small class="fst off" data-fst="${u.id}"></small></div><button class="sm" onclick="H.openDM('${u.id}')"><span class="ms">chat</span> Chat${dmBadge(u.id)}</button></div>`).join('')||'<p class="empty-t">Belum ada teman. Tambahkan teman untuk mulai chat.</p>'}`;
+  refreshFriendStatus();
 }
 H.findFriends=()=>sheet(`<h3>Tambah Teman</h3><p class="sub">Cari anggota menggunakan nama profilnya.</p><input id="friendSearch" class="inp" placeholder="Ketik nama teman..." oninput="H.searchFriends()" autocomplete="off"><div id="friendResults" style="margin-top:10px"><p class="empty-t">Masukkan nama untuk mencari.</p></div>`);
 H.searchFriends=async()=>{
@@ -2106,7 +2304,7 @@ H.openDM=async id=>{
   const u=friendRows.find(x=>x.id===id)||(await sb.from('profiles').select('id,name,avatar').eq('id',id).maybeSingle()).data;
   if(!u)return toast('Teman tidak ditemukan');dmPeer=u;dmReply=null;nMarkDM(id);
   const {data,error}=await sb.from('direct_messages').select('*').or(`and(sender_id.eq.${uid},recipient_id.eq.${id}),and(sender_id.eq.${id},recipient_id.eq.${uid})`).order('created_at',{ascending:true}).limit(100);
-  if(error)return toast('Chat pribadi: '+error.message);dmMessages=data||[];renderDM();
+  if(error)return toast('Chat pribadi: '+error.message);dmMessages=data||[];renderDM();markDMRead();
 };
 function renderDM(){
   if(!dmPeer)return;
@@ -2114,10 +2312,11 @@ function renderDM(){
   const lines=dmMessages.map(m=>{
     const mine=m.sender_id===uid,quoted=m.reply_to_id?dmMessages.find(x=>x.id===m.reply_to_id):null;
     const body=esc(m.body).replace(/(@[\w.-]+)/g,'<span class="tagged">$1</span>');
-    return `<div class="dmline ${mine?'mine':''}">${quoted?`<div class="replybox"><b>${ms('reply')} ${quoted.sender_id===uid?'Kamu':esc(dmPeer.name)}</b>${esc(quoted.body.slice(0,100))}</div>`:''}${m.forwarded_from_id?`<small>${ms('forward')} Pesan diteruskan</small>`:''}${body}<small>${new Date(m.created_at).toLocaleString('id-ID',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'short'})}</small><div class="msgtools"><button onclick="H.replyDM('${m.id}')">${ms('reply')} Balas</button><button onclick="H.forwardDM('${m.id}')">${ms('forward')} Teruskan</button></div></div>`;
+    return `<div class="dmline ${mine?'mine':''}">${quoted?`<div class="replybox"><b>${ms('reply')} ${quoted.sender_id===uid?'Kamu':esc(dmPeer.name)}</b>${esc(quoted.body.slice(0,100))}</div>`:''}${m.forwarded_from_id?`<small>${ms('forward')} Pesan diteruskan</small>`:''}${body}<small>${new Date(m.created_at).toLocaleString('id-ID',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'short'})}${mine?`<span class="tk${m.read_at?' rd':''}" data-tk="${m.id}">${m.read_at?'✓✓ Dibaca':'✓ Terkirim'}</span>`:''}</small><div class="msgtools"><button onclick="H.replyDM('${m.id}')">${ms('reply')} Balas</button><button onclick="H.forwardDM('${m.id}')">${ms('forward')} Teruskan</button></div></div>`;
   }).join('');
-  sheet(`<div class="dmhead"><button class="ib" onclick="H.close()" title="Kembali"><span class="ms">arrow_back</span></button><img src="${esc(dmPeer.avatar||'')}"><div style="flex:1;min-width:0"><h3 style="margin:0">${esc(dmPeer.name)}</h3><p class="sub" style="margin:0">Pesan pribadi</p></div></div><div class="dmfeed" id="dmFeed">${lines||'<p class="empty-t">Belum ada pesan. Mulai percakapan! 👋</p>'}</div><div id="dmReplyHint"></div><div class="dmcomposer"><button class="ib" onclick="H.tagDM()" title="Tag teman"><span class="ms">alternate_email</span></button><input id="dmInput" class="inp" maxlength="200" placeholder="Tulis pesan..." onkeydown="if(event.key==='Enter')H.sendDM()"><button class="ib sendb" onclick="H.sendDM()"><span class="ms">send</span></button></div>`, true);
+  sheet(`<div class="dmhead"><button class="ib" onclick="H.close()" title="Kembali"><span class="ms">arrow_back</span></button><img src="${esc(dmPeer.avatar||'')}"><div style="flex:1;min-width:0"><h3 style="margin:0">${esc(dmPeer.name)}</h3><p class="sub fst off" id="dmStatus" data-fst="${esc(dmPeer.id)}" style="margin:0"></p></div></div><div class="dmfeed" id="dmFeed">${lines||'<p class="empty-t">Belum ada pesan. Mulai percakapan! 👋</p>'}<div class="dmline typ hidden" id="dmTyp"><i></i><i></i><i></i></div></div><div id="dmReplyHint"></div><div class="dmcomposer"><button class="ib" onclick="H.tagDM()" title="Tag teman"><span class="ms">alternate_email</span></button><input id="dmInput" class="inp" maxlength="200" placeholder="Tulis pesan..." oninput="H.dmTyping()" onkeydown="if(event.key==='Enter')H.sendDM()"><button class="ib sendb" onclick="H.sendDM()"><span class="ms">send</span></button></div>`, true);
   const f=$('#dmFeed');if(f)f.scrollTop=f.scrollHeight;renderDMReplyHint();const di=$('#dmInput');if(di&&keep){di.value=keep;if(foc)di.focus()}
+  refreshFriendStatus();
 }
 function renderDMReplyHint(){const e=$('#dmReplyHint');if(!e)return;const m=dmMessages.find(x=>x.id===dmReply);e.innerHTML=m?`<div class="replyhint">↩ Membalas: ${esc(m.body.slice(0,70))}<button onclick="H.cancelReplyDM()"><span class="ms">close</span></button></div>`:'';}
 H.replyDM=id=>{dmReply=id;renderDMReplyHint();$('#dmInput')?.focus()};
@@ -2126,7 +2325,7 @@ H.tagDM=()=>{if(!dmPeer)return;const i=$('#dmInput');i.value=(i.value?i.value+' 
 H.sendDM=async()=>{
   if(!dmPeer)return;const i=$('#dmInput'),body=i.value.trim();if(!body)return;
   const {data,error}=await sb.from('direct_messages').insert({sender_id:uid,recipient_id:dmPeer.id,body,reply_to_id:dmReply||null}).select().single();
-  if(error)return toast(error.message);dmMessages.push(data);dmReply=null;i.value='';renderDM();
+  if(error)return toast(error.message);dmMessages.push(data);dmReply=null;i.value='';H.dmStopTyping();renderDM();
 };
 H.forwardDM=async id=>{
   const m=dmMessages.find(x=>x.id===id);if(!m)return;
@@ -2153,6 +2352,72 @@ H.doForwardRoom=async friendId=>{
   const {error}=await sb.from('direct_messages').insert({sender_id:uid,recipient_id:friendId,body:`↗ Diteruskan dari ${src.name}: ${src.body||''}`});
   if(error)return toast(error.message);H.close();toast('Pesan berhasil diteruskan ✅');
 };
+
+/* ---------- 8A+. Status teman: online, mengetik, dibaca ----------
+   Channel 'gp' = presence GLOBAL (semua pengguna yang membuka aplikasi), jadi status online teman tampil
+   walau mereka sedang tidak berada di room yang sama. 'typ' dan 'seen' dikirim lewat broadcast channel yang sama. */
+function isOn(id) { return !!gOnline[id] || !!online[id] }
+function stOf(id) { return typIn[id] ? ['typ', 'mengetik…'] : isOn(id) ? ['on', 'Online'] : ['off', 'Offline'] }
+function refreshFriendStatus() {
+  document.querySelectorAll('[data-fst]').forEach(e => {
+    const [c, t] = stOf(e.dataset.fst);
+    e.className = e.className.replace(/\b(on|off|typ)\b/g, '').trim() + ' ' + c;
+    e.innerHTML = `<i class="sd"></i>${t}`;
+  });
+  const tb = $('#dmTyp');
+  if (tb && dmPeer) {
+    const was = !tb.classList.contains('hidden'), now = !!typIn[dmPeer.id];
+    tb.classList.toggle('hidden', !now);
+    const f = $('#dmFeed'); if (now && !was && f) f.scrollTop = f.scrollHeight;
+  }
+}
+function updateTicks() {
+  dmMessages.forEach(m => {
+    if (m.sender_id !== uid) return;
+    const e = document.querySelector(`[data-tk="${CSS.escape(String(m.id))}"]`);
+    if (e) { e.className = 'tk' + (m.read_at ? ' rd' : ''); e.textContent = m.read_at ? '✓✓ Dibaca' : '✓ Terkirim' }
+  });
+}
+function markDMRead() {
+  if (!dmPeer || document.hidden || !dmVisible()) return;
+  if (!dmMessages.some(m => m.sender_id === dmPeer.id && m.recipient_id === uid && !m.read_at)) return;
+  const now = new Date().toISOString();
+  dmMessages.forEach(m => { if (m.sender_id === dmPeer.id && !m.read_at) m.read_at = now });
+  if (HAS_READ) sb.from('direct_messages').update({ read_at: now }).eq('sender_id', dmPeer.id).eq('recipient_id', uid).is('read_at', null).then(() => {});
+  gp?.send({ type: 'broadcast', event: 'seen', payload: { from: uid, to: dmPeer.id } });
+}
+H.dmTyping = () => {
+  if (!dmPeer || !gp) return;
+  const n = Date.now(), to = dmPeer.id;
+  if (n - typOut > 2500) { typOut = n; gp.send({ type: 'broadcast', event: 'typ', payload: { from: uid, to, on: true } }) }
+  clearTimeout(H.dmTyping.t);
+  H.dmTyping.t = setTimeout(() => { typOut = 0; gp?.send({ type: 'broadcast', event: 'typ', payload: { from: uid, to, on: false } }) }, 3000);
+};
+H.dmStopTyping = () => {
+  clearTimeout(H.dmTyping.t);
+  if (dmPeer && gp && typOut) gp.send({ type: 'broadcast', event: 'typ', payload: { from: uid, to: dmPeer.id, on: false } });
+  typOut = 0;
+};
+function startGlobalPresence() {
+  if (gp || !uid) return;
+  sb.from('direct_messages').select('read_at').limit(1).then(r => { HAS_READ = !r.error });
+  gp = sb.channel('gp', { config: { presence: { key: uid }, broadcast: { self: false } } })
+    .on('presence', { event: 'sync' }, () => { gOnline = gp.presenceState(); refreshFriendStatus() })
+    .on('broadcast', { event: 'typ' }, ({ payload }) => {
+      if (!payload || payload.to !== uid) return;
+      const f = String(payload.from); clearTimeout(typIn[f]); delete typIn[f];
+      if (payload.on) typIn[f] = setTimeout(() => { delete typIn[f]; refreshFriendStatus() }, 4500);
+      refreshFriendStatus();
+    })
+    .on('broadcast', { event: 'seen' }, ({ payload }) => {
+      if (!payload || payload.to !== uid) return;
+      const now = new Date().toISOString(); let ch = false;
+      dmMessages.forEach(m => { if (m.sender_id === uid && m.recipient_id === payload.from && !m.read_at) { m.read_at = now; ch = true } });
+      if (ch && dmPeer?.id === payload.from && dmVisible()) updateTicks();
+    })
+    .subscribe(async st => { if (st === 'SUBSCRIBED') { try { await gp.track({ t: Date.now() }) } catch {} } });
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) { markDMRead(); try { gp?.track({ t: Date.now() }) } catch {} } });
+}
 
 /* ---------- 8B. Notifikasi: pesan pribadi, like, follow, teman, hadiah, tag/balasan, hadiah Host ---------- */
 const nKey = () => 'nt_' + uid;
@@ -2226,7 +2491,7 @@ function nAlert(n) {
   if (nSound && now - nLastBeep > 1200) { nLastBeep = now; nBeep() }
   try { navigator.vibrate?.(n.type === 'dm' ? [60, 40, 60] : 40) } catch {}
   if (document.hidden && 'Notification' in window && Notification.permission === 'granted') {
-    const opt = { body: `${n.icon} ${n.text}`, icon: n.avatar || '/icon-192.png', badge: '/icon-192.png', tag: n.type };
+    const opt = { body: `${n.icon} ${n.text}`, icon: n.avatar || 'icon-192.png', badge: 'icon-192.png', tag: n.type };
     navigator.serviceWorker?.ready.then(r => r.showNotification(n.title, opt)).catch(() => { try { new Notification(n.title, opt) } catch {} });
   }
 }
@@ -2264,9 +2529,59 @@ function checkRoomMention(m) {
   if (m.reply_to_id && msgCache.get(String(m.reply_to_id))?.user_id === uid)
     pushNotif({ key: 'rp:' + m.id, type: 'reply', icon: '↩️', from: m.user_id, who, text: 'membalas pesanmu: ' + body.slice(0, 70), tab: 'room', act: { k: 'tab', t: 'room' } });
 }
-if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+/* ---------- Cache (service worker): buka pertama mengunduh, berikutnya langsung tampil; file baru di server terdeteksi otomatis ---------- */
+let updPending = false;
+function appUpdated() {
+  if (updPending) return; updPending = true;
+  const busy = inRm || voiceRecorder || !$('#sheet').classList.contains('hidden') || !$('#storyView').classList.contains('hidden') || !$('#roomsOv').classList.contains('hidden');
+  if (!busy) { toast('Versi baru ditemukan, memperbarui…'); setTimeout(() => location.reload(), 1200); return } /* aman: tidak sedang di room / mengetik / merekam */
+  $('#updBar').classList.remove('hidden'); /* sedang sibuk: biarkan pengguna memilih kapan memperbarui */
+}
+H.reloadApp = () => location.reload();
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.addEventListener('message', e => { const d = e.data || {}; if (d.type === 'SW_UPDATED' && /\/(index\.html)?$/.test(d.path || '')) appUpdated() });
+  addEventListener('load', () => navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).then(reg => {
+    const ask = m => (navigator.serviceWorker.controller || reg.active)?.postMessage(m);
+    const check = () => { reg.update().catch(() => {}); ask({ type: 'CHECK' }) };
+    setInterval(() => { if (!document.hidden) check() }, 300000);
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) check() });
+    navigator.serviceWorker.ready.then(() => setTimeout(() => { /* titip daftar file CDN yang baru dimuat agar kunjungan kedua sudah ngebut */
+      try { ask({ type: 'WARM', urls: performance.getEntriesByType('resource').map(r => r.name).filter(u => /^https:/.test(u)) }) } catch {}
+    }, 3000));
+  }).catch(() => {}));
+}
 document.addEventListener('pointerdown', () => { try { nAC ||= new (window.AudioContext || window.webkitAudioContext)(); nAC.state === 'suspended' && nAC.resume() } catch {} }, { once: true });
 document.addEventListener('visibilitychange', () => { if (!document.hidden && inRoom) { refreshMyBorders(); syncPoints(); nRender() } });
+
+/* ---------- Emoji gerak: tampil di foto kursi pemain yang duduk, lalu kembali ke foto ---------- */
+const EMOS = [['😂','shake'],['🤣','roll'],['😍','pulse'],['🥰','float'],['😘','kiss'],['😎','bounce'],
+  ['🤩','spin'],['😱','zoom'],['😭','cry'],['😡','rage'],['😴','sway'],['🤔','tilt'],
+  ['👏','clap'],['👍','thumb'],['🔥','flame'],['💖','pulse'],['🎉','bounce'],['🙏','float']];
+const emoState = {};
+const isSeated = id => Object.values(seats).some(x => x.user_id === id);
+const emoHTML = i => { const [e, a] = EMOS[i] || EMOS[0]; return `<div class="emoav"><span class="ea-${a}">${e}</span></div>` };
+function showEmo(id, i) {
+  if (!EMOS[i] || !isSeated(id)) return; /* hanya pemain yang sedang duduk */
+  clearTimeout(emoState[id]?.t);
+  emoState[id] = { i, t: setTimeout(() => emoEnd(id), 3600) };
+  const ring = document.querySelector(`.ring[data-uid="${id}"]`); if (!ring) return;
+  ring.querySelector('.emoav')?.remove(); ring.insertAdjacentHTML('beforeend', emoHTML(i));
+}
+function emoEnd(id) {
+  delete emoState[id];
+  const el = document.querySelector(`.ring[data-uid="${id}"] .emoav`);
+  if (el) { el.classList.add('out'); setTimeout(() => el.remove(), 300) }
+}
+H.emojiMenu = () => {
+  const ok = isSeated(uid);
+  sheet(`<h3>Emoji Gerak</h3><p class="sub">${ok ? 'Ketuk emoji: fotomu di kursi berubah sebentar, lalu kembali seperti semula.' : 'Duduk di kursi dulu untuk memakai emoji.'}</p><div class="emg">${EMOS.map(([e, a], i) => `<button class="${ok ? '' : 'lk'}" onclick="H.sendEmo(${i})"><span class="ea-${a}">${e}</span></button>`).join('')}</div>`);
+};
+H.sendEmo = i => {
+  if (!isSeated(uid)) return toast('Duduk di kursi dulu untuk memakai emoji');
+  const now = Date.now(); if (now - (H.sendEmo.last || 0) < 1500) return; H.sendEmo.last = now;
+  H.close(); showEmo(uid, i);
+  try { room?.send({ type: 'broadcast', event: 'emo', payload: { uid, i } }) } catch {}
+};
 
 /* ---------- 9. Suara: WebRTC (signaling via Supabase Broadcast) ----------
    Aturan: pendengar (tidak duduk) selalu menelepon penghuni kursi; antar penghuni kursi, uid lebih kecil yang menelepon.
