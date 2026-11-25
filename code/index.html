@@ -198,6 +198,20 @@ textarea.inp{resize:none;display:block}
 .dmline.mine{align-self:flex-end;background:#76501f88}
 .dmline small{display:block;color:#d6b98a;font-size:10px;margin-top:4px}
 .dmcomposer{display:flex;gap:6px;align-items:center;margin-top:8px}
+/* Check-in harian */
+#ckPop{position:fixed;inset:0;z-index:65;display:grid;place-items:center;padding:20px;background:rgba(0,0,0,.62);backdrop-filter:blur(5px)}
+.ck-card{position:relative;width:min(92vw,380px);text-align:center;padding:22px 14px 16px;border:2px solid #ffd36e;border-radius:26px;background:radial-gradient(circle at 50% 0%,#5a3a10,#1d1208 62%,#100b08);box-shadow:0 0 34px #ffb52b66;animation:svipPopIn .45s ease both}
+.ck-x{position:absolute;right:10px;top:10px;width:32px;height:32px;border-radius:50%;background:#ffffff18;font-size:18px;display:grid;place-items:center}
+.ck-ic{font-size:42px;line-height:1.1;filter:drop-shadow(0 0 10px #ffd36e)}
+.ck-t{font-size:19px;letter-spacing:2px;color:var(--gold);margin-top:4px}
+.ck-s{font-size:13px;color:#e9cf9d;margin-top:4px;font-weight:700}
+.ck-g{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0}
+.ck-d{position:relative;padding:8px 2px;border-radius:14px;background:#ffffff0d;border:1.5px solid #f5c15a30;font-size:11px;color:#cdbfae}
+.ck-d b{display:block;font-size:17px;color:#ffe6a8}.ck-d .c{font-size:22px;display:block;line-height:1.3}
+.ck-d.done{opacity:.6}.ck-d.done::after{content:'✓';position:absolute;inset:0;display:grid;place-items:center;font-size:30px;color:#6be07a;background:#0007;border-radius:13px}
+.ck-d.now{border-color:var(--gold);box-shadow:0 0 14px #f5c15a99;background:#f5c15a24;color:#fff;animation:pulse 1.2s ease-in-out infinite}
+.ck-d.big{grid-column:span 2;display:flex;align-items:center;justify-content:center;gap:10px}.ck-d.big .c{font-size:30px}
+.ck-ok{padding:10px;border-radius:14px;background:#2b7a3b55;border:1.5px solid #6be07a;color:#c8ffd4;margin-bottom:10px;animation:svipPopIn .4s ease both}
 /* Status teman: online / mengetik / dibaca */
 .fst{display:flex!important;align-items:center;font-weight:700}
 .fst .sd{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;background:#6a6058;flex:none}
@@ -1292,7 +1306,7 @@ async function startRoom() {
       .on('postgres_changes', { event: '*', schema: 'public', table: 'relations', filter: `user_b=eq.${uid}` }, () => loadMyRelations())
       .subscribe();
   }
-  refreshMySocialStats(); startGlobalPresence();
+  refreshMySocialStats(); startGlobalPresence(); startCheckin();
   clearInterval(startRoom.bt); startRoom.bt = setInterval(() => { if (!document.hidden) { refreshMyBorders(); syncPoints() } }, 10000);
   loadMyGifts();
   loadPosts(true); loadStories();
@@ -1972,6 +1986,7 @@ function renderProf() {
     <div class="stats" style="flex-wrap:wrap"><span class="chip"><span class="ms">group</span> ${mySocialStats.friends ?? '—'} Teman</span><span class="chip"><span class="ms">person</span> ${mySocialStats.followers ?? '—'} Followers</span><span class="chip">🪙 ${Number(me.gift_tickets ?? 0).toLocaleString('id-ID')}</span><span class="chip"><span class="ms">star</span> ${me.points ?? 0}</span><span class="chip"><span class="ms">edit_note</span> ${mine.length}</span></div></div>
     <div class="acts"><button class="btn" onclick="H.editAv()"><span class="ms">photo_camera</span> Ubah Foto</button><button class="btn" onclick="H.editNm()"><span class="ms">edit</span> Ubah Nama</button></div>
     <button class="btn" onclick="H.compose()"><span class="ms">add</span> Buat Postingan</button>
+    <button class="btn" style="margin-top:8px" onclick="H.checkin()">📅 Check-in Harian</button>
     ${relSectionHTML()}${borderGridHTML()}
     <h3 class="sec"><span class="ms">redeem</span> Koleksi Hadiah</h3>${giftHTML(myGifts)}
     <h3 class="sec">Postingan Saya</h3>${mine.map(postHTML).join('') || '<p class="empty-t">Belum ada postingan.</p>'}`;
@@ -2417,6 +2432,55 @@ function startGlobalPresence() {
     })
     .subscribe(async st => { if (st === 'SUBSCRIBED') { try { await gp.track({ t: Date.now() }) } catch {} } });
   document.addEventListener('visibilitychange', () => { if (!document.hidden) { markDMRead(); try { gp?.track({ t: Date.now() }) } catch {} } });
+}
+
+/* ---------- 8C. Check-in harian ----------
+   Hari 1..7 = 5, 15, 25, 35, 45, 55, 65 koin emas. Setelah hari ke-7 kembali ke hari 1.
+   Logika & penambahan koin ada di server (checkin.sql) supaya tidak bisa dicurangi. Hari berganti pukul 00:00 WIB. */
+const CK_REWARDS = [5, 15, 25, 35, 45, 55, 65];
+let ckDay0 = '', ckBusy = false;
+const ckToday = () => new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Jakarta' });
+async function ckStatus() {
+  const { data, error } = await sb.rpc('checkin_status');
+  if (error) { console.warn('Check-in:', error.message); return null }
+  return data;
+}
+function ckRender(st, got) {
+  const day = Number(st.day) || 1, claimed = !!st.claimed;
+  const cells = CK_REWARDS.map((r, k) => {
+    const i = k + 1, done = claimed ? i <= day : i < day, now = !claimed && i === day;
+    return `<div class="ck-d ${done ? 'done' : ''} ${now ? 'now' : ''} ${i === 7 ? 'big' : ''}"><div>Hari ${i}</div>${i === 7 ? `<span class="c">🎁</span><div><b>+${r}</b>koin</div>` : `<span class="c">🪙</span><b>+${r}</b>`}</div>`;
+  }).join('');
+  let box = $('#ckPop'); if (!box) { box = document.createElement('div'); box.id = 'ckPop'; document.body.appendChild(box) }
+  box.innerHTML = `<div class="ck-card"><button class="ck-x" onclick="H.ckClose()" title="Tutup"><span class="ms">close</span></button>
+    <div class="ck-ic">📅</div><div class="ck-t">CHECK-IN HARIAN</div>
+    <div class="ck-s">${claimed ? `Hari ke-${day} dari 7 sudah diambil. Kembali lagi besok!` : `Hari ke-${day} dari 7 · masuk setiap hari, hadiah makin besar`}</div>
+    <div class="ck-g">${cells}</div>
+    ${got ? `<div class="ck-ok">🎉 +${got} Koin Emas masuk ke akunmu!</div>` : ''}
+    ${claimed ? `<button class="btn" onclick="H.ckClose()">${got ? 'Mantap!' : 'Tutup'}</button>` : `<button class="btn" onclick="H.ckClaim()">Klaim +${CK_REWARDS[day - 1]} Koin Emas 🪙</button>`}</div>`;
+}
+H.ckClose = () => { $('#ckPop')?.remove() };
+H.ckClaim = async () => {
+  if (ckBusy) return; ckBusy = true;
+  chestQuiet = Date.now() + 8000; /* cegah notifikasi "koin dari Host" untuk koin check-in */
+  const { data, error } = await sb.rpc('daily_checkin'); ckBusy = false;
+  if (error) return toast(error.message);
+  if (!data?.ok) { toast('Hari ini sudah check-in ✅'); const st = await ckStatus(); if (st) ckRender(st); return }
+  me = { ...me, gift_tickets: Number(data.coins ?? ((me.gift_tickets || 0) + data.reward)) };
+  ckRender({ claimed: true, day: data.day }, data.reward); renderProf(); syncPointsSoon(300);
+  pushNotif({ type: 'host', icon: '📅', title: 'Check-in Harian', text: `+${data.reward} Koin Emas (hari ke-${data.day})`, tab: 'me', act: { k: 'tab', t: 'me' } });
+};
+H.checkin = async () => {
+  const st = await ckStatus();
+  if (!st) return toast('Fitur check-in belum aktif. Jalankan checkin.sql di Supabase.');
+  ckRender(st);
+};
+async function ckAuto() { if (!inRoom || $('#ckPop')) return; const st = await ckStatus(); if (st && !st.claimed) ckRender(st) }
+function startCheckin() {
+  ckDay0 = ckToday(); setTimeout(ckAuto, 1500);
+  clearInterval(startCheckin.t);
+  startCheckin.t = setInterval(() => { const d = ckToday(); if (d !== ckDay0 && !document.hidden) { ckDay0 = d; ckAuto() } }, 60000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden && ckToday() !== ckDay0) { ckDay0 = ckToday(); ckAuto() } });
 }
 
 /* ---------- 8B. Notifikasi: pesan pribadi, like, follow, teman, hadiah, tag/balasan, hadiah Host ---------- */
