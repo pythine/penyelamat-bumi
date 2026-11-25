@@ -581,6 +581,34 @@ textarea.inp{resize:none;display:block}
 #updBar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(78px + env(safe-area-inset-bottom));z-index:58;display:flex;align-items:center;gap:10px;padding:8px 10px 8px 14px;border-radius:999px;background:rgba(20,14,12,.97);border:1.5px solid var(--gold);box-shadow:0 8px 30px #000a;font-size:14px}
 #updBar button{background:var(--gold);color:#2a1700;border-radius:999px;padding:6px 14px;font-weight:900}
 #roomsOv iframe{display:block;width:100%;height:100%;border:0;background:#0c0806}
+
+/* Radar online */
+.radar{position:relative;width:min(100%,330px);aspect-ratio:1;margin:8px auto 12px;border-radius:50%;border:2px solid #4cff9a66;overflow:hidden;
+ background:radial-gradient(circle,transparent 0 30%,#4cff9a2e 30.5% 31.5%,transparent 32% 63%,#4cff9a2e 63.5% 64.5%,transparent 65% 97%,#4cff9a40 97.5% 100%),radial-gradient(circle,#18301f,#0b140e 75%);box-shadow:0 0 26px #4cff9a30 inset,0 0 18px #4cff9a22}
+.radar::before{content:'';position:absolute;inset:0;background:linear-gradient(#4cff9a2e,#4cff9a2e) center/1px 100% no-repeat,linear-gradient(#4cff9a2e,#4cff9a2e) center/100% 1px no-repeat}
+.radar .sweep{position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,#4cff9a00 0 250deg,#4cff9a70 360deg);animation:rdspin 3.4s linear infinite;pointer-events:none}
+@keyframes rdspin{to{transform:rotate(360deg)}}
+.rdme{position:absolute;left:50%;top:50%;width:38px;height:38px;transform:translate(-50%,-50%);border-radius:50%;border:2px solid var(--gold);object-fit:cover;background:#1c1410;box-shadow:0 0 14px var(--gold);z-index:3}
+.rdb{position:absolute;width:34px;height:34px;transform:translate(-50%,-50%);padding:0;border-radius:50%;z-index:2}
+.rdb img{width:100%;height:100%;border-radius:50%;object-fit:cover;background:#1c1410;border:2px solid #7dffb5;box-shadow:0 0 10px #4cff9a}
+.rdb.fr img{border-color:var(--gold);box-shadow:0 0 10px #f5c15a}
+.rdb::after{content:'';position:absolute;inset:-2px;border-radius:50%;border:2px solid #4cff9a;opacity:0;animation:rdping 2.6s ease-out infinite}
+.rdb.new::after{border-color:#fff;animation-duration:1.1s;animation-iteration-count:4}
+@keyframes rdping{0%{transform:scale(1);opacity:.8}100%{transform:scale(1.9);opacity:0}}
+.rdcap{text-align:center;color:#8fe8b3;font-size:12px;margin:-2px 0 6px}
+/* Penonton & like story */
+.viewchip{margin-left:auto;display:inline-flex;align-items:center;gap:5px;color:#b9ada0;font-size:13px;padding:5px 4px}.viewchip .ms{font-size:18px}
+.svviews{cursor:pointer}.svviews .ms{font-size:14px;vertical-align:-3px}
+.sv-cbtn.on .ms{color:#ff4d6a}
+
+/* Foto sekali lihat */
+.once{display:inline-flex;align-items:center;gap:6px;font-size:14px;text-align:left}.once .ms{font-size:20px}
+.once.open{background:#ffffff14;border:1px dashed var(--gold);border-radius:12px;padding:8px 12px;color:#ffe3a6}.once small{opacity:.7}
+.once.gone{opacity:.6;font-style:italic}
+#onceView{position:fixed;inset:0;z-index:80;background:#000f;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:calc(12px + env(safe-area-inset-top)) 12px calc(12px + env(safe-area-inset-bottom));-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+#onceView img{max-width:100%;max-height:78dvh;object-fit:contain;border-radius:12px;pointer-events:none}
+#onceView .ot{color:#ffd886;font-size:13px;margin:0 0 10px;text-align:center}
+#onceView button{margin-top:14px;background:var(--gold);color:#2a1700;border-radius:999px;padding:10px 26px;font-weight:900}
 </style>
 </head>
 <body>
@@ -619,6 +647,7 @@ textarea.inp{resize:none;display:block}
   <div id="roomReplyHint"></div>
   <div class="bar">
     <button class="ib" onclick="H.tagRoom()" title="Tag anggota"><span class="ms">alternate_email</span></button>
+    <button class="ib" onclick="H.onceRoom()" title="Kirim foto sekali lihat"><span class="ms">photo_camera</span></button>
     <input id="msg" class="inp" maxlength="200" placeholder="Katakan sesuatu" autocomplete="off" enterkeyhint="send">
     <button class="ib sendb" onpointerdown="event.preventDefault()" onclick="H.sendMsg()" title="Kirim pesan"><span class="ms">send</span></button>
     <button class="ib voiceb" id="voiceMsgBtn" onclick="H.voiceMsg()" title="Rekam / kirim pesan suara"><span class="ms">keyboard_voice</span></button>
@@ -643,7 +672,7 @@ textarea.inp{resize:none;display:block}
   <div class="top"><div class="t"><b>Teman</b><small>Tambah teman dan mulai percakapan pribadi</small></div>
     <button class="ib bell" onclick="H.notifs()" title="Notifikasi"><span class="ms">notifications</span><em class="nb"></em></button>
     <button class="ib plus" onclick="H.findFriends()" title="Tambah teman"><span class="ms">add</span></button></div>
-  <div class="pg" id="friendBox"></div>
+  <div class="pg"><div id="radarBox"></div><div id="friendBox"></div></div>
 </section>
 
 <!-- ================= PROFIL ================= -->
@@ -1312,7 +1341,7 @@ async function startRoom() {
   loadPosts(true); loadStories();
   loadChestLevels().then(loadChest).catch(() => {}).then(() => {
     if (startRoom.chestSub) return; startRoom.chestSub = true;
-    sb.channel('chest').on('postgres_changes', { event: '*', schema: 'public', table: 'room_chest' }, p => { if (p.new?.level) { chest = { level: p.new.level, progress: Number(p.new.progress) }; renderChest() } }).subscribe();
+    sb.channel('chest').on('postgres_changes', { event: '*', schema: 'public', table: 'room_chest' }, p => { const n = p.new; if (!n?.level) return; if (chestPerRoom && 'room_id' in n && (RID ? String(n.room_id) !== String(RID) : n.room_id != null)) return; /* peti room lain: abaikan */ chest = { level: n.level, progress: Number(n.progress) }; renderChest() }).subscribe();
     setInterval(() => { if (inRoom) loadChest() }, HAS_CHEST ? 40000 : 15000);
   });
   sb.from('post_comments').select('id').limit(1).then(r => { /* channel terpisah: tabel opsional tidak merusak channel utama */
@@ -1325,6 +1354,14 @@ async function startRoom() {
     }).subscribe();
   });
 
+  sb.from('story_likes').select('story_id').limit(1).then(r => {
+    if (r.error) return;
+    sb.channel('slk').on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'story_likes' }, p => {
+      if (stCur) svStats(stCur.list[stCur.i].id);
+      const st = stories.find(x => String(x.id) === String(p.new?.story_id));
+      if (p.new.user_id !== uid && st?.user_id === uid) pushNotif({ key: 'sl:' + p.new.story_id + ':' + p.new.user_id, type: 'like', icon: '❤️', from: p.new.user_id, text: 'menyukai story-mu', tab: 'posts', act: { k: 'story', id: uid } });
+    }).subscribe();
+  });
   sb.from('story_comments').select('id').limit(1).then(r => {
     if (r.error) return;
     sb.channel('scmt').on('postgres_changes', { event: '*', schema: 'public', table: 'story_comments' }, p => {
@@ -1381,10 +1418,10 @@ async function startRoom() {
     })
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'direct_messages', filter: `recipient_id=eq.${uid}` }, p => {
       const fromPeer = dmPeer && p.new.sender_id === dmPeer.id;
-      if (fromPeer) dmMessages.push(p.new);
+      if (fromPeer && !dmMessages.some(x => x.id === p.new.id)) dmMessages.push(p.new);
       if (fromPeer) { clearTimeout(typIn[p.new.sender_id]); delete typIn[p.new.sender_id] }
       if (fromPeer && dmVisible()) { renderDM(); markDMRead() } /* hanya gambar ulang jika jendela chat memang sedang terbuka */
-      else pushNotif({ key: 'dm:' + p.new.id, type: 'dm', icon: '💬', from: p.new.sender_id, text: String(p.new.body || '').slice(0, 80) || 'Pesan baru', tab: 'friends', act: { k: 'dm', id: p.new.sender_id } });
+      else pushNotif({ key: 'dm:' + p.new.id, type: 'dm', icon: '💬', from: p.new.sender_id, text: String(p.new.body || '').startsWith('[ONCE]') ? '📷 Mengirim foto sekali lihat' : (String(p.new.body || '').slice(0, 80) || 'Pesan baru'), tab: 'friends', act: { k: 'dm', id: p.new.sender_id } });
     })
     .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'room_settings' }, p => { if (HAS_ROOMS) return; settings = p.new; renderSeats(); renderTop() })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'svip_entrances' }, () => { loadEntranceVideos(); })
@@ -1480,7 +1517,8 @@ async function enterRoom(rid, pass) {
           if (entErr) console.warn('Entrance message:', entErr.message);
         }
       });
-    closeRooms(); H.tab('room'); renderTop();
+    closeRooms(); H.tab('room'); renderTop(); gpTrack();
+    chest = { level: 1, progress: 0 }; renderChest(); loadChestSoon(150); /* peti tiap room berdiri sendiri: tampil Lv.1 dulu sampai data room ini dimuat */
   } finally { enterRoom.busy = false }
 }
 async function leaveRoomCore(noRpc) {
@@ -1494,7 +1532,7 @@ async function leaveRoomCore(noRpc) {
   room = null; online = {}; seats = {}; mySeat = null; joined = false; ghostPrev = new Set();
   if (HAS_ROOMS && !noRpc) sb.rpc('leave_room').then(() => {});
   inRm = false; RID = null; curRoom = null; msgReady = false;
-  $('#chat').innerHTML = ''; renderedMessageIds.clear(); renderRoomBtns();
+  $('#chat').innerHTML = ''; renderedMessageIds.clear(); renderRoomBtns(); gpTrack();
 }
 H.leaveRoom = async () => { if (!inRm) return; await leaveRoomCore(); H.tab('posts'); toast('Kamu keluar dari room') };
 H.roomSettings = () => { if (HAS_ROOMS && RID && canEditRoom()) openRooms('edit', RID) };
@@ -1721,7 +1759,7 @@ H.tab = t => {
   if (t === 'room' && !inRm) { if (HAS_ROOMS) return openRooms('list'); return enterRoom(null).catch(e => toast(rmErr(e))) }
   Object.entries(PAGES).forEach(([k, sel]) => $(sel).classList.toggle('hidden', k !== t));
   document.querySelectorAll('#nav button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
-  if (t === 'posts') { loadPosts(); loadStories(); } if (t === 'friends') loadFriends(); if (t === 'me') { renderProf(); loadMyGifts(); refreshMySocialStats(); loadMyRelations() } if (t === 'room') { const c = $('#chat'); c.scrollTop = c.scrollHeight }
+  if (t === 'posts') { loadPosts(); loadStories(); } if (t === 'friends') { loadFriends(); gpTrack(); renderRadar(true) } if (t === 'me') { renderProf(); loadMyGifts(); refreshMySocialStats(); loadMyRelations() } if (t === 'room') { const c = $('#chat'); c.scrollTop = c.scrollHeight }
   nMarkTab(t); if (t === 'me') refreshMyBorders();
 };
 
@@ -1745,7 +1783,7 @@ async function loadStories(){
   stGroups=Object.keys(by).sort((a,b)=>(a===uid?-1:b===uid?1:0)||by[b][by[b].length-1].created_at.localeCompare(by[a][by[a].length-1].created_at));
   $('#storyBar').innerHTML=`<div class="storyitem" onclick="H.addStory()"><div class="storyring storyadd"><img src="${esc(me.avatar||'')}" onerror="this.src=''"></div><small>Story Saya</small></div>`+stGroups.map(u=>{const g=by[u],st=g[g.length-1],seen=g.every(x=>stSeen.has(String(x.id)));
     return `<div class="storyitem" onclick="H.viewStory('${u}')"><div class="storyring${seen?' seen':''}"><img src="${esc(st.profiles?.avatar||'')}"></div><small>${esc(u===uid?'Story Saya':(st.profiles?.name||'Anggota'))}</small></div>`}).join('');
-  if(!loadStories.purged){loadStories.purged=1;purgeMyStories().catch(()=>{})}
+  if(!loadStories.purged){loadStories.purged=1;purgeMyStories().catch(()=>{});purgeMyOnce().catch(()=>{})}
   if(!loadStories.iv)loadStories.iv=setInterval(()=>{if(inRoom)loadStories()},120000); /* story yang lewat 24 jam hilang otomatis */
 }
 let draftType='image',svPaused=false,svRemain=5000,svStart=0,svPanel=false,svMuted=false;
@@ -1779,17 +1817,17 @@ H.viewStory=(userId,idx)=>{
 };
 function drawStory(){
   const c=stCur;if(!c)return;const st=c.list[c.i],e=$('#storyView'),own=st.user_id===uid,vid=isVid(st.media_url);
-  clearTimeout(drawStory.t);stSeen.add(String(st.id));svPaused=false;svPanel=false;
+  clearTimeout(drawStory.t);killStoryMedia();stSeen.add(String(st.id));svPaused=false;svPanel=false;
   e.innerHTML=`<div class="sv-top"><div class="sv-bars">${c.list.map((_,k)=>`<span><i class="${k<c.i?'done':k===c.i?(vid?'runv':'run'):''}"></i></span>`).join('')}</div>
-    <div class="sv-who"><img src="${esc(st.profiles?.avatar||'')}"><div><b>${esc(st.profiles?.name||'Anggota')}</b><small>${ago(st.created_at)} · hilang dalam ${Math.max(1,Math.ceil((STORY_MS-(Date.now()-Date.parse(st.created_at)))/36e5))} jam</small></div>${vid?`<button id="svMuteBtn" onclick="H.svMute()" title="Suara"><span class="ms">${svMuted?'volume_off':'volume_up'}</span></button>`:''}${own?'<button onclick="H.delStory()" title="Hapus story"><span class="ms">delete</span></button>':''}<button onclick="H.closeStory()"><span class="ms">close</span></button></div></div>
+    <div class="sv-who"><img src="${esc(st.profiles?.avatar||'')}"><div><b>${esc(st.profiles?.name||'Anggota')}</b><small>${ago(st.created_at)} · hilang dalam ${Math.max(1,Math.ceil((STORY_MS-(Date.now()-Date.parse(st.created_at)))/36e5))} jam${HAS_SV===false?'':` · <span class="svviews" id="svViews" onclick="H.svViewers()"><span class="ms o">visibility</span> <b>0</b></span>`}</small></div>${vid?`<button id="svMuteBtn" onclick="H.svMute()" title="Suara"><span class="ms">${svMuted?'volume_off':'volume_up'}</span></button>`:''}${own?'<button onclick="H.delStory()" title="Hapus story"><span class="ms">delete</span></button>':''}<button onclick="H.closeStory()"><span class="ms">close</span></button></div></div>
     <div class="sv-body">${vid?`<video id="svVid" src="${esc(st.media_url)}" playsinline preload="auto" ${svMuted?'muted':''} onloadedmetadata="H.svVid(this)" ontimeupdate="H.svProg(this)" onended="H.stepStory(1)" onerror="H.stepStory(1)"></video>`:`<img src="${esc(st.media_url)}">`}${st.caption?`<div class="sv-cap">${esc(st.caption)}</div>`:''}<button class="sv-nav l" onclick="H.stepStory(-1)"></button><button class="sv-nav r" onclick="H.stepStory(1)"></button></div>
     <div class="sv-panel hidden" id="svPanel"></div>
-    <div class="sv-foot"><button class="sv-cbtn" onclick="H.svCmts()" title="Lihat komentar"><span class="ms o">chat_bubble</span><span id="svCnt">0</span></button><input id="svInput" class="inp" maxlength="200" placeholder="Tulis komentar..." autocomplete="off" onfocus="H.svPause(true)" onblur="if(!svPanel)H.svPause(false)" onkeydown="if(event.key==='Enter')H.svSend()"><button class="ib sendb" onclick="H.svSend()" title="Kirim"><span class="ms">send</span></button></div>`;
+    <div class="sv-foot">${HAS_SL===false?'':`<button class="sv-cbtn" id="svLikeBtn" onclick="H.svLike()" title="Suka"><span class="ms o">favorite</span><span id="svLikeCnt">0</span></button>`}<button class="sv-cbtn" onclick="H.svCmts()" title="Lihat komentar"><span class="ms o">chat_bubble</span><span id="svCnt">0</span></button><input id="svInput" class="inp" maxlength="200" placeholder="Tulis komentar..." autocomplete="off" onfocus="H.svPause(true)" onblur="if(!svPanel)H.svPause(false)" onkeydown="if(event.key==='Enter')H.svSend()"><button class="ib sendb" onclick="H.svSend()" title="Kirim"><span class="ms">send</span></button></div>`;
   e.classList.remove('hidden');
   if(!vid){svRemain=5000;svStart=Date.now();drawStory.t=setTimeout(()=>H.stepStory(1),svRemain)}
-  svCount(st.id);
+  svCount(st.id);recStoryView(st).finally(()=>svStats(st.id));
 }
-H.svVid=v=>{v.muted=svMuted;v.play().catch(()=>{svMuted=true;v.muted=true;const b=$('#svMuteBtn .ms');if(b)b.textContent='volume_off';v.play().catch(()=>{})})};
+H.svVid=v=>{if(!stCur||!v.isConnected)return;v.muted=svMuted;v.play().catch(()=>{svMuted=true;v.muted=true;const b=$('#svMuteBtn .ms');if(b)b.textContent='volume_off';v.play().catch(()=>{})})};
 H.svProg=v=>{const b=$('.sv-bars i.runv');if(b&&v.duration)b.style.width=(v.currentTime/v.duration*100)+'%'};
 H.svMute=()=>{svMuted=!svMuted;const v=$('#svVid');if(v){v.muted=svMuted;if(!svMuted)v.play().catch(()=>{})}const b=$('#svMuteBtn .ms');if(b)b.textContent=svMuted?'volume_off':'volume_up'};
 H.svPause=on=>{
@@ -1804,7 +1842,46 @@ H.stepStory=d=>{
   if(n>=c.list.length){const nx=stGroups[stGroups.indexOf(c.userId)+1];return nx?H.viewStory(nx):H.closeStory()}
   c.i=n;drawStory();
 };
-H.closeStory=()=>{clearTimeout(drawStory.t);stCur=null;svPaused=false;svPanel=false;const e=$('#storyView');e.querySelector('video')?.pause();e.classList.add('hidden');e.innerHTML='';loadStories()};
+/* Hentikan total semua media story: tanpa ini suara video tetap jalan walau layar sudah ditutup / pindah story */
+function killStoryMedia(){const e=$('#storyView');if(!e)return;e.querySelectorAll('video,audio').forEach(v=>{try{v.onloadedmetadata=v.ontimeupdate=v.onended=v.onerror=null;v.muted=true;v.pause();v.removeAttribute('src');v.load()}catch{}})}
+H.closeStory=()=>{clearTimeout(drawStory.t);stCur=null;svPaused=false;svPanel=false;const e=$('#storyView');killStoryMedia();e.classList.add('hidden');e.innerHTML='';loadStories()};
+document.addEventListener('visibilitychange',()=>{const v=$('#svVid');if(!v||!stCur)return;if(document.hidden)v.pause();else if(!svPaused)v.play().catch(()=>{})});
+window.addEventListener('pagehide',killStoryMedia);
+
+/* ---- penonton & like story ---- */
+let HAS_SV = null, HAS_SL = null; const svSent = new Set();
+async function recStoryView(st) {
+  if (st.user_id === uid || HAS_SV === false || svSent.has(String(st.id))) return; svSent.add(String(st.id));
+  const { error } = await sb.from('story_views').upsert({ story_id: st.id, user_id: uid }, { onConflict: 'story_id,user_id', ignoreDuplicates: true });
+  if (error) { if (/story_views|relation|schema cache/i.test(error.message)) HAS_SV = false; else svSent.delete(String(st.id)) }
+}
+async function svStats(id) {
+  const none = { error: true };
+  const [v, l, m] = await Promise.all([
+    HAS_SV === false ? none : sb.from('story_views').select('user_id', { count: 'exact', head: true }).eq('story_id', id),
+    HAS_SL === false ? none : sb.from('story_likes').select('user_id', { count: 'exact', head: true }).eq('story_id', id),
+    HAS_SL === false ? none : sb.from('story_likes').select('user_id').eq('story_id', id).eq('user_id', uid).maybeSingle()]);
+  if (stCur?.list[stCur.i]?.id !== id) return;
+  if (v.error) { if (HAS_SV !== null || !v.count) { if (/story_views|relation|schema cache/i.test(v.error?.message || '')) HAS_SV = false } $('#svViews')?.remove() } else { HAS_SV = true; const b = $('#svViews b'); if (b) b.textContent = kfmt(v.count || 0) }
+  if (l.error) { if (/story_likes|relation|schema cache/i.test(l.error?.message || '')) HAS_SL = false; $('#svLikeBtn')?.remove() }
+  else { HAS_SL = true; const c = $('#svLikeCnt'); if (c) c.textContent = kfmt(l.count || 0); const on = !!m.data, b = $('#svLikeBtn'); if (b) { b.classList.toggle('on', on); b.querySelector('.ms').classList.toggle('o', !on) } }
+}
+H.svLike = async () => {
+  const st = stCur?.list[stCur.i], b = $('#svLikeBtn'); if (!st || !b || H.svLike.busy) return; H.svLike.busy = true;
+  const on = !b.classList.contains('on'), c = $('#svLikeCnt'), n0 = Number(String(c.textContent).replace(/\D/g, '')) || 0;
+  b.classList.toggle('on', on); b.querySelector('.ms').classList.toggle('o', !on); c.textContent = kfmt(Math.max(0, n0 + (on ? 1 : -1)));
+  const { error } = on ? await sb.from('story_likes').upsert({ story_id: st.id, user_id: uid }, { onConflict: 'story_id,user_id', ignoreDuplicates: true }) : await sb.from('story_likes').delete().eq('story_id', st.id).eq('user_id', uid);
+  H.svLike.busy = false;
+  if (error) { toast(/story_likes|relation|schema cache/i.test(error.message) ? 'Fitur like story belum aktif. Jalankan views_story_likes.sql di Supabase.' : error.message); svStats(st.id) }
+};
+H.svViewers = async () => {
+  const st = stCur?.list[stCur.i], p = $('#svPanel'); if (!st || st.user_id !== uid || !p) return;
+  svPanel = true; p.classList.remove('hidden'); H.svPause(true);
+  const { data, error } = await sb.from('story_views').select('user_id,created_at,profiles!user_id(name,avatar)').eq('story_id', st.id).order('created_at', { ascending: false }).limit(200);
+  const head = n => `<div class="sv-ph"><b>${n}</b><button onclick="H.svCmts()"><span class="ms">close</span></button></div>`;
+  if (error) { p.innerHTML = head('Penonton') + '<p class="empty-t">Fitur penonton story belum aktif.<br>Jalankan views_story_likes.sql di Supabase.</p>'; return }
+  p.innerHTML = head(`Penonton (${(data || []).length})`) + `<div class="cmtfeed">${(data || []).map(r => `<div class="cmt"><img src="${esc(r.profiles?.avatar || '')}" onclick="H.closeStory();H.view('${r.user_id}')"><div class="cb"><b>${esc(r.profiles?.name || 'Anggota')}</b> <small>${ago(r.created_at)}</small></div></div>`).join('') || '<p class="empty-t">Belum ada yang menonton.</p>'}</div>`;
+};
 /* ---- komentar story ---- */
 async function svCount(id){
   const {count,error}=await sb.from('story_comments').select('id',{count:'exact',head:true}).eq('story_id',id);
@@ -1816,7 +1893,8 @@ function svCmtHTML(c,st){
 }
 async function svLoadCmts(){
   const st=stCur?.list[stCur.i],p=$('#svPanel');if(!st||!p)return;
-  const {data,error}=await sb.from('story_comments').select('id,user_id,body,created_at,profiles!user_id(name,avatar,points)').eq('story_id',st.id).order('created_at',{ascending:true}).limit(200);
+  const {data,error}=await sb.from('story_comments').select('id,user_id,body,created_at,profiles!user_id(name,avatar,points)').eq('story_id',st.id).order('created_at',{ascending:false}).limit(200);
+  if(data)data.reverse();
   const head=n=>`<div class="sv-ph"><b>${n}</b><button onclick="H.svCmts()"><span class="ms">close</span></button></div>`;
   if(error){p.innerHTML=head('Komentar')+'<p class="empty-t">Fitur komentar story belum aktif.<br>Jalankan story_comments.sql di Supabase.</p>';return}
   p.innerHTML=head(`Komentar (${(data||[]).length})`)+`<div class="cmtfeed" id="svFeed">${(data||[]).map(c=>svCmtHTML(c,st)).join('')||'<p class="empty-t">Belum ada komentar. Jadilah yang pertama!</p>'}</div>`;
@@ -1856,7 +1934,8 @@ function cmtHTML(c) {
 }
 async function renderCmts() {
   if (!cmtPost) return;
-  const { data, error } = await sb.from('post_comments').select('id,user_id,body,created_at,profiles!user_id(name,avatar,points,is_host' + BC() + ')').eq('post_id', cmtPost.id).order('created_at', { ascending: true }).limit(200);
+  const { data, error } = await sb.from('post_comments').select('id,user_id,body,created_at,profiles!user_id(name,avatar,points,is_host' + BC() + ')').eq('post_id', cmtPost.id).order('created_at', { ascending: false }).limit(200);
+  if (data) data.reverse();
   if (error) { sheet(`<h3><span class="ms">chat</span> Komentar</h3><p class="sub">${esc(error.message)}<br>Jalankan stories_comments_migration.sql di Supabase.</p>`); return }
   const old = $('#cmtInput'), keep = old?.value || '', focused = document.activeElement === old;
   sheet(`<h3><span class="ms">chat</span> Komentar (${(data || []).length})</h3><div class="cmtfeed" id="cmtFeed">${(data || []).map(cmtHTML).join('') || '<p class="empty-t">Belum ada komentar. Jadilah yang pertama! 💬</p>'}</div>
@@ -1880,16 +1959,41 @@ H.delCmt = async id => {
 async function loadPosts(quiet) {
   const { data, error } = await sb.from('posts').select('id,user_id,body,image,created_at,profiles!user_id(name,avatar,is_host,gifts_sent,points' + BC() + '),post_likes(user_id)').order('created_at', { ascending: false }).limit(50);
   if (error) { if (!quiet) toast('Postingan: ' + error.message); return }
-  posts = data || []; renderPosts(); renderProf(); loadCmtCounts();
+  posts = data || []; renderPosts(); renderProf(); loadCmtCounts(); loadPostViews();
 }
 function postHTML(p) {
   const u = p.profiles || {}, can = p.user_id === uid || me.is_host, L = p.post_likes || [], n = L.length, liked = L.some(l => l.user_id === uid);
-  return `<article class="post"><div class="hd">${avatarHTML(u.avatar, u.points, '', 40, ` onclick="H.view('${p.user_id}')" style="cursor:pointer"`, u.avatar_border, u.is_host, p.user_id)}<div><b>${u.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(u.points)}${esc(u.name)}</b><small>${ago(p.created_at)}</small></div>
+  return `<article class="post" data-pid="${p.id}"><div class="hd">${avatarHTML(u.avatar, u.points, '', 40, ` onclick="H.view('${p.user_id}')" style="cursor:pointer"`, u.avatar_border, u.is_host, p.user_id)}<div><b>${u.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(u.points)}${esc(u.name)}</b><small>${ago(p.created_at)}</small></div>
     ${can ? `<button class="del" onclick="H.delPost(${p.id})" title="Hapus"><span class="ms">delete</span></button>` : ''}</div>
     ${p.body ? `<p>${esc(p.body)}</p>` : ''}${p.image ? `<img class="pi" loading="lazy" src="${esc(p.image)}">` : ''}
-    <div class="postbar"><button class="likebtn ${liked ? 'on' : ''}" onclick="H.like(${p.id})">${ms('favorite', liked ? '' : 'o')} ${n}</button><button class="likebtn" onclick="H.comments(${p.id})">${ms('chat_bubble', 'o')} ${cmtCount[p.id] || 0}</button></div></article>`;
+    <div class="postbar"><button class="likebtn ${liked ? 'on' : ''}" onclick="H.like(${p.id})">${ms('favorite', liked ? '' : 'o')} ${n}</button><button class="likebtn" onclick="H.comments(${p.id})">${ms('chat_bubble', 'o')} ${cmtCount[p.id] || 0}</button>${HAS_PV === false ? '' : `<span class="viewchip" title="Penonton">${ms('visibility', 'o')} <b data-pv="${p.id}">${kfmt(pvCount[p.id] || 0)}</b></span>`}</div></article>`;
 }
-function renderPosts() { $('#plist').innerHTML = posts.map(postHTML).join('') || '<p class="empty-t">Belum ada postingan. Jadilah yang pertama! 📝</p>' }
+function renderPosts() { $('#plist').innerHTML = posts.map(postHTML).join('') || '<p class="empty-t">Belum ada postingan. Jadilah yang pertama! 📝</p>'; observePosts() }
+/* Penonton postingan: dihitung 1x per orang, setelah postingan terlihat ±1 detik (postingan sendiri tidak dihitung) */
+let HAS_PV = null, pvCount = {}, pvIO = null, pvTimers = {}; const pvSent = new Set();
+async function loadPostViews() {
+  const ids = posts.map(p => p.id); if (!ids.length || HAS_PV === false) return;
+  const { data, error } = await sb.from('post_views').select('post_id').in('post_id', ids).limit(20000);
+  if (error) { if (/post_views|relation|schema cache/i.test(error.message)) { HAS_PV = false; document.querySelectorAll('.viewchip').forEach(e => e.remove()) } return }
+  HAS_PV = true; const c = {}; (data || []).forEach(r => c[r.post_id] = (c[r.post_id] || 0) + 1); pvCount = c;
+  document.querySelectorAll('[data-pv]').forEach(e => e.textContent = kfmt(pvCount[e.dataset.pv] || 0));
+}
+let pvSoonT = null; const loadPostViewsSoon = () => { clearTimeout(pvSoonT); pvSoonT = setTimeout(loadPostViews, 700) };
+async function recPostView(id) {
+  const p = posts.find(x => String(x.id) === String(id)); if (!p || p.user_id === uid || pvSent.has(String(id)) || HAS_PV === false) return; pvSent.add(String(id));
+  const { error } = await sb.from('post_views').upsert({ post_id: p.id, user_id: uid }, { onConflict: 'post_id,user_id', ignoreDuplicates: true });
+  if (error) { if (/post_views|relation|schema cache/i.test(error.message)) HAS_PV = false; else pvSent.delete(String(id)); return }
+  loadPostViewsSoon();
+}
+function observePosts() {
+  pvIO?.disconnect(); if (HAS_PV === false || !('IntersectionObserver' in window)) return;
+  pvIO = new IntersectionObserver(es => es.forEach(en => {
+    const id = en.target.dataset.pid;
+    if (en.isIntersecting) { if (!pvSent.has(id) && !pvTimers[id]) pvTimers[id] = setTimeout(() => { delete pvTimers[id]; recPostView(id) }, 1000) }
+    else { clearTimeout(pvTimers[id]); delete pvTimers[id] }
+  }), { threshold: .6 });
+  document.querySelectorAll('#plist .post[data-pid]').forEach(el => pvIO.observe(el));
+}
 H.like = async id => {
   const p = posts.find(x => x.id === id); if (!p) return;
   const liked = (p.post_likes || []).some(l => l.user_id === uid);
@@ -2128,6 +2232,8 @@ function addMsg(m, live) {
     const audioUrl = m.type === 'voice' ? m.body : String(m.body).slice('[VOICE_MSG]'.length);
     const safeUrl = /^https:\/\//i.test(audioUrl) ? audioUrl : '';
     d.innerHTML = `${head}<div>${meta}<div class="voicebubble"${bubStyle(m.user_id)} data-bu="${m.user_id}"><small>${ms('keyboard_voice')} Pesan suara</small><div class="voiceplayer"><button class="voiceplay" id="voice-play-${Number(m.id)}" onclick="H.toggleVoice(${Number(m.id)})" title="Putar pesan suara"><span class="ms">play_arrow</span></button><span>Putar audio</span><audio id="voice-audio-${Number(m.id)}" data-msgid="${Number(m.id)}" preload="none" src="${esc(safeUrl)}" onended="H.voiceEnded(${Number(m.id)})" onerror="this.parentNode.querySelector('.voiceplay .ms').textContent='error'"></audio></div></div></div>`;
+  } else if (m.type === 'chat' && String(m.body || '').startsWith(ONCE_TAG)) {
+    d.innerHTML = `${head}<div>${meta}<div class="bub"${bubStyle(m.user_id)} data-bu="${m.user_id}">${onceBubble(String(m.body).slice(ONCE_TAG.length), m.user_id === uid, 'rm', m.created_at)}</div></div>`;
   } else {
     if (m.id != null) { msgCache.set(String(m.id), { id: m.id, body: m.body || '', name: m.name || '', user_id: m.user_id }); if (msgCache.size > 300) msgCache.delete(msgCache.keys().next().value); }
     const quoted = m.reply_to_id ? `<div class="replybox"><b>↩ Membalas pesan</b>${esc(m.reply_preview || 'Pesan sebelumnya')}</div>` : '';
@@ -2226,7 +2332,13 @@ let HAS_CHEST = false, chest = { level: 1, progress: 0 }, chestLv = [], chestQui
 const chestName = l => l >= 10 ? 'EKSKLUSIF' : 'Lv.' + l;
 const chestTarget = l => Number(chestLv.find(x => x.level === l)?.target) || CHEST_DEF[l - 1] || 1;
 async function loadChestLevels() { const { data } = await sb.from('chest_levels').select('*').order('level'); if (data) chestLv = data }
+let chestPerRoom = true; /* false = server belum punya kolom room_id di room_chest → pakai peti tunggal lama */
 async function loadChest() {
+  if (HAS_ROOMS && RID && chestPerRoom) {
+    const r = await sb.from('room_chest').select('level,progress,room_id').eq('room_id', RID).maybeSingle();
+    if (!r.error) { HAS_CHEST = true; chest = r.data ? { level: r.data.level, progress: Number(r.data.progress) } : { level: 1, progress: 0 }; renderChest(); return } /* room baru belum punya baris = Lv.1 */
+    chestPerRoom = false;
+  }
   const { data, error } = await sb.from('room_chest').select('level,progress').eq('id', 1).maybeSingle();
   HAS_CHEST = !error;
   if (data) chest = { level: data.level, progress: Number(data.progress) };
@@ -2267,6 +2379,103 @@ async function onChestOpen(evId, level) {
   pushNotif({ key: 'ch:' + evId, type: 'host', icon: '🎁', title: `Peti ${chestName(level)} terbuka`, text: chestRewardText(data), tab: 'room' });
   if (data.kind === 'border') refreshMyBorders(); else syncPointsSoon(400);
 }
+
+/* ---------- Radar: semua yang online terdeteksi, tidak perlu berteman/follow ---------- */
+let rdProf = {}, rdSig = '', rdPrev = new Set(), rdBusy = false, rdAgain = false;
+const rdHash = s => { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) } return h >>> 0 };
+function gpTrack() { try { return gp?.track({ t: Date.now(), name: me?.name || '', avatar: me?.avatar || '', room: (inRm && curRoom?.name) || '' }) } catch {} }
+async function renderRadar(force) {
+  const box = $('#radarBox'), pg = $('#pgFriends'); if (!box || !pg || pg.classList.contains('hidden')) return;
+  if (rdBusy) { rdAgain = true; return } rdBusy = true;
+  try {
+    const ids = Object.keys(gOnline).filter(id => id !== uid);
+    const miss = ids.filter(id => !gOnline[id]?.[0]?.name && !rdProf[id]);
+    if (miss.length) { const { data } = await sb.from('profiles').select('id,name,avatar').in('id', miss.slice(0, 80)); (data || []).forEach(x => rdProf[x.id] = x) }
+    const fr = new Set(friendRows.map(x => x.id));
+    const list = ids.map(id => { const m = gOnline[id]?.[0] || {}, p = rdProf[id] || {}; return { id, name: m.name || p.name || 'Anggota', avatar: m.avatar || p.avatar || '', room: m.room || '', friend: fr.has(id) } })
+      .sort((a, b) => (b.friend - a.friend) || a.name.localeCompare(b.name));
+    const sig = list.map(x => [x.id, x.name, x.avatar, x.room, x.friend].join('|')).join(';');
+    if (!force && sig === rdSig) return; rdSig = sig;
+    const fresh = new Set(rdPrev.size ? list.filter(x => !rdPrev.has(x.id)).map(x => x.id) : []); rdPrev = new Set(list.map(x => x.id));
+    const blips = list.slice(0, 40).map(x => {
+      const h = rdHash(x.id), ang = (h % 360) * Math.PI / 180, r = .3 + ((h >>> 9) % 100) / 100 * .58;
+      return `<button class="rdb${x.friend ? ' fr' : ''}${fresh.has(x.id) ? ' new' : ''}" style="left:${(50 + Math.cos(ang) * r * 50).toFixed(1)}%;top:${(50 + Math.sin(ang) * r * 50).toFixed(1)}%" onclick="H.view('${x.id}')" title="${esc(x.name)}"><img src="${esc(x.avatar)}" onerror="this.style.visibility='hidden'"></button>`;
+    }).join('');
+    const rows = list.slice(0, 60).map(x => `<div class="friendcard"><img src="${esc(x.avatar)}" onclick="H.view('${x.id}')" style="cursor:pointer"><div class="finfo"><b>${esc(x.name)}</b><small class="fst on"><i class="sd"></i>${x.friend ? 'Teman' : 'Belum berteman'}${x.room ? ' · di room ' + esc(x.room) : ''}</small></div>${x.friend ? `<button class="sm" onclick="H.openDM('${x.id}')"><span class="ms">chat</span> Chat</button>` : `<button class="sm" onclick="H.requestFriend('${x.id}')"><span class="ms">add</span> Tambah</button>`}</div>`).join('');
+    box.innerHTML = `<h3 class="sec" style="display:flex;align-items:center;gap:8px"><span class="ms">radar</span> Radar Online <small style="color:#8fe8b3">${list.length} terdeteksi</small></h3>
+      <div class="radar"><div class="sweep"></div>${blips}<img class="rdme" src="${esc(me?.avatar || '')}" onerror="this.style.visibility='hidden'"></div>
+      <div class="rdcap">${list.length ? 'Ketuk avatar untuk melihat profil · border emas = teman' : 'Belum ada anggota lain yang online. Radar terus memindai…'}</div>${rows}`;
+  } finally { rdBusy = false; if (rdAgain) { rdAgain = false; renderRadar() } }
+}
+
+
+/* ---------- Foto sekali lihat: dikirim lewat chat room / chat pribadi, dihapus dari Supabase setelah dilihat ----------
+   DM: file dihapus langsung saat penerima membukanya. Room: tiap anggota 1x lihat, file dihapus otomatis setelah 5 menit. */
+const ONCE_ROOM_MS = 5 * 60 * 1000, ONCE_DM_MS = 864e5, ONCE_TAG = '[ONCE]';
+const onceDone = (() => { try { return new Set(JSON.parse(localStorage.getItem('onceDone') || '[]')) } catch { return new Set() } })();
+const onceMark = p => { onceDone.add(p); try { localStorage.setItem('onceDone', JSON.stringify([...onceDone].slice(-300))) } catch {} };
+const onceRemove = p => { try { sb.storage.from('media').remove([p]).catch(() => {}) } catch {} };
+async function upOnce(file, kind) {
+  const bmp = await createImageBitmap(file), k = Math.min(1, 1600 / Math.max(bmp.width, bmp.height));
+  const cv = document.createElement('canvas'); cv.width = Math.round(bmp.width * k); cv.height = Math.round(bmp.height * k);
+  cv.getContext('2d').drawImage(bmp, 0, 0, cv.width, cv.height);
+  const blob = await new Promise(r => cv.toBlob(r, 'image/jpeg', .82)); /* digambar ulang lewat canvas: data EXIF/lokasi foto ikut terbuang */
+  const path = `${uid}/once-${kind}-${Date.now()}.jpg`;
+  const { error } = await sb.storage.from('media').upload(path, blob, { contentType: 'image/jpeg' });
+  if (error) throw error; return path;
+}
+function onceBubble(path, mine, kind, at) {
+  if (mine) return `<span class="once">${ms('photo_camera', 'o')} Foto sekali lihat terkirim</span>`;
+  const seen = onceDone.has(path), gone = seen || (kind === 'rm' && Date.now() - Date.parse(at || Date.now()) > ONCE_ROOM_MS);
+  return gone ? `<span class="once gone">${ms('visibility_off', 'o')} ${seen ? 'Foto sudah dilihat' : 'Foto kedaluwarsa'}</span>`
+    : `<button class="once open" data-once="${esc(path)}" onclick="H.onceOpen(this.dataset.once,'${kind}')">${ms('photo_camera')} <span>Ketuk untuk melihat foto<br><small>sekali lihat · tidak disimpan</small></span></button>`;
+}
+H.onceOpen = async (path, kind) => {
+  if (H.onceOpen.busy || !path) return; if (onceDone.has(path)) return toast('Foto ini sudah dilihat');
+  H.onceOpen.busy = true;
+  try {
+    const url = sb.storage.from('media').getPublicUrl(path).data.publicUrl + '?t=' + Date.now();
+    const r = await fetch(url, { cache: 'no-store' }); if (!r.ok) throw new Error('Foto sudah tidak tersedia');
+    const obj = URL.createObjectURL(await r.blob());
+    onceMark(path); if (kind === 'dm') onceRemove(path); /* DM: hapus dari Supabase begitu terbuka */
+    document.querySelectorAll('[data-once]').forEach(b => { if (b.dataset.once === path) b.outerHTML = `<span class="once gone">${ms('visibility_off', 'o')} Foto sudah dilihat</span>` });
+    const e = document.createElement('div'); e.id = 'onceView';
+    e.innerHTML = `<p class="ot">Foto sekali lihat · tutup lalu tidak bisa dibuka lagi</p><img draggable="false" src="${obj}"><button>Tutup</button>`;
+    e.oncontextmenu = ev => ev.preventDefault();
+    const close = () => { URL.revokeObjectURL(obj); e.remove() }; e.querySelector('button').onclick = close;
+    document.body.append(e);
+  } catch (err) { onceMark(path); toast(err.message || 'Foto tidak tersedia'); document.querySelectorAll('[data-once]').forEach(b => { if (b.dataset.once === path) b.outerHTML = `<span class="once gone">${ms('visibility_off', 'o')} Foto tidak tersedia</span>` }) }
+  finally { H.onceOpen.busy = false }
+};
+H.onceRoom = () => {
+  if (!inRm) return toast('Masuk ke room terlebih dahulu.');
+  pick(async f => {
+    try {
+      toast('Mengunggah foto…'); const path = await upOnce(f, 'rm');
+      const { data, error } = await sb.from('messages').insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'chat', body: ONCE_TAG + path, ...ridp() }).select('*').single();
+      if (error) { onceRemove(path); return toast(error.message) }
+      setTimeout(() => onceRemove(path), ONCE_ROOM_MS); if (data) addRoomMessage(data, true); toast('Foto sekali lihat terkirim 📷');
+    } catch (e) { toast(e.message || 'Gagal mengirim foto') }
+  });
+};
+H.onceDM = () => {
+  if (!dmPeer) return; const peer = dmPeer.id;
+  pick(async f => {
+    try {
+      toast('Mengunggah foto…'); const path = await upOnce(f, 'dm');
+      const { data, error } = await sb.from('direct_messages').insert({ sender_id: uid, recipient_id: peer, body: ONCE_TAG + path }).select().single();
+      if (error) { onceRemove(path); return toast(error.message) }
+      if (dmPeer?.id === peer) { dmMessages.push(data); renderDM() } toast('Foto sekali lihat terkirim 📷');
+    } catch (e) { toast(e.message || 'Gagal mengirim foto') }
+  });
+};
+/* Bersihkan foto sekali-lihat milikku yang tak pernah dibuka / sisa timer yang terlewat */
+async function purgeMyOnce() {
+  const { data } = await sb.storage.from('media').list(uid, { limit: 100, search: 'once-' }); if (!data?.length) return;
+  const old = data.filter(o => { const m = /^once-(dm|rm)-(\d+)\./.exec(o.name); return m && Date.now() - Number(m[2]) > (m[1] === 'rm' ? ONCE_ROOM_MS : ONCE_DM_MS) }).map(o => `${uid}/${o.name}`);
+  if (old.length) await sb.storage.from('media').remove(old).catch(() => {});
+}
+
 /* ---------- 8A. Teman, permintaan pertemanan, chat pribadi ---------- */
 async function loadFriends() {
   const {data,error}=await sb.from('friends').select('friend_id,created_at').eq('user_id',uid).order('created_at',{ascending:false});
@@ -2285,7 +2494,7 @@ async function loadFriends() {
     ${relHtml}
     <h3 class="sec">Daftar Teman (${friendRows.length})</h3>
     ${[...friendRows].sort((a,b)=>isOn(b.id)-isOn(a.id)).map(u=>`<div class="friendcard"><img src="${esc(u.avatar||'')}" onclick="H.view('${u.id}')" style="cursor:pointer"><div class="finfo"><b>${esc(u.name)}</b><small class="fst off" data-fst="${u.id}"></small></div><button class="sm" onclick="H.openDM('${u.id}')"><span class="ms">chat</span> Chat${dmBadge(u.id)}</button></div>`).join('')||'<p class="empty-t">Belum ada teman. Tambahkan teman untuk mulai chat.</p>'}`;
-  refreshFriendStatus();
+  refreshFriendStatus(); renderRadar(true);
 }
 H.findFriends=()=>sheet(`<h3>Tambah Teman</h3><p class="sub">Cari anggota menggunakan nama profilnya.</p><input id="friendSearch" class="inp" placeholder="Ketik nama teman..." oninput="H.searchFriends()" autocomplete="off"><div id="friendResults" style="margin-top:10px"><p class="empty-t">Masukkan nama untuk mencari.</p></div>`);
 H.searchFriends=async()=>{
@@ -2315,28 +2524,45 @@ H.acceptFriend=async id=>{
   const {error}=await sb.rpc('accept_friend_request',{request_id:id});
   if(error)return toast(error.message);toast('Sekarang kalian berteman! 🎉');loadFriends();refreshMySocialStats();
 };
+async function syncDM(){
+  if(!dmPeer||document.hidden||!dmVisible()||syncDM.busy)return;syncDM.busy=true;
+  try{
+    const id=dmPeer.id;
+    const {data,error}=await sb.from('direct_messages').select('*').or(`and(sender_id.eq.${uid},recipient_id.eq.${id}),and(sender_id.eq.${id},recipient_id.eq.${uid})`).order('created_at',{ascending:false}).limit(30);
+    if(error||dmPeer?.id!==id||!dmVisible())return;
+    let ch=false;const known=new Map(dmMessages.map(x=>[x.id,x]));
+    (data||[]).reverse().forEach(m=>{const o=known.get(m.id);if(!o){dmMessages.push(m);ch=true}else if(m.read_at&&!o.read_at){o.read_at=m.read_at;ch=true}});
+    if(ch){dmMessages.sort((a,b)=>Date.parse(a.created_at)-Date.parse(b.created_at));renderDM();markDMRead()}
+  }finally{syncDM.busy=false}
+}
+setInterval(syncDM,3000);
 H.openDM=async id=>{
   const u=friendRows.find(x=>x.id===id)||(await sb.from('profiles').select('id,name,avatar').eq('id',id).maybeSingle()).data;
   if(!u)return toast('Teman tidak ditemukan');dmPeer=u;dmReply=null;nMarkDM(id);
-  const {data,error}=await sb.from('direct_messages').select('*').or(`and(sender_id.eq.${uid},recipient_id.eq.${id}),and(sender_id.eq.${id},recipient_id.eq.${uid})`).order('created_at',{ascending:true}).limit(100);
-  if(error)return toast('Chat pribadi: '+error.message);dmMessages=data||[];renderDM();markDMRead();
+  const {data,error}=await sb.from('direct_messages').select('*').or(`and(sender_id.eq.${uid},recipient_id.eq.${id}),and(sender_id.eq.${id},recipient_id.eq.${uid})`).order('created_at',{ascending:false}).limit(100);
+  if(error)return toast('Chat pribadi: '+error.message);
+  if(dmPeer?.id!==id)return; /* pengguna sudah pindah ke chat lain */
+  const got=(data||[]).reverse(),ids=new Set(got.map(x=>x.id));
+  dmMessages=[...got,...dmMessages.filter(x=>!ids.has(x.id)&&(x.sender_id===id||x.recipient_id===id)&&Date.parse(x.created_at)>=Date.parse(got[0]?.created_at||0))];
+  renderDM();markDMRead();
 };
 function renderDM(){
   if(!dmPeer)return;
   const keep=$('#dmInput')?.value||'',foc=document.activeElement?.id==='dmInput';
-  const lines=dmMessages.map(m=>{
+  const lines=dmMessages.map(m=>{try{
     const mine=m.sender_id===uid,quoted=m.reply_to_id?dmMessages.find(x=>x.id===m.reply_to_id):null;
-    const body=esc(m.body).replace(/(@[\w.-]+)/g,'<span class="tagged">$1</span>');
-    return `<div class="dmline ${mine?'mine':''}">${quoted?`<div class="replybox"><b>${ms('reply')} ${quoted.sender_id===uid?'Kamu':esc(dmPeer.name)}</b>${esc(quoted.body.slice(0,100))}</div>`:''}${m.forwarded_from_id?`<small>${ms('forward')} Pesan diteruskan</small>`:''}${body}<small>${new Date(m.created_at).toLocaleString('id-ID',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'short'})}${mine?`<span class="tk${m.read_at?' rd':''}" data-tk="${m.id}">${m.read_at?'✓✓ Dibaca':'✓ Terkirim'}</span>`:''}</small><div class="msgtools"><button onclick="H.replyDM('${m.id}')">${ms('reply')} Balas</button><button onclick="H.forwardDM('${m.id}')">${ms('forward')} Teruskan</button></div></div>`;
-  }).join('');
-  sheet(`<div class="dmhead"><button class="ib" onclick="H.close()" title="Kembali"><span class="ms">arrow_back</span></button><img src="${esc(dmPeer.avatar||'')}"><div style="flex:1;min-width:0"><h3 style="margin:0">${esc(dmPeer.name)}</h3><p class="sub fst off" id="dmStatus" data-fst="${esc(dmPeer.id)}" style="margin:0"></p></div></div><div class="dmfeed" id="dmFeed">${lines||'<p class="empty-t">Belum ada pesan. Mulai percakapan! 👋</p>'}<div class="dmline typ hidden" id="dmTyp"><i></i><i></i><i></i></div></div><div id="dmReplyHint"></div><div class="dmcomposer"><button class="ib" onclick="H.tagDM()" title="Tag teman"><span class="ms">alternate_email</span></button><input id="dmInput" class="inp" maxlength="200" placeholder="Tulis pesan..." oninput="H.dmTyping()" onkeydown="if(event.key==='Enter')H.sendDM()"><button class="ib sendb" onclick="H.sendDM()"><span class="ms">send</span></button></div>`, true);
+    const isOnce=String(m.body||'').startsWith(ONCE_TAG);
+    const body=isOnce?onceBubble(String(m.body).slice(ONCE_TAG.length),mine,'dm',m.created_at):esc(m.body??'')||'<i style="opacity:.6">(pesan tanpa teks)</i>'.replace(/(@[\w.-]+)/g,'<span class="tagged">$1</span>');
+    return `<div class="dmline ${mine?'mine':''}">${quoted?`<div class="replybox"><b>${ms('reply')} ${quoted.sender_id===uid?'Kamu':esc(dmPeer.name)}</b>${esc(String(quoted.body??'').slice(0,100))}</div>`:''}${m.forwarded_from_id?`<small>${ms('forward')} Pesan diteruskan</small>`:''}${body}<small>${new Date(m.created_at).toLocaleString('id-ID',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'short'})}${mine?`<span class="tk${m.read_at?' rd':''}" data-tk="${m.id}">${m.read_at?'✓✓ Dibaca':'✓ Terkirim'}</span>`:''}</small><div class="msgtools"><button onclick="H.replyDM('${m.id}')">${ms('reply')} Balas</button><button onclick="H.forwardDM('${m.id}')">${ms('forward')} Teruskan</button></div></div>`;
+  }catch(err){console.warn('DM render',m?.id,err);return ''}}).join('');
+  sheet(`<div class="dmhead"><button class="ib" onclick="H.close()" title="Kembali"><span class="ms">arrow_back</span></button><img src="${esc(dmPeer.avatar||'')}"><div style="flex:1;min-width:0"><h3 style="margin:0">${esc(dmPeer.name)}</h3><p class="sub fst off" id="dmStatus" data-fst="${esc(dmPeer.id)}" style="margin:0"></p></div></div><div class="dmfeed" id="dmFeed">${lines||'<p class="empty-t">Belum ada pesan. Mulai percakapan! 👋</p>'}<div class="dmline typ hidden" id="dmTyp"><i></i><i></i><i></i></div></div><div id="dmReplyHint"></div><div class="dmcomposer"><button class="ib" onclick="H.tagDM()" title="Tag teman"><span class="ms">alternate_email</span></button><button class="ib" onclick="H.onceDM()" title="Kirim foto sekali lihat"><span class="ms">photo_camera</span></button><input id="dmInput" class="inp" maxlength="200" placeholder="Tulis pesan..." oninput="H.dmTyping()" onkeydown="if(event.key==='Enter')H.sendDM()"><button class="ib sendb" onclick="H.sendDM()"><span class="ms">send</span></button></div>`, true);
   const f=$('#dmFeed');if(f)f.scrollTop=f.scrollHeight;renderDMReplyHint();const di=$('#dmInput');if(di&&keep){di.value=keep;if(foc)di.focus()}
   refreshFriendStatus();
 }
-function renderDMReplyHint(){const e=$('#dmReplyHint');if(!e)return;const m=dmMessages.find(x=>x.id===dmReply);e.innerHTML=m?`<div class="replyhint">↩ Membalas: ${esc(m.body.slice(0,70))}<button onclick="H.cancelReplyDM()"><span class="ms">close</span></button></div>`:'';}
+function renderDMReplyHint(){const e=$('#dmReplyHint');if(!e)return;const m=dmMessages.find(x=>x.id===dmReply);e.innerHTML=m?`<div class="replyhint">↩ Membalas: ${esc(String(m.body??'').slice(0,70))}<button onclick="H.cancelReplyDM()"><span class="ms">close</span></button></div>`:'';}
 H.replyDM=id=>{dmReply=id;renderDMReplyHint();$('#dmInput')?.focus()};
 H.cancelReplyDM=()=>{dmReply=null;renderDMReplyHint()};
-H.tagDM=()=>{if(!dmPeer)return;const i=$('#dmInput');i.value=(i.value?i.value+' ':'')+'@'+dmPeer.name.replace(/\s+/g,'')+' ';i.focus()};
+H.tagDM=()=>{if(!dmPeer)return;const i=$('#dmInput');i.value=(i.value?i.value+' ':'')+'@'+String(dmPeer.name||'').replace(/\s+/g,'')+' ';i.focus()};
 H.sendDM=async()=>{
   if(!dmPeer)return;const i=$('#dmInput'),body=i.value.trim();if(!body)return;
   const {data,error}=await sb.from('direct_messages').insert({sender_id:uid,recipient_id:dmPeer.id,body,reply_to_id:dmReply||null}).select().single();
@@ -2417,7 +2643,7 @@ function startGlobalPresence() {
   if (gp || !uid) return;
   sb.from('direct_messages').select('read_at').limit(1).then(r => { HAS_READ = !r.error });
   gp = sb.channel('gp', { config: { presence: { key: uid }, broadcast: { self: false } } })
-    .on('presence', { event: 'sync' }, () => { gOnline = gp.presenceState(); refreshFriendStatus() })
+    .on('presence', { event: 'sync' }, () => { gOnline = gp.presenceState(); refreshFriendStatus(); renderRadar() })
     .on('broadcast', { event: 'typ' }, ({ payload }) => {
       if (!payload || payload.to !== uid) return;
       const f = String(payload.from); clearTimeout(typIn[f]); delete typIn[f];
@@ -2430,8 +2656,8 @@ function startGlobalPresence() {
       dmMessages.forEach(m => { if (m.sender_id === uid && m.recipient_id === payload.from && !m.read_at) { m.read_at = now; ch = true } });
       if (ch && dmPeer?.id === payload.from && dmVisible()) updateTicks();
     })
-    .subscribe(async st => { if (st === 'SUBSCRIBED') { try { await gp.track({ t: Date.now() }) } catch {} } });
-  document.addEventListener('visibilitychange', () => { if (!document.hidden) { markDMRead(); try { gp?.track({ t: Date.now() }) } catch {} } });
+    .subscribe(async st => { if (st === 'SUBSCRIBED') { await gpTrack() } });
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) { markDMRead(); gpTrack() } });
 }
 
 /* ---------- 8C. Check-in harian ----------
