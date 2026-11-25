@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Room</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,0..1,0&display=block" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#f5c15a;--gold2:#b8802a;--ink:#07060a;--glass:rgba(20,14,12,.62)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0;background:#0c0806;color:#fff;font-family:Nunito,system-ui,sans-serif;font-weight:800}
+body{background:radial-gradient(ellipse 80% 22% at 50% 0,rgba(245,193,90,.2),transparent 70%),linear-gradient(#050405,#0c0806 55%,#1b1007)}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+.hidden{display:none!important}
+.ms{font-family:'Material Symbols Rounded';font-weight:500;font-style:normal;font-size:1.2em;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;width:1em;height:1em;overflow:hidden;white-space:nowrap;vertical-align:middle;-webkit-font-smoothing:antialiased;font-feature-settings:'liga';font-variation-settings:'FILL' 1,'wght' 500,'GRAD' 0,'opsz' 24}
+.wrap{max-width:520px;margin:0 auto;height:100dvh;display:flex;flex-direction:column;padding:env(safe-area-inset-top) 12px env(safe-area-inset-bottom)}
+header{display:flex;align-items:center;gap:10px;padding:12px 0 8px}
+header .t{flex:1;min-width:0}header b{display:block;font-size:20px;color:var(--gold)}header small{color:#a99d92;font-weight:700}
+.ib{width:40px;height:40px;border-radius:50%;background:var(--glass);display:grid;place-items:center;flex:none}
+.ib .ms{font-size:22px}
+.tabs{display:flex;gap:8px;margin:4px 0 10px}
+.tabs button{flex:1;padding:10px;border-radius:999px;background:#ffffff10;color:#cfc4b8;font-size:14px}
+.tabs button.on{background:linear-gradient(#ffd886,#d9962f);color:#2a1700}
+main{flex:1;min-height:0;overflow-y:auto;padding-bottom:20px;scrollbar-width:none}
+.inp{width:100%;background:rgba(255,255,255,.07);border:1.5px solid rgba(245,193,90,.35);border-radius:14px;padding:12px 14px;color:#fff;font:inherit;outline:none}
+.inp:focus{border-color:var(--gold)}
+.btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:13px;border-radius:999px;background:linear-gradient(#ffd886,#d9962f);color:#2a1700;font-weight:900}
+.btn.red{background:linear-gradient(#e0646b,#9c2a33);color:#fff}
+.btn.ghost{background:#ffffff14;color:#fff}
+.btn:disabled{opacity:.5}
+.sm{background:var(--gold);color:#2a1700;border-radius:999px;padding:7px 14px;font-size:13px;display:inline-flex;align-items:center;gap:4px}
+.sm.o{background:#ffffff18;color:#fff}.sm:disabled{opacity:.45}
+.card{display:flex;align-items:center;gap:12px;padding:12px;margin:10px 0;background:var(--glass);border:1px solid rgba(245,193,90,.28);border-radius:18px}
+.card .ico{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,#3a2a14,#18100a);color:var(--gold);flex:none}
+.card .ico .ms{font-size:26px}
+.card .info{flex:1;min-width:0}
+.card .info b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:16px}
+.card .info small{display:block;color:#a99d92;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tags{display:flex;gap:6px;margin-top:5px;flex-wrap:wrap}
+.tag{display:inline-flex;align-items:center;gap:3px;font-size:11px;background:#ffffff12;border-radius:999px;padding:2px 8px;color:#e8d8c4}
+.tag .ms{font-size:14px}.tag.full{color:#ff9aa5}.tag.lock{color:#ffd886}
+.act{display:flex;flex-direction:column;gap:6px;align-items:flex-end}
+.lbl{display:block;margin:14px 0 6px;color:var(--gold);font-size:14px}
+.hint{color:#a99d92;font-size:12px;font-weight:700;margin-top:4px}
+.step{display:flex;align-items:center;gap:12px}
+.step button{width:42px;height:42px;border-radius:50%;background:#ffffff18;font-size:22px;flex:none}
+.step input{width:84px;text-align:center;font-size:22px;padding:8px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.chips button{padding:5px 12px;border-radius:999px;background:#ffffff12;font-size:13px}
+.chips button.on{background:var(--gold);color:#2a1700}
+.sw{display:flex;align-items:center;gap:12px;padding:12px;border-radius:16px;background:var(--glass);border:1px solid rgba(245,193,90,.28);margin-top:16px}
+.sw .tx{flex:1}.sw .tx b{display:block}.sw .tx small{color:#a99d92;font-weight:700}
+.tog{width:52px;height:30px;border-radius:99px;background:#ffffff26;position:relative;flex:none;transition:.2s}
+.tog::after{content:'';position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:.2s}
+.tog.on{background:#3ddc84}.tog.on::after{left:25px}
+.pwrow{position:relative}.pwrow button{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:38px;height:38px;display:grid;place-items:center;color:#cfc4b8}
+.empty{color:#8d8176;text-align:center;padding:36px 0;font-size:14px}
+.err{background:#7a263088;border:1px solid #e0646b;border-radius:12px;padding:10px 12px;margin-top:12px;font-size:13px}
+.modal{position:fixed;inset:0;z-index:10;background:#000b;display:grid;place-items:center;padding:20px}
+.modal .box{width:min(92vw,360px);background:#150f0b;border:1.5px solid var(--gold2);border-radius:22px;padding:18px}
+.modal h3{margin:0 0 4px;color:var(--gold);font-size:19px}.modal p{margin:0 0 12px;color:#a99d92;font-size:13px}
+#toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:20;background:#000d;border:1px solid var(--gold);border-radius:999px;padding:9px 18px;font-size:14px;opacity:0;transition:.25s;pointer-events:none;text-align:center;max-width:92vw}
+#toast.on{opacity:1}
+</style>
+</head>
+<body>
+<div class="wrap" id="app">
+  <header>
+    <button class="ib" id="bClose" title="Tutup"><span class="ms">close</span></button>
+    <div class="t"><b id="ttl">Room</b><small id="sub">Pilih room atau buat room sendiri</small></div>
+    <button class="ib" id="bRef" title="Muat ulang"><span class="ms">refresh</span></button>
+  </header>
+  <div class="tabs" id="tabs"><button data-t="list" class="on">Daftar Room</button><button data-t="create">Buat Room</button></div>
+
+  <main>
+    <section id="vList">
+      <input id="q" class="inp" placeholder="Cari nama room..." autocomplete="off">
+      <div id="rooms"><p class="empty">Memuat daftar room…</p></div>
+    </section>
+
+    <section id="vForm" class="hidden">
+      <label class="lbl" for="fName" style="margin-top:4px">Nama room</label>
+      <input id="fName" class="inp" maxlength="30" placeholder="Contoh: Ngobrol Santai" autocomplete="off">
+
+      <span class="lbl">Jumlah kursi bicara</span>
+      <div class="step"><button id="seatM" type="button"><span class="ms">remove</span></button><input id="fSeats" class="inp" type="number" min="4" max="30" inputmode="numeric"><button id="seatP" type="button"><span class="ms">add</span></button></div>
+      <div class="chips" id="seatChips"></div>
+      <div class="hint">Minimal 4, maksimal 30 kursi.</div>
+
+      <span class="lbl">Batas anggota</span>
+      <div class="step"><button id="maxM" type="button"><span class="ms">remove</span></button><input id="fMax" class="inp" type="number" min="2" max="500" inputmode="numeric"><button id="maxP" type="button"><span class="ms">add</span></button></div>
+      <div class="chips" id="maxChips"></div>
+      <div class="hint">Jumlah orang yang boleh berada di room sekaligus (2–500). Pemilik room dan Host selalu bisa masuk.</div>
+
+      <div class="sw" id="swRow"><span class="ms" style="font-size:26px;color:var(--gold)">lock</span><div class="tx"><b>Room privat</b><small>Masuk memakai password</small></div><button class="tog" id="tog" type="button" aria-label="Room privat"></button></div>
+      <div id="pwBox" class="hidden">
+        <label class="lbl" for="fPass">Password room</label>
+        <div class="pwrow"><input id="fPass" class="inp" type="password" maxlength="40" autocomplete="new-password" placeholder="Minimal 4 karakter"><button id="eye" type="button"><span class="ms">visibility</span></button></div>
+        <div class="hint" id="pwHint">Bagikan password ini hanya ke orang yang boleh masuk.</div>
+      </div>
+
+      <div id="fErr" class="err hidden"></div>
+      <button class="btn" id="bSave" style="margin-top:20px"><span class="ms">add_circle</span> Buat Room</button>
+      <button class="btn red hidden" id="bDel" style="margin-top:10px"><span class="ms">delete</span> Hapus Room</button>
+    </section>
+  </main>
+</div>
+
+<div class="modal hidden" id="pwModal"><div class="box">
+  <h3><span class="ms">lock</span> Room Privat</h3><p id="pwName">Masukkan password untuk masuk.</p>
+  <input id="mPass" class="inp" type="password" placeholder="Password room" autocomplete="off">
+  <div id="mErr" class="err hidden"></div>
+  <div style="display:flex;gap:8px;margin-top:14px"><button class="btn ghost" id="mCancel">Batal</button><button class="btn" id="mOk">Masuk</button></div>
+</div></div>
+<div id="toast"></div>
+
+<script>
+(() => {
+  const $ = s => document.querySelector(s);
+  const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const MAIN = '00000000-0000-0000-0000-000000000001';
+  let P = null; try { P = window.parent !== window ? window.parent.RoomsAPI : null } catch {}
+  const params = new URLSearchParams(location.search);
+  const initId = params.get('id') || null;
+  let mode = params.get('mode') || 'list', editId = initId, me = { id: '', host: false }, rooms = [], timer = null, joinId = null, editRoom = null, busy = false;
+  const toast = t => { const e = $('#toast'); e.textContent = t; e.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(() => e.classList.remove('on'), 2600) };
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, Math.round(Number(v) || a)));
+
+  if (!P) {
+    $('#app').innerHTML = '<div style="padding:40px 20px;text-align:center"><h2 style="color:#f5c15a">Buka lewat aplikasi</h2><p style="color:#a99d92">Halaman ini harus dibuka dari dalam index.html (tab Room). Pastikan rooms.html berada satu folder dengan index.html.</p></div>';
+    return;
+  }
+  me = P.me();
+  $('#bClose').onclick = () => P.close();
+  $('#bRef').onclick = () => mode === 'list' ? loadList() : toast('Sudah terbaru');
+
+  /* ---------- tab ---------- */
+  function show(m) {
+    mode = m;
+    $('#vList').classList.toggle('hidden', m !== 'list');
+    $('#vForm').classList.toggle('hidden', m === 'list');
+    $('#tabs').classList.toggle('hidden', m === 'edit');
+    document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.t === m));
+    $('#ttl').textContent = m === 'edit' ? 'Pengaturan Room' : m === 'create' ? 'Buat Room' : 'Room';
+    $('#sub').textContent = m === 'edit' ? 'Ubah nama, kursi, batas anggota & privasi' : m === 'create' ? 'Atur room sesukamu' : 'Pilih room atau buat room sendiri';
+    $('#bRef').classList.toggle('hidden', m !== 'list');
+    clearInterval(timer);
+    if (m === 'list') { loadList(); timer = setInterval(loadList, 8000) }
+  }
+  document.querySelectorAll('#tabs button').forEach(b => b.onclick = () => { if (b.dataset.t === 'create') resetForm(); show(b.dataset.t) });
+
+  /* ---------- daftar ---------- */
+  async function loadList() {
+    const r = await P.list();
+    if (r.error) { $('#rooms').innerHTML = `<div class="err">${esc(r.error)}</div>`; return }
+    rooms = r.data; renderList();
+  }
+  function renderList() {
+    const q = $('#q').value.trim().toLowerCase(), cur = P.current();
+    const L = rooms.filter(x => !q || String(x.name).toLowerCase().includes(q));
+    $('#rooms').innerHTML = L.map(x => {
+      const full = x.members >= x.max_members, mine = x.owner_id === me.id, canEdit = (mine || me.host) && x.id !== MAIN || (me.host && x.id === MAIN);
+      return `<div class="card"><div class="ico"><span class="ms">${x.is_private ? 'lock' : 'meeting_room'}</span></div>
+        <div class="info"><b>${esc(x.name)}</b><small>${x.owner_name ? 'oleh ' + esc(x.owner_name) : 'Room utama'}</small>
+          <div class="tags"><span class="tag"><span class="ms">mic</span>${x.seat_count} kursi</span><span class="tag ${full ? 'full' : ''}"><span class="ms">group</span>${x.members}/${x.max_members}</span>${x.is_private ? '<span class="tag lock"><span class="ms">lock</span>Privat</span>' : ''}</div></div>
+        <div class="act"><button class="sm" data-join="${x.id}" ${full && !mine && !me.host && cur !== x.id ? 'disabled' : ''}>${cur === x.id ? 'Kembali' : full && !mine && !me.host ? 'Penuh' : 'Masuk'}</button>${canEdit ? `<button class="sm o" data-edit="${x.id}"><span class="ms">tune</span></button>` : ''}</div></div>`;
+    }).join('') || '<p class="empty">Belum ada room yang cocok.<br>Ketuk "Buat Room" untuk membuat yang pertama.</p>';
+  }
+  $('#q').oninput = renderList;
+  $('#rooms').onclick = e => {
+    const j = e.target.closest('[data-join]'), d = e.target.closest('[data-edit]');
+    if (j && !j.disabled) joinRoom(j.dataset.join);
+    else if (d) openEdit(d.dataset.edit);
+  };
+
+  /* ---------- masuk ---------- */
+  async function joinRoom(id, pass) {
+    if (busy) return; busy = true;
+    try {
+      const r = await P.join(id, pass);
+      if (r && r.error) {
+        const needPw = /password/i.test(r.error);
+        if (needPw) { joinId = id; openPw(pass ? r.error : ''); return }
+        toast(r.error); loadList();
+      }
+    } finally { busy = false }
+  }
+  function openPw(err) {
+    const x = rooms.find(r => r.id === joinId);
+    $('#pwName').textContent = x ? 'Room "' + x.name + '" dikunci. Masukkan password untuk masuk.' : 'Masukkan password untuk masuk.';
+    $('#mPass').value = ''; $('#mErr').textContent = err || ''; $('#mErr').classList.toggle('hidden', !err);
+    $('#pwModal').classList.remove('hidden'); setTimeout(() => $('#mPass').focus(), 50);
+  }
+  $('#mCancel').onclick = () => $('#pwModal').classList.add('hidden');
+  $('#mOk').onclick = async () => { const p = $('#mPass').value; if (!p) return; $('#pwModal').classList.add('hidden'); await joinRoom(joinId, p) };
+  $('#mPass').onkeydown = e => { if (e.key === 'Enter') $('#mOk').click() };
+
+  /* ---------- form buat / ubah ---------- */
+  let priv = false;
+  const SEAT_PRESETS = [6, 8, 10, 15, 20, 30], MAX_PRESETS = [10, 25, 50, 100, 200, 500];
+  function chips(boxSel, arr, inp) {
+    $(boxSel).innerHTML = arr.map(v => `<button type="button" data-v="${v}">${v}</button>`).join('');
+    $(boxSel).onclick = e => { const b = e.target.closest('button'); if (b) { $(inp).value = b.dataset.v; sync() } };
+  }
+  function sync() {
+    document.querySelectorAll('#seatChips button').forEach(b => b.classList.toggle('on', b.dataset.v === String($('#fSeats').value)));
+    document.querySelectorAll('#maxChips button').forEach(b => b.classList.toggle('on', b.dataset.v === String($('#fMax').value)));
+    $('#tog').classList.toggle('on', priv); $('#pwBox').classList.toggle('hidden', !priv);
+  }
+  chips('#seatChips', SEAT_PRESETS, '#fSeats'); chips('#maxChips', MAX_PRESETS, '#fMax');
+  $('#seatM').onclick = () => { $('#fSeats').value = clamp($('#fSeats').value - 1, 4, 30); sync() };
+  $('#seatP').onclick = () => { $('#fSeats').value = clamp(+$('#fSeats').value + 1, 4, 30); sync() };
+  $('#maxM').onclick = () => { const v = +$('#fMax').value; $('#fMax').value = clamp(v > 10 ? v - 5 : v - 1, 2, 500); sync() };
+  $('#maxP').onclick = () => { const v = +$('#fMax').value; $('#fMax').value = clamp(v >= 10 ? v + 5 : v + 1, 2, 500); sync() };
+  $('#fSeats').oninput = $('#fMax').oninput = sync;
+  $('#tog').onclick = () => { priv = !priv; sync(); if (priv) $('#fPass').focus() };
+  $('#eye').onclick = () => { const i = $('#fPass'), h = i.type === 'password'; i.type = h ? 'text' : 'password'; $('#eye .ms').textContent = h ? 'visibility_off' : 'visibility' };
+
+  function resetForm() {
+    editRoom = null; editId = null; priv = false;
+    $('#fName').value = ''; $('#fSeats').value = 10; $('#fMax').value = 50; $('#fPass').value = '';
+    $('#fErr').classList.add('hidden'); $('#bDel').classList.add('hidden');
+    $('#bSave').innerHTML = '<span class="ms">add_circle</span> Buat Room';
+    $('#pwHint').textContent = 'Bagikan password ini hanya ke orang yang boleh masuk.';
+    $('#fPass').placeholder = 'Minimal 4 karakter'; sync();
+  }
+  async function openEdit(id) {
+    const r = await P.get(id);
+    if (r.error || !r.data) return toast(r.error || 'Room tidak ditemukan');
+    resetForm(); editRoom = r.data; editId = id; priv = !!r.data.is_private;
+    $('#fName').value = r.data.name; $('#fSeats').value = r.data.seat_count; $('#fMax').value = r.data.max_members;
+    $('#bSave').innerHTML = '<span class="ms">save</span> Simpan Perubahan';
+    $('#bDel').classList.toggle('hidden', id === MAIN);
+    if (priv) { $('#pwHint').textContent = 'Kosongkan jika tidak ingin mengganti password. Mengganti password membuat anggota harus memasukkannya lagi.'; $('#fPass').placeholder = 'Password baru (opsional)' }
+    sync(); show('edit');
+  }
+  const showErr = m => { $('#fErr').textContent = m; $('#fErr').classList.remove('hidden'); $('#fErr').scrollIntoView({ block: 'center', behavior: 'smooth' }) };
+  $('#bSave').onclick = async () => {
+    if (busy) return;
+    const name = $('#fName').value.trim(), seats = clamp($('#fSeats').value, 4, 30), max = clamp($('#fMax').value, 2, 500), pass = $('#fPass').value;
+    $('#fErr').classList.add('hidden');
+    if (!name) return showErr('Isi nama room dulu.');
+    if (priv && pass && pass.length < 4) return showErr('Password minimal 4 karakter.');
+    if (priv && !pass && !(editRoom && editRoom.is_private)) return showErr('Isi password untuk room privat.');
+    busy = true; $('#bSave').disabled = true;
+    try {
+      const o = { name, seats, max, priv, pass };
+      if (editId) {
+        const r = await P.update(editId, o);
+        if (r.error) return showErr(r.error);
+        toast('Pengaturan room disimpan ✅'); P.close();
+      } else {
+        const r = await P.create(o);
+        if (r.error) return showErr(r.error);
+        toast('Room dibuat, masuk…');
+        const j = await P.join(r.id, priv ? pass : null); /* masuk otomatis; layar ini tertutup oleh index.html */
+        if (j && j.error) { showErr(j.error); show('list') }
+      }
+    } finally { busy = false; $('#bSave').disabled = false }
+  };
+  $('#bDel').onclick = async () => {
+    if (!editId || busy || !confirm('Hapus room ini? Semua anggota akan dikeluarkan dan chat-nya hilang.')) return;
+    busy = true;
+    try { const r = await P.remove(editId); if (r.error) return showErr(r.error); toast('Room dihapus'); P.close() } finally { busy = false }
+  };
+
+  /* ---------- mulai ---------- */
+  resetForm();
+  if (mode === 'edit' && initId) openEdit(initId);
+  else show(mode === 'create' ? 'create' : 'list');
+})();
+</script>
+</body>
+</html>

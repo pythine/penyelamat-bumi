@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <title>Voice & Gift Room</title>
-<link rel="manifest" href="/manifest.json">
+<link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0c0806">
 <meta name="mobile-web-app-capable" content="yes">
-<link rel="icon" type="image/png" href="/icon-192.png">
-<link rel="apple-touch-icon" href="/icon-192.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,0..1,0&display=block" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
@@ -551,6 +551,11 @@ textarea.inp{resize:none;display:block}
 .ea-thumb{animation:eThumb .9s ease-in-out infinite}@keyframes eThumb{0%,100%{transform:rotate(0) translateY(0)}50%{transform:rotate(-22deg) translateY(-12%) scale(1.15)}}
 .ea-flame{animation:eFlame .35s ease-in-out infinite alternate}@keyframes eFlame{from{transform:scale(.9,1.1) rotate(-4deg)}to{transform:scale(1.1,.95) rotate(4deg)}}
 @media(prefers-reduced-motion:reduce){.emoav span,.emg button span{animation:none!important}}
+/* Layar Room (file rooms.html dibuka di dalam index.html, tanpa meninggalkan halaman) */
+#roomsOv{position:fixed;inset:0;z-index:45;background:#0c0806}
+#updBar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(78px + env(safe-area-inset-bottom));z-index:58;display:flex;align-items:center;gap:10px;padding:8px 10px 8px 14px;border-radius:999px;background:rgba(20,14,12,.97);border:1.5px solid var(--gold);box-shadow:0 8px 30px #000a;font-size:14px}
+#updBar button{background:var(--gold);color:#2a1700;border-radius:999px;padding:6px 14px;font-weight:900}
+#roomsOv iframe{display:block;width:100%;height:100%;border:0;background:#0c0806}
 </style>
 </head>
 <body>
@@ -569,7 +574,7 @@ textarea.inp{resize:none;display:block}
   <p class="sub" style="margin-top:4px">Upload foto profil dari HP-mu dan isi nama panggilan.</p>
   <div class="avsel" id="avs"></div>
   <input id="nm" class="inp" maxlength="16" placeholder="Nama panggilan">
-  <button class="btn" style="margin-top:16px" onclick="H.enter()">Masuk Room</button>
+  <button class="btn" style="margin-top:16px" onclick="H.enter()">Masuk</button>
 </section>
 
 <!-- ================= ROOM ================= -->
@@ -579,7 +584,8 @@ textarea.inp{resize:none;display:block}
     <button class="ib bell" onclick="H.notifs()" title="Notifikasi"><span class="ms">notifications</span><em class="nb"></em></button>
     <button class="ib" id="spkb" onclick="H.spk()" title="Speaker (dengar suara)"><span class="ms">volume_up</span></button>
     <button class="ib" onclick="H.panel()" title="Panel Host"><span class="ms">admin_panel_settings</span></button>
-    <button class="ib" onclick="H.exit()" title="Keluar / ubah profil"><span class="ms">logout</span></button>
+    <button class="ib hidden" id="rsetb" onclick="H.roomSettings()" title="Pengaturan room"><span class="ms">tune</span></button>
+    <button class="ib" onclick="H.leaveRoom()" title="Keluar dari room"><span class="ms">exit_to_app</span></button>
   </div>
   <div class="chips"><span class="chip"><span class="ms">emoji_events</span> PENYELAMAT BUMI</span><button class="chip chestchip" id="chestChip" onclick="H.chest()" title="Peti Room"><span class="em">🪎</span><span class="cl">Lv.1</span><i class="cbar"><b></b></i></button><span class="mini" id="mini"></span><span class="chip" id="onl" style="margin-left:auto"></span><button class="chip emochip" onclick="H.emojiMenu()" title="Emoji gerak"><span class="ms">add_reaction</span></button></div>
   <div id="grid"></div>
@@ -626,13 +632,13 @@ textarea.inp{resize:none;display:block}
 </section>
 
 <nav id="nav" class="nav hidden">
-  <button data-t="room" class="on" onclick="H.tab('room')"><i><span class="ms">chat</span></i>Room<em class="nb"></em></button>
-  <button data-t="posts" onclick="H.tab('posts')"><i><span class="ms">newspaper</span></i>Postingan<em class="nb"></em></button>
+  <button data-t="room" onclick="H.tab('room')"><i><span class="ms">meeting_room</span></i>Room<em class="nb"></em></button>
+  <button data-t="posts" class="on" onclick="H.tab('posts')"><i><span class="ms">newspaper</span></i>Postingan<em class="nb"></em></button>
   <button data-t="friends" onclick="H.tab('friends')"><i><span class="ms">group</span></i>Teman<em class="nb"></em></button>
   <button data-t="me" onclick="H.tab('me')"><i><span class="ms">person</span></i>Profil<em class="nb"></em></button>
 </nav>
 
-<div id="sheet" class="hidden"></div><div id="fx"></div><div id="svipPop" class="hidden"></div><div id="entranceFX" class="hidden"></div><div id="chestFX" class="hidden"></div><div id="storyView" class="storyview hidden"></div><div id="toast"></div><div id="nbanner"></div>
+<div id="roomsOv" class="hidden"><iframe id="roomsFrame" title="Room" allow="microphone"></iframe></div><div id="sheet" class="hidden"></div><div id="fx"></div><div id="svipPop" class="hidden"></div><div id="entranceFX" class="hidden"></div><div id="chestFX" class="hidden"></div><div id="storyView" class="storyview hidden"></div><div id="toast"></div><div id="nbanner"></div><div id="updBar" class="hidden"><span class="ms">system_update</span><b>Versi baru tersedia</b><button onclick="H.reloadApp()">Perbarui</button></div>
 
 <script type="module">
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
@@ -837,6 +843,9 @@ function freeMySeatNow() {
   try { fetch(`${SUPABASE_URL}/rest/v1/seats?user_id=eq.${encodeURIComponent(uid)}`, { method: 'DELETE', keepalive: true, headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${authToken || SUPABASE_KEY}` } }).catch(() => {}) } catch {}
 }
 const H = window.H = {};
+let HAS_ROOMS = false, RID = null, inRm = false, curRoom = null; /* HAS_ROOMS: tabel rooms ada; RID: id room aktif; inRm: sedang berada di sebuah room */
+const ridp = () => RID ? { room_id: RID } : {};
+const rmErr = e => { const m = e?.message || String(e); return (e?.code === 'PGRST202' || /Could not find the function|schema cache|does not exist/i.test(m)) ? 'Fitur room belum aktif di server. Jalankan rooms_migration.sql di Supabase SQL Editor.' : m };
 let uid, me, avatar = '', settings = {title:'Voice & Gift Room', seat_count:15, svip_videos:{}};
 let entranceVideos = {};
 let giftVideos = {};
@@ -1215,7 +1224,8 @@ H.removeGiftVideo = async i => {
   toast('Video gift dihapus. Efek emoji bawaan digunakan.');H.panel();
 };
 H.hideEntranceFx = hideEntranceFx;
-H.seatN = async d => { const n = Math.min(30, Math.max(4, settings.seat_count + d)); settings.seat_count = n; $('#sc').textContent = n; renderSeats(); await sb.from('room_settings').update({ seat_count: n }).eq('id', 1) };
+H.seatN = async d => { const n = Math.min(30, Math.max(4, settings.seat_count + d)); settings.seat_count = n; $('#sc').textContent = n; renderSeats();
+  if (HAS_ROOMS && RID) { const { error } = await sb.rpc('update_room', { p_id: RID, p_seats: n }); if (error) toast(rmErr(error)) } else await sb.from('room_settings').update({ seat_count: n }).eq('id', 1) };
 H.tix = async (id, n = 100) => {
   const { error } = await sb.rpc('give_coins', { target: id, amount: n });
   if (error && (error.code === 'PGRST202' || /Could not find the function/i.test(error.message || ''))) return toast('Jalankan gift_relation_migration.sql terbaru dulu 🪙');
@@ -1223,17 +1233,18 @@ H.tix = async (id, n = 100) => {
 };
 H.thm = async id => { const { error } = await sb.rpc('give_theme', { target: id }); toast(error ? error.message : 'Tema chat dibuka untuk dia 🎨'); if (!error) H.panel() };
 H.unhost = async () => { const { error } = await sb.rpc('release_host'); if (error) return toast(error.message); me = { ...me, is_host: false }; prof[uid] = { ...prof[uid], is_host: false }; room?.track(presence()); renderSeats(); H.close(); renderProf(); renderPosts(); toast('Kamu keluar dari mode Host') };
-H.reset = async () => { await sb.from('seats').delete().neq('seat_no', 0); await loadSeats(); toast('Semua kursi dikosongkan') };
-H.clear = async () => { await sb.from('messages').delete().neq('id', 0); $('#chat').innerHTML = ''; toast('Chat dibersihkan') };
+H.reset = async () => { let q = sb.from('seats').delete().neq('seat_no', 0); if (RID) q = q.eq('room_id', RID); await q; await loadSeats(); toast('Semua kursi dikosongkan') };
+H.clear = async () => { let q = sb.from('messages').delete().neq('id', 0); if (RID) q = q.eq('room_id', RID); await q; $('#chat').innerHTML = ''; toast('Chat dibersihkan') };
 
 /* ---------- 3. Room ---------- */
 let joined = false;
 let msgReady = false, msgSyncBusy = false;
 async function syncRecentMessages() {
-  if (!inRoom || msgSyncBusy) return;
+  if (!inRoom || !inRm || msgSyncBusy) return;
   msgSyncBusy = true;
   try {
-    const { data, error } = await sb.from('messages').select('*').order('id', { ascending: false }).limit(msgReady ? 30 : 80);
+    let mq0 = sb.from('messages').select('*'); if (RID) mq0 = mq0.eq('room_id', RID);
+    const { data, error } = await mq0.order('id', { ascending: false }).limit(msgReady ? 30 : 80);
     if (error) { console.warn('Message sync:', error.message); return; }
     const rows = (data || []).reverse().filter(m => !renderedMessageIds.has(String(m.id)));
     if (!rows.length) return;
@@ -1252,9 +1263,10 @@ async function stopMessageSync() {
 }
 async function startRoom() {
   if (inRoom) return;
-  $('#setup').classList.add('hidden'); $('#room').classList.remove('hidden'); $('#room').style.display = 'flex'; $('#nav').classList.remove('hidden'); inRoom = true;
+  $('#setup').classList.add('hidden'); $('#room').style.display = 'flex'; $('#nav').classList.remove('hidden'); inRoom = true;
   prof[uid] = { ...prof[uid], ...me }; applyTheme(); nLoad();
   settings = (await sb.from('room_settings').select('*').single()).data || settings;
+  HAS_ROOMS = !(await sb.from('rooms').select('id').limit(1)).error; /* tabel rooms ada = mode banyak room */
   await loadEntranceVideos();
   await loadGiftVideos();
   await loadGiftCatalog();
@@ -1268,11 +1280,6 @@ async function startRoom() {
       .subscribe();
   }
   refreshMySocialStats();
-  await sb.from('seats').delete().eq('user_id', uid); /* masuk baru = belum duduk; buang sisa kursi dari sesi lama yang tidak sempat terhapus */
-  await loadSeats();
-  renderedMessageIds.clear(); msgReady = false;
-  await syncRecentMessages(); msgReady = true;
-  startMessageSync();
   clearInterval(startRoom.bt); startRoom.bt = setInterval(() => { if (!document.hidden) { refreshMyBorders(); syncPoints() } }, 10000);
   loadMyGifts();
   loadPosts(true); loadStories();
@@ -1301,6 +1308,11 @@ async function startRoom() {
     }).subscribe();
   });
 
+  if (HAS_ROOMS) sb.channel('roomcfg').on('postgres_changes', { event: '*', schema: 'public', table: 'rooms' }, p => { /* pengaturan room berubah / room dihapus */
+    if (!inRm || !RID) return;
+    if (p.eventType === 'DELETE' && p.old?.id === RID) { toast('Room ini dihapus oleh pemiliknya'); H.leaveRoom(); return }
+    if (p.new?.id === RID) { curRoom = { ...curRoom, ...p.new }; settings = { ...settings, title: p.new.name, seat_count: p.new.seat_count }; renderSeats(); renderTop() }
+  }).subscribe();
   dbChannel = sb.channel('db')
     .on('postgres_changes', { event: '*', schema: 'public', table: 'seats' }, loadSeats)
     .on('postgres_changes', { event: '*', schema: 'public', table: 'posts' }, () => loadPosts(true))
@@ -1311,6 +1323,7 @@ async function startRoom() {
       if (p.new.from_id !== uid) { const g = GIFTS[p.new.gift]; pushNotif({ key: 'gift:' + p.new.id, type: 'gift', icon: g?.e || '🎁', from: p.new.from_id, text: `mengirim ${g?.name || 'hadiah'} untukmu`, tab: 'me', act: { k: 'user', id: p.new.from_id } }) }
     })
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, p => {
+      if (!inRm || (RID && p.new.room_id !== RID)) return; /* hanya pesan dari room yang sedang dimasuki */
       mq = mq.then(async () => {
         await ensureProf([p.new.user_id]);
         addRoomMessage(p.new, true);
@@ -1345,7 +1358,7 @@ async function startRoom() {
       if (fromPeer && dmVisible()) renderDM(); /* hanya gambar ulang jika jendela chat memang sedang terbuka */
       else pushNotif({ key: 'dm:' + p.new.id, type: 'dm', icon: '💬', from: p.new.sender_id, text: String(p.new.body || '').slice(0, 80) || 'Pesan baru', tab: 'friends', act: { k: 'dm', id: p.new.sender_id } });
     })
-    .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'room_settings' }, p => { settings = p.new; renderSeats(); renderTop() })
+    .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'room_settings' }, p => { if (HAS_ROOMS) return; settings = p.new; renderSeats(); renderTop() })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'svip_entrances' }, () => { loadEntranceVideos(); })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'gift_videos' }, () => { loadGiftVideos(); })
     .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'profiles' }, p => {
@@ -1371,45 +1384,114 @@ async function startRoom() {
       }
     });
 
-  /* Presence = pengganti onDisconnect: saat tab ditutup, kursi otomatis kosong + muncul keterangan keluar */
-  room = sb.channel('room', { config: { presence: { key: uid }, broadcast: { self: false } } })
-    .on('presence', { event: 'sync' }, () => { online = room.presenceState(); syncBordersFromPresence(); renderTop() })
-    .on('presence', { event: 'leave' }, ({ key, leftPresences, currentPresences }) => {
-      if (key === uid || currentPresences?.length) return; /* currentPresences > 0 = hanya ganti profil, bukan keluar */
-      addMsg({ type: 'leave', name: leftPresences?.[0]?.name || 'Seseorang' }, false);
-      purgeUser(key); /* kursi + suara + cache orang itu langsung dibersihkan di layar ini */
-      sb.from('seats').delete().eq('user_id', key).then(() => {}); /* dan di database */
-    })
-    .on('broadcast', { event: 'sig' }, ({ payload }) => onSig(payload))
-    .on('broadcast', { event: 'bd' }, ({ payload }) => { if (payload?.uid === uid) refreshMyBorders() })
-    .on('broadcast', { event: 'emo' }, ({ payload }) => payload?.uid && showEmo(String(payload.uid), Number(payload.i)))
-    .on('broadcast', { event: 'ent' }, ({ payload }) => payload?.uid && entranceFor(payload.uid, String(payload.name || 'Anggota'), Number(payload.level) || 5))
-    .subscribe(async s => {
-      if (s !== 'SUBSCRIBED') return;
-      await room.track(presence());
-      syncPeers(); /* pendengar langsung menyambung ke yang sudah duduk */
-      if (joined) return; /* sambung ulang jaringan: jangan umumkan 'bergabung' dan jangan buat timer lagi */
-      joined = true;
-      sb.rpc('cleanup_room').then(() => {});
-      setTimeout(sweep, 4000); setInterval(sweep, 10000);
-      await sb.from('messages').insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'join' });
-      /* Entrance SVIP 5-9: broadcast langsung ke semua anggota + pesan type 'chat' bertanda [ENT] (lolos RLS seperti pesan suara) */
-      const myLevel = Math.min(11, lvl(me.points || 0));
-      if (myLevel >= 5) {
-        entranceFor(uid, me.name, myLevel);
-        room.send({ type: 'broadcast', event: 'ent', payload: { uid, name: me.name, level: myLevel } });
-        const { error: entErr } = await sb.from('messages').insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'chat', body: '[ENT]' + myLevel });
-        if (entErr) console.warn('Entrance message:', entErr.message);
-      }
-    });
   $('#msg').onkeydown = e => { if (e.key === 'Enter') H.sendMsg() };
+  H.tab('posts'); /* masuk aplikasi = langsung ke Postingan, bukan ke room */
 }
+/* ---------- 2B. Banyak room: daftar/buat/pengaturan ada di rooms.html (dibuka sebagai layar di dalam halaman ini) ---------- */
+function openRooms(mode, id) {
+  $('#roomsFrame').src = 'rooms.html?mode=' + (mode || 'list') + (id ? '&id=' + encodeURIComponent(id) : '');
+  $('#roomsOv').classList.remove('hidden');
+}
+function closeRooms() { $('#roomsOv').classList.add('hidden'); $('#roomsFrame').src = 'about:blank' }
+const canEditRoom = () => !!(me?.is_host || (curRoom && curRoom.owner_id === uid));
+function renderRoomBtns() { $('#rsetb')?.classList.toggle('hidden', !(HAS_ROOMS && RID && canEditRoom())) }
+async function enterRoom(rid, pass) {
+  if (enterRoom.busy) throw new Error('Sedang masuk room, tunggu sebentar…');
+  if (inRm && (RID || null) === (rid || null)) { closeRooms(); H.tab('room'); return }
+  enterRoom.busy = true;
+  try {
+    let row = null;
+    if (HAS_ROOMS) { /* server memeriksa password & batas anggota; error dilempar ke pemanggil */
+      const { data, error } = await sb.rpc('join_room', { p_id: rid, p_pass: pass || null });
+      if (error) throw new Error(error.message);
+      row = data;
+    }
+    if (inRm) await leaveRoomCore(true);
+    RID = HAS_ROOMS ? rid : null; curRoom = row; inRm = true; joined = false;
+    if (row) settings = { ...settings, title: row.name, seat_count: row.seat_count };
+    renderRoomBtns();
+  await sb.from('seats').delete().eq('user_id', uid); /* masuk baru = belum duduk; buang sisa kursi dari sesi lama yang tidak sempat terhapus */
+    await loadSeats();
+    renderedMessageIds.clear(); msgReady = false;
+    await syncRecentMessages(); msgReady = true;
+    startMessageSync();
+    clearInterval(enterRoom.hb);
+    if (HAS_ROOMS) enterRoom.hb = setInterval(async () => { /* denyut: tetap tercatat sebagai anggota; keluar otomatis jika room dihapus */
+      if (!inRm || !RID) return;
+      const { error } = await sb.rpc('join_room', { p_id: RID });
+      if (error && /tidak ditemukan|dihapus|penuh/i.test(error.message)) { toast(error.message); H.leaveRoom() }
+    }, 30000);
+  /* Presence = pengganti onDisconnect: saat tab ditutup, kursi otomatis kosong + muncul keterangan keluar */
+    room = sb.channel('room:' + (RID || 'main'), { config: { presence: { key: uid }, broadcast: { self: false } } })
+      .on('presence', { event: 'sync' }, () => { online = room.presenceState(); syncBordersFromPresence(); renderTop() })
+      .on('presence', { event: 'leave' }, ({ key, leftPresences, currentPresences }) => {
+        if (key === uid || currentPresences?.length) return; /* currentPresences > 0 = hanya ganti profil, bukan keluar */
+        addMsg({ type: 'leave', name: leftPresences?.[0]?.name || 'Seseorang' }, false);
+        purgeUser(key); /* kursi + suara + cache orang itu langsung dibersihkan di layar ini */
+        sb.from('seats').delete().eq('user_id', key).then(() => {}); /* dan di database */
+      })
+      .on('broadcast', { event: 'sig' }, ({ payload }) => onSig(payload))
+      .on('broadcast', { event: 'bd' }, ({ payload }) => { if (payload?.uid === uid) refreshMyBorders() })
+      .on('broadcast', { event: 'emo' }, ({ payload }) => payload?.uid && showEmo(String(payload.uid), Number(payload.i)))
+      .on('broadcast', { event: 'ent' }, ({ payload }) => payload?.uid && entranceFor(payload.uid, String(payload.name || 'Anggota'), Number(payload.level) || 5))
+      .subscribe(async s => {
+        if (s !== 'SUBSCRIBED') return;
+        await room.track(presence());
+        syncPeers(); /* pendengar langsung menyambung ke yang sudah duduk */
+        if (joined) return; /* sambung ulang jaringan: jangan umumkan 'bergabung' dan jangan buat timer lagi */
+        joined = true;
+        sb.rpc('cleanup_room').then(() => {});
+        setTimeout(sweep, 4000); clearInterval(enterRoom.sw); enterRoom.sw = setInterval(sweep, 10000);
+        await sb.from('messages').insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'join', ...ridp() });
+        /* Entrance SVIP 5-9: broadcast langsung ke semua anggota + pesan type 'chat' bertanda [ENT] (lolos RLS seperti pesan suara) */
+        const myLevel = Math.min(11, lvl(me.points || 0));
+        if (myLevel >= 5) {
+          entranceFor(uid, me.name, myLevel);
+          room.send({ type: 'broadcast', event: 'ent', payload: { uid, name: me.name, level: myLevel } });
+          const { error: entErr } = await sb.from('messages').insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'chat', body: '[ENT]' + myLevel, ...ridp() });
+          if (entErr) console.warn('Entrance message:', entErr.message);
+        }
+      });
+    closeRooms(); H.tab('room'); renderTop();
+  } finally { enterRoom.busy = false }
+}
+async function leaveRoomCore(noRpc) {
+  clearInterval(enterRoom.hb); clearInterval(enterRoom.sw);
+  await stopMessageSync();
+  try { await sb.from('seats').delete().eq('user_id', uid) } catch {}
+  stopMic(); closeAll();
+  Object.keys(online).forEach(k => { document.getElementById('a' + k)?.remove(); unwatch(k) });
+  try { await room?.untrack() } catch {}
+  try { room && await sb.removeChannel(room) } catch {}
+  room = null; online = {}; seats = {}; mySeat = null; joined = false; ghostPrev = new Set();
+  if (HAS_ROOMS && !noRpc) sb.rpc('leave_room').then(() => {});
+  inRm = false; RID = null; curRoom = null; msgReady = false;
+  $('#chat').innerHTML = ''; renderedMessageIds.clear(); renderRoomBtns();
+}
+H.leaveRoom = async () => { if (!inRm) return; await leaveRoomCore(); H.tab('posts'); toast('Kamu keluar dari room') };
+H.roomSettings = () => { if (HAS_ROOMS && RID && canEditRoom()) openRooms('edit', RID) };
+/* Jembatan untuk rooms.html (satu origin, dipanggil lewat window.parent.RoomsAPI) */
+window.RoomsAPI = {
+  me: () => ({ id: uid, name: me?.name, host: !!me?.is_host }),
+  enabled: () => HAS_ROOMS, current: () => RID, close: closeRooms,
+  async list() { const { data, error } = await sb.rpc('list_rooms'); return error ? { error: rmErr(error) } : { data: data || [] } },
+  async get(id) { const { data, error } = await sb.from('rooms').select('*').eq('id', id).maybeSingle(); return error ? { error: rmErr(error) } : { data } },
+  async create(o) { const { data, error } = await sb.rpc('create_room', { p_name: o.name, p_seats: o.seats, p_max: o.max, p_private: !!o.priv, p_pass: o.priv ? (o.pass || null) : null }); return error ? { error: rmErr(error) } : { id: data } },
+  async update(id, o) {
+    const { error } = await sb.rpc('update_room', { p_id: id, p_name: o.name, p_seats: o.seats, p_max: o.max, p_private: !!o.priv, p_pass: o.pass || null });
+    if (error) return { error: rmErr(error) };
+    if (id === RID) { const { data } = await sb.from('rooms').select('*').eq('id', id).maybeSingle(); if (data) { curRoom = { ...curRoom, ...data }; settings = { ...settings, title: data.name, seat_count: data.seat_count }; renderSeats(); renderTop() } }
+    return { ok: true };
+  },
+  async remove(id) { const { error } = await sb.rpc('delete_room', { p_id: id }); if (error) return { error: rmErr(error) }; if (id === RID) await H.leaveRoom(); return { ok: true } },
+  async join(id, pass) { try { await enterRoom(id, pass); return { ok: true } } catch (e) { return { error: rmErr(e) } } }
+};
 
 H.sendMsg = async () => {
-  const i = $('#msg'), body = i.value.trim(); if (!body || H.sendMsg.busy) return;
+  const i = $('#msg'), body = i.value.trim(); if (!body || !inRm || H.sendMsg.busy) return;
   H.sendMsg.busy = true; setTimeout(() => H.sendMsg.busy = false, 400);
   i.value = ''; i.focus();
-  const row = { user_id: uid, name: me.name, avatar: me.avatar, type: 'chat', body };
+  const row = { user_id: uid, name: me.name, avatar: me.avatar, type: 'chat', body, ...ridp() };
   const withReply = roomReply ? { ...row, reply_to_id: roomReply.id, reply_preview: roomReply.body } : row;
   let { data: inserted, error } = await sb.from('messages').insert(withReply).select('*').single();
   if (error && /reply_/.test(error.message || '')) ({ data: inserted, error } = await sb.from('messages').insert(row).select('*').single());
@@ -1487,7 +1569,7 @@ H.voiceStop = async () => {
   if (upErr) return toast('Upload suara gagal: ' + upErr.message + ' (jalankan voice_fix.sql di Supabase)');
   const audioUrl = sb.storage.from('media').getPublicUrl(path).data?.publicUrl;
   if (!audioUrl) return toast('Audio terunggah, tetapi URL audio tidak berhasil dibuat.');
-  const { data: vm, error: msgErr } = await sb.from('messages').insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'chat', body: '[VOICE_MSG]' + audioUrl }).select('*').single();
+  const { data: vm, error: msgErr } = await sb.from('messages').insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'chat', body: '[VOICE_MSG]' + audioUrl, ...ridp() }).select('*').single();
   if (msgErr) { await sb.storage.from('media').remove([path]).catch(() => {}); return toast('Pesan suara ditolak: ' + msgErr.message); }
   if (vm) addRoomMessage(vm, true);
   toast('Pesan suara terkirim 🎧');
@@ -1542,8 +1624,10 @@ async function ensureProf(ids, force) {
 }
 let seatLoadSeq = 0;
 async function loadSeats() {
+  if (!inRm) return;
   const mine = ++seatLoadSeq;
-  const { data } = (await sb.from('seats').select('*'));
+  let sq = sb.from('seats').select('*'); if (RID) sq = sq.eq('room_id', RID);
+  const { data } = await sq;
   if (mine !== seatLoadSeq) return; /* ada pemuatan yang lebih baru: hasil lama dibuang agar kursi yang baru dikosongkan tidak muncul lagi */
   seats = {};
   (data || []).forEach(s => seats[s.seat_no] = s);
@@ -1570,7 +1654,7 @@ function renderSeats() {
 }
 function renderTop() {
   $('#ttl').textContent = settings.title; const n = Object.keys(online).length;
-  $('#sub').textContent = `${n} online`; $('#onl').textContent = `👥 ${n}`;
+  $('#sub').textContent = `${n}${curRoom?.max_members ? ' / ' + curRoom.max_members : ''} online${curRoom?.is_private ? ' · privat' : ''}`; $('#onl').textContent = `👥 ${n}`;
   const seated = new Set(Object.values(seats).map(s => s.user_id));
   const L = Object.entries(online).filter(([k]) => !seated.has(k)).map(([k, v]) => ({ k, ...pmeta(v) }));
   $('#mini').innerHTML = L.slice(0, 3).map(u => `<img src="${esc(u.avatar)}">`).join('');
@@ -1586,7 +1670,7 @@ async function sit(n) {
     try { stream = await navigator.mediaDevices.getUserMedia(GUM); muted = false; $('#micb').innerHTML = ms('mic'); watch(stream, uid) }
     catch { toast('Mikrofon ditolak. Izinkan mikrofon, lalu ketuk tombol mic untuk mencoba lagi.') }
     closeAll(); /* tutup koneksi lama SEBELUM duduk */
-    const { error } = await sb.from('seats').insert({ seat_no: n, user_id: uid, name: me.name, avatar: me.avatar });
+    const { error } = await sb.from('seats').insert({ seat_no: n, user_id: uid, name: me.name, avatar: me.avatar, ...ridp() });
     if (error) { stopMic(); toast('Kursi sudah terisi') }
   } finally { sitting = false; await loadSeats() }
 }
@@ -1606,6 +1690,7 @@ H.mic = async () => {
 /* ---------- 4. Menu (tab) ---------- */
 const PAGES = { room: '#room', posts: '#pgPosts', friends: '#pgFriends', me: '#pgMe' };
 H.tab = t => {
+  if (t === 'room' && !inRm) { if (HAS_ROOMS) return openRooms('list'); return enterRoom(null).catch(e => toast(rmErr(e))) }
   Object.entries(PAGES).forEach(([k, sel]) => $(sel).classList.toggle('hidden', k !== t));
   document.querySelectorAll('#nav button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
   if (t === 'posts') { loadPosts(); loadStories(); } if (t === 'friends') loadFriends(); if (t === 'me') { renderProf(); loadMyGifts(); refreshMySocialStats(); loadMyRelations() } if (t === 'room') { const c = $('#chat'); c.scrollTop = c.scrollHeight }
@@ -2056,7 +2141,7 @@ H.send = async i => {
   if (!gT) return H.gift();
   const g = GIFTS[i]; if (!g) return;
   if (!me.is_host && (me.gift_tickets || 0) < g.coin) return toast(`Koin emas kurang 🔒 Butuh ${kfmt(g.coin)}, kamu punya ${kfmt(me.gift_tickets)}`);
-  const { error } = await sb.rpc('send_gift_v2', { g: i, target: gT.id });
+  const { error } = await sb.rpc('send_gift_v2', { g: i, target: gT.id, ...(RID ? { rid: RID } : {}) });
   if (error && (error.code === 'PGRST202' || /Could not find the function/i.test(error.message || ''))) return toast('Jalankan gift_relation_migration.sql terbaru dulu 🪙');
   error ? toast(error.message) : (H.close(), syncPointsSoon(500));
 };
@@ -2136,7 +2221,7 @@ H.chest = () => {
    <div class="pf" style="padding:6px 0 10px"><div style="font-size:74px;line-height:1;color:${CHEST_COL[chest.level - 1]}">${'📦'}</div><h2 style="margin:6px 0">Peti ${chestName(chest.level)}</h2><div class="prog" style="width:90%"><i style="width:${pct}%"></i></div><small style="color:#a99d92">${kfmt(chest.progress)} / ${kfmt(t)} poin gift · ${Math.floor(pct)}%</small></div>
    <h3 class="sec">Semua level</h3>${rows}${me.is_host ? `<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button class="sm o" onclick="H.hostChest(1000)">+1rb poin</button><button class="sm o" onclick="H.hostChest(10000)">+10rb</button><button class="sm o" onclick="H.hostChest(100000)">+100rb</button></div>` : ''}`);
 };
-H.hostChest = async n => { const { error } = await sb.rpc('chest_fill', { amount: n }); toast(error ? error.message : `Peti diisi +${kfmt(n)} poin`); loadChest() };
+H.hostChest = async n => { const { error } = await sb.rpc('chest_fill', { amount: n, ...(RID ? { rid: RID } : {}) }); toast(error ? error.message : `Peti diisi +${kfmt(n)} poin`); loadChest() };
 const chestRewardText = r => !r ? '' : r.kind === 'coin' ? `+${kfmt(r.amount)} Koin Emas` : r.kind === 'exp' ? `+${kfmt(r.amount)} EXP` : r.kind === 'border' ? `Border baru: ${BORDERS.find(b => b.id === r.border)?.name || r.border}` : '';
 function showChestFx(level, r) {
   const e = $('#chestFX'); clearTimeout(showChestFx.t);
@@ -2324,7 +2409,7 @@ function nAlert(n) {
   if (nSound && now - nLastBeep > 1200) { nLastBeep = now; nBeep() }
   try { navigator.vibrate?.(n.type === 'dm' ? [60, 40, 60] : 40) } catch {}
   if (document.hidden && 'Notification' in window && Notification.permission === 'granted') {
-    const opt = { body: `${n.icon} ${n.text}`, icon: n.avatar || '/icon-192.png', badge: '/icon-192.png', tag: n.type };
+    const opt = { body: `${n.icon} ${n.text}`, icon: n.avatar || 'icon-192.png', badge: 'icon-192.png', tag: n.type };
     navigator.serviceWorker?.ready.then(r => r.showNotification(n.title, opt)).catch(() => { try { new Notification(n.title, opt) } catch {} });
   }
 }
@@ -2362,7 +2447,27 @@ function checkRoomMention(m) {
   if (m.reply_to_id && msgCache.get(String(m.reply_to_id))?.user_id === uid)
     pushNotif({ key: 'rp:' + m.id, type: 'reply', icon: '↩️', from: m.user_id, who, text: 'membalas pesanmu: ' + body.slice(0, 70), tab: 'room', act: { k: 'tab', t: 'room' } });
 }
-if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+/* ---------- Cache (service worker): buka pertama mengunduh, berikutnya langsung tampil; file baru di server terdeteksi otomatis ---------- */
+let updPending = false;
+function appUpdated() {
+  if (updPending) return; updPending = true;
+  const busy = inRm || voiceRecorder || !$('#sheet').classList.contains('hidden') || !$('#storyView').classList.contains('hidden') || !$('#roomsOv').classList.contains('hidden');
+  if (!busy) { toast('Versi baru ditemukan, memperbarui…'); setTimeout(() => location.reload(), 1200); return } /* aman: tidak sedang di room / mengetik / merekam */
+  $('#updBar').classList.remove('hidden'); /* sedang sibuk: biarkan pengguna memilih kapan memperbarui */
+}
+H.reloadApp = () => location.reload();
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.addEventListener('message', e => { const d = e.data || {}; if (d.type === 'SW_UPDATED' && /\/(index\.html)?$/.test(d.path || '')) appUpdated() });
+  addEventListener('load', () => navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).then(reg => {
+    const ask = m => (navigator.serviceWorker.controller || reg.active)?.postMessage(m);
+    const check = () => { reg.update().catch(() => {}); ask({ type: 'CHECK' }) };
+    setInterval(() => { if (!document.hidden) check() }, 300000);
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) check() });
+    navigator.serviceWorker.ready.then(() => setTimeout(() => { /* titip daftar file CDN yang baru dimuat agar kunjungan kedua sudah ngebut */
+      try { ask({ type: 'WARM', urls: performance.getEntriesByType('resource').map(r => r.name).filter(u => /^https:/.test(u)) }) } catch {}
+    }, 3000));
+  }).catch(() => {}));
+}
 document.addEventListener('pointerdown', () => { try { nAC ||= new (window.AudioContext || window.webkitAudioContext)(); nAC.state === 'suspended' && nAC.resume() } catch {} }, { once: true });
 document.addEventListener('visibilitychange', () => { if (!document.hidden && inRoom) { refreshMyBorders(); syncPoints(); nRender() } });
 
