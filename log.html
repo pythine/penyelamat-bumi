@@ -2,8 +2,13 @@
 <html lang="id">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <title>Voice & Gift Room</title>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0c0806">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" type="image/png" href="/icon-192.png">
+<link rel="apple-touch-icon" href="/icon-192.png">
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,0..1,0&display=block" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
@@ -415,11 +420,11 @@ textarea.inp{resize:none;display:block}
 .replyhint button .ms{font-size:16px}
 /* Peti Room */
 .chestchip{display:inline-flex;align-items:center;gap:6px;cursor:pointer;border-color:var(--ck,#f5c15a88)}
-.chestchip .ms{font-size:19px;color:var(--ck,var(--gold))}
+.chestchip .em{font-size:18px;line-height:1}
 .chestchip .cl{font-size:12px}
 .chestchip .cbar{display:block;width:34px;height:5px;border-radius:9px;background:#ffffff22;overflow:hidden}
 .chestchip .cbar b{display:block;height:100%;width:0;background:linear-gradient(90deg,#ffd886,#ff8a00);transition:width .5s}
-.chestchip.full{animation:ckPulse 1s ease-in-out infinite}
+.chestchip.off{opacity:.55}.chestchip.full{animation:ckPulse 1s ease-in-out infinite}
 @keyframes ckPulse{50%{box-shadow:0 0 12px var(--ck,#f5c15a)}}
 #chestFX{position:fixed;inset:0;z-index:66;display:grid;place-items:center;pointer-events:none;background:rgba(0,0,0,.5);backdrop-filter:blur(3px)}
 #chestFX.hidden{display:none!important}
@@ -458,6 +463,25 @@ textarea.inp{resize:none;display:block}
 @keyframes svipGlow{0%,100%{box-shadow:0 0 28px #ffc34d99,0 0 60px #ff9d2e55,inset 0 0 22px #ffd36e22}50%{box-shadow:0 0 46px #fff1a8,0 0 110px #ffb52bcc,inset 0 0 34px #ffd36e55}}
 @keyframes svipSpark{0%{opacity:0;transform:translate(0,0) scale(.3)}15%{opacity:1}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.1)}}
 @media (prefers-reduced-motion:reduce){#svipPop .svip-rays,#svipPop .svip-spark,#svipPop .svip-card{animation:none}}
+/* Chat pribadi layar penuh */
+#sheet.full{align-items:stretch;background:#0c0806}
+#sheet.full>div{max-width:520px;height:100dvh;max-height:100dvh;border:0;border-radius:0;overflow:hidden;display:flex;flex-direction:column;padding:calc(10px + env(safe-area-inset-top)) 12px calc(10px + env(safe-area-inset-bottom))}
+#sheet.full .dmhead{flex:none;margin:0 0 6px;padding-bottom:10px;border-bottom:1px solid #ffffff14}
+#sheet.full .dmhead h3{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#sheet.full .dmfeed{flex:1;min-height:0;max-height:none;padding:10px 2px}
+#sheet.full #dmReplyHint,#sheet.full .dmcomposer{flex:none}
+#sheet.full .dmcomposer{margin-top:6px}
+/* Story: video, komentar */
+.sv-body video{width:100%;height:100%;object-fit:contain;border-radius:18px;background:#000}
+.sv-bars i.runv{width:0}.sv-bars i.run.paused{animation-play-state:paused}
+.sv-foot{position:relative;z-index:5;width:100%;max-width:520px;display:flex;gap:8px;align-items:center;padding-top:10px}
+.sv-foot .inp{flex:1;min-width:0;background:#ffffff14;border-color:#ffffff30}
+.sv-cbtn{height:40px;padding:0 13px;border-radius:20px;background:#ffffff18;display:flex;align-items:center;gap:6px;font-size:14px;flex:none}
+.sv-cbtn .ms{font-size:20px}
+.sv-panel{position:absolute;z-index:6;left:50%;transform:translateX(-50%);width:calc(100% - 24px);max-width:496px;bottom:calc(70px + env(safe-area-inset-bottom));max-height:55dvh;overflow:auto;background:#150f0bf5;border:1.5px solid var(--gold2);border-radius:20px;padding:12px}
+.sv-panel .cmtfeed{max-height:38dvh}
+.sv-ph{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;color:var(--gold)}
+.sv-ph button{width:32px;height:32px;border-radius:50%;background:#ffffff18;display:grid;place-items:center}
 </style>
 </head>
 <body>
@@ -481,7 +505,7 @@ textarea.inp{resize:none;display:block}
     <button class="ib" onclick="H.panel()" title="Panel Host"><span class="ms">admin_panel_settings</span></button>
     <button class="ib" onclick="H.exit()" title="Keluar / ubah profil"><span class="ms">logout</span></button>
   </div>
-  <div class="chips"><span class="chip"><span class="ms">emoji_events</span> PENYELAMAT BUMI</span><button class="chip chestchip hidden" id="chestChip" onclick="H.chest()" title="Peti Room"><span class="ms">inventory_2</span><span class="cl">Lv.1</span><i class="cbar"><b></b></i></button><span class="mini" id="mini"></span><span class="chip" id="onl" style="margin-left:auto"></span></div>
+  <div class="chips"><span class="chip"><span class="ms">emoji_events</span> PENYELAMAT BUMI</span><button class="chip chestchip" id="chestChip" onclick="H.chest()" title="Peti Room"><span class="em">🪎</span><span class="cl">Lv.1</span><i class="cbar"><b></b></i></button><span class="mini" id="mini"></span><span class="chip" id="onl" style="margin-left:auto"></span></div>
   <div id="grid"></div>
   <div class="listen" id="listen"></div>
   <div id="chatw"><div id="chat"></div></div>
@@ -511,7 +535,7 @@ textarea.inp{resize:none;display:block}
 <section id="pgFriends" class="scr hn col hidden">
   <div class="top"><div class="t"><b>Teman</b><small>Tambah teman dan mulai percakapan pribadi</small></div>
     <button class="ib bell" onclick="H.notifs()" title="Notifikasi"><span class="ms">notifications</span><em class="nb"></em></button>
-    <button class="ib plus" onclick="H.findFriends()"><span class="ms">add</span></button></div>
+    <button class="ib plus" onclick="H.findFriends()" title="Tambah teman"><span class="ms">add</span></button></div>
   <div class="pg" id="friendBox"></div>
 </section>
 
@@ -736,7 +760,7 @@ const acceptedIds = new Set(), pinfo = {};
 try { nSound = localStorage.getItem('nt_snd') !== '0' } catch {}
 
 function toast(t) { const e = $('#toast'); e.textContent = t; e.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(() => e.classList.remove('on'), 2600) }
-function sheet(h) { const s = $('#sheet'); s.innerHTML = `<div>${h}</div>`; s.classList.remove('hidden'); s.onclick = e => e.target === s && H.close() }
+function sheet(h, full) { const s = $('#sheet'); s.classList.toggle('full', !!full); s.innerHTML = `<div>${h}</div>`; s.classList.remove('hidden'); s.onclick = e => e.target === s && H.close() }
 H.wa = msg => {
   const u = `https://wa.me/${OWNER_WA}?text=${encodeURIComponent(msg)}`;
   if (!window.open(u, '_blank')) {
@@ -1037,7 +1061,7 @@ H.panel = async () => {
    ${GIFTS.slice(EXCLUSIVE_GIFT_START).map((g,j)=>{const i=j+EXCLUSIVE_GIFT_START;return `<div class="mrow" style="align-items:flex-start"><span style="flex:1"><b>${g.e} ${esc(g.name)}</b><small style="display:block;color:#a99d92">${giftVideos[i]?.name || (giftVideos[i]?.url ? 'Video tersimpan' : 'Belum ada video')}</small></span><div class="bt"><button class="sm" onclick="H.uploadGiftVideo(${i})"><span class="ms">upload</span> Video</button>${giftVideos[i]?.url ? `<button class="sm o" onclick="H.previewGift(${i})"><span class="ms">play_arrow</span></button><button class="sm o" onclick="H.removeGiftVideo(${i})">Hapus</button>` : ''}</div></div>`}).join('')}
    <p class="sub">Anggota online</p>
    ${(data || []).map(u => `<div class="mrow"><img src="${esc(u.avatar)}"><span>${esc(u.name)} <small style="color:#a99d92">🪙${Number(u.gift_tickets || 0).toLocaleString('id-ID')} ${u.theme_ok ? '🎨✔' : ''}</small></span>
-     <div class="bt"><button class="sm" onclick="H.tix('${u.id}',100)">+100 <span class="ms">toll</span></button><button class="sm" onclick="H.tix('${u.id}',1000)">+1rb</button><button class="sm" onclick="H.tix('${u.id}',10000)">+10rb</button><button class="sm" onclick="H.tix('${u.id}',50000)">+50rb</button><button class="sm" onclick="H.hostBorder('${u.id}')"><span class="ms">image</span> Border</button>${u.theme_ok ? '' : `<button class="sm" onclick="H.thm('${u.id}')"><span class="ms">palette</span> Buka Tema</button>`}</div></div>`).join('')}
+     <div class="bt"><button class="sm" onclick="H.tix('${u.id}',100)">+100 🪙</button><button class="sm" onclick="H.tix('${u.id}',1000)">+1rb</button><button class="sm" onclick="H.tix('${u.id}',10000)">+10rb</button><button class="sm" onclick="H.tix('${u.id}',50000)">+50rb</button><button class="sm" onclick="H.hostBorder('${u.id}')"><span class="ms">image</span> Border</button>${u.theme_ok ? '' : `<button class="sm" onclick="H.thm('${u.id}')"><span class="ms">palette</span> Buka Tema</button>`}</div></div>`).join('')}
    <div style="display:flex;gap:8px;margin-top:14px"><button class="sm o" onclick="H.reset()">Kosongkan kursi</button><button class="sm o" onclick="H.clear()">Bersihkan chat</button></div>
    <button class="btn" style="margin-top:16px;background:linear-gradient(#e0646b,#9c2a33);color:#fff" onclick="H.unhost()"><span class="ms">logout</span> Keluar Host</button>`);
 };
@@ -1156,10 +1180,10 @@ async function startRoom() {
   clearInterval(startRoom.bt); startRoom.bt = setInterval(() => { if (!document.hidden) { refreshMyBorders(); syncPoints() } }, 10000);
   loadMyGifts();
   loadPosts(true); loadStories();
-  loadChestLevels().then(loadChest).then(() => {
-    if (!HAS_CHEST) return;
+  loadChestLevels().then(loadChest).catch(() => {}).then(() => {
+    if (startRoom.chestSub) return; startRoom.chestSub = true;
     sb.channel('chest').on('postgres_changes', { event: '*', schema: 'public', table: 'room_chest' }, p => { if (p.new?.level) { chest = { level: p.new.level, progress: Number(p.new.progress) }; renderChest() } }).subscribe();
-    setInterval(() => { if (inRoom) loadChest() }, 40000);
+    setInterval(() => { if (inRoom) loadChest() }, HAS_CHEST ? 40000 : 15000);
   });
   sb.from('post_comments').select('id').limit(1).then(r => { /* channel terpisah: tabel opsional tidak merusak channel utama */
     if (r.error) return; HAS_CMT = true; loadCmtCounts();
@@ -1168,6 +1192,16 @@ async function startRoom() {
       if (cmtPost && $('#cmtFeed') && (p.eventType === 'DELETE' || String(p.new?.post_id) === String(cmtPost.id))) renderCmts();
       if (p.eventType === 'INSERT' && p.new?.user_id !== uid && String(posts.find(x => String(x.id) === String(p.new.post_id))?.user_id) === String(uid))
         pushNotif({ key: 'cm:' + p.new.id, type: 'comment', icon: '💬', from: p.new.user_id, text: 'mengomentari postinganmu: ' + String(p.new.body || '').slice(0, 60), tab: 'posts', act: { k: 'tab', t: 'posts' } });
+    }).subscribe();
+  });
+
+  sb.from('story_comments').select('id').limit(1).then(r => {
+    if (r.error) return;
+    sb.channel('scmt').on('postgres_changes', { event: '*', schema: 'public', table: 'story_comments' }, p => {
+      if (stCur) { if (svPanel) svLoadCmts(); svCount(stCur.list[stCur.i].id) }
+      const st = stories.find(x => String(x.id) === String(p.new?.story_id));
+      if (p.eventType === 'INSERT' && p.new.user_id !== uid && st?.user_id === uid)
+        pushNotif({ key: 'sc:' + p.new.id, type: 'comment', icon: '💬', from: p.new.user_id, text: 'mengomentari story-mu: ' + String(p.new.body || '').slice(0, 60), tab: 'posts', act: { k: 'story', id: uid } });
     }).subscribe();
   });
 
@@ -1503,9 +1537,29 @@ async function loadStories(){
   if(!loadStories.purged){loadStories.purged=1;purgeMyStories().catch(()=>{})}
   if(!loadStories.iv)loadStories.iv=setInterval(()=>{if(inRoom)loadStories()},120000); /* story yang lewat 24 jam hilang otomatis */
 }
-H.addStory=()=>{draftImg=null;sheet(`<h3>Buat Story</h3><p class="sub">Story akan hilang otomatis setelah 24 jam.</p><textarea id="storyCaption" class="inp" rows="2" maxlength="180" placeholder="Tulis cerita singkat..."></textarea><div id="storyPrev"></div><button class="sm o" style="margin-top:10px" onclick="H.pickStory()"><span class="ms">photo_camera</span> Pilih Foto</button><button class="btn" style="margin-top:14px" onclick="H.publishStory()">Bagikan Story</button>`)};
-H.pickStory=()=>pick(async f=>{try{toast('Mengunggah foto…');draftImg=await upImg(f,1080);$('#storyPrev').innerHTML=`<img class="pi" style="margin-top:10px" src="${esc(draftImg)}">`;toast('Foto siap ✅')}catch(e){toast(e.message||'Upload gagal')}});
-H.publishStory=async()=>{if(!draftImg)return toast('Pilih foto untuk story dulu');const {error}=await sb.from('stories').insert({user_id:uid,media_url:draftImg,caption:($('#storyCaption')?.value||'').trim(),expires_at:new Date(Date.now()+STORY_MS).toISOString()});if(error)return toast(error.message);H.close();draftImg=null;toast('Story dibagikan! ✨');loadStories()};
+let draftType='image',svPaused=false,svRemain=5000,svStart=0,svPanel=false,svMuted=false;
+const isVid=u=>/\.(mp4|webm|mov)(\?|#|$)/i.test(String(u||''));
+H.addStory=()=>{draftImg=null;draftType='image';sheet(`<h3>Buat Story</h3><p class="sub">Foto atau video (maks. 60 detik). Hilang otomatis setelah 24 jam.</p><textarea id="storyCaption" class="inp" rows="2" maxlength="180" placeholder="Tulis cerita singkat..."></textarea><div id="storyPrev"></div><div style="display:flex;gap:8px;margin-top:10px"><button class="sm o" onclick="H.pickStory()"><span class="ms">photo_camera</span> Foto</button><button class="sm o" onclick="H.pickStoryVideo()"><span class="ms">videocam</span> Video</button></div><button class="btn" style="margin-top:14px" onclick="H.publishStory()">Bagikan Story</button>`)};
+H.pickStory=()=>pick(async f=>{try{toast('Mengunggah foto…');draftImg=await upImg(f,1080);draftType='image';$('#storyPrev').innerHTML=`<img class="pi" style="margin-top:10px" src="${esc(draftImg)}">`;toast('Foto siap ✅')}catch(e){toast(e.message||'Upload gagal')}});
+async function upStoryVideo(f){
+  const ext=/\.webm$/i.test(f.name)||f.type==='video/webm'?'webm':/\.mov$/i.test(f.name)||f.type==='video/quicktime'?'mov':'mp4';
+  if(!/^video\//i.test(f.type)&&!/\.(mp4|webm|mov)$/i.test(f.name))throw new Error('Pilih file video (MP4, WebM, atau MOV).');
+  if(f.size>40*1024*1024)throw new Error('Ukuran video maksimal 40 MB.');
+  const dur=await new Promise((res,rej)=>{const v=document.createElement('video');v.preload='metadata';v.muted=true;
+    v.onloadedmetadata=()=>{const d=v.duration;URL.revokeObjectURL(v.src);res(d)};
+    v.onerror=()=>{URL.revokeObjectURL(v.src);rej(new Error('Video tidak bisa dibaca. Pakai MP4 (H.264) atau WebM.'))};
+    v.src=URL.createObjectURL(f)});
+  if(Number.isFinite(dur)&&dur>61)throw new Error('Durasi video maksimal 60 detik.');
+  toast('Mengunggah video… mohon tunggu');
+  const path=`${uid}/story-${Date.now()}.${ext}`;
+  const {error}=await sb.storage.from('media').upload(path,f,{contentType:ext==='webm'?'video/webm':ext==='mov'?'video/quicktime':'video/mp4'});
+  if(error)throw new Error(/mime|type|size|exceed|limit/i.test(error.message)?'Video ditolak storage: '+error.message+' (jalankan story_comments.sql, lalu cek batas ukuran file di Supabase)':error.message);
+  return sb.storage.from('media').getPublicUrl(path).data.publicUrl;
+}
+H.pickStoryVideo=()=>{const i=document.createElement('input');i.type='file';i.accept='video/*';
+  i.onchange=async()=>{const f=i.files?.[0];if(!f)return;try{toast('Memeriksa video…');const url=await upStoryVideo(f);draftImg=url;draftType='video';
+    $('#storyPrev').innerHTML=`<video class="pi" style="margin-top:10px;max-height:46dvh" src="${esc(url)}" controls muted playsinline></video>`;toast('Video siap ✅')}catch(e){toast(e.message||'Upload video gagal')}};i.click()};
+H.publishStory=async()=>{if(!draftImg)return toast('Pilih foto atau video untuk story dulu');const {error}=await sb.from('stories').insert({user_id:uid,media_url:draftImg,caption:($('#storyCaption')?.value||'').trim(),expires_at:new Date(Date.now()+STORY_MS).toISOString()});if(error)return toast(error.message);H.close();draftImg=null;toast('Story dibagikan! ✨');loadStories()};
 /* Ketuk lingkaran story → tampil layar penuh; ketuk kanan/kiri untuk lanjut/kembali, otomatis lanjut tiap 5 detik */
 H.viewStory=(userId,idx)=>{
   const list=stories.filter(x=>x.user_id===userId&&Date.now()-Date.parse(x.created_at)<STORY_MS);
@@ -1513,21 +1567,64 @@ H.viewStory=(userId,idx)=>{
   stCur={userId,list,i:Math.min(Math.max(0,idx||0),list.length-1)};drawStory();
 };
 function drawStory(){
-  const c=stCur;if(!c)return;const st=c.list[c.i],e=$('#storyView'),own=st.user_id===uid;
-  clearTimeout(drawStory.t);stSeen.add(String(st.id));
-  e.innerHTML=`<div class="sv-top"><div class="sv-bars">${c.list.map((_,k)=>`<span><i class="${k<c.i?'done':k===c.i?'run':''}"></i></span>`).join('')}</div>
-    <div class="sv-who"><img src="${esc(st.profiles?.avatar||'')}"><div><b>${esc(st.profiles?.name||'Anggota')}</b><small>${ago(st.created_at)} · hilang dalam ${Math.max(1,Math.ceil((STORY_MS-(Date.now()-Date.parse(st.created_at)))/36e5))} jam</small></div>${own?'<button onclick="H.delStory()" title="Hapus story"><span class="ms">delete</span></button>':''}<button onclick="H.closeStory()"><span class="ms">close</span></button></div></div>
-    <div class="sv-body"><img src="${esc(st.media_url)}">${st.caption?`<div class="sv-cap">${esc(st.caption)}</div>`:''}<button class="sv-nav l" onclick="H.stepStory(-1)"></button><button class="sv-nav r" onclick="H.stepStory(1)"></button></div>`;
+  const c=stCur;if(!c)return;const st=c.list[c.i],e=$('#storyView'),own=st.user_id===uid,vid=isVid(st.media_url);
+  clearTimeout(drawStory.t);stSeen.add(String(st.id));svPaused=false;svPanel=false;
+  e.innerHTML=`<div class="sv-top"><div class="sv-bars">${c.list.map((_,k)=>`<span><i class="${k<c.i?'done':k===c.i?(vid?'runv':'run'):''}"></i></span>`).join('')}</div>
+    <div class="sv-who"><img src="${esc(st.profiles?.avatar||'')}"><div><b>${esc(st.profiles?.name||'Anggota')}</b><small>${ago(st.created_at)} · hilang dalam ${Math.max(1,Math.ceil((STORY_MS-(Date.now()-Date.parse(st.created_at)))/36e5))} jam</small></div>${vid?`<button id="svMuteBtn" onclick="H.svMute()" title="Suara"><span class="ms">${svMuted?'volume_off':'volume_up'}</span></button>`:''}${own?'<button onclick="H.delStory()" title="Hapus story"><span class="ms">delete</span></button>':''}<button onclick="H.closeStory()"><span class="ms">close</span></button></div></div>
+    <div class="sv-body">${vid?`<video id="svVid" src="${esc(st.media_url)}" playsinline preload="auto" ${svMuted?'muted':''} onloadedmetadata="H.svVid(this)" ontimeupdate="H.svProg(this)" onended="H.stepStory(1)" onerror="H.stepStory(1)"></video>`:`<img src="${esc(st.media_url)}">`}${st.caption?`<div class="sv-cap">${esc(st.caption)}</div>`:''}<button class="sv-nav l" onclick="H.stepStory(-1)"></button><button class="sv-nav r" onclick="H.stepStory(1)"></button></div>
+    <div class="sv-panel hidden" id="svPanel"></div>
+    <div class="sv-foot"><button class="sv-cbtn" onclick="H.svCmts()" title="Lihat komentar"><span class="ms o">chat_bubble</span><span id="svCnt">0</span></button><input id="svInput" class="inp" maxlength="200" placeholder="Tulis komentar..." autocomplete="off" onfocus="H.svPause(true)" onblur="if(!svPanel)H.svPause(false)" onkeydown="if(event.key==='Enter')H.svSend()"><button class="ib sendb" onclick="H.svSend()" title="Kirim"><span class="ms">send</span></button></div>`;
   e.classList.remove('hidden');
-  drawStory.t=setTimeout(()=>H.stepStory(1),5000);
+  if(!vid){svRemain=5000;svStart=Date.now();drawStory.t=setTimeout(()=>H.stepStory(1),svRemain)}
+  svCount(st.id);
 }
+H.svVid=v=>{v.muted=svMuted;v.play().catch(()=>{svMuted=true;v.muted=true;const b=$('#svMuteBtn .ms');if(b)b.textContent='volume_off';v.play().catch(()=>{})})};
+H.svProg=v=>{const b=$('.sv-bars i.runv');if(b&&v.duration)b.style.width=(v.currentTime/v.duration*100)+'%'};
+H.svMute=()=>{svMuted=!svMuted;const v=$('#svVid');if(v){v.muted=svMuted;if(!svMuted)v.play().catch(()=>{})}const b=$('#svMuteBtn .ms');if(b)b.textContent=svMuted?'volume_off':'volume_up'};
+H.svPause=on=>{
+  const c=stCur;if(!c||svPaused===on)return;svPaused=on;
+  const v=$('#svVid'),bar=$('.sv-bars i.run');
+  if(on){clearTimeout(drawStory.t);svRemain-=Date.now()-svStart;bar?.classList.add('paused');v?.pause()}
+  else{svStart=Date.now();bar?.classList.remove('paused');if(v)v.play().catch(()=>{});else drawStory.t=setTimeout(()=>H.stepStory(1),Math.max(300,svRemain))}
+};
 H.stepStory=d=>{
   const c=stCur;if(!c)return;const n=c.i+d;
   if(n<0)return drawStory();
   if(n>=c.list.length){const nx=stGroups[stGroups.indexOf(c.userId)+1];return nx?H.viewStory(nx):H.closeStory()}
   c.i=n;drawStory();
 };
-H.closeStory=()=>{clearTimeout(drawStory.t);stCur=null;$('#storyView').classList.add('hidden');$('#storyView').innerHTML='';loadStories()};
+H.closeStory=()=>{clearTimeout(drawStory.t);stCur=null;svPaused=false;svPanel=false;const e=$('#storyView');e.querySelector('video')?.pause();e.classList.add('hidden');e.innerHTML='';loadStories()};
+/* ---- komentar story ---- */
+async function svCount(id){
+  const {count,error}=await sb.from('story_comments').select('id',{count:'exact',head:true}).eq('story_id',id);
+  const el=$('#svCnt');if(el&&stCur?.list[stCur.i]?.id===id)el.textContent=error?'0':String(count||0);
+}
+function svCmtHTML(c,st){
+  const u=c.profiles||{},can=c.user_id===uid||me.is_host||st.user_id===uid;
+  return `<div class="cmt"><img src="${esc(u.avatar||'')}" onclick="H.closeStory();H.view('${c.user_id}')"><div class="cb"><b>${badge(u.points)}${esc(u.name||'Anggota')}</b> <small>${ago(c.created_at)}</small><p>${esc(c.body).replace(/(@[\w.-]+)/g,'<span class="tagged">$1</span>')}</p></div>${can?`<button class="del" onclick="H.svDel('${c.id}')" title="Hapus"><span class="ms">delete</span></button>`:''}</div>`;
+}
+async function svLoadCmts(){
+  const st=stCur?.list[stCur.i],p=$('#svPanel');if(!st||!p)return;
+  const {data,error}=await sb.from('story_comments').select('id,user_id,body,created_at,profiles!user_id(name,avatar,points)').eq('story_id',st.id).order('created_at',{ascending:true}).limit(200);
+  const head=n=>`<div class="sv-ph"><b>${n}</b><button onclick="H.svCmts()"><span class="ms">close</span></button></div>`;
+  if(error){p.innerHTML=head('Komentar')+'<p class="empty-t">Fitur komentar story belum aktif.<br>Jalankan story_comments.sql di Supabase.</p>';return}
+  p.innerHTML=head(`Komentar (${(data||[]).length})`)+`<div class="cmtfeed" id="svFeed">${(data||[]).map(c=>svCmtHTML(c,st)).join('')||'<p class="empty-t">Belum ada komentar. Jadilah yang pertama!</p>'}</div>`;
+  const f=$('#svFeed');if(f)f.scrollTop=f.scrollHeight;
+  const el=$('#svCnt');if(el)el.textContent=String((data||[]).length);
+}
+H.svCmts=async()=>{
+  const p=$('#svPanel');if(!p)return;
+  svPanel=!svPanel;p.classList.toggle('hidden',!svPanel);
+  if(svPanel){H.svPause(true);await svLoadCmts()}else H.svPause(false);
+};
+H.svSend=async()=>{
+  const st=stCur?.list[stCur.i],i=$('#svInput'),body=(i?.value||'').trim();if(!st||!body||H.svSend.busy)return;
+  H.svSend.busy=true;setTimeout(()=>H.svSend.busy=false,500);
+  const {error}=await sb.from('story_comments').insert({story_id:st.id,user_id:uid,body});
+  if(error)return toast(/story_comments|relation|schema cache/i.test(error.message)?'Fitur komentar story belum aktif. Jalankan story_comments.sql di Supabase.':error.message);
+  i.value='';toast('Komentar terkirim');svCount(st.id);if(svPanel)svLoadCmts();
+};
+H.svDel=async id=>{if(!confirm('Hapus komentar ini?'))return;const {error}=await sb.from('story_comments').delete().eq('id',id);if(error)return toast(error.message);svLoadCmts();if(stCur)svCount(stCur.list[stCur.i].id)};
 H.delStory=async()=>{
   const st=stCur?.list[stCur.i];if(!st||st.user_id!==uid||!confirm('Hapus story ini?'))return;
   const {error}=await sb.from('stories').delete().eq('id',st.id);if(error)return toast(error.message);
@@ -1675,7 +1772,7 @@ function renderProf() {
   const mine = posts.filter(p => p.user_id === uid);
   $('#pfBox').innerHTML = `<div class="pf">${avatarHTML(me.avatar, me.points, 'pav', 112, '', me.avatar_border, me.is_host, uid)}
     <h2>${me.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(me.points)}${esc(me.name)}</h2>${titleHTML(me.points)}
-    <div class="stats" style="flex-wrap:wrap"><span class="chip"><span class="ms">group</span> ${mySocialStats.friends ?? '—'} Teman</span><span class="chip"><span class="ms">person</span> ${mySocialStats.followers ?? '—'} Followers</span><span class="chip"><span class="ms">toll</span> ${Number(me.gift_tickets ?? 0).toLocaleString('id-ID')}</span><span class="chip"><span class="ms">star</span> ${me.points ?? 0}</span><span class="chip"><span class="ms">edit_note</span> ${mine.length}</span></div></div>
+    <div class="stats" style="flex-wrap:wrap"><span class="chip"><span class="ms">group</span> ${mySocialStats.friends ?? '—'} Teman</span><span class="chip"><span class="ms">person</span> ${mySocialStats.followers ?? '—'} Followers</span><span class="chip">🪙 ${Number(me.gift_tickets ?? 0).toLocaleString('id-ID')}</span><span class="chip"><span class="ms">star</span> ${me.points ?? 0}</span><span class="chip"><span class="ms">edit_note</span> ${mine.length}</span></div></div>
     <div class="acts"><button class="btn" onclick="H.editAv()"><span class="ms">photo_camera</span> Ubah Foto</button><button class="btn" onclick="H.editNm()"><span class="ms">edit</span> Ubah Nama</button></div>
     <button class="btn" onclick="H.compose()"><span class="ms">add</span> Buat Postingan</button>
     ${relSectionHTML()}${borderGridHTML()}
@@ -1809,7 +1906,7 @@ function addMsg(m, live) {
     if (live) showFx(g, m.name, m.to_name, Number(m.gift));
   } else if (m.type === 'chat' && String(m.body || '').startsWith('[CHEST]')) {
     const [evId, lv] = String(m.body).slice(7).split('|');
-    d.innerHTML = `<div class="bub sys">${ms('inventory_2')} Peti ${Number(lv) >= 10 ? 'EKSKLUSIF' : 'Level ' + Number(lv)} terbuka! Semua anggota room mendapat hadiah</div>`;
+    d.innerHTML = `<div class="bub sys">${'📦'} Peti ${Number(lv) >= 10 ? 'EKSKLUSIF' : 'Level ' + Number(lv)} terbuka! Semua anggota room mendapat hadiah</div>`;
     if (live) onChestOpen(evId, Number(lv));
   } else if (m.type === 'chat' && String(m.body || '').startsWith('[REL]')) {
     const txt = String(m.body).slice(5);
@@ -1925,7 +2022,7 @@ async function loadChest() {
 }
 let chestSoonT = null; const loadChestSoon = d => { clearTimeout(chestSoonT); chestSoonT = setTimeout(loadChest, d || 500) };
 function renderChest() {
-  const c = $('#chestChip'); if (!c) return; c.classList.toggle('hidden', !HAS_CHEST); if (!HAS_CHEST) return;
+  const c = $('#chestChip'); if (!c) return; c.classList.toggle('off', !HAS_CHEST); if (!HAS_CHEST) { c.querySelector('.cl').textContent = 'Peti'; c.querySelector('.cbar b').style.width = '0%'; c.style.setProperty('--ck', '#9a8f84'); return }
   const pct = Math.min(100, chest.progress / chestTarget(chest.level) * 100);
   c.style.setProperty('--ck', CHEST_COL[chest.level - 1]);
   c.querySelector('.cl').textContent = chestName(chest.level);
@@ -1933,18 +2030,19 @@ function renderChest() {
   c.classList.toggle('full', pct >= 90);
 }
 H.chest = () => {
+  if (!HAS_CHEST) { loadChestLevels().then(loadChest); return sheet(`<h3>Peti Room</h3><p class="sub">Peti belum aktif di server. Jalankan <b>chest_migration.sql</b> di Supabase &gt; SQL Editor (sekali saja, setelah gift_relation_migration.sql), lalu muat ulang halaman.</p><button class="sm" onclick="H.close()">Mengerti</button>`) }
   const t = chestTarget(chest.level), pct = Math.min(100, chest.progress / t * 100);
   const rows = CHEST_DEF.map((d, i) => { const l = i + 1, c = chestLv.find(x => x.level === l);
-    return `<div class="mrow" style="${l === chest.level ? 'background:#ffffff10;border-radius:12px;padding-left:8px' : ''}"><span style="flex:none;font-size:26px;color:${CHEST_COL[i]}">${ms('inventory_2')}</span><span><b>Peti ${chestName(l)}</b><br><small style="color:#a99d92">${kfmt(c?.target ?? d)} poin gift${c ? ` · ${kfmt(c.coin_min)}–${kfmt(c.coin_max)} koin · ${kfmt(c.exp_min)}–${kfmt(c.exp_max)} EXP` : ''}</small></span>${l < chest.level ? ms('check', 'on') : ''}</div>` }).join('');
-  sheet(`<h3>${ms('inventory_2')} Peti Room</h3><p class="sub">Terisi dari semua gift yang dikirim di room. Saat penuh, peti terbuka otomatis dan semua anggota yang ada di room mendapat hadiah acak: koin emas, EXP, atau (jarang) border.</p>
-   <div class="pf" style="padding:6px 0 10px"><div style="font-size:74px;line-height:1;color:${CHEST_COL[chest.level - 1]}">${ms('inventory_2')}</div><h2 style="margin:6px 0">Peti ${chestName(chest.level)}</h2><div class="prog" style="width:90%"><i style="width:${pct}%"></i></div><small style="color:#a99d92">${kfmt(chest.progress)} / ${kfmt(t)} poin gift · ${Math.floor(pct)}%</small></div>
+    return `<div class="mrow" style="${l === chest.level ? 'background:#ffffff10;border-radius:12px;padding-left:8px' : ''}"><span style="flex:none;font-size:26px;color:${CHEST_COL[i]}">${'📦'}</span><span><b>Peti ${chestName(l)}</b><br><small style="color:#a99d92">${kfmt(c?.target ?? d)} poin gift${c ? ` · ${kfmt(c.coin_min)}–${kfmt(c.coin_max)} koin · ${kfmt(c.exp_min)}–${kfmt(c.exp_max)} EXP` : ''}</small></span>${l < chest.level ? ms('check', 'on') : ''}</div>` }).join('');
+  sheet(`<h3>${'📦'} Peti Room</h3><p class="sub">Terisi dari semua gift yang dikirim di room. Saat penuh, peti terbuka otomatis dan semua anggota yang ada di room mendapat hadiah acak: koin emas, EXP, atau (jarang) border.</p>
+   <div class="pf" style="padding:6px 0 10px"><div style="font-size:74px;line-height:1;color:${CHEST_COL[chest.level - 1]}">${'📦'}</div><h2 style="margin:6px 0">Peti ${chestName(chest.level)}</h2><div class="prog" style="width:90%"><i style="width:${pct}%"></i></div><small style="color:#a99d92">${kfmt(chest.progress)} / ${kfmt(t)} poin gift · ${Math.floor(pct)}%</small></div>
    <h3 class="sec">Semua level</h3>${rows}${me.is_host ? `<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button class="sm o" onclick="H.hostChest(1000)">+1rb poin</button><button class="sm o" onclick="H.hostChest(10000)">+10rb</button><button class="sm o" onclick="H.hostChest(100000)">+100rb</button></div>` : ''}`);
 };
 H.hostChest = async n => { const { error } = await sb.rpc('chest_fill', { amount: n }); toast(error ? error.message : `Peti diisi +${kfmt(n)} poin`); loadChest() };
 const chestRewardText = r => !r ? '' : r.kind === 'coin' ? `+${kfmt(r.amount)} Koin Emas` : r.kind === 'exp' ? `+${kfmt(r.amount)} EXP` : r.kind === 'border' ? `Border baru: ${BORDERS.find(b => b.id === r.border)?.name || r.border}` : '';
 function showChestFx(level, r) {
   const e = $('#chestFX'); clearTimeout(showChestFx.t);
-  e.innerHTML = `<div class="cx" style="--ck:${CHEST_COL[level - 1]}"><div class="cxi">${ms('inventory_2')}</div><div class="svip-title">PETI ${level >= 10 ? 'EKSKLUSIF' : 'LEVEL ' + level} TERBUKA!</div><p class="sub" style="margin:6px 0 0">Semua anggota room mendapat hadiah acak</p>${r ? `<div class="cxr">${esc(chestRewardText(r))}</div>` : ''}</div>`;
+  e.innerHTML = `<div class="cx" style="--ck:${CHEST_COL[level - 1]}"><div class="cxi">${'📦'}</div><div class="svip-title">PETI ${level >= 10 ? 'EKSKLUSIF' : 'LEVEL ' + level} TERBUKA!</div><p class="sub" style="margin:6px 0 0">Semua anggota room mendapat hadiah acak</p>${r ? `<div class="cxr">${esc(chestRewardText(r))}</div>` : ''}</div>`;
   e.classList.remove('hidden'); showChestFx.t = setTimeout(() => { e.classList.add('hidden'); e.innerHTML = '' }, r ? 6000 : 3500);
 }
 /* Dipanggil di setiap perangkat yang ada di room saat peti terbuka; server menjamin 1 hadiah per orang per peti */
@@ -1970,8 +2068,7 @@ async function loadFriends() {
   const {data:senders}=rids.length?await sb.from('profiles').select('id,name,avatar').in('id',rids):{data:[]};
   pendingRows=(req||[]).map(x=>({...x,user:(senders||[]).find(u=>u.id===x.sender_id)}));
   const relHtml=await relReqHTML();
-  $('#friendBox').innerHTML=`<button class="btn" onclick="H.findFriends()"><span class="ms">add</span> Tambah Teman</button>
-    <h3 class="sec">Permintaan Pertemanan (${pendingRows.length})</h3>
+  $('#friendBox').innerHTML=`<h3 class="sec">Permintaan Pertemanan (${pendingRows.length})</h3>
     ${pendingRows.map(x=>`<div class="friendcard"><img src="${esc(x.user?.avatar||'')}" onclick="H.view('${x.sender_id}')" style="cursor:pointer"><div class="finfo"><b>${esc(x.user?.name||'Anggota')}</b><small>Ingin berteman denganmu</small></div><button class="sm" onclick="H.acceptFriend('${x.id}')">Terima</button></div>`).join('')||'<p class="empty-t">Tidak ada permintaan baru.</p>'}
     ${relHtml}
     <h3 class="sec">Daftar Teman (${friendRows.length})</h3>
@@ -2019,7 +2116,7 @@ function renderDM(){
     const body=esc(m.body).replace(/(@[\w.-]+)/g,'<span class="tagged">$1</span>');
     return `<div class="dmline ${mine?'mine':''}">${quoted?`<div class="replybox"><b>${ms('reply')} ${quoted.sender_id===uid?'Kamu':esc(dmPeer.name)}</b>${esc(quoted.body.slice(0,100))}</div>`:''}${m.forwarded_from_id?`<small>${ms('forward')} Pesan diteruskan</small>`:''}${body}<small>${new Date(m.created_at).toLocaleString('id-ID',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'short'})}</small><div class="msgtools"><button onclick="H.replyDM('${m.id}')">${ms('reply')} Balas</button><button onclick="H.forwardDM('${m.id}')">${ms('forward')} Teruskan</button></div></div>`;
   }).join('');
-  sheet(`<div class="dmhead"><img src="${esc(dmPeer.avatar||'')}"><div style="flex:1"><h3 style="margin:0">${esc(dmPeer.name)}</h3><p class="sub" style="margin:0">Pesan pribadi</p></div><button class="sm o" onclick="H.close()">Tutup</button></div><div class="dmfeed" id="dmFeed">${lines||'<p class="empty-t">Belum ada pesan. Mulai percakapan! 👋</p>'}</div><div id="dmReplyHint"></div><div class="dmcomposer"><button class="ib" onclick="H.tagDM()" title="Tag teman"><span class="ms">alternate_email</span></button><input id="dmInput" class="inp" maxlength="200" placeholder="Tulis pesan..." onkeydown="if(event.key==='Enter')H.sendDM()"><button class="ib sendb" onclick="H.sendDM()"><span class="ms">send</span></button></div>`);
+  sheet(`<div class="dmhead"><button class="ib" onclick="H.close()" title="Kembali"><span class="ms">arrow_back</span></button><img src="${esc(dmPeer.avatar||'')}"><div style="flex:1;min-width:0"><h3 style="margin:0">${esc(dmPeer.name)}</h3><p class="sub" style="margin:0">Pesan pribadi</p></div></div><div class="dmfeed" id="dmFeed">${lines||'<p class="empty-t">Belum ada pesan. Mulai percakapan! 👋</p>'}</div><div id="dmReplyHint"></div><div class="dmcomposer"><button class="ib" onclick="H.tagDM()" title="Tag teman"><span class="ms">alternate_email</span></button><input id="dmInput" class="inp" maxlength="200" placeholder="Tulis pesan..." onkeydown="if(event.key==='Enter')H.sendDM()"><button class="ib sendb" onclick="H.sendDM()"><span class="ms">send</span></button></div>`, true);
   const f=$('#dmFeed');if(f)f.scrollTop=f.scrollHeight;renderDMReplyHint();const di=$('#dmInput');if(di&&keep){di.value=keep;if(foc)di.focus()}
 }
 function renderDMReplyHint(){const e=$('#dmReplyHint');if(!e)return;const m=dmMessages.find(x=>x.id===dmReply);e.innerHTML=m?`<div class="replyhint">↩ Membalas: ${esc(m.body.slice(0,70))}<button onclick="H.cancelReplyDM()"><span class="ms">close</span></button></div>`:'';}
@@ -2129,7 +2226,8 @@ function nAlert(n) {
   if (nSound && now - nLastBeep > 1200) { nLastBeep = now; nBeep() }
   try { navigator.vibrate?.(n.type === 'dm' ? [60, 40, 60] : 40) } catch {}
   if (document.hidden && 'Notification' in window && Notification.permission === 'granted') {
-    try { new Notification(n.title, { body: `${n.icon} ${n.text}`, icon: n.avatar || undefined, tag: n.type }) } catch {}
+    const opt = { body: `${n.icon} ${n.text}`, icon: n.avatar || '/icon-192.png', badge: '/icon-192.png', tag: n.type };
+    navigator.serviceWorker?.ready.then(r => r.showNotification(n.title, opt)).catch(() => { try { new Notification(n.title, opt) } catch {} });
   }
 }
 const nItemHTML = n => `<div class="nitem ${n.read ? '' : 'un'}" onclick="H.nOpen('${n.id}')">${n.avatar ? `<img src="${esc(n.avatar)}">` : `<span class="ni">${n.icon}</span>`}<div><b>${esc(n.title)}</b><small>${n.icon} ${esc(n.text)}</small></div><small class="nt">${ago(n.t)}</small></div>`;
@@ -2144,7 +2242,7 @@ H.nOpen = id => {
   const n = notifs.find(x => x.id === id); if (!n) return;
   if (!n.read) { n.read = true; nSave(); nRender() }
   H.close(); const a = n.act; if (!a) return;
-  if (a.k === 'dm') { H.tab('friends'); H.openDM(a.id) } else if (a.k === 'user') H.view(a.id); else if (a.k === 'tab') H.tab(a.t);
+  if (a.k === 'dm') { H.tab('friends'); H.openDM(a.id) } else if (a.k === 'user') H.view(a.id); else if (a.k === 'tab') H.tab(a.t); else if (a.k === 'story') { H.tab('posts'); H.viewStory(a.id) }
 };
 H.nSnd = () => { nSound = !nSound; try { localStorage.setItem('nt_snd', nSound ? '1' : '0') } catch {} H.notifs() };
 H.nPerm = () => { try { Notification.requestPermission().then(() => H.notifs()) } catch { toast('Browser ini tidak mendukung notifikasi') } };
@@ -2166,6 +2264,7 @@ function checkRoomMention(m) {
   if (m.reply_to_id && msgCache.get(String(m.reply_to_id))?.user_id === uid)
     pushNotif({ key: 'rp:' + m.id, type: 'reply', icon: '↩️', from: m.user_id, who, text: 'membalas pesanmu: ' + body.slice(0, 70), tab: 'room', act: { k: 'tab', t: 'room' } });
 }
+if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
 document.addEventListener('pointerdown', () => { try { nAC ||= new (window.AudioContext || window.webkitAudioContext)(); nAC.state === 'suspended' && nAC.resume() } catch {} }, { once: true });
 document.addEventListener('visibilitychange', () => { if (!document.hidden && inRoom) { refreshMyBorders(); syncPoints(); nRender() } });
 
