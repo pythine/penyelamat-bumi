@@ -415,11 +415,11 @@ textarea.inp{resize:none;display:block}
 .replyhint button .ms{font-size:16px}
 /* Peti Room */
 .chestchip{display:inline-flex;align-items:center;gap:6px;cursor:pointer;border-color:var(--ck,#f5c15a88)}
-.chestchip .ms{font-size:19px;color:var(--ck,var(--gold))}
+.chestchip .em{font-size:18px;line-height:1}
 .chestchip .cl{font-size:12px}
 .chestchip .cbar{display:block;width:34px;height:5px;border-radius:9px;background:#ffffff22;overflow:hidden}
 .chestchip .cbar b{display:block;height:100%;width:0;background:linear-gradient(90deg,#ffd886,#ff8a00);transition:width .5s}
-.chestchip.full{animation:ckPulse 1s ease-in-out infinite}
+.chestchip.off{opacity:.55}.chestchip.full{animation:ckPulse 1s ease-in-out infinite}
 @keyframes ckPulse{50%{box-shadow:0 0 12px var(--ck,#f5c15a)}}
 #chestFX{position:fixed;inset:0;z-index:66;display:grid;place-items:center;pointer-events:none;background:rgba(0,0,0,.5);backdrop-filter:blur(3px)}
 #chestFX.hidden{display:none!important}
@@ -481,7 +481,7 @@ textarea.inp{resize:none;display:block}
     <button class="ib" onclick="H.panel()" title="Panel Host"><span class="ms">admin_panel_settings</span></button>
     <button class="ib" onclick="H.exit()" title="Keluar / ubah profil"><span class="ms">logout</span></button>
   </div>
-  <div class="chips"><span class="chip"><span class="ms">emoji_events</span> PENYELAMAT BUMI</span><button class="chip chestchip hidden" id="chestChip" onclick="H.chest()" title="Peti Room"><span class="ms">inventory_2</span><span class="cl">Lv.1</span><i class="cbar"><b></b></i></button><span class="mini" id="mini"></span><span class="chip" id="onl" style="margin-left:auto"></span></div>
+  <div class="chips"><span class="chip"><span class="ms">emoji_events</span> PENYELAMAT BUMI</span><button class="chip chestchip" id="chestChip" onclick="H.chest()" title="Peti Room"><span class="em">🪎</span><span class="cl">Lv.1</span><i class="cbar"><b></b></i></button><span class="mini" id="mini"></span><span class="chip" id="onl" style="margin-left:auto"></span></div>
   <div id="grid"></div>
   <div class="listen" id="listen"></div>
   <div id="chatw"><div id="chat"></div></div>
@@ -1037,7 +1037,7 @@ H.panel = async () => {
    ${GIFTS.slice(EXCLUSIVE_GIFT_START).map((g,j)=>{const i=j+EXCLUSIVE_GIFT_START;return `<div class="mrow" style="align-items:flex-start"><span style="flex:1"><b>${g.e} ${esc(g.name)}</b><small style="display:block;color:#a99d92">${giftVideos[i]?.name || (giftVideos[i]?.url ? 'Video tersimpan' : 'Belum ada video')}</small></span><div class="bt"><button class="sm" onclick="H.uploadGiftVideo(${i})"><span class="ms">upload</span> Video</button>${giftVideos[i]?.url ? `<button class="sm o" onclick="H.previewGift(${i})"><span class="ms">play_arrow</span></button><button class="sm o" onclick="H.removeGiftVideo(${i})">Hapus</button>` : ''}</div></div>`}).join('')}
    <p class="sub">Anggota online</p>
    ${(data || []).map(u => `<div class="mrow"><img src="${esc(u.avatar)}"><span>${esc(u.name)} <small style="color:#a99d92">🪙${Number(u.gift_tickets || 0).toLocaleString('id-ID')} ${u.theme_ok ? '🎨✔' : ''}</small></span>
-     <div class="bt"><button class="sm" onclick="H.tix('${u.id}',100)">+100 <span class="ms">toll</span></button><button class="sm" onclick="H.tix('${u.id}',1000)">+1rb</button><button class="sm" onclick="H.tix('${u.id}',10000)">+10rb</button><button class="sm" onclick="H.tix('${u.id}',50000)">+50rb</button><button class="sm" onclick="H.hostBorder('${u.id}')"><span class="ms">image</span> Border</button>${u.theme_ok ? '' : `<button class="sm" onclick="H.thm('${u.id}')"><span class="ms">palette</span> Buka Tema</button>`}</div></div>`).join('')}
+     <div class="bt"><button class="sm" onclick="H.tix('${u.id}',100)">+100 🪙</button><button class="sm" onclick="H.tix('${u.id}',1000)">+1rb</button><button class="sm" onclick="H.tix('${u.id}',10000)">+10rb</button><button class="sm" onclick="H.tix('${u.id}',50000)">+50rb</button><button class="sm" onclick="H.hostBorder('${u.id}')"><span class="ms">image</span> Border</button>${u.theme_ok ? '' : `<button class="sm" onclick="H.thm('${u.id}')"><span class="ms">palette</span> Buka Tema</button>`}</div></div>`).join('')}
    <div style="display:flex;gap:8px;margin-top:14px"><button class="sm o" onclick="H.reset()">Kosongkan kursi</button><button class="sm o" onclick="H.clear()">Bersihkan chat</button></div>
    <button class="btn" style="margin-top:16px;background:linear-gradient(#e0646b,#9c2a33);color:#fff" onclick="H.unhost()"><span class="ms">logout</span> Keluar Host</button>`);
 };
@@ -1156,10 +1156,10 @@ async function startRoom() {
   clearInterval(startRoom.bt); startRoom.bt = setInterval(() => { if (!document.hidden) { refreshMyBorders(); syncPoints() } }, 10000);
   loadMyGifts();
   loadPosts(true); loadStories();
-  loadChestLevels().then(loadChest).then(() => {
-    if (!HAS_CHEST) return;
+  loadChestLevels().then(loadChest).catch(() => {}).then(() => {
+    if (startRoom.chestSub) return; startRoom.chestSub = true;
     sb.channel('chest').on('postgres_changes', { event: '*', schema: 'public', table: 'room_chest' }, p => { if (p.new?.level) { chest = { level: p.new.level, progress: Number(p.new.progress) }; renderChest() } }).subscribe();
-    setInterval(() => { if (inRoom) loadChest() }, 40000);
+    setInterval(() => { if (inRoom) loadChest() }, HAS_CHEST ? 40000 : 15000);
   });
   sb.from('post_comments').select('id').limit(1).then(r => { /* channel terpisah: tabel opsional tidak merusak channel utama */
     if (r.error) return; HAS_CMT = true; loadCmtCounts();
@@ -1675,7 +1675,7 @@ function renderProf() {
   const mine = posts.filter(p => p.user_id === uid);
   $('#pfBox').innerHTML = `<div class="pf">${avatarHTML(me.avatar, me.points, 'pav', 112, '', me.avatar_border, me.is_host, uid)}
     <h2>${me.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(me.points)}${esc(me.name)}</h2>${titleHTML(me.points)}
-    <div class="stats" style="flex-wrap:wrap"><span class="chip"><span class="ms">group</span> ${mySocialStats.friends ?? '—'} Teman</span><span class="chip"><span class="ms">person</span> ${mySocialStats.followers ?? '—'} Followers</span><span class="chip"><span class="ms">toll</span> ${Number(me.gift_tickets ?? 0).toLocaleString('id-ID')}</span><span class="chip"><span class="ms">star</span> ${me.points ?? 0}</span><span class="chip"><span class="ms">edit_note</span> ${mine.length}</span></div></div>
+    <div class="stats" style="flex-wrap:wrap"><span class="chip"><span class="ms">group</span> ${mySocialStats.friends ?? '—'} Teman</span><span class="chip"><span class="ms">person</span> ${mySocialStats.followers ?? '—'} Followers</span><span class="chip">🪙 ${Number(me.gift_tickets ?? 0).toLocaleString('id-ID')}</span><span class="chip"><span class="ms">star</span> ${me.points ?? 0}</span><span class="chip"><span class="ms">edit_note</span> ${mine.length}</span></div></div>
     <div class="acts"><button class="btn" onclick="H.editAv()"><span class="ms">photo_camera</span> Ubah Foto</button><button class="btn" onclick="H.editNm()"><span class="ms">edit</span> Ubah Nama</button></div>
     <button class="btn" onclick="H.compose()"><span class="ms">add</span> Buat Postingan</button>
     ${relSectionHTML()}${borderGridHTML()}
@@ -1809,7 +1809,7 @@ function addMsg(m, live) {
     if (live) showFx(g, m.name, m.to_name, Number(m.gift));
   } else if (m.type === 'chat' && String(m.body || '').startsWith('[CHEST]')) {
     const [evId, lv] = String(m.body).slice(7).split('|');
-    d.innerHTML = `<div class="bub sys">${ms('inventory_2')} Peti ${Number(lv) >= 10 ? 'EKSKLUSIF' : 'Level ' + Number(lv)} terbuka! Semua anggota room mendapat hadiah</div>`;
+    d.innerHTML = `<div class="bub sys">${'📦'} Peti ${Number(lv) >= 10 ? 'EKSKLUSIF' : 'Level ' + Number(lv)} terbuka! Semua anggota room mendapat hadiah</div>`;
     if (live) onChestOpen(evId, Number(lv));
   } else if (m.type === 'chat' && String(m.body || '').startsWith('[REL]')) {
     const txt = String(m.body).slice(5);
@@ -1925,7 +1925,7 @@ async function loadChest() {
 }
 let chestSoonT = null; const loadChestSoon = d => { clearTimeout(chestSoonT); chestSoonT = setTimeout(loadChest, d || 500) };
 function renderChest() {
-  const c = $('#chestChip'); if (!c) return; c.classList.toggle('hidden', !HAS_CHEST); if (!HAS_CHEST) return;
+  const c = $('#chestChip'); if (!c) return; c.classList.toggle('off', !HAS_CHEST); if (!HAS_CHEST) { c.querySelector('.cl').textContent = 'Peti'; c.querySelector('.cbar b').style.width = '0%'; c.style.setProperty('--ck', '#9a8f84'); return }
   const pct = Math.min(100, chest.progress / chestTarget(chest.level) * 100);
   c.style.setProperty('--ck', CHEST_COL[chest.level - 1]);
   c.querySelector('.cl').textContent = chestName(chest.level);
@@ -1933,18 +1933,19 @@ function renderChest() {
   c.classList.toggle('full', pct >= 90);
 }
 H.chest = () => {
+  if (!HAS_CHEST) { loadChestLevels().then(loadChest); return sheet(`<h3>Peti Room</h3><p class="sub">Peti belum aktif di server. Jalankan <b>chest_migration.sql</b> di Supabase &gt; SQL Editor (sekali saja, setelah gift_relation_migration.sql), lalu muat ulang halaman.</p><button class="sm" onclick="H.close()">Mengerti</button>`) }
   const t = chestTarget(chest.level), pct = Math.min(100, chest.progress / t * 100);
   const rows = CHEST_DEF.map((d, i) => { const l = i + 1, c = chestLv.find(x => x.level === l);
-    return `<div class="mrow" style="${l === chest.level ? 'background:#ffffff10;border-radius:12px;padding-left:8px' : ''}"><span style="flex:none;font-size:26px;color:${CHEST_COL[i]}">${ms('inventory_2')}</span><span><b>Peti ${chestName(l)}</b><br><small style="color:#a99d92">${kfmt(c?.target ?? d)} poin gift${c ? ` · ${kfmt(c.coin_min)}–${kfmt(c.coin_max)} koin · ${kfmt(c.exp_min)}–${kfmt(c.exp_max)} EXP` : ''}</small></span>${l < chest.level ? ms('check', 'on') : ''}</div>` }).join('');
-  sheet(`<h3>${ms('inventory_2')} Peti Room</h3><p class="sub">Terisi dari semua gift yang dikirim di room. Saat penuh, peti terbuka otomatis dan semua anggota yang ada di room mendapat hadiah acak: koin emas, EXP, atau (jarang) border.</p>
-   <div class="pf" style="padding:6px 0 10px"><div style="font-size:74px;line-height:1;color:${CHEST_COL[chest.level - 1]}">${ms('inventory_2')}</div><h2 style="margin:6px 0">Peti ${chestName(chest.level)}</h2><div class="prog" style="width:90%"><i style="width:${pct}%"></i></div><small style="color:#a99d92">${kfmt(chest.progress)} / ${kfmt(t)} poin gift · ${Math.floor(pct)}%</small></div>
+    return `<div class="mrow" style="${l === chest.level ? 'background:#ffffff10;border-radius:12px;padding-left:8px' : ''}"><span style="flex:none;font-size:26px;color:${CHEST_COL[i]}">${'📦'}</span><span><b>Peti ${chestName(l)}</b><br><small style="color:#a99d92">${kfmt(c?.target ?? d)} poin gift${c ? ` · ${kfmt(c.coin_min)}–${kfmt(c.coin_max)} koin · ${kfmt(c.exp_min)}–${kfmt(c.exp_max)} EXP` : ''}</small></span>${l < chest.level ? ms('check', 'on') : ''}</div>` }).join('');
+  sheet(`<h3>${'📦'} Peti Room</h3><p class="sub">Terisi dari semua gift yang dikirim di room. Saat penuh, peti terbuka otomatis dan semua anggota yang ada di room mendapat hadiah acak: koin emas, EXP, atau (jarang) border.</p>
+   <div class="pf" style="padding:6px 0 10px"><div style="font-size:74px;line-height:1;color:${CHEST_COL[chest.level - 1]}">${'📦'}</div><h2 style="margin:6px 0">Peti ${chestName(chest.level)}</h2><div class="prog" style="width:90%"><i style="width:${pct}%"></i></div><small style="color:#a99d92">${kfmt(chest.progress)} / ${kfmt(t)} poin gift · ${Math.floor(pct)}%</small></div>
    <h3 class="sec">Semua level</h3>${rows}${me.is_host ? `<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button class="sm o" onclick="H.hostChest(1000)">+1rb poin</button><button class="sm o" onclick="H.hostChest(10000)">+10rb</button><button class="sm o" onclick="H.hostChest(100000)">+100rb</button></div>` : ''}`);
 };
 H.hostChest = async n => { const { error } = await sb.rpc('chest_fill', { amount: n }); toast(error ? error.message : `Peti diisi +${kfmt(n)} poin`); loadChest() };
 const chestRewardText = r => !r ? '' : r.kind === 'coin' ? `+${kfmt(r.amount)} Koin Emas` : r.kind === 'exp' ? `+${kfmt(r.amount)} EXP` : r.kind === 'border' ? `Border baru: ${BORDERS.find(b => b.id === r.border)?.name || r.border}` : '';
 function showChestFx(level, r) {
   const e = $('#chestFX'); clearTimeout(showChestFx.t);
-  e.innerHTML = `<div class="cx" style="--ck:${CHEST_COL[level - 1]}"><div class="cxi">${ms('inventory_2')}</div><div class="svip-title">PETI ${level >= 10 ? 'EKSKLUSIF' : 'LEVEL ' + level} TERBUKA!</div><p class="sub" style="margin:6px 0 0">Semua anggota room mendapat hadiah acak</p>${r ? `<div class="cxr">${esc(chestRewardText(r))}</div>` : ''}</div>`;
+  e.innerHTML = `<div class="cx" style="--ck:${CHEST_COL[level - 1]}"><div class="cxi">${'📦'}</div><div class="svip-title">PETI ${level >= 10 ? 'EKSKLUSIF' : 'LEVEL ' + level} TERBUKA!</div><p class="sub" style="margin:6px 0 0">Semua anggota room mendapat hadiah acak</p>${r ? `<div class="cxr">${esc(chestRewardText(r))}</div>` : ''}</div>`;
   e.classList.remove('hidden'); showChestFx.t = setTimeout(() => { e.classList.add('hidden'); e.innerHTML = '' }, r ? 6000 : 3500);
 }
 /* Dipanggil di setiap perangkat yang ada di room saat peti terbuka; server menjamin 1 hadiah per orang per peti */
