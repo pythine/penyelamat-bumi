@@ -720,6 +720,39 @@ textarea.inp{resize:none;display:block}
 /* Video masuk milik pengguna: tampil utuh, tanpa efek tembus pandang */
 #entranceFX .ent-video.own{object-fit:contain;mix-blend-mode:normal;opacity:1;filter:none;animation:none;background:#000d}
 .erow.sel{background:#ffd36e1f;border-radius:12px;padding-left:8px}
+
+/* Postingan diperbesar (ketuk postingan) */
+.post{cursor:pointer}.post .postbar,.post .del{cursor:default}
+#postView{position:fixed;inset:0;z-index:75;background:#000c;display:flex;justify-content:center;align-items:stretch;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+#postView.hidden{display:none!important}
+#postView .pvc{width:100%;max-width:520px;height:100dvh;display:flex;flex-direction:column;background:#150f0b;border-left:1px solid rgba(245,193,90,.2);border-right:1px solid rgba(245,193,90,.2)}
+#postView .pvh{flex:none;display:flex;align-items:center;gap:10px;padding:calc(10px + env(safe-area-inset-top)) 12px 10px;border-bottom:1px solid #ffffff14}
+#postView .pvh b{font-size:17px;color:var(--gold)}
+#postView .pvs{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:12px 14px calc(24px + env(safe-area-inset-bottom))}
+#postView .hd{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+#postView .hd>div:last-child,#postView .hd>b{min-width:0}
+#postView .hd small{display:block;color:#9a8f86;font-weight:700;font-size:12px}
+#postView .pvimg{width:100%;height:auto;display:block;border-radius:14px;background:#1c1410;margin:6px 0 10px}
+#postView .pvtxt{margin:0 0 12px;white-space:pre-wrap;overflow-wrap:anywhere;font-size:16px;line-height:1.5;font-weight:700}
+/* Pengunjung terakhir (khusus Host) */
+.vis{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid #ffffff14}
+.vis:first-child{border-top:0}
+.vis img{width:34px;height:34px;border-radius:50%;object-fit:cover;background:#1c1410;flex:none}
+.vis span{flex:1;min-width:0}.vis small{display:block;color:#a99d92}
+.vis .new{font-style:normal;font-size:10px;background:linear-gradient(#ffd886,#d9962f);color:#2a1700;border-radius:8px;padding:1px 7px;margin-left:6px;font-weight:900}
+
+.dmnote{margin:0 0 4px;text-align:center;font-size:11px;color:#a99d92}
+/* Pandu: bot pemandu pengguna baru */
+#botFab{position:fixed;right:10px;bottom:calc(150px + env(safe-area-inset-bottom));z-index:28;width:44px;height:44px;border-radius:50%;background:linear-gradient(#a98bff,#6a4bff);color:#fff;display:grid;place-items:center;font-size:22px;box-shadow:0 4px 16px #000a,0 0 0 2px #ffffff22;opacity:.93}
+#botFab.hidden{display:none!important}
+#botHello{position:fixed;right:10px;bottom:calc(204px + env(safe-area-inset-bottom));z-index:29;width:min(84vw,290px);padding:14px;border-radius:18px;background:#150f0b;border:1.5px solid var(--gold2);box-shadow:0 8px 30px #000a;animation:svipPopIn .35s ease both}
+#botHello.hidden{display:none!important}
+#botHello p{margin:6px 0 10px;font-size:13.5px;color:#e8d8c4}#botHello div{display:flex;gap:8px}
+.botfeed{max-height:44dvh;min-height:140px;overflow-y:auto;overscroll-behavior:contain;display:flex;flex-direction:column;gap:8px;padding:6px 2px}
+.bb{max-width:90%;padding:9px 12px;border-radius:15px;white-space:pre-wrap;overflow-wrap:anywhere;font-size:14px;line-height:1.45}
+.bb.bot{align-self:flex-start;background:#ffffff12}.bb.me{align-self:flex-end;background:#76501f88}
+.botchips{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 2px}
+.botchips button{padding:6px 12px;border-radius:99px;background:#ffffff14;border:1px solid #ffd36e55;font-size:12.5px;color:#ffe3a6}
 </style>
 </head>
 <body>
@@ -813,7 +846,7 @@ textarea.inp{resize:none;display:block}
   <button data-t="me" onclick="H.tab('me')"><i><span class="ms">person</span></i>Profil<em class="nb"></em></button>
 </nav>
 
-<div id="ratePop" class="hidden"></div><div id="videoOv" class="hidden"><iframe id="videoFrame" title="Feed Video" allow="autoplay; encrypted-media; picture-in-picture; clipboard-write; web-share"></iframe></div><div id="gameOv" class="hidden"><iframe id="gameFrame" title="Game Koin"></iframe></div><div id="roomsOv" class="hidden"><iframe id="roomsFrame" title="Room" allow="microphone"></iframe></div><div id="sheet" class="hidden"></div><div id="fx"></div><div id="svipPop" class="hidden"></div><div id="entranceFX" class="hidden"></div><div id="chestFX" class="hidden"></div><div id="storyView" class="storyview hidden"></div><div id="toast"></div><div id="nbanner"></div><div id="updBar" class="hidden"><span class="ms">system_update</span><b>Versi baru tersedia</b><button onclick="H.reloadApp()">Perbarui</button></div>
+<button id="botFab" class="hidden" onclick="H.bot()" title="Tanya Pandu (pemandu)"><span class="ms">smart_toy</span></button><div id="botHello" class="hidden"></div><div id="postView" class="hidden" onclick="H.closePost()"></div><div id="ratePop" class="hidden"></div><div id="videoOv" class="hidden"><iframe id="videoFrame" title="Feed Video" allow="autoplay; encrypted-media; picture-in-picture; clipboard-write; web-share"></iframe></div><div id="gameOv" class="hidden"><iframe id="gameFrame" title="Game Koin"></iframe></div><div id="roomsOv" class="hidden"><iframe id="roomsFrame" title="Room" allow="microphone"></iframe></div><div id="sheet" class="hidden"></div><div id="fx"></div><div id="svipPop" class="hidden"></div><div id="entranceFX" class="hidden"></div><div id="chestFX" class="hidden"></div><div id="storyView" class="storyview hidden"></div><div id="toast"></div><div id="nbanner"></div><div id="updBar" class="hidden"><span class="ms">system_update</span><b>Versi baru tersedia</b><button onclick="H.reloadApp()">Perbarui</button></div>
 
 <script type="module">
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
@@ -1014,6 +1047,7 @@ function repaintAvatars(id) {
 }
 /* Satu user bisa punya >1 entri presence (sambung ulang jaringan meninggalkan entri lama). Selalu pakai entri TERBARU (t terbesar),
    bukan v[0] yang bisa basi dan menimpa border yang benar sehingga border "hilang" padahal orangnya masih di room. */
+const seatBd = id => { const p = prof[id]; return p && p.avatar_border !== undefined ? p.avatar_border : pmeta(online[id])?.border || null };
 const pmeta = v => (v || []).reduce((a, b) => (b.t || 0) >= (a.t || 0) ? b : a, v?.[0]);
 /* Database = sumber kebenaran border/host orang lain. Presence hanya mempercepat tampilan, lalu diverifikasi ke database. */
 let bdDbBusy = false;
@@ -1153,7 +1187,7 @@ const renderedMessageIds = new Set();
 const msgCache = new Map();
 let tagNames = [];
 /* notifikasi + sinkron border */
-let notifs = [], nSeen = new Set(), nBannerQ = [], nBannerBusy = false, nLastBeep = 0, nSound = true, bdBusy = 0, nAC = null;
+let notifs = [], nSeen = new Set(), nBannerQ = [], nBannerBusy = false, nLastBeep = 0, nSound = true, bdBusy = 0, bdLock = 0, nAC = null; /* bdLock: selama border baru dipakai, abaikan data lama dari realtime/polling */
 const acceptedIds = new Set(), pinfo = {};
 try { nSound = localStorage.getItem('nt_snd') !== '0' } catch {}
 
@@ -1609,6 +1643,119 @@ H.doHost = async () => {
   me.is_host = true; toast('Mode Host aktif 👑'); H.close(); prof[uid] = { ...prof[uid], is_host: true };
   if (inRoom) { room?.track(presence()); renderSeats(); H.panel(); renderProf() }
 };
+
+
+/* ---------- Pandu: bot pemandu pengguna baru ----------
+   Jawaban AI diambil dari fungsi server /api/guide (lihat api/guide.js, kunci API aman di server).
+   Jika fungsi itu belum dipasang / gagal, Pandu otomatis memakai jawaban bawaan di bawah. Kosongkan GUIDE_API untuk mematikan AI. */
+const GUIDE_API = '/api/guide';
+const GUIDE_KB = [
+  { k: ['mulai', 'pemula', 'bingung', 'baru', 'cara pakai', 'fungsi', 'apa ini', 'panduan'], a: 'Aplikasi ini punya 5 menu di bawah:\n• Room: ruang suara dengan kursi, chat, dan gift\n• Postingan: feed, story 24 jam, game koin\n• Video: feed video pendek\n• Teman: chat pribadi, radar orang online\n• Profil: foto, nama, border, check-in harian\nMau tur singkat? Ketuk "Tur aplikasi".' },
+  { k: ['kursi', 'duduk', 'mic', 'mikrofon', 'bicara', 'suara', 'ngomong', 'turun'], a: 'Di tab Room, ketuk kursi kosong (tanda ＋) untuk duduk. Setelah duduk kamu bisa bicara lewat mikrofon, dan emoji gerak muncul di fotomu. Ketuk kursimu lagi untuk turun. Ketuk kursi orang lain untuk lihat profil atau kirim gift. Jika mic tidak bunyi, izinkan akses mikrofon di browser/HP.' },
+  { k: ['chat', 'pesan', 'kirim pesan', 'ketik', 'balas', 'tag', 'teruskan', 'voice note', 'rekam'], a: 'Di tab Room, tulis pesan di kolom bawah lalu kirim. Di pesan ada opsi balas, tag (@nama), dan teruskan ke teman. Ada juga tombol rekam suara, tombol tema chat, dan tombol gift. Kirim foto sekali lihat tersedia di kolom chat.' },
+  { k: ['gift', 'hadiah', 'kirim hadiah', 'poin', 'level', 'svip', 'gelar', 'exp'], a: 'Cara kirim gift: ketuk tombol gift di Room, atau ketuk kursi/profil orang lalu pilih Kirim Gift, pilih hadiah dan jumlahnya. Gift memakai Koin Emas. Penerima mendapat poin, dan poin yang DITERIMA menaikkan level SVIP (1 sampai 13). Gelar level punya masa berlaku, jadi perlu diperpanjang.' },
+  { k: ['koin', 'coin', 'dapat koin', 'gratis', 'check', 'absen', 'harian', 'game', 'main', 'peti'], a: 'Cara dapat Koin Emas:\n• Check-in harian: tab Profil, tombol Check-in Harian\n• Game koin: ikon gamepad di tab Postingan (maksimal 30 koin per game)\n• Peti room: naik level lewat gift di room\nHost juga kadang membagikan koin.' },
+  { k: ['postingan', 'posting', 'story', 'status', 'upload', 'unggah', 'komentar', 'like', 'suka'], a: 'Tab Postingan: ketuk tombol + untuk buat postingan (teks/foto). Ketuk postingan untuk memperbesar dan membaca lengkap. Kamu bisa like dan komentar. Story (bulatan di atas) hanya hidup 24 jam, bisa foto atau video, dan bisa di-like serta dikomentari.' },
+  { k: ['teman', 'tambah teman', 'pertemanan', 'follow', 'ikuti', 'radar', 'dm', 'pribadi', 'online'], a: 'Tab Teman: radar menampilkan semua orang yang sedang online. Ketuk fotonya untuk lihat profil, lalu ajukan pertemanan atau ikuti. Setelah berteman, ketuk nama teman untuk chat pribadi layar penuh. Catatan: pesan pribadi yang sudah dibaca terhapus otomatis setelah 24 jam.' },
+  { k: ['border', 'bingkai', 'frame', 'avatar', 'terkunci', 'buka border'], a: 'Border avatar: tab Profil, bagian Border Avatar, ketuk border yang ingin dipakai. Border yang terkunci dibuka oleh Host: ketuk border itu lalu "Buka Border (Chat Host)". Border gelar (Mythic/Legend) terbuka otomatis saat gelarnya diraih.' },
+  { k: ['tema', 'warna chat', 'theme'], a: 'Tema chat terkunci di awal. Chat Host dulu untuk meminta dibuka; setelah itu semua tema bebas dipakai lewat tombol tema di bar chat Room.' },
+  { k: ['foto', 'nama', 'profil', 'ganti nama', 'ganti foto', 'akun'], a: 'Tab Profil: di sana kamu bisa lihat foto, nama, level, border, dan check-in harian. Untuk mengganti foto atau nama, gunakan tombol ubah di halaman Profil.' },
+  { k: ['notifikasi', 'lonceng', 'bell', 'pemberitahuan'], a: 'Ikon lonceng di bagian atas menampilkan notifikasi pesan, like, follow, dan lainnya. Ketuk satu notifikasi untuk langsung membukanya.' },
+  { k: ['video', 'feed video', 'shorts', 'tiktok'], a: 'Menu Video menampilkan video pendek yang bisa digeser ke atas. Ada tombol like, komentar, dan bagikan. Tombol Kembali membawamu ke room tanpa keluar.' },
+  { k: ['host', 'owner', 'admin', 'laporan', 'bantuan', 'masalah', 'error', 'bug'], a: 'Untuk hal yang tidak bisa kujawab (membuka border/tema, laporan masalah), hubungi Host lewat WhatsApp: ketuk border/tema yang terkunci lalu tombol Chat Host, atau sebutkan masalahnya kepadaku dulu.' },
+  { k: ['ulasan', 'rating', 'bintang', 'review'], a: 'Saat masuk, akan muncul pop up untuk memberi ulasan dan bintang. Pilih bintang, tulis ulasan singkat, lalu kirim. Ulasanmu membantu Host memperbaiki aplikasi.' }
+];
+const GUIDE_CHIPS = [{ l: 'Cara mulai', q: 'cara mulai' }, { l: 'Duduk & bicara', q: 'cara duduk di kursi dan bicara' }, { l: 'Kirim gift', q: 'cara kirim gift' }, { l: 'Dapat koin', q: 'cara dapat koin' }, { l: 'Pakai border', q: 'cara pakai border' }, { l: '🧭 Tur aplikasi', tour: 1 }];
+const GUIDE_TOUR = [
+  { go: 'room', a: '1/6 · ROOM\nIni ruang suara. Ketuk kursi kosong (＋) untuk duduk dan bicara. Di bawahnya ada chat, tombol gift, rekam suara, dan tema.' },
+  { go: 'posts', a: '2/6 · POSTINGAN\nLihat postingan semua anggota. Ketuk postingan untuk memperbesar. Story bulat bertahan 24 jam. Ikon gamepad di pojok atas berisi game pengumpul koin.' },
+  { a: '3/6 · VIDEO\nFeed video pendek: geser ke atas untuk video berikutnya.' },
+  { go: 'friends', a: '4/6 · TEMAN\nRadar menampilkan siapa saja yang online. Ketuk profilnya untuk berteman atau ikuti, lalu chat pribadi. Pesan yang sudah dibaca terhapus otomatis setelah 24 jam.' },
+  { go: 'me', a: '5/6 · PROFIL\nDi sini ada fotomu, level, Border Avatar, dan Check-in Harian untuk koin gratis.' },
+  { a: '6/6 · GIFT & LEVEL\nKirim gift memakai Koin Emas. Poin gift yang kamu TERIMA menaikkan level SVIP. Makin tinggi levelnya, makin megah efek masukmu!' }
+];
+let botHist = [], botChips = [], botBusy = false, botAiOff = false;
+const botNorm = t => String(t || '').toLowerCase().replace(/[^a-z0-9\s]/g, ' ');
+function botLocal(q) { const n = botNorm(q); let best = null, sc = 0; for (const e of GUIDE_KB) { const s = e.k.reduce((a, w) => a + (n.includes(w) ? 1 : 0), 0); if (s > sc) { sc = s; best = e } } return best }
+function botDraw() {
+  const f = $('#botFeed'); if (!f) return;
+  f.innerHTML = botHist.map(m => `<div class="bb ${m.r}">${esc(m.t)}</div>`).join('') + (botBusy ? '<div class="bb bot" style="opacity:.7">Pandu mengetik…</div>' : '');
+  f.scrollTop = f.scrollHeight;
+  const c = $('#botChips'); if (c) c.innerHTML = botBusy ? '' : botChips.map((x, i) => `<button onclick="H.botChip(${i})">${esc(x.l)}</button>`).join('');
+}
+function botSay(t, chips) { botHist.push({ r: 'bot', t }); botChips = chips || []; botDraw() }
+H.bot = noWelcome => {
+  $('#botHello')?.classList.add('hidden');
+  sheet(`<div class="dmhead"><button class="ib" onclick="H.close()" title="Tutup"><span class="ms">close</span></button><span class="ms" style="font-size:32px;color:#a98bff">smart_toy</span><div style="flex:1;min-width:0"><h3 style="margin:0">Pandu</h3><p class="sub" style="margin:0">Pemandu untuk pengguna baru</p></div></div>
+    <div class="botfeed" id="botFeed"></div><div class="botchips" id="botChips"></div>
+    <div class="dmcomposer"><input id="botInput" class="inp" maxlength="200" placeholder="Tanya apa saja soal aplikasi…" onkeydown="if(event.key==='Enter')H.botSend()"><button class="ib sendb" onclick="H.botSend()"><span class="ms">send</span></button></div>`);
+  if (!botHist.length && !noWelcome) botSay('Hai! Aku Pandu 🤖, pemandu aplikasi ini. Tanyakan apa saja: cara duduk di kursi, kirim gift, dapat koin, pakai border, dan lainnya. Atau pilih topik di bawah.', GUIDE_CHIPS);
+  else botDraw();
+};
+H.botChip = i => {
+  const x = botChips[i]; if (!x) return;
+  if (x.tour) return H.botTour(0);
+  if (x.next != null) return H.botTour(x.next);
+  if (x.go) { H.close(); return H.tab(x.go) }
+  if (x.menu) return botSay('Oke! Tanya apa saja, atau pilih topik:', GUIDE_CHIPS);
+  botAsk(x.q || x.l);
+};
+H.botTour = i => {
+  const s = GUIDE_TOUR[i];
+  if (!s) return botSay('Tur selesai 🎉 Sekarang kamu siap. Kalau masih bingung, tanya aku kapan saja lewat tombol robot di layar.', GUIDE_CHIPS);
+  const chips = []; if (s.go) chips.push({ l: 'Lihat menunya', go: s.go });
+  chips.push({ l: i + 1 < GUIDE_TOUR.length ? 'Lanjut ➜' : 'Selesai', next: i + 1 }, { l: 'Berhenti', menu: 1 });
+  botSay(s.a, chips);
+};
+H.botSend = () => { const i = $('#botInput'); if (!i || botBusy) return; const q = i.value.trim(); if (!q) return; i.value = ''; botAsk(q) };
+async function botAsk(q) {
+  botHist.push({ r: 'me', t: q }); botChips = []; botBusy = true; botDraw();
+  let reply = null;
+  if (GUIDE_API && !botAiOff) {
+    try {
+      const msgs = botHist.slice(-8).map(m => ({ role: m.r === 'me' ? 'user' : 'assistant', content: m.t }));
+      while (msgs.length && msgs[0].role !== 'user') msgs.shift();
+      const ac = new AbortController(), to = setTimeout(() => ac.abort(), 15000);
+      const r = await fetch(GUIDE_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: msgs, name: me?.name || '' }), signal: ac.signal });
+      clearTimeout(to);
+      if (r.ok) { const j = await r.json(); if (j?.reply) reply = String(j.reply) } else if (r.status === 404 || r.status === 500) botAiOff = true;
+    } catch { /* jaringan/timeout: pakai jawaban bawaan */ }
+  }
+  botBusy = false;
+  if (!reply) { const e = botLocal(q); reply = e ? e.a : 'Maaf, aku belum paham pertanyaan itu 🙏 Coba pilih salah satu topik di bawah, atau tanyakan dengan kata lain. Untuk masalah lain, hubungi Host.' }
+  botSay(reply, GUIDE_CHIPS.slice(0, 4).concat([GUIDE_CHIPS[5]]));
+}
+function botWelcome() {
+  let seen = false; try { seen = localStorage.getItem('guide_seen') === '1' } catch {}
+  if (seen) return;
+  setTimeout(() => { if (!inRoom) return; const h = $('#botHello'); if (!h) return;
+    h.innerHTML = `<b>Hai ${esc(me?.name || '')}! 👋</b><p>Aku Pandu, pemandu aplikasi ini. Masih bingung? Yuk ikut tur singkat!</p><div><button class="sm" onclick="H.botHelloGo()">Mulai tur</button><button class="sm o" onclick="H.botHelloGo(1)">Nanti saja</button></div>`;
+    h.classList.remove('hidden') }, 2500);
+}
+H.botHelloGo = skip => { try { localStorage.setItem('guide_seen', '1') } catch {} $('#botHello')?.classList.add('hidden'); if (!skip) { H.bot(true); H.botTour(0) } };
+
+/* ---------- Pengunjung terakhir: tercatat di tabel room_visits, hanya Host yang bisa membaca (lihat visitor_migration.sql) ---------- */
+let HAS_VIS = null;
+async function logVisit() {
+  if (!uid || !me || me.is_host || logVisit.done || HAS_VIS === false) return; logVisit.done = true;
+  const { error } = await sb.from('room_visits').insert({ user_id: uid });
+  if (error && /room_visits|relation|schema cache|does not exist/i.test(error.message || '')) HAS_VIS = false;
+}
+async function loadVisitors() {
+  const box = $('#visBox'); if (!box || !me?.is_host) return;
+  const { data, error } = await sb.from('room_visits').select('user_id,visited_at').order('visited_at', { ascending: false }).limit(300);
+  if (error) { HAS_VIS = false; box.innerHTML = '<p class="sub">Fitur pengunjung belum aktif. Jalankan visitor_migration.sql di Supabase.</p>'; return }
+  HAS_VIS = true;
+  const last = new Map(), cnt = {};
+  (data || []).forEach(r => { cnt[r.user_id] = (cnt[r.user_id] || 0) + 1; if (!last.has(r.user_id)) last.set(r.user_id, r.visited_at) });
+  const ids = [...last.keys()].slice(0, 20);
+  if (!ids.length) { box.innerHTML = '<p class="sub">Belum ada pengunjung tercatat.</p>'; return }
+  const { data: ps } = await sb.from('profiles').select('id,name,avatar').in('id', ids);
+  const pm = Object.fromEntries((ps || []).map(x => [x.id, x]));
+  if (!$('#visBox')) return;
+  $('#visBox').innerHTML = ids.map((id, i) => { const u = pm[id] || {}, t = last.get(id);
+    return `<div class="vis"><img src="${esc(u.avatar || '')}" alt=""><span><b>${esc(u.name || 'Anggota')}</b>${i === 0 ? '<i class="new">TERAKHIR</i>' : ''}<small>${ago(t)} · ${new Date(t).toLocaleString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })} · ${cnt[id]}× masuk</small></span><button class="sm" onclick="H.view('${id}')">Profil</button></div>` }).join('');
+}
 H.panel = async () => {
   if (!me.is_host) return H.hostLogin();
   const ids = Object.keys(online);
@@ -1620,6 +1767,7 @@ H.panel = async () => {
    ${[5,6,7,8,9,10,11,12,13].map(n => `<div class="mrow" style="align-items:flex-start"><span style="flex:1"><b>${tierName(n)} · ${esc(ENTRANCE[n].t)}</b><small style="display:block;color:#a99d92;overflow-wrap:anywhere">${esc(entranceVideos[n]?.name) || (entranceVideos[n]?.url ? 'Video tersimpan' : 'Belum ada video — memakai animasi bawaan')}</small></span><div class="bt"><button class="sm" onclick="H.uploadEntrance(${n})"><span class="ms">upload</span> Upload</button><button class="sm o" onclick="H.previewEnt(${n})"><span class="ms">play_arrow</span> Preview</button>${entranceVideos[n]?.url ? `<button class="sm o" onclick="H.removeEntrance(${n})">Hapus</button>` : ''}</div></div>`).join('')}
    <p class="sub" style="margin-top:12px">Tes animasi masuk SVIP (hanya kamu yang melihat)</p>
    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">${[5, 6, 7, 8, 9, 10, 11, 12, 13].map(n => `<button class="sm o" onclick="H.previewEnt(${n})">${tierName(n)}</button>`).join('')}</div>
+   <h3 class="sec"><span class="ms">schedule</span> Pengunjung Terakhir <small style="color:#a99d92;font-weight:400">(hanya Host)</small></h3><div id="visBox"><p class="sub">Memuat…</p></div>
    <h3 class="sec"><span class="ms">star</span> Ulasan Aplikasi</h3><button class="sm o" onclick="H.reviews()">Lihat ulasan & rating</button>
    <h3 class="sec"><span class="ms">auto_awesome</span> Tes Efek Gift</h3><p class="sub">Ketuk gift untuk melihat efeknya (hanya kamu yang melihat). Makin besar poin, makin megah.</p>
    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">${GIFTS.map((g, i) => `<button class="sm o" onclick="H.previewGift(${i})" title="${esc(g.name)} · ${g.points} poin">${g.e}</button>`).join('')}</div>
@@ -1631,6 +1779,7 @@ H.panel = async () => {
      <div class="bt"><button class="sm" onclick="H.tix('${u.id}',100)">+100 🪙</button><button class="sm" onclick="H.tix('${u.id}',1000)">+1rb</button><button class="sm" onclick="H.tix('${u.id}',10000)">+10rb</button><button class="sm" onclick="H.tix('${u.id}',50000)">+50rb</button><button class="sm" onclick="H.hostBorder('${u.id}')"><span class="ms">image</span> Border</button><button class="sm o" onclick="H.hostDelEnt('${u.id}')">Hapus video masuk</button>${u.theme_ok ? '' : `<button class="sm" onclick="H.thm('${u.id}')"><span class="ms">palette</span> Buka Tema</button>`}</div></div>`).join('')}
    <div style="display:flex;gap:8px;margin-top:14px"><button class="sm o" onclick="H.reset()">Kosongkan kursi</button><button class="sm o" onclick="H.clear()">Bersihkan chat</button></div>
    <button class="btn" style="margin-top:16px;background:linear-gradient(#e0646b,#9c2a33);color:#fff" onclick="H.unhost()"><span class="ms">logout</span> Keluar Host</button>`);
+  loadVisitors();
 };
 H.previewEnt = n => { H.close(); showEntranceFx(me.name, n, me.avatar) };
 H.uploadEntrance = level => {
@@ -1726,7 +1875,9 @@ async function stopMessageSync() {
 async function startRoom() {
   if (inRoom) return;
   $('#setup').classList.add('hidden'); $('#room').style.display = 'flex'; $('#nav').classList.remove('hidden'); inRoom = true;
-  prof[uid] = { ...prof[uid], ...me }; applyTheme(); nLoad();
+  prof[uid] = { ...prof[uid], ...me }; applyTheme(); nLoad(); logVisit();
+  $('#botFab')?.classList.remove('hidden'); botWelcome();
+  setTimeout(cleanupDMs, 6000); clearInterval(startRoom.dc); startRoom.dc = setInterval(cleanupDMs, 30 * 60 * 1000);
   settings = (await sb.from('room_settings').select('*').single()).data || settings;
   await loadTitleRules();
   if (HAS_TITLE) {
@@ -1839,17 +1990,18 @@ async function startRoom() {
     .on('postgres_changes', { event: '*', schema: 'public', table: 'svip_entrances' }, () => { loadEntranceVideos(); })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'gift_videos' }, () => { loadGiftVideos(); })
     .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'profiles' }, p => {
+      const bdKeep = p.new.id === uid && (bdBusy > 0 || Date.now() < bdLock); /* border yang baru kupakai tidak boleh ditimpa data lama */
       const previous = p.new.id === uid ? me : (prof[p.new.id] || null);
       const knownPts = previous?.points ?? pmeta(online[p.new.id])?.points;
       const oldLevel = lvl(knownPts), newLevel = lvl(p.new.points);
-      prof[p.new.id] = { ...prof[p.new.id], ...p.new }; delete pinfo[p.new.id]; refreshBubbles(p.new.id); repaintAvatars(p.new.id);
+      prof[p.new.id] = { ...prof[p.new.id], ...p.new }; if (bdKeep) prof[uid].avatar_border = me.avatar_border; delete pinfo[p.new.id]; refreshBubbles(p.new.id); repaintAvatars(p.new.id);
       // Popup ditampilkan di tengah layar seluruh anggota yang sedang berada di room.
       if (knownPts !== undefined && newLevel > oldLevel) { showSvipPopup(p.new.name || (p.new.id === uid ? me.name : 'Anggota'), newLevel, p.new.id === uid); if (p.new.id === uid) pushNotif({ key: 'lv:' + newLevel + ':' + new Date().toDateString(), type: 'level', icon: '⭐', title: 'Selamat! 🎉', text: `Kamu naik ke ${tierName(newLevel)}`, tab: 'me', act: { k: 'tab', t: 'me' } }) }
       if (p.new.id === uid) {
         if (p.new.gift_tickets > me.gift_tickets && Date.now() > chestQuiet) { const add = (p.new.gift_tickets - (me.gift_tickets || 0)).toLocaleString('id-ID'); showFx({ e: '🎉' }, `Kamu dapat +${add} Koin Emas 🪙 dari Host`); pushNotif({ type: 'host', icon: '🪙', title: 'Host 👑', text: `memberimu +${add} Koin Emas`, tab: 'me', act: { k: 'tab', t: 'me' } }) }
         if (p.new.theme_ok && !me.theme_ok) { showFx({ e: '🎨' }, 'Tema chat terbuka! Semua tema bebas dipakai'); pushNotif({ type: 'host', icon: '🎨', title: 'Host 👑', text: 'membuka semua tema chat untukmu', tab: 'me', act: { k: 'tab', t: 'me' } }) }
         if ((p.new.borders || []).length > (me.borders || []).length) pushNotif({ type: 'host', icon: '🖼️', title: 'Host 👑', text: 'membuka border baru untukmu', tab: 'me', act: { k: 'tab', t: 'me' } });
-        me = { ...me, ...p.new }; room?.track(presence()); renderProf();
+        me = { ...me, ...p.new, ...(bdKeep ? { avatar_border: me.avatar_border } : {}) }; room?.track(presence()); renderProf();
       }
       renderSeats(); renderTop();
     }).subscribe(async status => {
@@ -2126,7 +2278,7 @@ function renderSeats() {
   for (let i = 1; i <= settings.seat_count; i++) {
     const s = seats[i], d = document.createElement('div'); d.className = 'seat';
     d.innerHTML = s
-      ? `<div class="ring r${hash(s.user_id) % 5}${ringBd(prof[s.user_id]?.points, prof[s.user_id]?.avatar_border, prof[s.user_id]?.is_host)}" data-uid="${s.user_id}"><img src="${esc(s.avatar)}">${bdImg(bdOf(prof[s.user_id]?.points, prof[s.user_id]?.avatar_border, prof[s.user_id]?.is_host))}${emoState[s.user_id] ? emoHTML(emoState[s.user_id].i) : ''}<span class="mic">${ms(s.muted ? 'mic_off' : 'mic')}</span></div>${lvl(prof[s.user_id]?.points) >= 10 ? `<div class="nm2">${badge(prof[s.user_id]?.points)}</div><div class="nm" style="margin-top:2px">${esc(s.name)}</div>` : `<div class="nm">${badge(prof[s.user_id]?.points)}${esc(s.name)}</div>`}<div class="pill">${prof[s.user_id]?.points ?? 0}</div>`
+      ? `<div class="ring r${hash(s.user_id) % 5}${ringBd(prof[s.user_id]?.points, seatBd(s.user_id), prof[s.user_id]?.is_host)}" data-uid="${s.user_id}"><img src="${esc(s.avatar)}">${bdImg(bdOf(prof[s.user_id]?.points, seatBd(s.user_id), prof[s.user_id]?.is_host))}${emoState[s.user_id] ? emoHTML(emoState[s.user_id].i) : ''}<span class="mic">${ms(s.muted ? 'mic_off' : 'mic')}</span></div>${lvl(prof[s.user_id]?.points) >= 10 ? `<div class="nm2">${badge(prof[s.user_id]?.points)}</div><div class="nm" style="margin-top:2px">${esc(s.name)}</div>` : `<div class="nm">${badge(prof[s.user_id]?.points)}${esc(s.name)}</div>`}<div class="pill">${prof[s.user_id]?.points ?? 0}</div>`
       : `<div class="ring empty">＋</div><div class="nm dim">${i}</div>`;
     /* tap kursi sendiri = turun; tap kursi orang lain = menu (lihat profil / kirim gift); tap kursi kosong = duduk */
     d.onclick = () => s ? (s.user_id === uid ? leaveSeat() : H.seatMenu(s.user_id)) : sit(i);
@@ -2383,7 +2535,35 @@ function postHTML(p) {
     ${p.body ? `<p>${esc(p.body)}</p>` : ''}${p.image ? `<img class="pi" loading="lazy" src="${esc(p.image)}">` : ''}
     <div class="postbar"><button class="likebtn ${liked ? 'on' : ''}" onclick="H.like(${p.id})">${ms('favorite', liked ? '' : 'o')} ${n}</button><button class="likebtn" onclick="H.comments(${p.id})">${ms('chat_bubble', 'o')} ${cmtCount[p.id] || 0}</button>${HAS_PV === false ? '' : `<span class="viewchip" title="Penonton">${ms('visibility', 'o')} <b data-pv="${p.id}">${kfmt(pvCount[p.id] || 0)}</b></span>`}</div></article>`;
 }
-function renderPosts() { $('#plist').innerHTML = posts.map(postHTML).join('') || '<p class="empty-t">Belum ada postingan. Jadilah yang pertama! 📝</p>'; observePosts() }
+function renderPosts() { $('#plist').innerHTML = posts.map(postHTML).join('') || '<p class="empty-t">Belum ada postingan. Jadilah yang pertama! 📝</p>'; observePosts(); renderPostView() }
+/* ---------- Postingan: ketuk untuk memperbesar, isi bisa di-scroll ---------- */
+let openPostId = null;
+function postViewHTML(p) {
+  const u = p.profiles || {}, L = p.post_likes || [], n = L.length, liked = L.some(l => l.user_id === uid);
+  return `<div class="pvc" onclick="event.stopPropagation()">
+    <div class="pvh"><button class="ib" onclick="H.closePost()" title="Tutup"><span class="ms">arrow_back</span></button><b>Postingan</b></div>
+    <div class="pvs" id="pvScroll">
+      <div class="hd">${avatarHTML(u.avatar, u.points, '', 40, ` onclick="H.closePost();H.view('${p.user_id}')" style="cursor:pointer"`, u.avatar_border, u.is_host, p.user_id)}<div><b>${u.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(u.points)}${esc(u.name)}</b><small>${ago(p.created_at)}</small></div></div>
+      ${p.image ? `<img class="pvimg" src="${esc(p.image)}" alt="">` : ''}${p.body ? `<p class="pvtxt">${esc(p.body)}</p>` : ''}
+      <div class="postbar"><button class="likebtn ${liked ? 'on' : ''}" onclick="H.like(${p.id})">${ms('favorite', liked ? '' : 'o')} ${n}</button><button class="likebtn" onclick="H.closePost();H.comments(${p.id})">${ms('chat_bubble', 'o')} ${cmtCount[p.id] || 0}</button>${HAS_PV === false ? '' : `<span class="viewchip" title="Penonton">${ms('visibility', 'o')} <b>${kfmt(pvCount[p.id] || 0)}</b></span>`}</div>
+    </div></div>`;
+}
+function renderPostView() {
+  const box = $('#postView'); if (!box || openPostId == null) return;
+  const p = posts.find(x => String(x.id) === String(openPostId));
+  if (!p) return H.closePost(); /* postingan sudah dihapus */
+  const old = $('#pvScroll'), top = old ? old.scrollTop : 0;
+  box.innerHTML = postViewHTML(p);
+  const s = $('#pvScroll'); if (s) s.scrollTop = top;
+}
+H.openPost = id => { openPostId = id; $('#postView').classList.remove('hidden'); renderPostView(); const s = $('#pvScroll'); if (s) s.scrollTop = 0 };
+H.closePost = () => { openPostId = null; const b = $('#postView'); if (b) { b.classList.add('hidden'); b.innerHTML = '' } };
+$('#plist').addEventListener('click', e => {
+  if (e.target.closest('button,a,input,textarea,[onclick],.viewchip')) return; /* tombol like/komentar/hapus & avatar punya aksi sendiri */
+  const art = e.target.closest('article.post'); if (art) H.openPost(art.dataset.pid);
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && openPostId != null) H.closePost() });
+
 /* Penonton postingan: dihitung 1x per orang, setelah postingan terlihat ±1 detik (postingan sendiri tidak dihitung) */
 let HAS_PV = null, pvCount = {}, pvIO = null, pvTimers = {}; const pvSent = new Set();
 async function loadPostViews() {
@@ -2579,26 +2759,46 @@ function borderGridHTML() {
 /* Langsung tampil di layar (optimistis), server menyusul; jika gagal dikembalikan lagi */
 H.useBorder = async id => {
   const prev = me.avatar_border || null, nb = id || null;
-  bdBusy++;
+  bdBusy++; bdLock = Date.now() + 10000;
   me = { ...me, avatar_border: nb }; prof[uid] = { ...prof[uid], avatar_border: nb };
   room?.track(presence()); repaintMine();
   const isTitle = TITLE_BORDERS.some(b => b.id === id);
   const isLux = BORDERS.some(b => b.lux && b.id === id);
-  let { error } = await sb.rpc(isTitle ? 'set_title_border' : isLux ? 'set_lux_border' : 'set_border', { b: id });
-  if (error && isLux && (error.code === 'PGRST202' || /Could not find the function/i.test(error.message || ''))) error = { message: 'Jalankan lux_border.sql di Supabase dulu.' };
-  if (error && isTitle && (error.code === 'PGRST202' || /Could not find the function/i.test(error.message || ''))) error = { message: 'Jalankan title_border.sql di Supabase dulu.' };
+  const saved = async () => { const { data } = await sb.from('profiles').select('avatar_border').eq('id', uid).maybeSingle(); return !data || (data.avatar_border || null) === nb };
+  let error = null;
+  try {
+    const r = await sb.rpc(isTitle ? 'set_title_border' : isLux ? 'set_lux_border' : 'set_border', { b: id });
+    error = r.error;
+    const noFn = error && (error.code === 'PGRST202' || /Could not find the function/i.test(error.message || ''));
+    if (noFn && isLux) error = { message: 'Jalankan lux_border.sql di Supabase dulu.' };
+    else if (noFn && isTitle) error = { message: 'Jalankan title_border.sql di Supabase dulu.' };
+    else {
+      /* Server bisa menolak/mengabaikan border yang daftarnya belum diperbarui (mis. border baru atau border Host).
+         Cek hasil sebenarnya di database; kalau belum tersimpan, coba simpan langsung ke profil sendiri. */
+      const serverMsg = error?.message;
+      if (!error && !(await saved())) error = { message: 'Border belum tersimpan di server.' };
+      const mayUse = me.is_host || !id || (isTitle ? titleBdOk(id, me.points, me.is_host) : ownsBorder(id));
+      if (error && mayUse) {
+        const u = await sb.from('profiles').update({ avatar_border: nb }).eq('id', uid);
+        if (!u.error && await saved()) error = null;
+        else error = { message: serverMsg || 'Border belum bisa disimpan. Pastikan border_migration.sql / lux_border.sql sudah dijalankan di Supabase.' };
+      }
+    }
+  } catch (e) { error = { message: e?.message || 'Gagal menyimpan border' } }
   bdBusy--;
   if (error) {
+    bdLock = 0;
     me = { ...me, avatar_border: prev }; prof[uid] = { ...prof[uid], avatar_border: prev };
-    room?.track(presence()); repaintMine(); return toast(error.message);
+    room?.track(presence()); repaintMine(); return toast('Gagal memakai border: ' + error.message);
   }
+  bdLock = Date.now() + 4000; /* beri waktu event realtime lama lewat sebelum polling boleh membaca lagi */
   toast(id ? 'Border dipakai ✨' : 'Border dilepas');
 };
 /* Ambil ulang border & daftar border terbuka milikku (dipanggil oleh broadcast Host, polling ringan, dan saat tab aktif lagi) */
 async function refreshMyBorders() {
-  if (!HAS_BORDER || !me || !uid || bdBusy) return;
+  if (!HAS_BORDER || !me || !uid || bdBusy || Date.now() < bdLock) return;
   const { data } = await sb.from('profiles').select('avatar_border,borders').eq('id', uid).maybeSingle();
-  if (!data || bdBusy) return;
+  if (!data || bdBusy || Date.now() < bdLock) return;
   const nb = data.borders || [], ob = me.borders || [];
   if (JSON.stringify(nb) === JSON.stringify(ob) && (data.avatar_border || null) === (me.avatar_border || null)) return;
   const more = nb.length > ob.length;
@@ -3064,7 +3264,7 @@ async function syncDM(){
     const {data,error}=await sb.from('direct_messages').select('*').or(`and(sender_id.eq.${uid},recipient_id.eq.${id}),and(sender_id.eq.${id},recipient_id.eq.${uid})`).order('created_at',{ascending:false}).limit(30);
     if(error||dmPeer?.id!==id||!dmVisible())return;
     let ch=false;const known=new Map(dmMessages.map(x=>[x.id,x]));
-    (data||[]).reverse().forEach(m=>{const o=known.get(m.id);if(!o){dmMessages.push(m);ch=true}else if(m.read_at&&!o.read_at){o.read_at=m.read_at;ch=true}});
+    (data||[]).reverse().forEach(m=>{if(dmExpired(m))return;const o=known.get(m.id);if(!o){dmMessages.push(m);ch=true}else if(m.read_at&&!o.read_at){o.read_at=m.read_at;ch=true}});
     if(ch){dmMessages.sort((a,b)=>Date.parse(a.created_at)-Date.parse(b.created_at));renderDM();markDMRead()}
   }finally{syncDM.busy=false}
 }
@@ -3075,21 +3275,45 @@ H.openDM=async id=>{
   const {data,error}=await sb.from('direct_messages').select('*').or(`and(sender_id.eq.${uid},recipient_id.eq.${id}),and(sender_id.eq.${id},recipient_id.eq.${uid})`).order('created_at',{ascending:false}).limit(100);
   if(error)return toast('Chat pribadi: '+error.message);
   if(dmPeer?.id!==id)return; /* pengguna sudah pindah ke chat lain */
-  const got=(data||[]).reverse(),ids=new Set(got.map(x=>x.id));
+  const got=(data||[]).reverse().filter(m=>!dmExpired(m)),ids=new Set(got.map(x=>x.id));
   dmMessages=[...got,...dmMessages.filter(x=>!ids.has(x.id)&&(x.sender_id===id||x.recipient_id===id)&&Date.parse(x.created_at)>=Date.parse(got[0]?.created_at||0))];
   renderDM();markDMRead();
 };
+/* Pesan yang sudah dibaca otomatis hilang setelah DM_TTL_MS (dihapus juga dari database supaya data tidak menumpuk).
+   Pesan yang belum dibaca TIDAK pernah dihapus. Ubah angka ini untuk mengganti durasi. */
+const DM_TTL_MS = 24 * 3600 * 1000;
+const dmExpired = m => !!(HAS_READ && m && m.read_at && Date.now() - Date.parse(m.read_at) > DM_TTL_MS);
+async function cleanupDMs() {
+  if (!HAS_READ || !uid || cleanupDMs.busy) return; cleanupDMs.busy = true;
+  try {
+    const cutoff = new Date(Date.now() - DM_TTL_MS).toISOString();
+    await sb.from('direct_messages').delete().not('read_at', 'is', null).lt('read_at', cutoff).or(`sender_id.eq.${uid},recipient_id.eq.${uid}`);
+    if (dmPeer && dmVisible()) renderDM();
+  } catch {} finally { cleanupDMs.busy = false }
+}
 function renderDM(){
   if(!dmPeer)return;
-  const keep=$('#dmInput')?.value||'',foc=document.activeElement?.id==='dmInput';
+  const inp0=$('#dmInput'),keep=inp0?.value||'',foc=document.activeElement?.id==='dmInput';
+  /* urutkan & buang pesan ganda: pesan realtime bisa masuk tidak berurutan */
+  const seen=new Set();dmMessages=dmMessages.filter(m=>{const k=String(m.id);if(seen.has(k)||dmExpired(m))return false;seen.add(k);return true}).sort((a,b)=>Date.parse(a.created_at)-Date.parse(b.created_at)||(a.id>b.id?1:-1));
   const lines=dmMessages.map(m=>{try{
     const mine=m.sender_id===uid,quoted=m.reply_to_id?dmMessages.find(x=>x.id===m.reply_to_id):null;
     const isOnce=String(m.body||'').startsWith(ONCE_TAG);
     const body=isOnce?onceBubble(String(m.body).slice(ONCE_TAG.length),mine,'dm',m.created_at):esc(m.body??'').replace(/(@[\w.-]+)/g,'<span class="tagged">$1</span>')||'<i style="opacity:.6">(pesan tanpa teks)</i>';
     return `<div class="dmline ${mine?'mine':''}">${quoted?`<div class="replybox"><b>${ms('reply')} ${quoted.sender_id===uid?'Kamu':esc(dmPeer.name)}</b>${esc(String(quoted.body??'').slice(0,100))}</div>`:''}${m.forwarded_from_id?`<small>${ms('forward')} Pesan diteruskan</small>`:''}${body}<small>${new Date(m.created_at).toLocaleString('id-ID',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'short'})}${mine?`<span class="tk${m.read_at?' rd':''}" data-tk="${m.id}">${m.read_at?'✓✓ Dibaca':'✓ Terkirim'}</span>`:''}</small><div class="msgtools"><button onclick="H.replyDM('${m.id}')">${ms('reply')} Balas</button><button onclick="H.forwardDM('${m.id}')">${ms('forward')} Teruskan</button></div></div>`;
   }catch(err){console.warn('DM render',m?.id,err);return ''}}).join('');
-  sheet(`<div class="dmhead"><button class="ib" onclick="H.close()" title="Kembali"><span class="ms">arrow_back</span></button><img src="${esc(dmPeer.avatar||'')}"><div style="flex:1;min-width:0"><h3 style="margin:0">${esc(dmPeer.name)}</h3><p class="sub fst off" id="dmStatus" data-fst="${esc(dmPeer.id)}" style="margin:0"></p></div></div><div class="dmfeed" id="dmFeed">${lines||'<p class="empty-t">Belum ada pesan. Mulai percakapan! 👋</p>'}<div class="dmline typ hidden" id="dmTyp"><i></i><i></i><i></i></div></div><div id="dmReplyHint"></div><div class="dmcomposer"><button class="ib" onclick="H.tagDM()" title="Tag teman"><span class="ms">alternate_email</span></button><button class="ib" onclick="H.onceDM()" title="Kirim foto sekali lihat"><span class="ms">photo_camera</span></button><input id="dmInput" class="inp" maxlength="200" placeholder="Tulis pesan..." oninput="H.dmTyping()" onkeydown="if(event.key==='Enter')H.sendDM()"><button class="ib sendb" onclick="H.sendDM()"><span class="ms">send</span></button></div>`, true);
-  const f=$('#dmFeed');if(f)f.scrollTop=f.scrollHeight;renderDMReplyHint();const di=$('#dmInput');if(di&&keep){di.value=keep;if(foc)di.focus()}
+  /* Jika chat teman yang sama sudah terbuka: perbarui daftar pesan SAJA. Kolom ketik tidak dibuat ulang,
+     jadi kursor tidak lompat ke awal (penyebab huruf terketik terbalik) dan keyboard tidak tertutup. */
+  { const feed=$('#dmFeed');
+    if(feed&&inp0&&feed.dataset.peer===String(dmPeer.id)&&dmVisible()){
+      const nearEnd=feed.scrollHeight-feed.scrollTop-feed.clientHeight<90,last=dmMessages[dmMessages.length-1];
+      const typHidden=$('#dmTyp')?.classList.contains('hidden')!==false;
+      feed.innerHTML=(lines||'<p class="empty-t">Belum ada pesan. Mulai percakapan! 👋</p>')+`<div class="dmline typ ${typHidden?'hidden':''}" id="dmTyp"><i></i><i></i><i></i></div>`;
+      if(nearEnd||last?.sender_id===uid)feed.scrollTop=feed.scrollHeight;
+      renderDMReplyHint();refreshFriendStatus();return;
+    } }
+  sheet(`<div class="dmhead"><button class="ib" onclick="H.close()" title="Kembali"><span class="ms">arrow_back</span></button><img src="${esc(dmPeer.avatar||'')}"><div style="flex:1;min-width:0"><h3 style="margin:0">${esc(dmPeer.name)}</h3><p class="sub fst off" id="dmStatus" data-fst="${esc(dmPeer.id)}" style="margin:0"></p></div></div><p class="dmnote">🧹 Pesan yang sudah dibaca terhapus otomatis setelah 24 jam</p><div class="dmfeed" id="dmFeed" data-peer="${esc(dmPeer.id)}">${lines||'<p class="empty-t">Belum ada pesan. Mulai percakapan! 👋</p>'}<div class="dmline typ hidden" id="dmTyp"><i></i><i></i><i></i></div></div><div id="dmReplyHint"></div><div class="dmcomposer"><button class="ib" onclick="H.tagDM()" title="Tag teman"><span class="ms">alternate_email</span></button><button class="ib" onclick="H.onceDM()" title="Kirim foto sekali lihat"><span class="ms">photo_camera</span></button><input id="dmInput" class="inp" maxlength="200" placeholder="Tulis pesan..." oninput="H.dmTyping()" onkeydown="if(event.key==='Enter')H.sendDM()"><button class="ib sendb" onclick="H.sendDM()"><span class="ms">send</span></button></div>`, true);
+  const f=$('#dmFeed');if(f)f.scrollTop=f.scrollHeight;renderDMReplyHint();const di=$('#dmInput');if(di&&keep){di.value=keep;if(foc){di.focus();try{di.setSelectionRange(keep.length,keep.length)}catch{}}}
   refreshFriendStatus();
 }
 function renderDMReplyHint(){const e=$('#dmReplyHint');if(!e)return;const m=dmMessages.find(x=>x.id===dmReply);e.innerHTML=m?`<div class="replyhint">↩ Membalas: ${esc(String(m.body??'').slice(0,70))}<button onclick="H.cancelReplyDM()"><span class="ms">close</span></button></div>`:'';}
