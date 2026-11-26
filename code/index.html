@@ -224,6 +224,19 @@ textarea.inp{resize:none;display:block}
 .dmline.typ i:nth-child(2){animation-delay:.15s}.dmline.typ i:nth-child(3){animation-delay:.3s}
 @keyframes tdot{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-5px);opacity:1}}
 .dmcomposer .inp{min-width:0}
+/* Lihat foto profil */
+.pf img.pav,.dmhead img{cursor:zoom-in}
+#avView{position:fixed;inset:0;z-index:78;background:#000f;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:calc(14px + env(safe-area-inset-top)) 14px calc(14px + env(safe-area-inset-bottom))}
+#avView img{width:min(92vw,520px);max-height:76dvh;object-fit:contain;border-radius:18px}
+#avView b{color:var(--gold);font-size:17px;text-align:center}
+/* GIF di chat teman */
+.gifbtn{font-weight:800;font-size:12px}
+#gifPanel{flex:none;margin-top:6px;padding:8px;border-radius:14px;background:#1c1410;border:1px solid #ffffff1f}
+#gifPanel.hidden{display:none!important}
+#gifGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-height:28dvh;overflow:auto;margin-top:8px}
+#gifGrid img{width:100%;height:84px;object-fit:cover;border-radius:8px;cursor:pointer}
+#gifGrid p{grid-column:1/-1}
+.gifmsg{display:block;width:200px;max-width:100%;min-height:80px;max-height:240px;object-fit:contain;border-radius:10px}
 .replyhint{display:flex;justify-content:space-between;align-items:center;background:#5b431e88;border-radius:10px;padding:7px 10px;margin:5px 0;font-size:12px;color:#ffe0a0}
 /* Stories 24 jam */
 .storybar{display:flex;gap:12px;overflow-x:auto;padding:8px 2px 14px;scrollbar-width:none}
@@ -864,6 +877,8 @@ const SUPABASE_KEY = 'sb_publishable__KXfm9Yv6VRXStTap-DFyQ_sNOPCLrG';
 const OWNER_WA = '6285946186508';
 /* Opsional: URL gambar bingkai khusus HOST (PNG/GIF/WebP transparan, bagian tengah bolong). Kosong = pakai efek CSS saja. */
 const HOST_BORDER_IMG = '';
+/* Opsional: API key GIPHY (developers.giphy.com) untuk cari GIF di chat teman. Kosong = hanya bisa kirim GIF dari galeri. */
+const GIPHY_KEY = 'HjLgYMXpJYMm4yuyu0WdViTb3AhLNNnG';
 /* Gift: isi `img` dengan URL GIF publik (mis. dari GIPHY). Kosong = pakai emoji animasi. */
 const GIFTS = [
   {name:'Api Cinta',e:'🔥',img:'',points:10},{name:'Mahkota',e:'👑',img:'',points:25},{name:'Roket',e:'🚀',img:'',points:50},
@@ -1984,7 +1999,7 @@ async function startRoom() {
       if (fromPeer && !dmMessages.some(x => x.id === p.new.id)) dmMessages.push(p.new);
       if (fromPeer) { clearTimeout(typIn[p.new.sender_id]); delete typIn[p.new.sender_id] }
       if (fromPeer && dmVisible()) { renderDM(); markDMRead() } /* hanya gambar ulang jika jendela chat memang sedang terbuka */
-      else pushNotif({ key: 'dm:' + p.new.id, type: 'dm', icon: '💬', from: p.new.sender_id, text: String(p.new.body || '').startsWith('[ONCE]') ? '📷 Mengirim foto sekali lihat' : (String(p.new.body || '').slice(0, 80) || 'Pesan baru'), tab: 'friends', act: { k: 'dm', id: p.new.sender_id } });
+      else pushNotif({ key: 'dm:' + p.new.id, type: 'dm', icon: '💬', from: p.new.sender_id, text: String(p.new.body || '').startsWith('[ONCE]') ? '📷 Mengirim foto sekali lihat' : (dmText(p.new.body).slice(0, 80) || 'Pesan baru'), tab: 'friends', act: { k: 'dm', id: p.new.sender_id } });
     })
     .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'room_settings' }, p => { if (HAS_ROOMS) return; settings = p.new; renderSeats(); renderTop() })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'svip_entrances' }, () => { loadEntranceVideos(); })
@@ -2680,7 +2695,7 @@ H.view = async id => {
     <div class="stats" style="flex-wrap:wrap"><span class="chip">${seated ? ms('mic') + ' Di kursi' : on ? ms('circle', 'on') + ' Online' : ms('circle', 'o off') + ' Offline'}</span><span class="chip"><span class="ms">group</span> ${social.friends ?? '—'} Teman</span><span class="chip"><span class="ms">person</span> ${social.followers ?? '—'} Followers</span><span class="chip"><span class="ms">star</span> ${u.points ?? 0}</span><span class="chip"><span class="ms">redeem</span> ${u.gifts_sent ?? 0} dikirim</span><span class="chip"><span class="ms">edit_note</span> ${list.length}</span></div></div>
     <div class="acts">${isFriend ? `<button class="btn" onclick="H.openDM('${u.id}')"><span class="ms">chat</span> Chat</button>` : `<button class="btn" onclick="H.requestFriend('${u.id}')"><span class="ms">add</span> Tambah Teman</button>`}
       <button class="btn" onclick="H.toggleFollow('${u.id}',${isFollowing})">${isFollowing ? ms('check') + ' Mengikuti' : ms('person_add') + ' Follow'}</button>
-      <button class="btn" onclick="H.giftView()"><span class="ms">redeem</span> Kirim Gift</button>${HAS_REL ? `<button class="btn" onclick="H.relPick('${u.id}')"><span class="ms">favorite</span> Ajak Hubungan</button>` : ''}</div>
+      <button class="btn" onclick="H.giftView()"><span class="ms">redeem</span> Kirim Gift</button><button class="btn" onclick="H.viewUserPhoto()"><span class="ms">account_circle</span> Lihat Foto</button>${HAS_REL ? `<button class="btn" onclick="H.relPick('${u.id}')"><span class="ms">favorite</span> Ajak Hubungan</button>` : ''}</div>
     ${me.is_host ? `<button class="btn" style="margin-bottom:6px;background:linear-gradient(#a98bff,#6a4bff);color:#fff" onclick="H.hostBorder('${u.id}')"><span class="ms">image</span> Beri Border</button>` : ''}
     ${HAS_REL ? `<h3 class="sec"><span class="ms">favorite</span> Hubungan</h3>${(rels || []).map(r => relCardHTML(r, false)).join('') || '<p class="empty-t">Belum ada hubungan.</p>'}` : ''}<h3 class="sec"><span class="ms">redeem</span> Koleksi Hadiah</h3>${giftHTML(rows)}
     <h3 class="sec"><span class="ms">edit_note</span> Postingan</h3>${list.map(q => `<div class="post"><p>${esc(q.body || '')}</p>${q.image ? `<img class="pi" loading="lazy" src="${esc(q.image)}">` : ''}<small style="color:#9a8f86">${ago(q.created_at)}</small></div>`).join('') || '<p class="empty-t">Belum ada postingan.</p>'}`);
@@ -2690,6 +2705,17 @@ H.seatMenu = id => {
   sheet(`<div class="dmhead"><img src="${esc(x.avatar)}"><div style="flex:1"><h3 style="margin:0">${esc(x.name)}</h3><p class="sub" style="margin:0">Sedang di kursi</p></div></div>
     <div class="acts"><button class="btn" onclick="H.view('${id}')"><span class="ms">person</span> Lihat Profil</button><button class="btn" onclick="H.giftTo('${id}')"><span class="ms">redeem</span> Kirim Gift</button></div>`);
 };
+/* Gift hadiah dari chat teman: setelah kirim atau batal, kembali ke chat yang sama */
+H.giftDM = () => {
+  if (!dmPeer) return;
+  gT = { id: dmPeer.id, name: dmPeer.name, avatar: dmPeer.avatar, dm: true, draft: $('#dmInput')?.value || '' };
+  H.dmStopTyping(); giftSheet();
+};
+async function backToDM(t) {
+  await H.openDM(t.id);
+  const i = $('#dmInput'); if (i && t.draft && !i.value) i.value = t.draft;
+}
+H.backToDM = () => { if (gT?.dm) backToDM(gT) };
 H.giftView = () => { if (viewU) { gT = { id: viewU.id, name: viewU.name, avatar: viewU.avatar }; giftSheet() } };
 function renderProf() {
   if (!me) return;
@@ -2698,7 +2724,7 @@ function renderProf() {
   $('#pfBox').innerHTML = `<div class="pf">${avatarHTML(me.avatar, me.points, 'pav', 112, '', me.avatar_border, me.is_host, uid)}
     <h2>${me.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(me.points)}${esc(me.name)}</h2>${titleHTML(me.points, me, true)}
     <div class="stats" style="flex-wrap:wrap"><span class="chip"><span class="ms">group</span> ${mySocialStats.friends ?? '—'} Teman</span><span class="chip"><span class="ms">person</span> ${mySocialStats.followers ?? '—'} Followers</span><span class="chip">🪙 ${Number(me.gift_tickets ?? 0).toLocaleString('id-ID')}</span><span class="chip"><span class="ms">star</span> ${me.points ?? 0}</span><span class="chip"><span class="ms">edit_note</span> ${mine.length}</span></div></div>
-    <div class="acts"><button class="btn" onclick="H.editAv()"><span class="ms">photo_camera</span> Ubah Foto</button><button class="btn" onclick="H.editNm()"><span class="ms">edit</span> Ubah Nama</button></div>
+    <div class="acts"><button class="btn" onclick="H.viewMyPhoto()"><span class="ms">account_circle</span> Lihat Foto</button><button class="btn" onclick="H.editAv()"><span class="ms">photo_camera</span> Ubah Foto</button><button class="btn" onclick="H.editNm()"><span class="ms">edit</span> Ubah Nama</button></div>
     <button class="btn" onclick="H.compose()"><span class="ms">add</span> Buat Postingan</button>
     <button class="btn" style="margin-top:8px" onclick="H.checkin()">📅 Check-in Harian</button>
     <button class="btn" style="margin-top:8px" onclick="H.entMenu()">✨ Animasi Masuk Room</button>
@@ -2706,7 +2732,7 @@ function renderProf() {
     <h3 class="sec"><span class="ms">redeem</span> Koleksi Hadiah</h3>${giftHTML(myGifts)}
     <h3 class="sec">Postingan Saya</h3>${mine.map(postHTML).join('') || '<p class="empty-t">Belum ada postingan.</p>'}`;
 }
-H.editAv = () => pick(async f => { toast('Mengunggah foto…'); try { setAvatar(await upImg(f, 256)) } catch (e) { toast(e.message || 'Gagal mengunggah foto') } });
+H.editAv = () => pick(async f => { toast('Mengunggah foto…'); try { setAvatar(await upImg(f, 720)) } catch (e) { toast(e.message || 'Gagal mengunggah foto') } });
 async function setAvatar(url) {
   const { error } = await sb.from('profiles').update({ avatar: url }).eq('id', uid);
   if (error) return toast(error.message);
@@ -2930,7 +2956,7 @@ function giftSheet() {
   giftQty = 1;
   const own = me.gift_tickets || 0, cheapest = Math.min(...GIFTS.map(g => g.coin));
   sheet(`<h3>Kirim Gift</h3><p class="sub">${me.is_host ? '👑 Host: unlimited gratis' : `🪙 Koin emasmu: ${kfmt(own)} · makin mahal gift, makin besar EXP`}</p>
-   <div class="mrow" style="border-top:0;padding-top:0"><img src="${esc(gT.avatar)}"><span>Untuk: <b>${esc(gT.name)}</b></span><button class="sm o" onclick="H.gift()">Ganti</button></div>
+   <div class="mrow" style="border-top:0;padding-top:0"><img src="${esc(gT.avatar)}"><span>Untuk: <b>${esc(gT.name)}</b></span>${gT.dm ? '<button class="sm o" onclick="H.backToDM()">Kembali</button>' : '<button class="sm o" onclick="H.gift()">Ganti</button>'}</div>
    <p class="sub" style="margin:8px 0 0">Jumlah (maksimal ${MAX_QTY}), lalu ketuk gift</p>
    <div class="qtybar">${QTY_PRESET.map(n => `<button data-q="${n}" class="${n === 1 ? 'on' : ''}" onclick="H.setQty(${n})">${n}</button>`).join('')}<input id="qtyIn" type="number" inputmode="numeric" min="1" max="${MAX_QTY}" value="1" aria-label="Jumlah gift" oninput="H.typeQty(this)" onblur="H.setQty(this.value)"></div>
    <div class="gg">${GIFTS.map((g, i) => { const lock = !me.is_host && own < g.coin; return `<button data-gi="${i}" class="gi ${lock ? 'lk' : ''}" onclick="H.send(${i})">${g.img ? `<img src="${esc(g.img)}">` : `<span class="e">${g.e}</span>`}<small>${g.name}</small>${i >= EXCLUSIVE_GIFT_START ? '<small style="display:block;color:#d7b6ff">✦ EKSKLUSIF</small>' : ''}<small class="gx" style="display:block;color:#ffd886">+${kfmt(g.points)} EXP</small><small class="tkc" style="display:block">🪙 ${kfmt(g.coin)}</small></button>` }).join('')}</div>
@@ -2950,7 +2976,13 @@ H.send = async i => {
     ({ error } = qty > 1 ? await sb.rpc('send_gift_qty', { g: i, target: to.id, qty, ...room_ }) : await sb.rpc('send_gift_v2', { g: i, target: to.id, ...room_ }));
   } finally { H.send.busy = false }
   if (error && (error.code === 'PGRST202' || /Could not find the function/i.test(error.message || ''))) return toast(qty > 1 ? 'Jalankan gift_qty.sql di Supabase dulu untuk kirim lebih dari 1 🪙' : 'Jalankan gift_relation_migration.sql terbaru dulu 🪙');
-  error ? toast(error.message) : (H.close(), syncPointsSoon(500), setTimeout(syncTitle, 700));
+  if (error) return toast(error.message);
+  H.close(); syncPointsSoon(500); setTimeout(syncTitle, 700);
+  if (to.dm) {
+    toast(`${qty > 1 ? qty + '× ' : ''}${g.name} terkirim ke ${to.name} 🎁`);
+    if (!inRoom) showFx(g, me.name, to.name, i, qty); /* di dalam room, efek sudah muncul dari pesan room */
+    await backToDM(to);
+  }
 };
 
 /* ---------- 8B. Hubungan: Sahabat, Pasangan (anniversary), Kakak-Adik, Partner Duet ---------- */
@@ -3298,9 +3330,9 @@ function renderDM(){
   const seen=new Set();dmMessages=dmMessages.filter(m=>{const k=String(m.id);if(seen.has(k)||dmExpired(m))return false;seen.add(k);return true}).sort((a,b)=>Date.parse(a.created_at)-Date.parse(b.created_at)||(a.id>b.id?1:-1));
   const lines=dmMessages.map(m=>{try{
     const mine=m.sender_id===uid,quoted=m.reply_to_id?dmMessages.find(x=>x.id===m.reply_to_id):null;
-    const isOnce=String(m.body||'').startsWith(ONCE_TAG);
-    const body=isOnce?onceBubble(String(m.body).slice(ONCE_TAG.length),mine,'dm',m.created_at):esc(m.body??'').replace(/(@[\w.-]+)/g,'<span class="tagged">$1</span>')||'<i style="opacity:.6">(pesan tanpa teks)</i>';
-    return `<div class="dmline ${mine?'mine':''}">${quoted?`<div class="replybox"><b>${ms('reply')} ${quoted.sender_id===uid?'Kamu':esc(dmPeer.name)}</b>${esc(String(quoted.body??'').slice(0,100))}</div>`:''}${m.forwarded_from_id?`<small>${ms('forward')} Pesan diteruskan</small>`:''}${body}<small>${new Date(m.created_at).toLocaleString('id-ID',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'short'})}${mine?`<span class="tk${m.read_at?' rd':''}" data-tk="${m.id}">${m.read_at?'✓✓ Dibaca':'✓ Terkirim'}</span>`:''}</small><div class="msgtools"><button onclick="H.replyDM('${m.id}')">${ms('reply')} Balas</button><button onclick="H.forwardDM('${m.id}')">${ms('forward')} Teruskan</button></div></div>`;
+    const isOnce=String(m.body||'').startsWith(ONCE_TAG),gif=gifUrl(m.body);
+    const body=gif?`<img class="gifmsg" src="${esc(gif)}" alt="GIF" onload="H.gifLoaded()">`:isOnce?onceBubble(String(m.body).slice(ONCE_TAG.length),mine,'dm',m.created_at):esc(m.body??'').replace(/(@[\w.-]+)/g,'<span class="tagged">$1</span>')||'<i style="opacity:.6">(pesan tanpa teks)</i>';
+    return `<div class="dmline ${mine?'mine':''}">${quoted?`<div class="replybox"><b>${ms('reply')} ${quoted.sender_id===uid?'Kamu':esc(dmPeer.name)}</b>${esc(dmText(quoted.body).slice(0,100))}</div>`:''}${m.forwarded_from_id?`<small>${ms('forward')} Pesan diteruskan</small>`:''}${body}<small>${new Date(m.created_at).toLocaleString('id-ID',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'short'})}${mine?`<span class="tk${m.read_at?' rd':''}" data-tk="${m.id}">${m.read_at?'✓✓ Dibaca':'✓ Terkirim'}</span>`:''}</small><div class="msgtools"><button onclick="H.replyDM('${m.id}')">${ms('reply')} Balas</button><button onclick="H.forwardDM('${m.id}')">${ms('forward')} Teruskan</button></div></div>`;
   }catch(err){console.warn('DM render',m?.id,err);return ''}}).join('');
   /* Jika chat teman yang sama sudah terbuka: perbarui daftar pesan SAJA. Kolom ketik tidak dibuat ulang,
      jadi kursor tidak lompat ke awal (penyebab huruf terketik terbalik) dan keyboard tidak tertutup. */
@@ -3312,11 +3344,11 @@ function renderDM(){
       if(nearEnd||last?.sender_id===uid)feed.scrollTop=feed.scrollHeight;
       renderDMReplyHint();refreshFriendStatus();return;
     } }
-  sheet(`<div class="dmhead"><button class="ib" onclick="H.close()" title="Kembali"><span class="ms">arrow_back</span></button><img src="${esc(dmPeer.avatar||'')}"><div style="flex:1;min-width:0"><h3 style="margin:0">${esc(dmPeer.name)}</h3><p class="sub fst off" id="dmStatus" data-fst="${esc(dmPeer.id)}" style="margin:0"></p></div></div><p class="dmnote">🧹 Pesan yang sudah dibaca terhapus otomatis setelah 24 jam</p><div class="dmfeed" id="dmFeed" data-peer="${esc(dmPeer.id)}">${lines||'<p class="empty-t">Belum ada pesan. Mulai percakapan! 👋</p>'}<div class="dmline typ hidden" id="dmTyp"><i></i><i></i><i></i></div></div><div id="dmReplyHint"></div><div class="dmcomposer"><button class="ib" onclick="H.tagDM()" title="Tag teman"><span class="ms">alternate_email</span></button><button class="ib" onclick="H.onceDM()" title="Kirim foto sekali lihat"><span class="ms">photo_camera</span></button><input id="dmInput" class="inp" maxlength="200" placeholder="Tulis pesan..." oninput="H.dmTyping()" onkeydown="if(event.key==='Enter')H.sendDM()"><button class="ib sendb" onclick="H.sendDM()"><span class="ms">send</span></button></div>`, true);
+  sheet(`<div class="dmhead"><button class="ib" onclick="H.close()" title="Kembali"><span class="ms">arrow_back</span></button><img src="${esc(dmPeer.avatar||'')}"><div style="flex:1;min-width:0"><h3 style="margin:0">${esc(dmPeer.name)}</h3><p class="sub fst off" id="dmStatus" data-fst="${esc(dmPeer.id)}" style="margin:0"></p></div><button class="sm" onclick="H.giftDM()" title="Kirim gift hadiah"><span class="ms">redeem</span> Gift</button></div><p class="dmnote">🧹 Pesan yang sudah dibaca terhapus otomatis setelah 24 jam</p><div class="dmfeed" id="dmFeed" data-peer="${esc(dmPeer.id)}">${lines||'<p class="empty-t">Belum ada pesan. Mulai percakapan! 👋</p>'}<div class="dmline typ hidden" id="dmTyp"><i></i><i></i><i></i></div></div><div id="dmReplyHint"></div><div id="gifPanel" class="hidden"></div><div class="dmcomposer"><button class="ib" onclick="H.tagDM()" title="Tag teman"><span class="ms">alternate_email</span></button><button class="ib" onclick="H.onceDM()" title="Kirim foto sekali lihat"><span class="ms">photo_camera</span></button><button class="ib gifbtn" onclick="H.gifDM()" title="Kirim GIF">GIF</button><input id="dmInput" class="inp" maxlength="200" placeholder="Tulis pesan..." oninput="H.dmTyping()" onkeydown="if(event.key==='Enter')H.sendDM()"><button class="ib sendb" onclick="H.sendDM()"><span class="ms">send</span></button></div>`, true);
   const f=$('#dmFeed');if(f)f.scrollTop=f.scrollHeight;renderDMReplyHint();const di=$('#dmInput');if(di&&keep){di.value=keep;if(foc){di.focus();try{di.setSelectionRange(keep.length,keep.length)}catch{}}}
   refreshFriendStatus();
 }
-function renderDMReplyHint(){const e=$('#dmReplyHint');if(!e)return;const m=dmMessages.find(x=>x.id===dmReply);e.innerHTML=m?`<div class="replyhint">↩ Membalas: ${esc(String(m.body??'').slice(0,70))}<button onclick="H.cancelReplyDM()"><span class="ms">close</span></button></div>`:'';}
+function renderDMReplyHint(){const e=$('#dmReplyHint');if(!e)return;const m=dmMessages.find(x=>x.id===dmReply);e.innerHTML=m?`<div class="replyhint">↩ Membalas: ${esc(dmText(m.body).slice(0,70))}<button onclick="H.cancelReplyDM()"><span class="ms">close</span></button></div>`:'';}
 H.replyDM=id=>{dmReply=id;renderDMReplyHint();$('#dmInput')?.focus()};
 H.cancelReplyDM=()=>{dmReply=null;renderDMReplyHint()};
 H.tagDM=()=>{if(!dmPeer)return;const i=$('#dmInput');i.value=(i.value?i.value+' ':'')+'@'+String(dmPeer.name||'').replace(/\s+/g,'')+' ';i.focus()};
@@ -3331,6 +3363,90 @@ H.sendDM=async()=>{
     dmReply=null;const now=$('#dmInput');if(now&&now.value.trim()===body)now.value='';H.dmStopTyping();renderDM();
   }finally{H.sendDM.busy=false}
 };
+/* ---------- GIF di chat teman: isi pesan = "[GIF]" + URL ---------- */
+const GIF_TAG = '[GIF]', GIF_MAX_MB = 5;
+/* Hanya tampilkan GIF dari storage aplikasi sendiri atau GIPHY, supaya tautan sembarang tidak ikut dimuat */
+function gifUrl(body) {
+  const t = String(body || ''); if (!t.startsWith(GIF_TAG)) return '';
+  try {
+    const u = new URL(t.slice(GIF_TAG.length));
+    const own = u.host === new URL(SUPABASE_URL).host && u.pathname.startsWith('/storage/v1/object/public/media/');
+    return u.protocol === 'https:' && (own || /^(media\d*|i)\.giphy\.com$/.test(u.host)) ? u.href : '';
+  } catch { return '' }
+}
+const dmText = body => gifUrl(body) ? '🎞️ GIF' : String(body || '').startsWith(ONCE_TAG) ? '📷 Foto sekali lihat' : String(body || '');
+H.gifLoaded = () => { const f = $('#dmFeed'); if (f && f.scrollHeight - f.scrollTop - f.clientHeight < 340) f.scrollTop = f.scrollHeight };
+async function sendGif(url, peer) {
+  if (!dmPeer || dmPeer.id !== peer || sendGif.busy) return;
+  const reply = dmReply; sendGif.busy = true;
+  try {
+    const { data, error } = await sb.from('direct_messages').insert({ sender_id: uid, recipient_id: peer, body: GIF_TAG + url, reply_to_id: reply || null }).select().single();
+    if (error) return toast('GIF gagal dikirim: ' + error.message);
+    if (dmPeer?.id !== peer) return;
+    if (!dmMessages.some(x => x.id === data.id)) dmMessages.push(data);
+    dmReply = null; $('#gifPanel')?.classList.add('hidden'); renderDM();
+    const f = $('#dmFeed'); if (f) f.scrollTop = f.scrollHeight;
+  } finally { sendGif.busy = false }
+}
+H.gifDM = () => {
+  const p = $('#gifPanel'); if (!p || !dmPeer) return;
+  if (!p.classList.contains('hidden')) return p.classList.add('hidden');
+  p.innerHTML = `<button class="sm" onclick="H.gifFile()"><span class="ms">upload</span> GIF dari galeri</button>${GIPHY_KEY ? `<input class="inp" placeholder="Cari di GIPHY..." maxlength="50" autocomplete="off" oninput="H.gifSearch(this.value)" style="margin-top:8px"><div id="gifGrid"></div><p class="sub" style="margin:6px 0 0;font-size:11px">Powered by GIPHY</p>` : ''}`;
+  p.classList.remove('hidden');
+  if (GIPHY_KEY) loadGifs('');
+};
+H.gifSearch = q => { clearTimeout(H.gifSearch.t); H.gifSearch.t = setTimeout(() => loadGifs(q.trim()), 600) };
+const gifCache = new Map();
+async function loadGifs(q) {
+  const g = $('#gifGrid'); if (!g) return;
+  const seq = loadGifs.seq = (loadGifs.seq || 0) + 1;
+  try {
+    let list = gifCache.get(q);
+    if (!list) {
+      g.innerHTML = '<p class="empty-t">Memuat...</p>';
+      const r = await fetch(`https://api.giphy.com/v1/gifs/${q ? 'search' : 'trending'}?api_key=${encodeURIComponent(GIPHY_KEY)}&limit=24&rating=g${q ? '&q=' + encodeURIComponent(q) : ''}`);
+      if (!r.ok) throw new Error(r.status === 429 ? 'Batas pencarian GIF tercapai, coba lagi nanti.' : 'GIF tidak bisa dimuat.');
+      list = ((await r.json()).data || []).filter(x => /^[a-zA-Z0-9]+$/.test(x.id)).map(x => x.id);
+      gifCache.set(q, list);
+    }
+    if (seq !== loadGifs.seq || !g.isConnected) return;
+    g.innerHTML = list.map(id => `<img loading="lazy" alt="GIF" src="https://media.giphy.com/media/${id}/200w.gif" onclick="H.gifPick('${id}')">`).join('') || '<p class="empty-t">GIF tidak ditemukan.</p>';
+  } catch (e) { if (seq === loadGifs.seq && g.isConnected) g.innerHTML = `<p class="empty-t">${esc(e.message || 'GIF tidak bisa dimuat.')}</p>` }
+}
+H.gifPick = id => { if (dmPeer) sendGif(`https://media.giphy.com/media/${id}/200w.gif`, dmPeer.id) };
+/* File GIF diunggah apa adanya (tanpa canvas) supaya animasinya tidak hilang */
+H.gifFile = () => {
+  const peer = dmPeer?.id; if (!peer) return;
+  const i = document.createElement('input'); i.type = 'file'; i.accept = 'image/gif';
+  i.onchange = async () => {
+    const f = i.files?.[0]; if (!f) return;
+    if (f.type !== 'image/gif') return toast('Pilih file berformat GIF');
+    if (f.size > GIF_MAX_MB * 1048576) return toast(`GIF maksimal ${GIF_MAX_MB} MB`);
+    toast('Mengunggah GIF…');
+    try {
+      const path = `${uid}/gif-${Date.now()}.gif`;
+      const { error } = await sb.storage.from('media').upload(path, f, { contentType: 'image/gif' });
+      if (error) throw error;
+      await sendGif(sb.storage.from('media').getPublicUrl(path).data.publicUrl, peer);
+    } catch (e) { toast('Upload GIF gagal: ' + (e.message || e)) }
+  };
+  i.click();
+};
+/* ---------- Lihat foto profil ukuran penuh ---------- */
+function showPhoto(src, name) {
+  if (!src) return toast('Belum ada foto profil');
+  document.getElementById('avView')?.remove();
+  const o = document.createElement('div'); o.id = 'avView';
+  o.innerHTML = `<b>${esc(name || '')}</b><img src="${esc(src)}" alt="Foto profil"><button class="sm">Tutup</button>`;
+  o.onclick = e => { if (e.target.tagName !== 'IMG') o.remove() };
+  document.body.append(o);
+}
+H.viewMyPhoto = () => showPhoto(me?.avatar, me?.name);
+H.viewUserPhoto = () => showPhoto(viewU?.avatar, viewU?.name);
+document.addEventListener('click', e => {
+  const im = e.target.closest?.('.pf img.pav, .dmhead img:not(.bdimg)'); if (!im) return;
+  showPhoto(im.src, im.closest('.pf, .dmhead')?.querySelector('h2, h3')?.textContent);
+});
 H.forwardDM=async id=>{
   const m=dmMessages.find(x=>x.id===id);if(!m)return;
   const {data,error}=await sb.from('direct_messages').insert({sender_id:uid,recipient_id:dmPeer.id,body:m.body,forwarded_from_id:m.id}).select().single();
