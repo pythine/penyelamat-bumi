@@ -624,10 +624,90 @@ textarea.inp{resize:none;display:block}
 #ratePop .rl{min-height:20px;color:#ffd886;font-size:14px;margin-bottom:8px}
 #ratePop textarea{width:100%;resize:none}
 #ratePop .acts{display:flex;gap:8px;margin-top:12px}#ratePop .acts button{flex:1}
+
+/* ===== SVIP 12 MYTHIC (kemewahan & kekayaan) dan 13 LEGEND (kekuatan, kekayaan, keindahan, keanggunan) ===== */
+.svip.s12,.svip.s13{display:inline-flex;align-items:center;position:relative;font-weight:900;isolation:isolate}
+.svip.s12{gap:5px;padding:3px 10px;margin:0 6px 0 2px;border-radius:4px 12px;letter-spacing:.2em;border:1.5px solid #ffd76a;background:linear-gradient(135deg,#012d22,#0a7a52 48%,#012d22);box-shadow:0 0 0 1px #012d22,0 0 0 2px #ffd76a99,0 0 14px #35e6a0aa,inset 0 0 9px #fff1a877}
+.svip.s12 .gem{font-size:.75em;color:#8fffd0;text-shadow:0 0 7px #35e6a0;animation:gemTw 1.4s ease-in-out infinite}
+.svip.s12 .gem:last-child{animation-delay:.7s}
+.svip.s13{gap:0;padding:3px 7px;margin:0 10px 0 6px;border-radius:99px;letter-spacing:.22em;border:1.5px solid transparent;background:linear-gradient(135deg,#120a3a,#3b1d78 45%,#7a2a6e 70%,#120a3a) padding-box,linear-gradient(90deg,#fff,#ffd36e,#ff9fcf,#9fd0ff,#fff) border-box;box-shadow:0 0 12px #cfe0ffcc,0 0 26px #ff7ac888,0 0 40px #6a7bff66,inset 0 0 10px #ffffff66}
+.svip.s13::before{content:'\265B';position:absolute;left:50%;top:-.95em;transform:translateX(-50%);font-size:1em;line-height:1;color:#ffe08a;text-shadow:0 0 8px #fff,0 0 12px #ffb52b}
+.svip.s13 .wg{display:block;flex:none;width:3em;height:2em;margin:-.2em -.25em;background:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2060%2040'%3E%3Cdefs%3E%3ClinearGradient%20id='g'%20x1='0'%20y1='0'%20x2='1'%20y2='1'%3E%3Cstop%20offset='0'%20stop-color='%23fff'/%3E%3Cstop%20offset='.5'%20stop-color='%23cfe0ff'/%3E%3Cstop%20offset='1'%20stop-color='%23ff9fcf'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg%20fill='url(%23g)'%20stroke='%237a62c8'%20stroke-width='.7'%3E%3Cpath%20d='M58%2022C44%204%2024%200%202%204C16%2010%2030%2014%2044%2024Z'/%3E%3Cpath%20d='M58%2025C42%2014%2024%2012%206%2017C20%2020%2032%2024%2046%2029Z'/%3E%3Cpath%20d='M58%2028C44%2022%2028%2024%2014%2031C28%2030%2038%2031%2048%2033Z'/%3E%3Cpath%20d='M58%2031C48%2030%2036%2033%2028%2039C38%2037%2046%2037%2054%2036Z'/%3E%3C/g%3E%3C/svg%3E") center/contain no-repeat;transform-origin:100% 60%;animation:wingL 1.5s ease-in-out infinite;filter:drop-shadow(0 0 3px #bcd4ff)}
+.svip.s13 .wg.r{background-image:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2060%2040'%3E%3Cdefs%3E%3ClinearGradient%20id='g'%20x1='0'%20y1='0'%20x2='1'%20y2='1'%3E%3Cstop%20offset='0'%20stop-color='%23fff'/%3E%3Cstop%20offset='.5'%20stop-color='%23cfe0ff'/%3E%3Cstop%20offset='1'%20stop-color='%23ff9fcf'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg%20transform='matrix(-1%200%200%201%2060%200)'%20fill='url(%23g)'%20stroke='%237a62c8'%20stroke-width='.7'%3E%3Cpath%20d='M58%2022C44%204%2024%200%202%204C16%2010%2030%2014%2044%2024Z'/%3E%3Cpath%20d='M58%2025C42%2014%2024%2012%206%2017C20%2020%2032%2024%2046%2029Z'/%3E%3Cpath%20d='M58%2028C44%2022%2028%2024%2014%2031C28%2030%2038%2031%2048%2033Z'/%3E%3Cpath%20d='M58%2031C48%2030%2036%2033%2028%2039C38%2037%2046%2037%2054%2036Z'/%3E%3C/g%3E%3C/svg%3E");transform-origin:0 60%;animation-name:wingR}
+.svip.s12 span,.svip.s13 span{display:block;padding:.14em .22em;line-height:1.3;background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;text-shadow:none;animation:lxSheen 2.6s linear infinite}
+.svip.s12 span{background-image:linear-gradient(100deg,#e0a52c,#fff8d0 22%,#ffd76a 38%,#fff 50%,#ffd76a 64%,#fff8d0 80%,#e0a52c);filter:drop-shadow(0 0 3px #ffb52b)}
+.svip.s13 span{background-image:linear-gradient(100deg,#ffe6a0,#fff 20%,#ffb8dc 38%,#bfe0ff 55%,#fff 70%,#ffe6a0);filter:drop-shadow(0 0 4px #d9b8ff)}
+@keyframes gemTw{0%,100%{transform:scale(1) rotate(0)}50%{transform:scale(1.35) rotate(18deg)}}
+.nm .svip.s12,.nm .svip.s13{display:flex;width:max-content;max-width:100%;margin:0 auto 2px;font-size:7px}
+.nm2 .svip.s12,.nm2 .svip.s13{display:flex;margin:0;font-size:5.6px;padding:2px 4px;letter-spacing:.08em}
+.nm2 .svip.s13{padding:2px 3px;margin-top:4px}
+.bd-svip12{--bg:conic-gradient(transparent 0 64%,#fff 77%,transparent 89%),conic-gradient(#fff6c9,#d9a12f,#0fae6e,#04402c,#0fae6e,#d9a12f,#fff6c9);--glow:#35e6a0cc;--deco:'';--spd:2.4s}
+.bd-svip13{--bg:conic-gradient(transparent 0 60%,#fff 74%,transparent 88%),conic-gradient(#fff,#ffd36e,#ff8fc8,#8a6bff,#6fc8ff,#ffd36e,#fff);--glow:#d9b8ff;--deco:'';--spd:2s}
+.bdx-svip12{filter:drop-shadow(0 0 3px #35e6a0) drop-shadow(0 0 9px #d9a12faa)}
+.bdx-svip13{filter:drop-shadow(0 0 4px #e6d4ff) drop-shadow(0 0 11px #ff7ac8aa)}
+.bdx .tw13{transform-box:fill-box;transform-origin:center;animation:twk 1.6s ease-in-out infinite;fill:#fff}
+.bdx .halo{transform-origin:90px 80px;animation:av9spin 14s linear infinite}
+.ring.vip9.bd-svip13{animation:legendAura 2.4s ease-in-out infinite}
+.ring.vip9.bd-svip13.talk{animation:pulse .7s ease-in-out infinite}
+@keyframes legendAura{0%,100%{box-shadow:0 0 14px #d9b8ff,0 0 26px #ff7ac888}50%{box-shadow:0 0 22px #fff,0 0 40px #8a6bffcc}}
+
+/* ---- Entrance Mythic & Legend ---- */
+#entranceFX .ent12,#entranceFX .ent13{overflow:hidden}
+#entranceFX .ent12 .ent-bg{background:radial-gradient(circle at 50% 42%,#12a06acc,#043524ee 42%,#010b08f2 75%);animation:lxVeil var(--dur) ease both}
+#entranceFX .ent13 .ent-bg{background:radial-gradient(circle at 50% 38%,#6b4bd6e6,#2a1260f0 38%,#070316f7 76%);animation:lxVeil var(--dur) ease both}
+#entranceFX .ent12 .ent-rays,#entranceFX .ent13 .ent-rays{display:block;width:170vmax;height:170vmax;margin:-85vmax 0 0 -85vmax;-webkit-mask-image:radial-gradient(circle,#000,transparent 62%);mask-image:radial-gradient(circle,#000,transparent 62%);animation:lxSpin var(--dur) linear both}
+#entranceFX .ent12 .ent-rays{background:repeating-conic-gradient(#ffd76a66 0 4deg,transparent 4deg 14deg)}
+#entranceFX .ent13 .ent-rays{background:repeating-conic-gradient(#ffffff55 0 3deg,transparent 3deg 9deg,#ff9fcf44 9deg 12deg,transparent 12deg 20deg)}
+#entranceFX .ent12 .ent-burst,#entranceFX .ent13 .ent-burst{display:block;width:44vmin;height:44vmin;margin:-22vmin 0 0 -22vmin;border-radius:50%;border:3px solid var(--c1);box-shadow:0 0 34px var(--c1),inset 0 0 34px var(--c1);opacity:0;animation:entBurst 1.8s ease-out .6s 4 both}
+#entranceFX .ent12 .ent-move,#entranceFX .ent13 .ent-move{margin-bottom:24vh;animation:lxArrive var(--dur) cubic-bezier(.2,.8,.25,1) both}
+#entranceFX .ent12 .ent-art svg,#entranceFX .ent13 .ent-art svg,#entranceFX .ent12 .ent-art img,#entranceFX .ent13 .ent-art img{width:min(90vw,48vh,480px)}
+#entranceFX .ent13 .ent-art svg{width:min(98vw,52vh,540px);overflow:visible}
+#entranceFX .ent12 .ent-art{animation:glow12 1.4s ease-in-out infinite}
+#entranceFX .ent13 .ent-art{animation:glow13 1.8s ease-in-out infinite}
+#entranceFX .ent13 .wl{transform-box:fill-box;transform-origin:100% 60%;animation:wing11L 1.4s ease-in-out infinite}
+#entranceFX .ent13 .wr{transform-box:fill-box;transform-origin:0 60%;animation:wing11R 1.4s ease-in-out infinite}
+#entranceFX .lx-fall i{position:absolute;top:-8vh;left:var(--x);font-style:normal;font-size:var(--s);line-height:1;z-index:3;opacity:0;animation:lxFall var(--fd) linear var(--dl) infinite;filter:drop-shadow(0 0 6px var(--c1))}
+#entranceFX .lx-fall i.coin{width:var(--s);height:var(--s);border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff8d0,#ffc93c 45%,#a86a0a);border:2px solid #ffe89a}
+#entranceFX .lx-beams b{position:absolute;bottom:-10vh;width:16vw;height:120vh;transform-origin:50% 100%;background:linear-gradient(0deg,#ffffffaa,transparent 85%);filter:blur(10px);opacity:0;animation:lxBeam 3.2s ease-in-out infinite}
+#entranceFX .lx-beams b:nth-child(1){left:2vw;--r:24deg}
+#entranceFX .lx-beams b:nth-child(2){left:42vw;--r:0deg;animation-delay:.9s}
+#entranceFX .lx-beams b:nth-child(3){right:2vw;--r:-24deg;animation-delay:1.7s}
+#entranceFX .lx-frame{position:absolute;inset:10px;z-index:4;border-radius:22px;border:2px solid #ffd76a;box-shadow:0 0 22px #ffd76a99,inset 0 0 22px #ffd76a66;animation:lxVeil var(--dur) ease both}
+#entranceFX .lx-frame::before{content:'';position:absolute;inset:6px;border-radius:17px;border:1px solid #fff6c988}
+#entranceFX .ent13 .lx-frame{border-color:#e6d4ff;box-shadow:0 0 26px #ff9fcfcc,inset 0 0 30px #8a6bffaa}
+#entranceFX .ent12 .ent-label,#entranceFX .ent13 .ent-label{bottom:5%;z-index:5}
+.lx-ban{position:relative;margin:0 auto;width:min(92vw,390px);padding:44px 14px 12px;border-radius:20px;border:2px solid #ffd76a;background:linear-gradient(160deg,#04271c,#0b5a3d 50%,#021a12);box-shadow:0 0 30px #ffd76a88,inset 0 0 24px #35e6a055;overflow-wrap:anywhere}
+.lx-ban.l13{border:2px solid transparent;background:linear-gradient(160deg,#150b40,#3d1f74 48%,#5a1f5e 74%,#100830) padding-box,linear-gradient(120deg,#fff,#ffd36e,#ff9fcf,#9fd0ff,#fff) border-box;box-shadow:0 0 34px #d9b8ffaa,0 0 70px #ff7ac855,inset 0 0 26px #ffffff33}
+.lx-ban .lx-av{position:absolute;left:50%;top:-38px;transform:translateX(-50%)}
+.lx-ban .svip.big{margin:4px 0 6px}
+.lx-ban .lx-name{display:block;font-size:20px;font-weight:900;color:#fff;text-shadow:0 0 12px var(--c1)}
+.lx-ban small{display:block;margin-top:4px;font-size:10px!important;letter-spacing:3px;color:var(--c1)}
+@keyframes lxVeil{0%{opacity:0}10%,86%{opacity:1}100%{opacity:0}}
+@keyframes lxSpin{0%{transform:rotate(0);opacity:0}14%,84%{opacity:.5}100%{transform:rotate(100deg);opacity:0}}
+@keyframes lxArrive{0%{opacity:0;transform:scale(.2) translateY(30vh);filter:blur(14px)}18%{opacity:1;transform:scale(1.14) translateY(0);filter:blur(0)}28%{transform:scale(1);filter:blur(0)}84%{opacity:1;transform:scale(1.05);filter:blur(0)}100%{opacity:0;transform:scale(1.35);filter:blur(8px)}}
+@keyframes lxFall{0%{opacity:0;transform:translateY(0) rotate(0)}10%,85%{opacity:1}100%{opacity:0;transform:translateY(112vh) rotate(540deg)}}
+@keyframes lxBeam{0%,100%{opacity:0;transform:rotate(var(--r)) scaleX(.5)}50%{opacity:.55;transform:rotate(calc(var(--r) * -.4)) scaleX(1)}}
+@keyframes glow12{0%,100%{filter:drop-shadow(0 0 16px #35e6a0) drop-shadow(0 0 44px #d9a12f)}50%{filter:drop-shadow(0 0 30px #fff6c9) drop-shadow(0 0 80px #35e6a0)}}
+@keyframes glow13{0%,100%{filter:drop-shadow(0 0 18px #e6d4ff) drop-shadow(0 0 48px #8a6bff)}50%{filter:drop-shadow(0 0 30px #fff) drop-shadow(0 0 90px #ff7ac8)}}
+
+.pf>.av9w.bd-svip12,.pf>.av9w.bd-svip13{margin:38px 0 18px}
+/* Popup naik Mythic / Legend */
+#svipPop .svip-card.p12{border-color:#ffd76a;background:radial-gradient(circle at 50% 0%,#0d7a52,#04271c 58%,#010d09)}
+#svipPop .svip-card.p13{border:2px solid transparent;background:radial-gradient(circle at 50% 0%,#6b3fc0,#23104f 56%,#0a0420) padding-box,linear-gradient(120deg,#fff,#ffd36e,#ff9fcf,#9fd0ff,#fff) border-box}
+
+/* Kartu masa berlaku gelar */
+.tcard{margin:8px auto;width:min(100%,340px);padding:10px 12px;border-radius:14px;background:#ffffff0d;border:1px solid #ffd36e55;font-size:12px;color:#e9cf9d}
+.tcard b{color:#fff1c2}.tcard.warn{border-color:#ff6a6a;box-shadow:0 0 12px #ff6a6a55}
+.tcard .prog{width:100%}.tcard .sm{margin-top:4px}
+@media (prefers-reduced-motion:reduce){.svip.s12 span,.svip.s13 span,.svip.s12 .gem,.svip.s13 .wg,.ring.vip9.bd-svip13,#entranceFX .lx-beams b,#entranceFX .lx-fall i{animation:none}}
 </style>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<linearGradient id="gEmer" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c8ffe6"/><stop offset=".5" stop-color="#17c481"/><stop offset="1" stop-color="#04503a"/></linearGradient>
+<linearGradient id="gPlat" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".5" stop-color="#cfdcff"/><stop offset="1" stop-color="#9a8ad8"/></linearGradient>
+<linearGradient id="gRose" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe3f0"/><stop offset=".5" stop-color="#ff8fc4"/><stop offset="1" stop-color="#b8347a"/></linearGradient>
+<linearGradient id="gSaph" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d8ecff"/><stop offset=".5" stop-color="#5a9bff"/><stop offset="1" stop-color="#2a2f9a"/></linearGradient>
 <linearGradient id="gGold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6c9"/><stop offset=".5" stop-color="#ffc247"/><stop offset="1" stop-color="#b8802a"/></linearGradient>
 <linearGradient id="gFire" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3a0"/><stop offset=".45" stop-color="#ff8a1f"/><stop offset="1" stop-color="#c41500"/></linearGradient>
 <linearGradient id="gFlame" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffffff"/><stop offset=".35" stop-color="#ffe45c"/><stop offset=".7" stop-color="#ff6a1f"/><stop offset="1" stop-color="#d11f00" stop-opacity=".25"/></linearGradient>
@@ -789,20 +869,28 @@ const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;
 const hash = id => [...id].reduce((a, c) => a + c.charCodeAt(0), 0);
 const ago = t => { const s = (Date.now() - new Date(t)) / 1000; return s < 60 ? 'baru saja' : s < 3600 ? Math.floor(s / 60) + ' mnt lalu' : s < 86400 ? Math.floor(s / 3600) + ' jam lalu' : new Date(t).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }) };
 /* Gelar SVIP dihitung dari poin hadiah yang DITERIMA. Ambang bisa diubah. */
-const SVIP = [100, 500, 1500, 3500, 7000, 15000, 30000, 60000, 100000, 250000, 600000]; /* SVIP 1..9, lalu 10 = EKSKLUSIF, 11 = SULTAN (angka bisa diubah) */
-const TIER_NAME = { 10: 'EKSKLUSIF', 11: 'SULTAN' };
+const SVIP = [100, 500, 1500, 3500, 7000, 15000, 30000, 60000, 100000, 250000, 600000, 1500000, 4000000]; /* SVIP 1..9, 10 = EKSKLUSIF, 11 = SULTAN, 12 = MYTHIC, 13 = LEGEND */
+const TIER_NAME = { 10: 'EKSKLUSIF', 11: 'SULTAN', 12: 'MYTHIC', 13: 'LEGEND' };
+const MAX_LV = 13;
+/* Masa berlaku gelar. Nilai di sini hanya cadangan: angka resmi dibaca dari tabel title_rules (title_migration.sql). */
+const TITLE_DAYS = 30;
+const RENEW_COST = [50, 200, 500, 1000, 2000, 4000, 7000, 12000, 20000, 40000, 80000, 150000, 300000];
+let HAS_TITLE = false, lastTitle = null;
+const TC = () => HAS_TITLE ? ',title_expires_at,title_renew' : '';
 const tierName = l => TIER_NAME[l] || `SVIP ${l}`;
 const lvl = n => SVIP.reduce((l, t, i) => (n || 0) >= t ? i + 1 : l, 0);
-/* Banner gelar. 10 = Eksklusif (emas-ungu berkilau), 11 = Sultan (sayap emas kiri-kanan, tulisan mengkilap) */
+/* Banner gelar. 10 = Eksklusif, 11 = Sultan, 12 = Mythic (zamrud-emas bertabur permata), 13 = Legend (platinum, bersayap, bermahkota) */
 const badgeOf = (l, big) => { const b = big ? ' big' : '';
-  return l >= 11 ? `<i class="svip s11${b}"><b class="wg"></b><span>SULTAN</span><b class="wg r"></b></i>`
+  return l >= 13 ? `<i class="svip s13${b}"><b class="wg"></b><span>LEGEND</span><b class="wg r"></b></i>`
+    : l === 12 ? `<i class="svip s12${b}"><b class="gem">◆</b><span>MYTHIC</span><b class="gem">◆</b></i>`
+    : l === 11 ? `<i class="svip s11${b}"><b class="wg"></b><span>SULTAN</span><b class="wg r"></b></i>`
     : l === 10 ? `<i class="svip s10${b}"><span>EKSKLUSIF</span></i>`
     : l ? `<i class="svip s${l}${b}">SVIP ${l}</i>` : '' };
 const badge = n => badgeOf(lvl(n));
 const isV9 = p => lvl(p) >= 9;
 /* Avatar: SVIP 9 mendapat border eksklusif (pembungkus .av9w) */
 /* Border aktif: pilihan koleksi (jika valid) > bawaan SVIP 9 > tidak ada */
-const bdOf = (points, border, host) => (BORDERS.some(b => b.id === border) || (host && HOST_BORDERS.some(b => b.id === border))) ? border : host ? 'host' : (lvl(points) >= 11 ? 'svip11' : lvl(points) >= 10 ? 'svip10' : lvl(points) >= 9 ? 'svip9' : '');
+const bdOf = (points, border, host) => (BORDERS.some(b => b.id === border) || (host && HOST_BORDERS.some(b => b.id === border))) ? border : host ? 'host' : lvl(points) >= 9 ? 'svip' + lvl(points) : '';
 const ringBd = (points, border, host) => { const x = bdOf(points, border, host); return x ? ` vip9 bd-${x}` : '' };
 /* Ilustrasi border eksklusif (SVG inline, beranimasi lewat CSS). Kotak 180x154: cincin avatar = pusat (90,80), jari-jari 50 */
 const BD_ART = (() => {
@@ -815,7 +903,22 @@ const BD_ART = (() => {
   const em = [[60,24,0],[120,26,.6],[90,16,1.1],[28,54,.3],[152,56,.9]].map(p => `<circle class="em" cx="${p[0]}" cy="${p[1]}" r="1.5" style="animation-delay:${p[2]}s"/>`).join('');
   const moon = 'M7.333-11.925A14 14 0 1 0 7.333 11.925A12 12 0 1 1 7.333-11.925Z';
   const st = [[34,26,0],[146,26,.7],[14,52,1.1],[166,52,.4],[90,14,.9]].map(p => `<path class="st" d="M0-4L1-1 4 0 1 1 0 4-1 1-4 0-1-1Z" transform="translate(${p[0]} ${p[1]})" style="animation-delay:${p[2]}s"/>`).join('');
+  const gem = (x, y, k, fill) => `<g transform="translate(${x} ${y}) scale(${k})"><path d="M-6-5L6-5 10 0 0 11-10 0Z" fill="url(#${fill})" stroke="#fff" stroke-width=".8"/><path d="M-10 0H10M-6-5L-3 0 0 11 3 0 6-5" fill="none" stroke="#fff" stroke-width=".5" opacity=".8"/></g>`;
+  const crown = (y, k, jewel) => `<g transform="translate(90 ${y}) scale(${k})"><path d="M-24 10L-28-14-13-3 0-20 13-3 28-14 24 10Z" fill="url(#gGold)" stroke="#fff" stroke-width=".8"/><rect x="-24" y="10" width="48" height="6" rx="2" fill="url(#gGold)" stroke="#8a5a12" stroke-width=".5"/><circle cx="-28" cy="-14" r="3" fill="#fff6c9"/><circle cx="0" cy="-20" r="3.6" fill="#fff6c9"/><circle cx="28" cy="-14" r="3" fill="#fff6c9"/>${gem(0, 0, .55, jewel)}</g>`;
+  const glint = list => list.map((p, i) => `<path class="tw13" d="M0-6L1.4-1.4 6 0 1.4 1.4 0 6-1.4 1.4-6 0-1.4-1.4Z" transform="translate(${p[0]} ${p[1]})" style="animation-delay:${i * .3}s"/>`).join('');
+  const coins = (x, y) => [0, 1, 2].map(i => `<ellipse cx="${x}" cy="${y - i * 4}" rx="11" ry="4.2" fill="url(#gGold)" stroke="#8a5a12" stroke-width=".7"/>`).join('');
+  const mythicBd = `<circle class="halo" cx="90" cy="80" r="55" fill="none" stroke="url(#gGold)" stroke-width="3" stroke-dasharray="2 7" stroke-linecap="round"/>
+    ${gem(36, 80, 1, 'gEmer')}${gem(144, 80, 1, 'gEmer')}${gem(48, 45, .7, 'gEmer')}${gem(132, 45, .7, 'gEmer')}${coins(50, 130)}${coins(130, 130)}${gem(90, 132, 1.5, 'gEmer')}${crown(24, .95, 'gEmer')}${glint([[20, 50], [162, 56], [64, 14], [118, 12], [112, 144]])}`;
+  const lw = `<g class="wg">${F.map(x => `<path d="M0 0C-8-5-30-8-44-1C-32 4-14 6 0 0Z" fill="url(#gPlat)" stroke="#8a74d0" stroke-width=".6" transform="translate(46 78) rotate(${x[0]}) scale(${x[1] * 1.35})"/>`).join('')}${I.map(x => `<path d="M0 0C-8-5-30-8-44-1C-32 4-14 6 0 0Z" fill="url(#gRose)" stroke="#fff" stroke-width=".4" transform="translate(46 78) rotate(${x[0]}) scale(${x[1] * 1.1})"/>`).join('')}</g>`;
+  const laurel = [[44, 108, 40], [50, 119, 55], [59, 128, 70], [70, 134, 82]].map(p => `<path d="M0 0C-4-8-12-9-17-5C-12 1-5 3 0 0Z" fill="url(#gGold)" stroke="#8a5a12" stroke-width=".4" transform="translate(${p[0]} ${p[1]}) rotate(${p[2] - 40})"/>`).join('');
+  const rose = (x, y) => `<g transform="translate(${x} ${y})">${[0, 72, 144, 216, 288].map(a => `<ellipse cx="0" cy="-5" rx="4.4" ry="5.6" fill="url(#gRose)" stroke="#fff" stroke-width=".4" transform="rotate(${a})"/>`).join('')}<circle r="3" fill="#ffe08a"/></g>`;
+  const legendBd = `${lw}<g transform="translate(180 0) scale(-1 1)">${lw}</g>
+    <circle class="halo" cx="90" cy="80" r="54" fill="none" stroke="url(#gPlat)" stroke-width="2.4" stroke-dasharray="14 4 2 4"/>
+    ${laurel}<g transform="translate(180 0) scale(-1 1)">${laurel}</g>${rose(46, 122)}${rose(134, 122)}${gem(90, 133, 1.7, 'gSaph')}${crown(20, 1.15, 'gSaph')}${glint([[14, 28], [166, 28], [60, 8], [122, 6], [24, 128], [158, 128]])}`;
+  const wrapBd = b => `<svg viewBox="0 0 180 154" aria-hidden="true">${b}</svg>`;
   return {
+    svip12: wrapBd(mythicBd),
+    svip13: wrapBd(legendBd),
     sayap: `<svg viewBox="0 0 180 154" aria-hidden="true">${wing}<g transform="translate(180 0) scale(-1 1)">${wing}</g>${tw}</svg>`,
     nagaapi: `<svg viewBox="0 0 180 154" aria-hidden="true">${dragon}<g transform="translate(180 0) scale(-1 1)">${dragon}</g>${em}</svg>`,
     malam: `<svg viewBox="0 0 180 154" aria-hidden="true">${st}<g transform="translate(24 78) scale(1.15)"><g class="mn"><path class="mo" d="${moon}"/></g></g><g transform="translate(156 78) scale(-1.15 1.15)"><g class="mn m2"><path class="mo" d="${moon}"/></g></g><g transform="translate(90 142)"><g class="dm"><path class="dmf" d="M-8-10L8-10 14-2 0 12-14-2Z"/><path class="dml" d="M-14-2L14-2M-8-10L-4-2 0 12M8-10L4-2 0 12M-4-2L0-10 4-2"/><path class="dsp" d="M9-9L10-6 13-5 10-4 9-1 8-4 5-5 8-6Z"/></g></g></svg>`
@@ -894,7 +997,7 @@ async function syncPoints() {
       const nl = lvl(x.points);
       if (nl > lvl(old)) {
         showSvipPopup(x.name || (isMe ? me.name : 'Anggota'), nl, isMe);
-        if (isMe) pushNotif({ key: 'lv:' + nl, type: 'level', icon: '⭐', title: 'Selamat! 🎉', text: `Kamu naik ke ${tierName(nl)}`, tab: 'me', act: { k: 'tab', t: 'me' } });
+        if (isMe) pushNotif({ key: 'lv:' + nl + ':' + new Date().toDateString(), type: 'level', icon: '⭐', title: 'Selamat! 🎉', text: `Kamu naik ke ${tierName(nl)}`, tab: 'me', act: { k: 'tab', t: 'me' } });
       }
     });
     if (changed) { renderSeats(); renderTop() }
@@ -902,10 +1005,57 @@ async function syncPoints() {
   } finally { ptsBusy = false }
 }
 function repaintMine() { renderProf(); renderSeats(); renderTop(); repaintAvatars(uid) }
-function titleHTML(n) {
+function titleHTML(n, p, mine) {
   n = n || 0; const l = lvl(n), next = SVIP[l], base = SVIP[l - 1] || 0;
-  return `<div class="ttl">${badge(n) || '<span class="chip">Belum ada gelar</span>'} <small>${n} poin hadiah${next ? ` · ${next - n} poin lagi ke ${tierName(l + 1)}` : ' · gelar tertinggi 👑'}</small></div>`
-    + (next ? `<div class="prog"><i style="width:${Math.min(100, (n - base) / (next - base) * 100)}%"></i></div>` : '');
+  return `<div class="ttl">${badge(n) || '<span class="chip">Belum ada gelar</span>'} <small>${kfmt(n)} poin hadiah${next ? ` · ${kfmt(next - n)} poin lagi ke ${tierName(l + 1)}` : ' · gelar tertinggi 👑'}</small></div>`
+    + (next ? `<div class="prog"><i style="width:${Math.min(100, (n - base) / (next - base) * 100)}%"></i></div>` : '')
+    + termHTML(l, p, mine);
+}
+/* Kartu masa berlaku: sisa hari, dan (untuk diri sendiri) progres hadiah untuk perpanjang */
+function termHTML(l, p, mine) {
+  if (!l) return '';
+  if (!HAS_TITLE) return mine && me?.is_host ? '<p class="sub">Masa berlaku gelar belum aktif. Jalankan title_migration.sql di Supabase.</p>' : '';
+  const end = Date.parse(p?.title_expires_at || ''); if (!end) return '';
+  const left = end - Date.now(), days = Math.ceil(left / 864e5), warn = left < 3 * 864e5;
+  const date = new Date(end).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+  const cost = RENEW_COST[l - 1], got = Math.min(cost, Number(p.title_renew || 0));
+  return `<div class="tcard${warn ? ' warn' : ''}">⏳ Berlaku <b>${left <= 0 ? 'habis' : left < 864e5 ? 'kurang dari 1 hari' : days + ' hari lagi'}</b> (sampai ${date})`
+    + (mine ? `<div class="prog"><i style="width:${got / cost * 100}%"></i></div>Perpanjang +${TITLE_DAYS} hari: kirim hadiah <b>${kfmt(got)} / ${kfmt(cost)}</b> koin<br><button class="sm" onclick="H.renewTitle()">🎁 Beri hadiah</button>` : '') + '</div>';
+}
+/* Angka level & biaya perpanjang diambil dari server supaya aplikasi dan database selalu sama */
+async function loadTitleRules() {
+  const { data, error } = await sb.from('title_rules').select('level,min_points,renew_cost');
+  HAS_TITLE = !error && !!data?.length;
+  if (!HAS_TITLE) return;
+  data.forEach(r => { if (r.level >= 1 && r.level <= MAX_LV) { SVIP[r.level - 1] = Number(r.min_points); RENEW_COST[r.level - 1] = Number(r.renew_cost) } });
+}
+/* Reset gelar yang habis (dikerjakan server), lalu ambil status gelarku */
+async function syncTitle() {
+  if (!HAS_TITLE || !me || syncTitle.busy) return; syncTitle.busy = true;
+  try {
+    const r = await sb.rpc('expire_titles'); if (r.error) console.warn('expire_titles:', r.error.message);
+    const { data } = await sb.from('profiles').select('points,title_expires_at,title_renew').eq('id', uid).maybeSingle();
+    if (!data || (data.points === me.points && data.title_expires_at === me.title_expires_at && data.title_renew === me.title_renew)) return;
+    const changed = data.points !== me.points;
+    me = { ...me, ...data }; prof[uid] = { ...prof[uid], ...data };
+    if (changed) { repaintMine(); room?.track(presence()) } else renderProf();
+  } finally { syncTitle.busy = false }
+}
+function titleEnded() {
+  toast('Masa gelarmu sudah habis, gelar direset');
+  pushNotif({ key: 'texp:' + Date.now(), type: 'level', icon: '⌛', title: 'Gelar berakhir', text: 'Masa berlaku habis. Terima hadiah lagi untuk meraih gelar.', tab: 'me', act: { k: 'tab', t: 'me' } });
+}
+/* Dipanggil setiap profil digambar: deteksi gelar berakhir, diperpanjang, atau hampir habis */
+function noteTitle() {
+  if (!HAS_TITLE || !me) return;
+  const now = { l: lvl(me.points), end: Date.parse(me.title_expires_at || '') || 0 }, old = lastTitle; lastTitle = now;
+  if (old?.l && !now.l) return titleEnded();
+  if (old && now.l && now.l === old.l && old.end && now.end > old.end + 36e5) {
+    toast(`Gelar ${tierName(now.l)} diperpanjang ✅`);
+    pushNotif({ key: 'tren:' + now.end, type: 'level', icon: '🎉', title: 'Gelar diperpanjang', text: `${tierName(now.l)} bertambah ${TITLE_DAYS} hari`, tab: 'me', act: { k: 'tab', t: 'me' } });
+  }
+  if (now.l && now.end > Date.now() && now.end - Date.now() < 3 * 864e5)
+    pushNotif({ key: 'tsoon:' + now.end, type: 'level', icon: '⏳', title: 'Gelar hampir habis', text: `${tierName(now.l)} berakhir kurang dari 3 hari. Beri hadiah untuk memperpanjang.`, tab: 'me', act: { k: 'tab', t: 'me' } });
 }
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 /* Simpan token login agar kursi bisa dihapus saat tab ditutup (fetch keepalive tetap jalan walau halaman sudah hilang) */
@@ -916,6 +1066,12 @@ function freeMySeatNow() {
   try { fetch(`${SUPABASE_URL}/rest/v1/seats?user_id=eq.${encodeURIComponent(uid)}`, { method: 'DELETE', keepalive: true, headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${authToken || SUPABASE_KEY}` } }).catch(() => {}) } catch {}
 }
 const H = window.H = {};
+H.renewTitle = () => {
+  const l = lvl(me.points); if (!l) return;
+  const need = Math.max(0, RENEW_COST[l - 1] - Number(me.title_renew || 0));
+  if (inRm) { H.gift(); return toast(`Kirim hadiah senilai ${kfmt(need)} koin lagi untuk +${TITLE_DAYS} hari`) }
+  sheet(`<h3>Perpanjang Gelar ${tierName(l)}</h3><p class="sub">Kirim hadiah ke anggota lain senilai <b>${kfmt(need)}</b> koin lagi, lalu gelarmu bertambah ${TITLE_DAYS} hari. Masuk ke room, atau buka profil teman lalu ketuk "Kirim Gift".</p><button class="btn" onclick="H.close();H.tab('room')">Masuk Room</button>`);
+};
 let HAS_ROOMS = false, RID = null, inRm = false, curRoom = null; /* HAS_ROOMS: tabel rooms ada; RID: id room aktif; inRm: sedang berada di sebuah room */
 const ridp = () => RID ? { room_id: RID } : {};
 const rmErr = e => { const m = e?.message || String(e); return (e?.code === 'PGRST202' || /Could not find the function|schema cache|does not exist/i.test(m)) ? 'Fitur room belum aktif di server. Jalankan rooms_migration.sql di Supabase SQL Editor.' : m };
@@ -974,7 +1130,7 @@ function showFx(g, who, to, giftIndex) {
   clearTimeout(showFx.t); showFx.t = setTimeout(() => { $('#fx').innerHTML = ''; showFx.until = 0 }, hasVid ? 12000 : gd * 1000 + 500);
   const player = $('#fx video'); if (player) player.play().catch(() => {});
 }
-H.hideGiftFx = () => { clearTimeout(showFx.t); $('#fx').innerHTML = ''; };
+H.hideGiftFx = () => { clearTimeout(showFx.t); $('#fx').innerHTML = ''; showFx.until = 0; };
 /* Entrance SVIP 5-9: gambar (bukan emoji). Bawaan = ilustrasi SVG orisinal yang warnanya mengikuti tiap level.
    Isi `img` dengan URL gambar/GIF/WebP transparan milikmu untuk mengganti ilustrasi level itu. */
 const ENTRANCE = {
@@ -984,7 +1140,9 @@ const ENTRANCE = {
   8: { img: '', t: 'THUNDER DRAGON', c1: '#7fd6ff', c2: '#2b6dff', dur: 4.6 },
   9: { img: '', t: 'IMPERIAL CELESTIAL DRAGON', c1: '#fff1a8', c2: '#ff8a00', dur: 5.6 },
   10: { img: '', t: 'EXCLUSIVE ROYAL CROWN', c1: '#e6c8ff', c2: '#7a2fe0', dur: 6 },
-  11: { img: '', t: 'SULTAN · WINGS OF GOLD', c1: '#ffe27a', c2: '#e0162f', dur: 7 }};
+  11: { img: '', t: 'SULTAN · WINGS OF GOLD', c1: '#ffe27a', c2: '#e0162f', dur: 7 },
+  12: { img: '', t: 'MYTHIC · THE ROYAL TREASURY', c1: '#ffe08a', c2: '#0fae6e', dur: 8.5 },
+  13: { img: '', t: 'LEGEND · ETERNAL MAJESTY', c1: '#f1e4ff', c2: '#8a5cff', dur: 10.5 }};
 const SVG_DEFS = '<defs><linearGradient id="eg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset=".45" style="stop-color:var(--c1)"/><stop offset="1" style="stop-color:var(--c2)"/></linearGradient><linearGradient id="eg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--c1)"/><stop offset="1" style="stop-color:var(--c2)"/></linearGradient><linearGradient id="egm" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ff7ab8"/><stop offset=".5" stop-color="#a259ff"/><stop offset="1" stop-color="#3fb4ff"/></linearGradient></defs>';
 const svgWrap = b => `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">${SVG_DEFS}${b}</svg>`;
 function phoenixSVG() {
@@ -1046,7 +1204,30 @@ function sultanSVG() {
     <g class="wl">${wing}</g><g class="wr"><g transform="matrix(-1 0 0 1 200 0)">${wing}</g></g>
     <g transform="translate(100 104) scale(.62) translate(-100 -109)">${crownG()}</g>${SPARKS}`);
 }
-const ART = { 5: phoenixSVG, 6: () => dragonSVG(), 7: unicornSVG, 8: () => dragonSVG({ wings: 1, bolts: 1 }), 9: () => dragonSVG({ wings: 1, crown: 1, halo: 1 }), 10: exclusiveSVG, 11: sultanSVG };
+/* 12 Mythic: mahkota zamrud di atas gunungan harta */
+function mythicSVG() {
+  const gem = (x, y, k) => `<g transform="translate(${x} ${y}) scale(${k})"><path d="M-8-7L8-7 14 0 0 15-14 0Z" fill="url(#egm12)" stroke="#fff" stroke-width="1"/><path d="M-14 0H14M-8-7L-4 0 0 15 4 0 8-7" fill="none" stroke="#fff" stroke-width=".7" opacity=".85"/></g>`;
+  const pile = [[46,182],[68,186],[90,184],[112,187],[134,183],[156,185],[58,175],[80,176],[102,174],[124,176],[146,174],[70,166],[134,165]]
+    .map(p => `<ellipse cx="${p[0]}" cy="${p[1]}" rx="13" ry="6" fill="url(#egw)" stroke="#8a5a12" stroke-width="1"/>`).join('');
+  return svgWrap(`${GOLD_DEFS}<defs><linearGradient id="egm12" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d4ffec"/><stop offset=".5" stop-color="#17c481"/><stop offset="1" stop-color="#04503a"/></linearGradient></defs>
+    <circle cx="100" cy="102" r="96" fill="none" stroke="#ffd76a" stroke-width="2.5" stroke-dasharray="2 8" stroke-linecap="round"/><circle cx="100" cy="102" r="84" fill="none" stroke="#35e6a0" stroke-opacity=".7" stroke-width="1.5"/>
+    <g transform="translate(100 96) scale(.92) translate(-100 -109)">${crownG()}</g>
+    ${pile}${gem(100,158,1.5)}${gem(52,160,.9)}${gem(150,158,.9)}${gem(100,28,1.1)}${gem(20,92,.8)}${gem(180,92,.8)}${SPARKS}`);
+}
+/* 13 Legend: sayap agung platinum, mahkota, karangan daun kemenangan, mawar, dan berlian safir */
+function legendSVG() {
+  const feather = (set, fill, k) => set.map(d => `<path d="${d}" fill="url(#${fill})" stroke="#fff" stroke-opacity=".8" stroke-width=".8" transform="translate(92 110) scale(${k}) translate(-92 -110)"/>`).join('');
+  const wing = feather(WING_F, 'lgp', 1.2) + feather(WING_F, 'lgr', .78);
+  const laurel = [[50,142,5],[56,156,20],[66,168,36],[79,177,54],[93,181,70]].map(p => `<path d="M0 0C-5-11-17-13-25-7C-17 1-7 4 0 0Z" fill="url(#egw)" stroke="#8a5a12" stroke-width=".5" transform="translate(${p[0]} ${p[1]}) rotate(${p[2]})"/>`).join('');
+  const rose = (x, y, k) => `<g transform="translate(${x} ${y}) scale(${k})">${[0,72,144,216,288].map(a => `<ellipse cx="0" cy="-8" rx="7" ry="9" fill="url(#lgr)" stroke="#fff" stroke-width=".7" transform="rotate(${a})"/>`).join('')}<circle r="5" fill="#ffe08a"/></g>`;
+  return svgWrap(`${GOLD_DEFS}<defs><linearGradient id="lgp" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset=".55" stop-color="#d4defd"/><stop offset="1" stop-color="#8f7ad8"/></linearGradient><linearGradient id="lgr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe6f2"/><stop offset=".5" stop-color="#ff8fc4"/><stop offset="1" stop-color="#a8347f"/></linearGradient><linearGradient id="lgs" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e4f2ff"/><stop offset=".5" stop-color="#5a9bff"/><stop offset="1" stop-color="#2a1f8a"/></linearGradient></defs>
+    <circle cx="100" cy="104" r="98" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="1" stroke-dasharray="1 6"/><circle cx="100" cy="104" r="62" fill="none" stroke="url(#egw)" stroke-width="2.5"/>
+    <g class="wl">${wing}</g><g class="wr"><g transform="matrix(-1 0 0 1 200 0)">${wing}</g></g>
+    ${laurel}<g transform="matrix(-1 0 0 1 200 0)">${laurel}</g>
+    <path d="M100 76L128 104 100 162 72 104Z" fill="url(#lgs)" stroke="#fff" stroke-width="1.6"/><path d="M72 104H128M100 76L87 104 100 162 113 104Z" fill="none" stroke="#fff" stroke-width=".9" opacity=".85"/>
+    <g transform="translate(100 44) scale(.5) translate(-100 -109)">${crownG()}</g>${rose(62,160,.9)}${rose(138,160,.9)}${rose(100,182,1.15)}${SPARKS}`);
+}
+const ART = { 12: mythicSVG, 13: legendSVG, 5: phoenixSVG, 6: () => dragonSVG(), 7: unicornSVG, 8: () => dragonSVG({ wings: 1, bolts: 1 }), 9: () => dragonSVG({ wings: 1, crown: 1, halo: 1 }), 10: exclusiveSVG, 11: sultanSVG };
 const artHTML = lv => ENTRANCE[lv].img ? `<img src="${ENTRANCE[lv].img}" alt="">` : ART[lv]();
 const entQueue = []; let entBusy = false, entResolve = null, entLoadedAt = 0; const entSeen = {};
 function hideEntranceFx() {
@@ -1058,33 +1239,49 @@ function hideEntranceFx() {
 H.entVideoFail = () => {
   const cur = $('#entranceFX .ent'), w = cur?.querySelector('.ent-video-wrap'); if (!w) return;
   const lv = Number(cur.dataset.lv);
-  w.outerHTML = `<div class="ent-move"><div class="ent-art">${artHTML(lv)}</div></div>`;
+  w.outerHTML = entLayers(lv) + `<div class="ent-move"><div class="ent-art">${artHTML(lv)}</div></div>`;
   const lab = cur.querySelector('.ent-label small'); if (lab) lab.textContent = ENTRANCE[lv].t;
   clearTimeout(playEntrance.t); playEntrance.t = setTimeout(hideEntranceFx, ENTRANCE[lv].dur * 1000);
 };
 /* Entrance masuk antrean: beberapa SVIP yang masuk bersamaan tampil bergantian, tidak saling menimpa */
-function showEntranceFx(name, level) {
-  entQueue.push({ name, level }); if (entQueue.length > 5) entQueue.shift();
+function showEntranceFx(name, level, avatarUrl) {
+  entQueue.push({ name, level, avatarUrl }); if (entQueue.length > 5) entQueue.shift();
   pumpEntrance();
 }
 async function pumpEntrance() {
   if (entBusy) return; entBusy = true;
-  try { while (entQueue.length) { const x = entQueue.shift(); await playEntrance(x.name, x.level); } }
+  try { while (entQueue.length) { const x = entQueue.shift(); await playEntrance(x.name, x.level, x.avatarUrl); } }
   finally { entBusy = false; }
 }
-async function playEntrance(name, level) {
-  const lv = Math.min(11, Math.max(5, Number(level) || 5)), v = ENTRANCE[lv];
+/* Lapisan latar entrance. Mythic menambah hujan koin & permata; Legend menambah pilar cahaya, kelopak, dan berlian. */
+function entLayers(lv) {
+  const sp = Array.from({ length: 18 }, () => { const a = Math.random() * 6.283, r = 22 + Math.random() * 40;
+    return `<i style="--tx:${Math.round(Math.cos(a) * r)}vmin;--ty:${Math.round(Math.sin(a) * r)}vmin;--dl:${(Math.random() * 2).toFixed(2)}s"></i>` }).join('');
+  let extra = '';
+  if (lv >= 12) {
+    const set = lv === 13 ? ['🌸', '💎', '✨', '✨', '🌹'] : ['coin', 'coin', '💎', '✨'];
+    const fall = Array.from({ length: lv === 13 ? 34 : 30 }, (_, i) => { const x = set[i % set.length];
+      return `<i${x === 'coin' ? ' class="coin"' : ''} style="--x:${Math.round(Math.random() * 94)}vw;--s:${Math.round(14 + Math.random() * 16)}px;--fd:${(2.6 + Math.random() * 2).toFixed(2)}s;--dl:${(Math.random() * 3).toFixed(2)}s">${x === 'coin' ? '' : x}</i>` }).join('');
+    extra = `${lv === 13 ? '<div class="lx-beams"><b></b><b></b><b></b></div>' : ''}<div class="lx-fall">${fall}</div><div class="lx-frame"></div>`;
+  }
+  return `<div class="ent-bg"></div><div class="ent-rays"></div><div class="ent-burst"></div><div class="ent-sparks">${sp}</div>${extra}`;
+}
+async function playEntrance(name, level, avatarUrl) {
+  const lv = Math.min(MAX_LV, Math.max(5, Number(level) || 5)), v = ENTRANCE[lv];
   if (!entranceVideos?.[lv]?.url && Date.now() - entLoadedAt > 30000) { entLoadedAt = Date.now(); await loadEntranceVideos(); }
   const video = entranceVideos?.[lv]?.url || '', ok = /^https:\/\//i.test(video), alpha = /\.webm(\?|$)/i.test(video);
-  const sp = ok ? '' : Array.from({ length: 18 }, () => { const a = Math.random() * 6.283, r = 22 + Math.random() * 40;
-    return `<i style="--tx:${Math.round(Math.cos(a) * r)}vmin;--ty:${Math.round(Math.sin(a) * r)}vmin;--dl:${(Math.random() * 2).toFixed(2)}s"></i>` }).join('');
   const visual = ok
     ? `<div class="ent-video-wrap"><video class="ent-video${alpha ? ' alpha' : ''}" src="${esc(video)}" autoplay muted playsinline preload="auto" onended="H.hideEntranceFx()" onerror="H.entVideoFail()"></video></div>`
     : `<div class="ent-move"><div class="ent-art">${artHTML(lv)}</div></div>`;
   const e = $('#entranceFX');
   await new Promise(res => {
     entResolve = res;
-    e.innerHTML = `<div class="ent ent${lv}" data-lv="${lv}" style="--dur:${ok ? 6 : v.dur}s;--c1:${v.c1};--c2:${v.c2}">${ok ? '' : `<div class="ent-bg"></div><div class="ent-rays"></div><div class="ent-burst"></div><div class="ent-sparks">${sp}</div>`}${visual}<div class="ent-label">${lv >= 10 ? `<div class="ent-ban">${badgeOf(lv, true)}</div>${esc(name)}` : `${esc(name)} · SVIP ${lv}`}<small>${ok ? 'SPECIAL VIDEO ENTRANCE' : v.t}</small></div></div>`;
+    const sub = ok ? 'SPECIAL VIDEO ENTRANCE' : v.t;
+    const label = lv >= 12
+      ? `<div class="lx-ban l${lv}">${avatarUrl ? `<div class="lx-av">${avatarHTML(avatarUrl, SVIP[lv - 1], '', 60, '', '', false)}</div>` : ''}${badgeOf(lv, true)}<span class="lx-name">${esc(name)}</span><small>${sub}</small></div>`
+      : `${lv >= 10 ? `<div class="ent-ban">${badgeOf(lv, true)}</div>${esc(name)}` : `${esc(name)} · SVIP ${lv}`}<small>${sub}</small>`;
+    e.innerHTML = `<div class="ent ent${lv}" data-lv="${lv}" style="--dur:${ok && lv < 12 ? 6 : v.dur}s;--c1:${v.c1};--c2:${v.c2}">${ok ? '' : entLayers(lv)}${visual}<div class="ent-label">${label}</div></div>`;
+    if (lv >= 12 && nSound) levelChime();
     e.classList.remove('hidden');
     clearTimeout(playEntrance.t); playEntrance.t = setTimeout(hideEntranceFx, (ok ? 45 : v.dur) * 1000);
     const player = e.querySelector('video'); if (player) player.play().catch(() => H.entVideoFail());
@@ -1095,8 +1292,8 @@ async function entranceFor(id, name, claimed) {
   if (!id || Date.now() - (entSeen[id] || 0) < 20000) return;
   entSeen[id] = Date.now();
   await ensureProf([id], true);
-  const pts = prof[id]?.points, lv = Math.min(11, pts === undefined ? Number(claimed) || 0 : lvl(pts));
-  if (lv >= 5) showEntranceFx(name || prof[id]?.name || 'Anggota', lv);
+  const pts = prof[id]?.points, lv = Math.min(MAX_LV, pts === undefined ? Number(claimed) || 0 : lvl(pts));
+  if (lv >= 5) showEntranceFx(name || prof[id]?.name || 'Anggota', lv, id === uid ? me?.avatar : pmeta(online[id])?.avatar);
 }
 function showRelPopup(text) {
   const e = $('#svipPop');
@@ -1118,7 +1315,7 @@ function levelChime() {
 function showSvipPopup(name, level, mine) {
   const e = $('#svipPop');
   const sp = Array.from({ length: 16 }, () => { const a = Math.random() * Math.PI * 2, d = 90 + Math.random() * 170; return `<i class="svip-spark" style="--dx:${Math.round(Math.cos(a) * d)}px;--dy:${Math.round(Math.sin(a) * d)}px;animation-delay:${(Math.random() * 1.6).toFixed(2)}s"></i>` }).join('');
-  e.innerHTML = `<div class="svip-rays"></div>${sp}<div class="svip-card"><div class="svip-crown">👑✨</div><div class="svip-title">${mine ? 'KAMU NAIK GELAR!' : 'SELAMAT ATAS PENINGKATAN GELAR'}</div>${level >= 10 ? `<div class="svip-ban">${badgeOf(level, true)}</div>` : `<div class="svip-level">SVIP ${level}</div>`}<div class="svip-name">${esc(name)}</div><div class="svip-desc">berhasil naik ke ${level >= 10 ? 'tingkat' : 'level'} ${tierName(level)}!</div></div><div class="svip-flash"></div>`;
+  e.innerHTML = `<div class="svip-rays"></div>${sp}<div class="svip-card${level >= 12 ? ' p' + level : ''}"><div class="svip-crown">${level >= 13 ? '👑💎👑' : level === 12 ? '💎👑💎' : '👑✨'}</div><div class="svip-title">${mine ? 'KAMU NAIK GELAR!' : 'SELAMAT ATAS PENINGKATAN GELAR'}</div>${level >= 10 ? `<div class="svip-ban">${badgeOf(level, true)}</div>` : `<div class="svip-level">SVIP ${level}</div>`}<div class="svip-name">${esc(name)}</div><div class="svip-desc">berhasil naik ke ${level >= 10 ? 'tingkat' : 'level'} ${tierName(level)}!</div></div><div class="svip-flash"></div>`;
   e.classList.remove('hidden'); clearTimeout(showSvipPopup.t);
   showSvipPopup.t = setTimeout(() => { e.classList.add('hidden'); e.innerHTML = ''; }, 6000);
   if (nSound) levelChime();
@@ -1261,24 +1458,24 @@ H.panel = async () => {
    <div class="cnt"><button onclick="H.seatN(-1)">−</button><b id="sc" style="font-size:24px">${settings.seat_count}</b><button onclick="H.seatN(1)">+</button></div>
    <h3 class="sec"><span class="ms">movie</span> Video Entrance SVIP</h3>
    <p class="sub">Upload MP4/WebM maksimal 30 MB per level. Video akan diputar untuk semua anggota saat pemilik level bergabung.</p>
-   ${[5,6,7,8,9,10,11].map(n => `<div class="mrow" style="align-items:flex-start"><span style="flex:1"><b>${tierName(n)} · ${esc(ENTRANCE[n].t)}</b><small style="display:block;color:#a99d92;overflow-wrap:anywhere">${entranceVideos[n]?.name || (entranceVideos[n]?.url ? 'Video tersimpan' : 'Belum ada video — memakai animasi bawaan')}</small></span><div class="bt"><button class="sm" onclick="H.uploadEntrance(${n})"><span class="ms">upload</span> Upload</button><button class="sm o" onclick="H.previewEnt(${n})"><span class="ms">play_arrow</span> Preview</button>${entranceVideos[n]?.url ? `<button class="sm o" onclick="H.removeEntrance(${n})">Hapus</button>` : ''}</div></div>`).join('')}
+   ${[5,6,7,8,9,10,11,12,13].map(n => `<div class="mrow" style="align-items:flex-start"><span style="flex:1"><b>${tierName(n)} · ${esc(ENTRANCE[n].t)}</b><small style="display:block;color:#a99d92;overflow-wrap:anywhere">${esc(entranceVideos[n]?.name) || (entranceVideos[n]?.url ? 'Video tersimpan' : 'Belum ada video — memakai animasi bawaan')}</small></span><div class="bt"><button class="sm" onclick="H.uploadEntrance(${n})"><span class="ms">upload</span> Upload</button><button class="sm o" onclick="H.previewEnt(${n})"><span class="ms">play_arrow</span> Preview</button>${entranceVideos[n]?.url ? `<button class="sm o" onclick="H.removeEntrance(${n})">Hapus</button>` : ''}</div></div>`).join('')}
    <p class="sub" style="margin-top:12px">Tes animasi masuk SVIP (hanya kamu yang melihat)</p>
-   <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">${[5, 6, 7, 8, 9, 10, 11].map(n => `<button class="sm o" onclick="H.previewEnt(${n})">${tierName(n)}</button>`).join('')}</div>
+   <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">${[5, 6, 7, 8, 9, 10, 11, 12, 13].map(n => `<button class="sm o" onclick="H.previewEnt(${n})">${tierName(n)}</button>`).join('')}</div>
    <h3 class="sec"><span class="ms">star</span> Ulasan Aplikasi</h3><button class="sm o" onclick="H.reviews()">Lihat ulasan & rating</button>
    <h3 class="sec"><span class="ms">auto_awesome</span> Tes Efek Gift</h3><p class="sub">Ketuk gift untuk melihat efeknya (hanya kamu yang melihat). Makin besar poin, makin megah.</p>
    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">${GIFTS.map((g, i) => `<button class="sm o" onclick="H.previewGift(${i})" title="${esc(g.name)} · ${g.points} poin">${g.e}</button>`).join('')}</div>
    <h3 class="sec"><span class="ms">movie</span> Video Gift Eksklusif</h3>
    <p class="sub">Pilih video MP4/WebM maksimal 30 MB untuk hadiah eksklusif nomor 16–30. Saat gift dikirim, video diputar di room semua anggota.</p>
-   ${GIFTS.slice(EXCLUSIVE_GIFT_START).map((g,j)=>{const i=j+EXCLUSIVE_GIFT_START;return `<div class="mrow" style="align-items:flex-start"><span style="flex:1"><b>${g.e} ${esc(g.name)}</b><small style="display:block;color:#a99d92">${giftVideos[i]?.name || (giftVideos[i]?.url ? 'Video tersimpan' : 'Belum ada video')}</small></span><div class="bt"><button class="sm" onclick="H.uploadGiftVideo(${i})"><span class="ms">upload</span> Video</button>${giftVideos[i]?.url ? `<button class="sm o" onclick="H.previewGift(${i})"><span class="ms">play_arrow</span></button><button class="sm o" onclick="H.removeGiftVideo(${i})">Hapus</button>` : ''}</div></div>`}).join('')}
+   ${GIFTS.slice(EXCLUSIVE_GIFT_START).map((g,j)=>{const i=j+EXCLUSIVE_GIFT_START;return `<div class="mrow" style="align-items:flex-start"><span style="flex:1"><b>${g.e} ${esc(g.name)}</b><small style="display:block;color:#a99d92">${esc(giftVideos[i]?.name) || (giftVideos[i]?.url ? 'Video tersimpan' : 'Belum ada video')}</small></span><div class="bt"><button class="sm" onclick="H.uploadGiftVideo(${i})"><span class="ms">upload</span> Video</button>${giftVideos[i]?.url ? `<button class="sm o" onclick="H.previewGift(${i})"><span class="ms">play_arrow</span></button><button class="sm o" onclick="H.removeGiftVideo(${i})">Hapus</button>` : ''}</div></div>`}).join('')}
    <p class="sub">Anggota online</p>
    ${(data || []).map(u => `<div class="mrow"><img src="${esc(u.avatar)}"><span>${esc(u.name)} <small style="color:#a99d92">🪙${Number(u.gift_tickets || 0).toLocaleString('id-ID')} ${u.theme_ok ? '🎨✔' : ''}</small></span>
      <div class="bt"><button class="sm" onclick="H.tix('${u.id}',100)">+100 🪙</button><button class="sm" onclick="H.tix('${u.id}',1000)">+1rb</button><button class="sm" onclick="H.tix('${u.id}',10000)">+10rb</button><button class="sm" onclick="H.tix('${u.id}',50000)">+50rb</button><button class="sm" onclick="H.hostBorder('${u.id}')"><span class="ms">image</span> Border</button>${u.theme_ok ? '' : `<button class="sm" onclick="H.thm('${u.id}')"><span class="ms">palette</span> Buka Tema</button>`}</div></div>`).join('')}
    <div style="display:flex;gap:8px;margin-top:14px"><button class="sm o" onclick="H.reset()">Kosongkan kursi</button><button class="sm o" onclick="H.clear()">Bersihkan chat</button></div>
    <button class="btn" style="margin-top:16px;background:linear-gradient(#e0646b,#9c2a33);color:#fff" onclick="H.unhost()"><span class="ms">logout</span> Keluar Host</button>`);
 };
-H.previewEnt = n => { H.close(); showEntranceFx(me.name, n) };
+H.previewEnt = n => { H.close(); showEntranceFx(me.name, n, me.avatar) };
 H.uploadEntrance = level => {
-  if (!me?.is_host || ![5,6,7,8,9,10,11].includes(Number(level))) return;
+  if (!me?.is_host || ![5,6,7,8,9,10,11,12,13].includes(Number(level))) return;
   pickVideo(async file => {
     try {
       toast(`Mengunggah video ${tierName(Number(level))}…`);
@@ -1372,6 +1569,13 @@ async function startRoom() {
   $('#setup').classList.add('hidden'); $('#room').style.display = 'flex'; $('#nav').classList.remove('hidden'); inRoom = true;
   prof[uid] = { ...prof[uid], ...me }; applyTheme(); nLoad();
   settings = (await sb.from('room_settings').select('*').single()).data || settings;
+  await loadTitleRules();
+  if (HAS_TITLE) {
+    const ended = me.points > 0 && Date.parse(me.title_expires_at || '') < Date.now() && lvl(me.points) > 0;
+    await syncTitle();
+    if (ended && !lvl(me.points)) titleEnded();
+    clearInterval(startRoom.tt); startRoom.tt = setInterval(() => { if (!document.hidden) syncTitle() }, 60000);
+  }
   HAS_ROOMS = !(await sb.from('rooms').select('id').limit(1)).error; /* tabel rooms ada = mode banyak room */
   await loadEntranceVideos();
   await loadGiftVideos();
@@ -1482,7 +1686,7 @@ async function startRoom() {
       const oldLevel = lvl(knownPts), newLevel = lvl(p.new.points);
       prof[p.new.id] = { ...prof[p.new.id], ...p.new }; delete pinfo[p.new.id]; refreshBubbles(p.new.id); repaintAvatars(p.new.id);
       // Popup ditampilkan di tengah layar seluruh anggota yang sedang berada di room.
-      if (knownPts !== undefined && newLevel > oldLevel) { showSvipPopup(p.new.name || (p.new.id === uid ? me.name : 'Anggota'), newLevel, p.new.id === uid); if (p.new.id === uid) pushNotif({ key: 'lv:' + newLevel, type: 'level', icon: '⭐', title: 'Selamat! 🎉', text: `Kamu naik ke ${tierName(newLevel)}`, tab: 'me', act: { k: 'tab', t: 'me' } }) }
+      if (knownPts !== undefined && newLevel > oldLevel) { showSvipPopup(p.new.name || (p.new.id === uid ? me.name : 'Anggota'), newLevel, p.new.id === uid); if (p.new.id === uid) pushNotif({ key: 'lv:' + newLevel + ':' + new Date().toDateString(), type: 'level', icon: '⭐', title: 'Selamat! 🎉', text: `Kamu naik ke ${tierName(newLevel)}`, tab: 'me', act: { k: 'tab', t: 'me' } }) }
       if (p.new.id === uid) {
         if (p.new.gift_tickets > me.gift_tickets && Date.now() > chestQuiet) { const add = (p.new.gift_tickets - (me.gift_tickets || 0)).toLocaleString('id-ID'); showFx({ e: '🎉' }, `Kamu dapat +${add} Koin Emas 🪙 dari Host`); pushNotif({ type: 'host', icon: '🪙', title: 'Host 👑', text: `memberimu +${add} Koin Emas`, tab: 'me', act: { k: 'tab', t: 'me' } }) }
         if (p.new.theme_ok && !me.theme_ok) { showFx({ e: '🎨' }, 'Tema chat terbuka! Semua tema bebas dipakai'); pushNotif({ type: 'host', icon: '🎨', title: 'Host 👑', text: 'membuka semua tema chat untukmu', tab: 'me', act: { k: 'tab', t: 'me' } }) }
@@ -1560,7 +1764,7 @@ async function enterRoom(rid, pass) {
         setTimeout(sweep, 4000); clearInterval(enterRoom.sw); enterRoom.sw = setInterval(sweep, 10000);
         await sb.from('messages').insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'join', ...ridp() });
         /* Entrance SVIP 5-9: broadcast langsung ke semua anggota + pesan type 'chat' bertanda [ENT] (lolos RLS seperti pesan suara) */
-        const myLevel = Math.min(11, lvl(me.points || 0));
+        const myLevel = Math.min(MAX_LV, lvl(me.points || 0));
         if (myLevel >= 5) {
           entranceFor(uid, me.name, myLevel);
           room.send({ type: 'broadcast', event: 'ent', payload: { uid, name: me.name, level: myLevel } });
@@ -2108,7 +2312,7 @@ async function refreshMySocialStats() {
 /* Lihat profil orang lain (ketuk foto di postingan / chat / daftar pengirim) */
 H.view = async id => {
   if (id === uid) { H.close(); return H.tab('me') }
-  const { data: u } = await sb.from('profiles').select('id,name,avatar,is_host,gifts_sent,points' + BC()).eq('id', id).maybeSingle();
+  const { data: u } = await sb.from('profiles').select('id,name,avatar,is_host,gifts_sent,points' + BC() + TC()).eq('id', id).maybeSingle();
   if (!u) return toast('Profil tidak ditemukan');
   viewU = u;
   const [rows, fr, ps, social, following, rels] = await Promise.all([getGifts(id),
@@ -2118,7 +2322,7 @@ H.view = async id => {
     sb.from('follows').select('follower_id').eq('follower_id', uid).eq('following_id', id).maybeSingle(),
     HAS_REL ? loadRelations(id) : Promise.resolve(null)]);
   const isFriend = !!fr.data, isFollowing = !!following.data, seated = Object.values(seats).some(x => x.user_id === id), on = isOn(id), list = ps.data || [];
-  sheet(`<div class="pf" style="padding-top:0">${avatarHTML(u.avatar, u.points, 'pav', 112, '', u.avatar_border, u.is_host, u.id)}<h2>${u.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(u.points)}${esc(u.name)}</h2>${titleHTML(u.points)}
+  sheet(`<div class="pf" style="padding-top:0">${avatarHTML(u.avatar, u.points, 'pav', 112, '', u.avatar_border, u.is_host, u.id)}<h2>${u.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(u.points)}${esc(u.name)}</h2>${titleHTML(u.points, u)}
     <div class="stats" style="flex-wrap:wrap"><span class="chip">${seated ? ms('mic') + ' Di kursi' : on ? ms('circle', 'on') + ' Online' : ms('circle', 'o off') + ' Offline'}</span><span class="chip"><span class="ms">group</span> ${social.friends ?? '—'} Teman</span><span class="chip"><span class="ms">person</span> ${social.followers ?? '—'} Followers</span><span class="chip"><span class="ms">star</span> ${u.points ?? 0}</span><span class="chip"><span class="ms">redeem</span> ${u.gifts_sent ?? 0} dikirim</span><span class="chip"><span class="ms">edit_note</span> ${list.length}</span></div></div>
     <div class="acts">${isFriend ? `<button class="btn" onclick="H.openDM('${u.id}')"><span class="ms">chat</span> Chat</button>` : `<button class="btn" onclick="H.requestFriend('${u.id}')"><span class="ms">add</span> Tambah Teman</button>`}
       <button class="btn" onclick="H.toggleFollow('${u.id}',${isFollowing})">${isFollowing ? ms('check') + ' Mengikuti' : ms('person_add') + ' Follow'}</button>
@@ -2135,9 +2339,10 @@ H.seatMenu = id => {
 H.giftView = () => { if (viewU) { gT = { id: viewU.id, name: viewU.name, avatar: viewU.avatar }; giftSheet() } };
 function renderProf() {
   if (!me) return;
+  noteTitle();
   const mine = posts.filter(p => p.user_id === uid);
   $('#pfBox').innerHTML = `<div class="pf">${avatarHTML(me.avatar, me.points, 'pav', 112, '', me.avatar_border, me.is_host, uid)}
-    <h2>${me.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(me.points)}${esc(me.name)}</h2>${titleHTML(me.points)}
+    <h2>${me.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(me.points)}${esc(me.name)}</h2>${titleHTML(me.points, me, true)}
     <div class="stats" style="flex-wrap:wrap"><span class="chip"><span class="ms">group</span> ${mySocialStats.friends ?? '—'} Teman</span><span class="chip"><span class="ms">person</span> ${mySocialStats.followers ?? '—'} Followers</span><span class="chip">🪙 ${Number(me.gift_tickets ?? 0).toLocaleString('id-ID')}</span><span class="chip"><span class="ms">star</span> ${me.points ?? 0}</span><span class="chip"><span class="ms">edit_note</span> ${mine.length}</span></div></div>
     <div class="acts"><button class="btn" onclick="H.editAv()"><span class="ms">photo_camera</span> Ubah Foto</button><button class="btn" onclick="H.editNm()"><span class="ms">edit</span> Ubah Nama</button></div>
     <button class="btn" onclick="H.compose()"><span class="ms">add</span> Buat Postingan</button>
@@ -2190,7 +2395,7 @@ function borderGridHTML() {
   if (!HAS_BORDER) return '<h3 class="sec"><span class="ms">image</span> Border Avatar</h3><p class="sub">Fitur border belum aktif. Jalankan border_migration.sql di Supabase.</p>';
   const cur = me.avatar_border || '';
   return `<h3 class="sec"><span class="ms">image</span> Border Avatar</h3><p class="sub">${me.is_host ? '👑 Host: semua border terbuka' : '🔒 Semua border terkunci. Chat host untuk membuka; setiap konfirmasi host membuka 1 border.'}</p>
-   <div class="gg"><button class="gi ${!cur ? 'sel' : ''}" onclick="H.useBorder('')"><div style="display:grid;place-items:center;padding:14px 0 6px">${avatarHTML(me.avatar, me.points, 'bp', 52, '', '', me.is_host)}</div><small>${me.is_host ? 'Bawaan Host 👑' : lvl(me.points) >= 9 ? 'Bawaan SVIP 9' : 'Tanpa border'}</small></button>
+   <div class="gg"><button class="gi ${!cur ? 'sel' : ''}" onclick="H.useBorder('')"><div style="display:grid;place-items:center;padding:14px 0 6px">${avatarHTML(me.avatar, me.points, 'bp', 52, '', '', me.is_host)}</div><small>${me.is_host ? 'Bawaan Host 👑' : lvl(me.points) >= 9 ? 'Bawaan ' + tierName(lvl(me.points)) : 'Tanpa border'}</small></button>
    ${BORDERS.map(b => { const o = ownsBorder(b.id);
      return `<button class="gi ${o ? '' : 'lk'} ${cur === b.id ? 'sel' : ''}" onclick="${o ? `H.useBorder('${b.id}')` : `H.borderLocked('${b.id}')`}"><div style="display:grid;place-items:center;padding:14px 0 6px">${avatarHTML(me.avatar, 0, 'bp', 52, '', b.id)}</div><small>${b.name}</small></button>` }).join('')}</div>${me.is_host ? `<h3 class="sec"><span class="ms">workspace_premium</span> Eksklusif Host</h3><div class="gg">${HOST_BORDERS.map(b => `<button class="gi ${cur === b.id ? 'sel' : ''}" onclick="H.useBorder('${b.id}')"><div style="display:grid;place-items:center;padding:14px 0 6px">${avatarHTML(me.avatar, 0, 'bp', 52, '', b.id, true)}</div><small>${b.name}</small></button>`).join('')}</div>` : ''}`;
 }
@@ -2263,7 +2468,7 @@ function addMsg(m, live) {
   if (m.type === 'join') d.innerHTML = `<div class="bub">${hb}<b>${esc(m.name)}</b> sedang bergabung</div>`;
   else if (m.type === 'leave') d.innerHTML = `<div class="bub sys">🚪 <b>${esc(m.name)}</b> keluar dari room</div>`;
   else if (m.type === 'entrance' || (m.type === 'chat' && String(m.body || '').startsWith('[ENT]'))) {
-    const claimed = Math.min(11, Number(String(m.body || '').replace('[ENT]', '')) || 5);
+    const claimed = Math.min(MAX_LV, Number(String(m.body || '').replace('[ENT]', '')) || 5);
     d.innerHTML = `<div class="bub sys">✨ ${esc(m.name)} memasuki room dengan efek ${tierName(claimed)}!</div>`;
     if (live) entranceFor(m.user_id, m.name, claimed);
   }
@@ -2327,9 +2532,11 @@ H.send = async i => {
   if (!gT) return H.gift();
   const g = GIFTS[i]; if (!g) return;
   if (!me.is_host && (me.gift_tickets || 0) < g.coin) return toast(`Koin emas kurang 🔒 Butuh ${kfmt(g.coin)}, kamu punya ${kfmt(me.gift_tickets)}`);
-  const { error } = await sb.rpc('send_gift_v2', { g: i, target: gT.id, ...(RID ? { rid: RID } : {}) });
+  if (H.send.busy) return; H.send.busy = true;
+  let error;
+  try { ({ error } = await sb.rpc('send_gift_v2', { g: i, target: gT.id, ...(RID ? { rid: RID } : {}) })) } finally { H.send.busy = false }
   if (error && (error.code === 'PGRST202' || /Could not find the function/i.test(error.message || ''))) return toast('Jalankan gift_relation_migration.sql terbaru dulu 🪙');
-  error ? toast(error.message) : (H.close(), syncPointsSoon(500));
+  error ? toast(error.message) : (H.close(), syncPointsSoon(500), setTimeout(syncTitle, 700));
 };
 
 /* ---------- 8B. Hubungan: Sahabat, Pasangan (anniversary), Kakak-Adik, Partner Duet ---------- */
@@ -2535,6 +2742,7 @@ window.GameAPI = {
   balance: () => Number(me?.gift_tickets || 0),
   close: closeGame,
   async claim(game, amount) { /* batas 30 koin per klaim + batas harian dijaga di server (game_coins.sql) */
+    chestQuiet = Date.now() + 8000;
     const { data, error } = await sb.rpc('claim_game_coins', { p_game: String(game || '').slice(0, 20), p_amount: Math.min(30, Math.max(0, Math.floor(Number(amount) || 0))) });
     if (error) return { error: /Could not find the function|schema cache/i.test(error.message || '') ? 'Jalankan game_coins.sql di Supabase dulu.' : error.message };
     const bal = Number(data); me = { ...me, gift_tickets: bal }; if (prof[uid]) prof[uid] = { ...prof[uid], gift_tickets: bal };
@@ -2659,7 +2867,7 @@ function renderDM(){
   const lines=dmMessages.map(m=>{try{
     const mine=m.sender_id===uid,quoted=m.reply_to_id?dmMessages.find(x=>x.id===m.reply_to_id):null;
     const isOnce=String(m.body||'').startsWith(ONCE_TAG);
-    const body=isOnce?onceBubble(String(m.body).slice(ONCE_TAG.length),mine,'dm',m.created_at):esc(m.body??'')||'<i style="opacity:.6">(pesan tanpa teks)</i>'.replace(/(@[\w.-]+)/g,'<span class="tagged">$1</span>');
+    const body=isOnce?onceBubble(String(m.body).slice(ONCE_TAG.length),mine,'dm',m.created_at):esc(m.body??'').replace(/(@[\w.-]+)/g,'<span class="tagged">$1</span>')||'<i style="opacity:.6">(pesan tanpa teks)</i>';
     return `<div class="dmline ${mine?'mine':''}">${quoted?`<div class="replybox"><b>${ms('reply')} ${quoted.sender_id===uid?'Kamu':esc(dmPeer.name)}</b>${esc(String(quoted.body??'').slice(0,100))}</div>`:''}${m.forwarded_from_id?`<small>${ms('forward')} Pesan diteruskan</small>`:''}${body}<small>${new Date(m.created_at).toLocaleString('id-ID',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'short'})}${mine?`<span class="tk${m.read_at?' rd':''}" data-tk="${m.id}">${m.read_at?'✓✓ Dibaca':'✓ Terkirim'}</span>`:''}</small><div class="msgtools"><button onclick="H.replyDM('${m.id}')">${ms('reply')} Balas</button><button onclick="H.forwardDM('${m.id}')">${ms('forward')} Teruskan</button></div></div>`;
   }catch(err){console.warn('DM render',m?.id,err);return ''}}).join('');
   sheet(`<div class="dmhead"><button class="ib" onclick="H.close()" title="Kembali"><span class="ms">arrow_back</span></button><img src="${esc(dmPeer.avatar||'')}"><div style="flex:1;min-width:0"><h3 style="margin:0">${esc(dmPeer.name)}</h3><p class="sub fst off" id="dmStatus" data-fst="${esc(dmPeer.id)}" style="margin:0"></p></div></div><div class="dmfeed" id="dmFeed">${lines||'<p class="empty-t">Belum ada pesan. Mulai percakapan! 👋</p>'}<div class="dmline typ hidden" id="dmTyp"><i></i><i></i><i></i></div></div><div id="dmReplyHint"></div><div class="dmcomposer"><button class="ib" onclick="H.tagDM()" title="Tag teman"><span class="ms">alternate_email</span></button><button class="ib" onclick="H.onceDM()" title="Kirim foto sekali lihat"><span class="ms">photo_camera</span></button><input id="dmInput" class="inp" maxlength="200" placeholder="Tulis pesan..." oninput="H.dmTyping()" onkeydown="if(event.key==='Enter')H.sendDM()"><button class="ib sendb" onclick="H.sendDM()"><span class="ms">send</span></button></div>`, true);
@@ -2671,9 +2879,15 @@ H.replyDM=id=>{dmReply=id;renderDMReplyHint();$('#dmInput')?.focus()};
 H.cancelReplyDM=()=>{dmReply=null;renderDMReplyHint()};
 H.tagDM=()=>{if(!dmPeer)return;const i=$('#dmInput');i.value=(i.value?i.value+' ':'')+'@'+String(dmPeer.name||'').replace(/\s+/g,'')+' ';i.focus()};
 H.sendDM=async()=>{
-  if(!dmPeer)return;const i=$('#dmInput'),body=i.value.trim();if(!body)return;
-  const {data,error}=await sb.from('direct_messages').insert({sender_id:uid,recipient_id:dmPeer.id,body,reply_to_id:dmReply||null}).select().single();
-  if(error)return toast(error.message);dmMessages.push(data);dmReply=null;i.value='';H.dmStopTyping();renderDM();
+  if(!dmPeer||H.sendDM.busy)return;const i=$('#dmInput'),body=i.value.trim();if(!body)return;
+  const peer=dmPeer.id,reply=dmReply;H.sendDM.busy=true;
+  try{
+    const {data,error}=await sb.from('direct_messages').insert({sender_id:uid,recipient_id:peer,body,reply_to_id:reply||null}).select().single();
+    if(error)return toast(error.message);
+    if(dmPeer?.id!==peer)return;
+    if(!dmMessages.some(x=>x.id===data.id))dmMessages.push(data);
+    dmReply=null;const now=$('#dmInput');if(now&&now.value.trim()===body)now.value='';H.dmStopTyping();renderDM();
+  }finally{H.sendDM.busy=false}
 };
 H.forwardDM=async id=>{
   const m=dmMessages.find(x=>x.id===id);if(!m)return;
@@ -2948,7 +3162,7 @@ if ('serviceWorker' in navigator) {
   }).catch(() => {}));
 }
 document.addEventListener('pointerdown', () => { try { nAC ||= new (window.AudioContext || window.webkitAudioContext)(); nAC.state === 'suspended' && nAC.resume() } catch {} }, { once: true });
-document.addEventListener('visibilitychange', () => { if (!document.hidden && inRoom) { refreshMyBorders(); syncPoints(); nRender() } });
+document.addEventListener('visibilitychange', () => { if (!document.hidden && inRoom) { refreshMyBorders(); syncPoints(); syncTitle(); nRender() } });
 
 /* ---------- Emoji gerak: tampil di foto kursi pemain yang duduk, lalu kembali ke foto ---------- */
 const EMOS = [['😂','shake'],['🤣','roll'],['😍','pulse'],['🥰','float'],['😘','kiss'],['😎','bounce'],
