@@ -700,6 +700,10 @@ textarea.inp{resize:none;display:block}
 .tcard b{color:#fff1c2}.tcard.warn{border-color:#ff6a6a;box-shadow:0 0 12px #ff6a6a55}
 .tcard .prog{width:100%}.tcard .sm{margin-top:4px}
 @media (prefers-reduced-motion:reduce){.svip.s12 span,.svip.s13 span,.svip.s12 .gem,.svip.s13 .wg,.ring.vip9.bd-svip13,#entranceFX .lx-beams b,#entranceFX .lx-fall i{animation:none}}
+.qtybar{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:6px 0 10px}
+.qtybar button{padding:6px 12px;border-radius:99px;background:#ffffff14;border:1px solid #ffffff22;font-weight:900;color:#f4e9dc}
+.qtybar button.on{background:linear-gradient(#ffd886,#d9962f);color:#2a1700;border-color:#fff1a8}
+.qtybar input{width:76px;padding:6px 10px;border-radius:99px;background:#0006;border:1px solid #ffd36e77;color:#fff;font:inherit;text-align:center}
 </style>
 </head>
 <body>
@@ -1109,8 +1113,8 @@ const GFX_DUR = [3.6, 4.2, 4.8, 5.6, 6.8, 8.5];
 const GFX_COL = [['#ffd36e','#3a2a0066'],['#ffd36e','#3a2a0066'],['#ffd36e','#5b3a0099'],['#ffd36e','#8a5a1299'],['#ff8ad8','#6a1b5a99'],['#fff1a8','#b8420099']];
 const tierOf = p => p >= 15000 ? 5 : p >= 5000 ? 4 : p >= 1000 ? 3 : p >= 250 ? 2 : p >= 50 ? 1 : 0;
 /* Efek gift: gerakan khas tiap item (g.fx) + lapisan megah sesuai poin (tier 0-5). Efek kecil tidak memotong efek besar. */
-function showFx(g, who, to, giftIndex) {
-  const named = !!g?.name, points = Number(g?.points || 0), tier = named ? tierOf(points) : 0;
+function showFx(g, who, to, giftIndex, qty = 1) {
+  const named = !!g?.name, points = Number(g?.points || 0) * qty, tier = named ? tierOf(points) : 0;
   const video = named ? (giftVideos?.[giftIndex]?.url || '') : '', hasVid = /^https:\/\//i.test(video);
   if (showFx.until > Date.now() && tier < (showFx.tier ?? 0)) return;
   const gd = hasVid ? 12 : GFX_DUR[tier], [gc, gc2] = GFX_COL[tier], mot = hasVid ? 'vid' : (g?.fx || 'pop');
@@ -1125,7 +1129,7 @@ function showFx(g, who, to, giftIndex) {
   const visual = hasVid
     ? `<video class="gift-fx-video" src="${esc(video)}" autoplay muted playsinline preload="auto" onended="H.hideGiftFx()" onerror="H.hideGiftFx()"></video>`
     : (g?.img ? `<img src="${esc(g.img)}">` : `<div class="big">${g?.e || '🎁'}</div>`);
-  const label = named ? `${esc(who)} mengirim ${esc(g.name)}${to ? ' ke ' + esc(to) : ''} · ${points.toLocaleString('id-ID')} poin!` : esc(who);
+  const label = named ? `${esc(who)} mengirim ${qty > 1 ? qty + '× ' : ''}${esc(g.name)}${to ? ' ke ' + esc(to) : ''} · ${points.toLocaleString('id-ID')} poin!` : esc(who);
   $('#fx').innerHTML = `<div class="gs t${tier}" style="--gd:${gd}s;--gc:${gc};--gc2:${gc2}">${layers}<div class="gm" style="animation-name:m-${mot}">${visual}</div><div class="gban"><span class="ban">${label}</span></div></div>`;
   clearTimeout(showFx.t); showFx.t = setTimeout(() => { $('#fx').innerHTML = ''; showFx.until = 0 }, hasVid ? 12000 : gd * 1000 + 500);
   const player = $('#fx video'); if (player) player.play().catch(() => {});
@@ -1637,8 +1641,7 @@ async function startRoom() {
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'stories' }, () => loadStories())
     .on('postgres_changes', { event: '*', schema: 'public', table: 'post_likes' }, p => { loadPosts(true); if (p.eventType === 'INSERT' && p.new?.user_id !== uid) notifyLike(p.new) })
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'gift_log', filter: `to_id=eq.${uid}` }, p => {
-      loadMyGifts(); syncPointsSoon(300);
-      if (p.new.from_id !== uid) { const g = GIFTS[p.new.gift]; pushNotif({ key: 'gift:' + p.new.id, type: 'gift', icon: g?.e || '🎁', from: p.new.from_id, text: `mengirim ${g?.name || 'hadiah'} untukmu`, tab: 'me', act: { k: 'user', id: p.new.from_id } }) }
+      onGiftReceived(p.new);
     })
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, p => {
       if (!inRm || (RID && p.new.room_id !== RID)) return; /* hanya pesan dari room yang sedang dimasuki */
@@ -2285,6 +2288,20 @@ async function getGifts(id) {
   const { data } = await sb.from('gift_log').select('from_id,gift,profiles!from_id(name,avatar,is_host,gifts_sent,points' + BC() + ')').eq('to_id', id).order('id', { ascending: false }).limit(1000);
   return data || [];
 }
+/* Kiriman banyak menghasilkan banyak baris gift_log: kumpulkan dulu, lalu muat ulang & beri notifikasi sekali */
+const giftIn = {}; let giftInT = null;
+function onGiftReceived(row) {
+  if (row.from_id !== uid) { const k = row.from_id + ':' + row.gift; (giftIn[k] ??= { row, n: 0 }).n++ }
+  clearTimeout(giftInT);
+  giftInT = setTimeout(() => {
+    loadMyGifts(); syncPointsSoon(300);
+    for (const [k, { row: r, n }] of Object.entries(giftIn)) {
+      delete giftIn[k];
+      const g = GIFTS[r.gift];
+      pushNotif({ key: 'gift:' + r.id, type: 'gift', icon: g?.e || '🎁', from: r.from_id, text: `mengirim ${n > 1 ? n + '× ' : ''}${g?.name || 'hadiah'} untukmu`, tab: 'me', act: { k: 'user', id: r.from_id } });
+    }
+  }, 700);
+}
 async function loadMyGifts() { myGifts = await getGifts(uid); renderProf() }
 function giftHTML(rows) {
   if (!rows.length) return '<p class="empty-t">Belum ada hadiah diterima 🎁</p>';
@@ -2474,8 +2491,9 @@ function addMsg(m, live) {
   }
   else if (m.type === 'gift') {
     const g = GIFTS[m.gift] || GIFTS[0];
-    d.innerHTML = `${head}<div>${meta}<div class="gbub"><span>Kirim ${esc(g.name)}${m.to_name ? `<small>untuk ${esc(m.to_name)}</small>` : ''}</span><span class="e">${g.e}</span><b class="x">x1</b></div></div>`;
-    if (live) showFx(g, m.name, m.to_name, Number(m.gift));
+    const qty = clampQty(m.qty);
+    d.innerHTML = `${head}<div>${meta}<div class="gbub"><span>Kirim ${esc(g.name)}${m.to_name ? `<small>untuk ${esc(m.to_name)}</small>` : ''}</span><span class="e">${g.e}</span><b class="x">x${qty}</b></div></div>`;
+    if (live) showFx(g, m.name, m.to_name, Number(m.gift), qty);
   } else if (m.type === 'chat' && String(m.body || '').startsWith('[CHEST]')) {
     const [evId, lv] = String(m.body).slice(7).split('|');
     d.innerHTML = `<div class="bub sys">${'📦'} Peti ${Number(lv) >= 10 ? 'EKSKLUSIF' : 'Level ' + Number(lv)} terbuka! Semua anggota room mendapat hadiah</div>`;
@@ -2521,21 +2539,47 @@ async function loadGiftCatalog() {
   return true;
 }
 const kfmt = n => Number(n || 0).toLocaleString('id-ID');
+/* Jumlah gift sekali kirim (1 sampai MAX_QTY). Batas ini juga dijaga di server (gift_qty.sql). */
+const MAX_QTY = 99, QTY_PRESET = [1, 5, 10, 25, 50, 99];
+let giftQty = 1;
+const clampQty = v => Math.min(MAX_QTY, Math.max(1, Math.floor(Number(v)) || 1));
+/* Perbarui total harga, EXP, dan kunci tiap gift tanpa menggambar ulang layar (posisi gulir & ketikan tetap) */
+function paintGiftQty() {
+  const own = me.gift_tickets || 0;
+  document.querySelectorAll('#sheet [data-gi]').forEach(b => {
+    const g = GIFTS[+b.dataset.gi];
+    b.classList.toggle('lk', !me.is_host && own < g.coin * giftQty);
+    b.querySelector('.gx').textContent = `+${kfmt(g.points * giftQty)} EXP`;
+    b.querySelector('.tkc').textContent = `🪙 ${kfmt(g.coin * giftQty)}`;
+  });
+  document.querySelectorAll('#sheet [data-q]').forEach(b => b.classList.toggle('on', +b.dataset.q === giftQty));
+}
+H.setQty = v => { giftQty = clampQty(v); const i = $('#qtyIn'); if (i) i.value = giftQty; paintGiftQty() };
+H.typeQty = el => { if (el.value === '') return; giftQty = clampQty(el.value); if (+el.value > MAX_QTY || +el.value < 1) el.value = giftQty; paintGiftQty() };
 function giftSheet() {
+  giftQty = 1;
   const own = me.gift_tickets || 0, cheapest = Math.min(...GIFTS.map(g => g.coin));
   sheet(`<h3>Kirim Gift</h3><p class="sub">${me.is_host ? '👑 Host: unlimited gratis' : `🪙 Koin emasmu: ${kfmt(own)} · makin mahal gift, makin besar EXP`}</p>
    <div class="mrow" style="border-top:0;padding-top:0"><img src="${esc(gT.avatar)}"><span>Untuk: <b>${esc(gT.name)}</b></span><button class="sm o" onclick="H.gift()">Ganti</button></div>
-   <div class="gg">${GIFTS.map((g, i) => { const lock = !me.is_host && own < g.coin; return `<button class="gi ${lock ? 'lk' : ''}" onclick="H.send(${i})">${g.img ? `<img src="${esc(g.img)}">` : `<span class="e">${g.e}</span>`}<small>${g.name}</small>${i >= EXCLUSIVE_GIFT_START ? '<small style="display:block;color:#d7b6ff">✦ EKSKLUSIF</small>' : ''}<small style="display:block;color:#ffd886">+${kfmt(g.points)} EXP</small><small class="tkc" style="display:block">🪙 ${kfmt(g.coin)}</small></button>` }).join('')}</div>
+   <p class="sub" style="margin:8px 0 0">Jumlah (maksimal ${MAX_QTY}), lalu ketuk gift</p>
+   <div class="qtybar">${QTY_PRESET.map(n => `<button data-q="${n}" class="${n === 1 ? 'on' : ''}" onclick="H.setQty(${n})">${n}</button>`).join('')}<input id="qtyIn" type="number" inputmode="numeric" min="1" max="${MAX_QTY}" value="1" aria-label="Jumlah gift" oninput="H.typeQty(this)" onblur="H.setQty(this.value)"></div>
+   <div class="gg">${GIFTS.map((g, i) => { const lock = !me.is_host && own < g.coin; return `<button data-gi="${i}" class="gi ${lock ? 'lk' : ''}" onclick="H.send(${i})">${g.img ? `<img src="${esc(g.img)}">` : `<span class="e">${g.e}</span>`}<small>${g.name}</small>${i >= EXCLUSIVE_GIFT_START ? '<small style="display:block;color:#d7b6ff">✦ EKSKLUSIF</small>' : ''}<small class="gx" style="display:block;color:#ffd886">+${kfmt(g.points)} EXP</small><small class="tkc" style="display:block">🪙 ${kfmt(g.coin)}</small></button>` }).join('')}</div>
    ${!me.is_host && own < cheapest ? `<button class="btn" onclick="H.wa('Hay Host, mau isi koin emas dong!')">Isi Koin Emas (Chat Owner)</button>` : ''}`);
 }
 H.send = async i => {
   if (!gT) return H.gift();
   const g = GIFTS[i]; if (!g) return;
-  if (!me.is_host && (me.gift_tickets || 0) < g.coin) return toast(`Koin emas kurang 🔒 Butuh ${kfmt(g.coin)}, kamu punya ${kfmt(me.gift_tickets)}`);
-  if (H.send.busy) return; H.send.busy = true;
+  const qty = giftQty, total = g.coin * qty, to = gT;
+  if (!me.is_host && (me.gift_tickets || 0) < total) return toast(`Koin emas kurang 🔒 Butuh ${kfmt(total)}, kamu punya ${kfmt(me.gift_tickets)}`);
+  if (H.send.busy) return;
+  if (qty > 1 && !confirm(`Kirim ${qty}× ${g.name} ke ${to.name}?${me.is_host ? '' : ` Total ${kfmt(total)} koin.`}`)) return;
+  H.send.busy = true;
   let error;
-  try { ({ error } = await sb.rpc('send_gift_v2', { g: i, target: gT.id, ...(RID ? { rid: RID } : {}) })) } finally { H.send.busy = false }
-  if (error && (error.code === 'PGRST202' || /Could not find the function/i.test(error.message || ''))) return toast('Jalankan gift_relation_migration.sql terbaru dulu 🪙');
+  try {
+    const room_ = RID ? { rid: RID } : {};
+    ({ error } = qty > 1 ? await sb.rpc('send_gift_qty', { g: i, target: to.id, qty, ...room_ }) : await sb.rpc('send_gift_v2', { g: i, target: to.id, ...room_ }));
+  } finally { H.send.busy = false }
+  if (error && (error.code === 'PGRST202' || /Could not find the function/i.test(error.message || ''))) return toast(qty > 1 ? 'Jalankan gift_qty.sql di Supabase dulu untuk kirim lebih dari 1 🪙' : 'Jalankan gift_relation_migration.sql terbaru dulu 🪙');
   error ? toast(error.message) : (H.close(), syncPointsSoon(500), setTimeout(syncTitle, 700));
 };
 
