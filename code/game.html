@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Game Koin</title>
+<style>
+:root{--gold:#f5c15a;--gold2:#b8802a;--bg:#0c0806;--glass:rgba(32,22,16,.85)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0;background:var(--bg);color:#f4e9dc;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow:hidden}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;padding:0}
+#app{height:100%;display:flex;flex-direction:column;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);max-width:560px;margin:0 auto}
+header{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid #f5c15a30}
+header #back{width:38px;height:38px;border-radius:50%;background:#ffffff14;font-size:18px}
+header b{flex:1;font-size:18px;color:var(--gold)}
+#bal{background:#f5c15a22;border:1px solid var(--gold2);border-radius:999px;padding:5px 12px;font-weight:800;font-size:14px;color:#ffe3a6}
+main{flex:1;overflow:auto;padding:14px;display:flex;flex-direction:column}
+.sub{color:#a99d92;font-size:14px;margin:0 0 12px;text-align:center}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.card{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;padding:16px 10px;border-radius:18px;background:var(--glass);border:1px solid #f5c15a40;transition:.15s}
+.card:active{transform:scale(.96);border-color:var(--gold)}
+.card i{font-style:normal;font-size:38px;line-height:1.1}.card b{font-size:15px}.card small{color:#a99d92;font-size:12px}
+.hud{display:flex;justify-content:space-between;font-size:15px;margin-bottom:10px;color:#e8d8c4}.hud b{color:var(--gold)}
+.arena{position:relative;flex:1;min-height:320px;border-radius:18px;background:radial-gradient(circle at 50% 30%,#2a1c12,#140d09);border:1px solid #f5c15a40;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none}
+.coin{position:absolute;width:52px;height:52px;font-size:36px;line-height:52px;text-align:center;border-radius:50%;animation:pop .18s ease-out}
+.coin.gold{filter:drop-shadow(0 0 10px #ffd84a)}
+@keyframes pop{from{transform:scale(.3);opacity:0}to{transform:scale(1);opacity:1}}
+.fall{position:absolute;width:40px;font-size:32px;text-align:center;margin-left:-20px;pointer-events:none}
+#bk{position:absolute;bottom:8px;width:64px;font-size:50px;text-align:center;margin-left:-32px;pointer-events:none;left:50%}
+.mem{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;flex:1;align-content:center}
+.mc{aspect-ratio:1;border-radius:16px;font-size:42px;background:linear-gradient(145deg,#3a2616,#24160d);border:1px solid var(--gold2);display:grid;place-items:center;color:transparent;transition:.2s}
+.mc.up{background:#f5c15a22;color:inherit;transform:rotateY(0)}.mc.ok{background:#2a5a3a66;border-color:#6ff0a0;color:inherit}
+.btn{display:block;width:100%;padding:13px;border-radius:999px;background:var(--gold);color:#2a1700;font-weight:900;font-size:16px;margin-top:10px}
+.btn.o{background:#ffffff14;color:#f4e9dc;border:1px solid #f5c15a50}.btn:disabled{opacity:.45}
+.inp{width:100%;padding:13px;border-radius:14px;background:#ffffff12;border:1.5px solid #f5c15a50;color:#fff;font-size:20px;text-align:center;outline:0}
+.inp:focus{border-color:var(--gold)}
+.msg{min-height:44px;text-align:center;font-size:17px;margin:12px 0}
+.row3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px}
+.rps{font-size:44px;padding:14px 0;border-radius:18px;background:var(--glass);border:1px solid #f5c15a40}.rps:active{transform:scale(.94)}
+.vs{display:flex;justify-content:space-around;font-size:64px;margin:18px 0 6px}
+.react{flex:1;min-height:260px;width:100%;border-radius:22px;font-size:26px;font-weight:900;background:#3a2616;border:2px solid var(--gold2);color:#ffe3a6}
+.react.wait{background:#7a2630;border-color:#e0646b;color:#fff}.react.go{background:#1f9e55;border-color:#6ff0a0;color:#fff}
+.q{font-size:44px;font-weight:900;text-align:center;margin:20px 0}
+.bar{height:8px;border-radius:99px;background:#ffffff18;overflow:hidden;margin-bottom:6px}.bar i{display:block;height:100%;width:100%;background:var(--gold);transition:width .25s linear}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}.opts button{padding:18px 0;border-radius:16px;background:var(--glass);border:1px solid #f5c15a40;font-size:24px;font-weight:800}
+.opts button.good{background:#1f9e5566;border-color:#6ff0a0}.opts button.bad{background:#9e1f2f66;border-color:#e0646b}
+.res{margin:auto;text-align:center;width:100%}.res .big{font-size:78px;line-height:1}.res h2{margin:6px 0;font-size:34px;color:var(--gold)}.res p{color:#cdbfae;margin:0 0 8px}
+.res small{display:block;margin-top:10px;color:#a99d92;min-height:18px}
+#toast{position:fixed;left:50%;top:calc(14px + env(safe-area-inset-top));transform:translateX(-50%);background:#000d;border:1px solid var(--gold);border-radius:999px;padding:8px 18px;font-size:14px;opacity:0;transition:.25s;pointer-events:none;max-width:92vw;text-align:center}
+#toast.on{opacity:1}
+</style>
+</head>
+<body>
+<div id="app">
+  <header><button id="back" title="Kembali">✕</button><b id="ttl">Game Koin</b><span id="bal">🪙 0</span></header>
+  <main id="main"></main>
+</div>
+<div id="toast"></div>
+<script>
+const $ = s => document.querySelector(s), main = $('#main');
+const rnd = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+const shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = rnd(0, i);[a[i], a[j]] = [a[j], a[i]] } return a };
+const parentApi = () => { try { return window.parent !== window ? window.parent.GameAPI : null } catch { return null } };
+let cleanup = null, cur = null, localBal = 0;
+
+function toast(t) { const e = $('#toast'); e.textContent = t; e.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(() => e.classList.remove('on'), 2400) }
+function setBal() { const a = parentApi(); $('#bal').textContent = '🪙 ' + Number(a ? a.balance() : localBal).toLocaleString('id-ID') }
+function stop() { if (cleanup) { try { cleanup() } catch { } cleanup = null } }
+
+/* ---------- menu & hasil ---------- */
+function menu() {
+  stop(); cur = null; $('#ttl').textContent = 'Game Koin'; setBal();
+  main.innerHTML = `<p class="sub">Pilih game. Setiap permainan memberi <b>maksimal 30 koin emas</b>.${parentApi() ? '' : '<br><small>(mode uji: koin tidak masuk akun)</small>'}</p>
+  <div class="grid">${GAMES.map(g => `<button class="card" data-g="${g.id}"><i>${g.icon}</i><b>${g.name}</b><small>${g.desc}</small></button>`).join('')}</div>`;
+  main.querySelectorAll('.card').forEach(b => b.onclick = () => start(b.dataset.g));
+}
+function start(id) { stop(); cur = GAMES.find(g => g.id === id); $('#ttl').textContent = cur.name; cur.run() }
+function result(reward, info) {
+  stop(); reward = Math.max(0, Math.min(30, Math.round(reward))); let claimed = false;
+  main.innerHTML = `<div class="res"><div class="big">${reward >= 30 ? '🏆' : reward > 0 ? '🪙' : '😅'}</div><h2>${reward} koin</h2><p>${info || ''}</p>
+    <button class="btn" id="rc" ${reward ? '' : 'disabled'}>Klaim ${reward} koin</button>
+    <button class="btn o" id="ra">Main lagi</button><button class="btn o" id="rm">Menu</button><small id="rs">${reward ? '' : 'Belum ada koin, coba lagi!'}</small></div>`;
+  $('#ra').onclick = () => start(cur.id); $('#rm').onclick = menu;
+  $('#rc').onclick = async () => {
+    if (claimed || !reward) return; claimed = true; const b = $('#rc'); b.disabled = true; b.textContent = 'Mengklaim…';
+    const a = parentApi();
+    if (!a) { localBal += reward; setBal(); b.textContent = `+${reward} koin (mode uji)`; return }
+    const r = await a.claim(cur.id, reward);
+    if (r?.error) { claimed = false; b.disabled = false; b.textContent = `Klaim ${reward} koin`; $('#rs').textContent = r.error; return toast(r.error) }
+    setBal(); b.textContent = `✅ +${reward} koin masuk akun`; toast(`+${reward} koin emas 🪙`);
+  };
+}
+const hud = (l, r) => `<div class="hud"><span>${l}</span><span>${r}</span></div>`;
+
+/* ---------- 1. Tap Koin ---------- */
+function gTap() {
+  let score = 0, left = 20, alive = true;
+  main.innerHTML = hud('Skor <b id="sc">0</b>', '⏱ <b id="tm">20</b> dtk') + '<div class="arena" id="ar"></div>';
+  const ar = $('#ar');
+  const spawn = () => {
+    if (!alive) return; const gold = Math.random() < .15, b = document.createElement('button');
+    b.className = 'coin' + (gold ? ' gold' : ''); b.textContent = gold ? '🌟' : '🪙';
+    b.style.left = Math.random() * Math.max(10, ar.clientWidth - 56) + 'px'; b.style.top = Math.random() * Math.max(10, ar.clientHeight - 56) + 'px';
+    b.onpointerdown = e => { e.preventDefault(); score += gold ? 3 : 1; $('#sc').textContent = score; b.remove() };
+    ar.append(b); setTimeout(() => b.remove(), gold ? 900 : 1300);
+  };
+  const t1 = setInterval(spawn, 420), t2 = setInterval(() => { left--; $('#tm').textContent = left; if (left <= 0) result(score / 2, `Skor ${score} (🌟 bernilai 3)`) }, 1000);
+  cleanup = () => { alive = false; clearInterval(t1); clearInterval(t2) };
+}
+
+/* ---------- 2. Tangkap Koin ---------- */
+function gCatch() {
+  let score = 0, time = 25, alive = true, items = [], last = performance.now(), sp = 0, bx = .5, raf;
+  main.innerHTML = hud('Skor <b id="sc">0</b>', '⏱ <b id="tm">25</b> dtk') + '<div class="arena" id="ar"><div id="bk">🧺</div></div><p class="sub" style="margin:8px 0 0">Geser untuk menggerakkan keranjang. Hindari 💣!</p>';
+  const ar = $('#ar'), bk = $('#bk');
+  const move = e => { const r = ar.getBoundingClientRect(); bx = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)); bk.style.left = bx * 100 + '%' };
+  ar.addEventListener('pointermove', move); ar.addEventListener('pointerdown', move);
+  const loop = now => {
+    if (!alive) return; const dt = Math.min(.05, (now - last) / 1000); last = now; sp -= dt;
+    const H = ar.clientHeight;
+    if (sp <= 0) {
+      sp = .5; const r = Math.random(), t = r < .68 ? 'coin' : r < .84 ? 'gold' : 'bomb', el = document.createElement('div');
+      el.className = 'fall'; el.textContent = t === 'coin' ? '🪙' : t === 'gold' ? '🌟' : '💣';
+      const x = .06 + Math.random() * .88; el.style.left = x * 100 + '%'; ar.append(el); items.push({ el, t, x, y: -30, v: 150 + Math.random() * 120 });
+    }
+    items = items.filter(o => {
+      o.y += o.v * dt; o.el.style.top = o.y + 'px';
+      if (o.y > H - 66 && o.y < H - 14 && Math.abs(o.x - bx) < .13) {
+        score = Math.max(0, score + (o.t === 'coin' ? 1 : o.t === 'gold' ? 3 : -3)); $('#sc').textContent = score; o.el.remove(); return false;
+      }
+      if (o.y > H) { o.el.remove(); return false } return true;
+    });
+    raf = requestAnimationFrame(loop);
+  };
+  raf = requestAnimationFrame(loop);
+  const t2 = setInterval(() => { time--; $('#tm').textContent = time; if (time <= 0) result(score, `Skor ${score} (🪙 +1, 🌟 +3, 💣 −3)`) }, 1000);
+  cleanup = () => { alive = false; cancelAnimationFrame(raf); clearInterval(t2) };
+}
+
+/* ---------- 3. Kartu Memori ---------- */
+function gMemory() {
+  const faces = shuffle([...['🍎', '🍋', '🍇', '🍒', '🍉', '🥝'], ...['🍎', '🍋', '🍇', '🍒', '🍉', '🥝']]);
+  let first = null, lock = false, moves = 0, matched = 0, tmo = [];
+  main.innerHTML = hud('Langkah <b id="mv">0</b>', 'Pasangan <b id="pr">0</b>/6') + `<div class="mem">${faces.map((f, i) => `<button class="mc" data-i="${i}">${f}</button>`).join('')}</div><p class="sub" style="margin-top:10px">Selesai ≤ 6 langkah = 30 koin. Tiap langkah ekstra −3.</p>`;
+  const cards = [...main.querySelectorAll('.mc')];
+  cards.forEach(c => c.onclick = () => {
+    const i = +c.dataset.i; if (lock || c.classList.contains('up') || c.classList.contains('ok')) return;
+    c.classList.add('up');
+    if (first === null) { first = i; return }
+    moves++; $('#mv').textContent = moves; const a = first; first = null;
+    if (faces[a] === faces[i]) {
+      cards[a].classList.replace('up', 'ok'); cards[i].classList.replace('up', 'ok'); matched++; $('#pr').textContent = matched;
+      if (matched === 6) tmo.push(setTimeout(() => result(Math.max(5, 30 - Math.max(0, moves - 6) * 3), `Selesai dalam ${moves} langkah`), 600));
+    } else { lock = true; tmo.push(setTimeout(() => { cards[a].classList.remove('up'); cards[i].classList.remove('up'); lock = false }, 700)) }
+  });
+  cleanup = () => tmo.forEach(clearTimeout);
+}
+
+/* ---------- 4. Tebak Angka ---------- */
+function gGuess() {
+  const secret = rnd(1, 20); let tries = 5;
+  main.innerHTML = hud('Tebak angka <b>1–20</b>', 'Sisa <b id="tr">5</b>') + `<p class="sub">Menang dengan sisa kesempatan lebih banyak = koin lebih besar (maks. 30).</p>
+    <input id="gi" class="inp" type="number" inputmode="numeric" min="1" max="20" placeholder="?"><div class="msg" id="gm">Tebakan pertamamu?</div><button class="btn" id="gb">Tebak</button>`;
+  const go = () => {
+    const v = parseInt($('#gi').value, 10); if (!(v >= 1 && v <= 20)) return toast('Masukkan angka 1–20');
+    tries--; $('#tr').textContent = tries; $('#gi').value = '';
+    if (v === secret) return result([0, 6, 12, 18, 24, 30][tries + 1] ?? 0, `Benar! Angkanya ${secret}`);
+    if (tries <= 0) return result(0, `Kesempatan habis. Angkanya ${secret}`);
+    $('#gm').textContent = v < secret ? '⬆️ Terlalu kecil' : '⬇️ Terlalu besar';
+  };
+  $('#gb').onclick = go; $('#gi').onkeydown = e => { if (e.key === 'Enter') go() }; $('#gi').focus();
+}
+
+/* ---------- 5. Gunting Batu Kertas ---------- */
+function gRps() {
+  const S = ['✊', '✋', '✌️']; let round = 0, wins = 0, tmo;
+  main.innerHTML = hud('Ronde <b id="rn">1</b>/5', 'Menang <b id="rw">0</b>') + `<div class="vs"><span id="me">❔</span><span id="cpu">❔</span></div><div class="msg" id="rm2">Pilih senjatamu!</div><div class="row3">${S.map((s, i) => `<button class="rps" data-i="${i}">${s}</button>`).join('')}</div><p class="sub" style="margin-top:12px">Tiap kemenangan = 6 koin (5 menang = 30).</p>`;
+  let busy = false;
+  main.querySelectorAll('.rps').forEach(b => b.onclick = () => {
+    if (busy) return; busy = true; const me = +b.dataset.i, cpu = rnd(0, 2), d = (me - cpu + 3) % 3; round++;
+    $('#me').textContent = S[me]; $('#cpu').textContent = S[cpu];
+    if (d === 1) { wins++; $('#rw').textContent = wins; $('#rm2').textContent = '🎉 Kamu menang!' } else $('#rm2').textContent = d === 0 ? '🤝 Seri' : '😅 Kamu kalah';
+    if (round >= 5) tmo = setTimeout(() => result(wins * 6, `Menang ${wins} dari 5 ronde`), 900);
+    else tmo = setTimeout(() => { $('#rn').textContent = round + 1; $('#me').textContent = '❔'; $('#cpu').textContent = '❔'; $('#rm2').textContent = 'Pilih senjatamu!'; busy = false }, 900);
+  });
+  cleanup = () => clearTimeout(tmo);
+}
+
+/* ---------- 6. Reaksi Cepat ---------- */
+function gReact() {
+  let round = 0, total = 0, state = 'idle', t0 = 0, to, to2;
+  main.innerHTML = hud('Ronde <b id="rn">1</b>/5', 'Koin <b id="rt">0</b>') + '<button id="rb" class="react">Mulai</button><p class="sub" id="rmsg" style="margin-top:10px">Ketuk saat layar berubah hijau. Makin cepat makin banyak koin (maks. 6 per ronde).</p>';
+  const rb = $('#rb');
+  const arm = () => { state = 'wait'; rb.className = 'react wait'; rb.textContent = 'Tunggu hijau…'; to = setTimeout(() => { state = 'go'; rb.className = 'react go'; rb.textContent = 'TAP!'; t0 = performance.now() }, 1000 + Math.random() * 2200) };
+  const next = (c, note) => {
+    state = 'idle'; total += c; round++; $('#rt').textContent = total; $('#rmsg').textContent = note;
+    if (round >= 5) { rb.className = 'react'; rb.textContent = 'Selesai!'; to2 = setTimeout(() => result(total, `Total ${total} koin dari 5 ronde`), 1000) }
+    else { rb.className = 'react'; rb.textContent = 'Lanjut'; $('#rn').textContent = round + 1 }
+  };
+  rb.onclick = () => {
+    if (state === 'idle') { if (round < 5) arm() }
+    else if (state === 'wait') { clearTimeout(to); next(0, 'Terlalu cepat! 0 koin') }
+    else if (state === 'go') { const ms = Math.round(performance.now() - t0), c = ms < 250 ? 6 : ms < 350 ? 5 : ms < 450 ? 4 : ms < 600 ? 3 : ms < 800 ? 2 : 1; next(c, `${ms} ms → ${c} koin`) }
+  };
+  cleanup = () => { clearTimeout(to); clearTimeout(to2) };
+}
+
+/* ---------- 7. Hitung Cepat ---------- */
+function gMath() {
+  let n = 0, ok = 0, tmo, iv, locked = false;
+  const ask = () => {
+    n++; locked = false; clearInterval(iv);
+    const ops = ['+', '−', '×'], op = ops[rnd(0, 2)]; let a, b, ans;
+    if (op === '+') { a = rnd(3, 40); b = rnd(3, 40); ans = a + b } else if (op === '−') { a = rnd(15, 60); b = rnd(2, a - 1); ans = a - b } else { a = rnd(2, 12); b = rnd(2, 9); ans = a * b }
+    const set = new Set([ans]); while (set.size < 4) set.add(Math.max(0, ans + rnd(-9, 9)));
+    const opts = shuffle([...set]);
+    main.innerHTML = hud(`Soal <b>${n}</b>/10`, `Benar <b id="ok">${ok}</b>`) + `<div class="bar"><i id="bar"></i></div><div class="q">${a} ${op} ${b} = ?</div><div class="opts">${opts.map(o => `<button data-v="${o}">${o}</button>`).join('')}</div><p class="sub" style="margin-top:14px">Tiap jawaban benar = 3 koin (10 benar = 30).</p>`;
+    let t = 8; const bar = $('#bar');
+    iv = setInterval(() => { t -= .25; bar.style.width = Math.max(0, t / 8 * 100) + '%'; if (t <= 0) { clearInterval(iv); judge(null, ans) } }, 250);
+    main.querySelectorAll('.opts button').forEach(bt => bt.onclick = () => judge(bt, ans));
+  };
+  const judge = (bt, ans) => {
+    if (locked) return; locked = true; clearInterval(iv);
+    main.querySelectorAll('.opts button').forEach(b => { if (+b.dataset.v === ans) b.classList.add('good') });
+    if (bt && +bt.dataset.v === ans) ok++; else if (bt) bt.classList.add('bad');
+    tmo = setTimeout(() => n >= 10 ? result(ok * 3, `Benar ${ok} dari 10 soal`) : ask(), 700);
+  };
+  ask(); cleanup = () => { clearTimeout(tmo); clearInterval(iv) };
+}
+
+const GAMES = [
+  { id: 'tap', name: 'Tap Koin', icon: '👆', desc: 'Ketuk koin secepatnya, 20 detik', run: gTap },
+  { id: 'catch', name: 'Tangkap Koin', icon: '🧺', desc: 'Geser keranjang, hindari bom', run: gCatch },
+  { id: 'memory', name: 'Kartu Memori', icon: '🃏', desc: 'Cocokkan 6 pasang kartu', run: gMemory },
+  { id: 'guess', name: 'Tebak Angka', icon: '🔢', desc: 'Tebak angka 1–20 (5 kesempatan)', run: gGuess },
+  { id: 'rps', name: 'Gunting Batu Kertas', icon: '✌️', desc: '5 ronde lawan komputer', run: gRps },
+  { id: 'react', name: 'Reaksi Cepat', icon: '⚡', desc: 'Ketuk saat layar hijau', run: gReact },
+  { id: 'math', name: 'Hitung Cepat', icon: '🧮', desc: '10 soal hitungan, 8 detik/soal', run: gMath },
+];
+
+$('#back').onclick = () => {
+  if (cur) return menu();
+  const a = parentApi(); if (a?.close) a.close(); else history.length > 1 ? history.back() : toast('Tutup tab ini untuk keluar');
+};
+window.addEventListener('pagehide', stop);
+menu();
+</script>
+</body>
+</html>

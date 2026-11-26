@@ -578,6 +578,8 @@ textarea.inp{resize:none;display:block}
 @media(prefers-reduced-motion:reduce){.emoav span,.emg button span{animation:none!important}}
 /* Layar Room (file rooms.html dibuka di dalam index.html, tanpa meninggalkan halaman) */
 #roomsOv{position:fixed;inset:0;z-index:45;background:#0c0806}
+#gameOv{position:fixed;inset:0;z-index:46;background:#0c0806}#gameOv.hidden{display:none!important}
+#gameOv iframe{display:block;width:100%;height:100%;border:0;background:#0c0806}
 #updBar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(78px + env(safe-area-inset-bottom));z-index:58;display:flex;align-items:center;gap:10px;padding:8px 10px 8px 14px;border-radius:999px;background:rgba(20,14,12,.97);border:1.5px solid var(--gold);box-shadow:0 8px 30px #000a;font-size:14px}
 #updBar button{background:var(--gold);color:#2a1700;border-radius:999px;padding:6px 14px;font-weight:900}
 #roomsOv iframe{display:block;width:100%;height:100%;border:0;background:#0c0806}
@@ -609,6 +611,19 @@ textarea.inp{resize:none;display:block}
 #onceView img{max-width:100%;max-height:78dvh;object-fit:contain;border-radius:12px;pointer-events:none}
 #onceView .ot{color:#ffd886;font-size:13px;margin:0 0 10px;text-align:center}
 #onceView button{margin-top:14px;background:var(--gold);color:#2a1700;border-radius:999px;padding:10px 26px;font-weight:900}
+
+/* Pop up rating */
+#ratePop{position:fixed;inset:0;z-index:75;background:#000b;display:flex;align-items:center;justify-content:center;padding:20px}
+#ratePop.hidden{display:none!important}
+#ratePop .rc{width:100%;max-width:380px;background:#150f0b;border:1.5px solid var(--gold2);border-radius:24px;padding:22px 18px 18px;text-align:center;box-shadow:0 0 40px #f5c15a33;animation:rpop .25s ease-out}
+@keyframes rpop{from{transform:scale(.88);opacity:0}to{transform:scale(1);opacity:1}}
+#ratePop h3{margin:0 0 4px;font-size:21px;color:var(--gold)}
+#ratePop .stars{display:flex;justify-content:center;gap:6px;margin:14px 0 6px}
+#ratePop .stars button{font-size:40px;line-height:1;color:#5a4a3a;transition:.12s}
+#ratePop .stars button.on{color:#ffc93c;text-shadow:0 0 14px #ffc93c88;transform:scale(1.08)}
+#ratePop .rl{min-height:20px;color:#ffd886;font-size:14px;margin-bottom:8px}
+#ratePop textarea{width:100%;resize:none}
+#ratePop .acts{display:flex;gap:8px;margin-top:12px}#ratePop .acts button{flex:1}
 </style>
 </head>
 <body>
@@ -662,6 +677,7 @@ textarea.inp{resize:none;display:block}
   <div class="top">
     <div class="t"><b>Postingan</b><small>Dari semua anggota room</small></div>
     <button class="ib bell" onclick="H.notifs()" title="Notifikasi"><span class="ms">notifications</span><em class="nb"></em></button>
+    <button class="ib" onclick="H.games()" title="Game koin"><span class="ms">sports_esports</span></button>
     <button class="ib plus" onclick="H.compose()" title="Buat postingan"><span class="ms">add</span></button>
   </div>
   <div class="pg"><div id="storyBar" class="storybar"></div><div id="plist"></div></div>
@@ -692,7 +708,7 @@ textarea.inp{resize:none;display:block}
   <button data-t="me" onclick="H.tab('me')"><i><span class="ms">person</span></i>Profil<em class="nb"></em></button>
 </nav>
 
-<div id="roomsOv" class="hidden"><iframe id="roomsFrame" title="Room" allow="microphone"></iframe></div><div id="sheet" class="hidden"></div><div id="fx"></div><div id="svipPop" class="hidden"></div><div id="entranceFX" class="hidden"></div><div id="chestFX" class="hidden"></div><div id="storyView" class="storyview hidden"></div><div id="toast"></div><div id="nbanner"></div><div id="updBar" class="hidden"><span class="ms">system_update</span><b>Versi baru tersedia</b><button onclick="H.reloadApp()">Perbarui</button></div>
+<div id="ratePop" class="hidden"></div><div id="gameOv" class="hidden"><iframe id="gameFrame" title="Game Koin"></iframe></div><div id="roomsOv" class="hidden"><iframe id="roomsFrame" title="Room" allow="microphone"></iframe></div><div id="sheet" class="hidden"></div><div id="fx"></div><div id="svipPop" class="hidden"></div><div id="entranceFX" class="hidden"></div><div id="chestFX" class="hidden"></div><div id="storyView" class="storyview hidden"></div><div id="toast"></div><div id="nbanner"></div><div id="updBar" class="hidden"><span class="ms">system_update</span><b>Versi baru tersedia</b><button onclick="H.reloadApp()">Perbarui</button></div>
 
 <script type="module">
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
@@ -702,6 +718,9 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
    Supabase Dashboard > Project Settings > API
    ===================================================================== */
 const SUPABASE_URL = 'https://rojdbucohxpvgnygceie.supabase.co';
+/* CAPTCHA (Cloudflare Turnstile). Isi dengan Site Key dari dashboard Cloudflare; kosong = CAPTCHA mati.
+   Site Key aman ditaruh di sini (publik). Secret Key hanya diisi di Supabase, JANGAN di file ini. */
+const TURNSTILE_SITE_KEY = '';
 const SUPABASE_KEY = 'sb_publishable__KXfm9Yv6VRXStTap-DFyQ_sNOPCLrG';
 /* Nomor WhatsApp owner (format internasional, tanpa + atau 0 di depan) */
 const OWNER_WA = '6285946186508';
@@ -1161,8 +1180,38 @@ async function upGiftVideo(file, giftIndex) {
 
 /* ---------- 1. Auth anonim + setup profil ---------- */
 const { data: { session } } = await sb.auth.getSession();
-uid = session?.user?.id || (await sb.auth.signInAnonymously()).data?.user?.id;
-if (!uid) toast('Gagal login anonim. Aktifkan Anonymous Sign-Ins di Supabase.');
+/* Login anonim hanya terjadi saat belum punya sesi. Jika CAPTCHA aktif, token Turnstile wajib: salinan web di domain lain
+   (localhost, hosting orang lain) tidak bisa mendapat token karena Site Key terikat ke daftar domain. */
+function getCaptchaToken() {
+  if (!TURNSTILE_SITE_KEY) return Promise.resolve(undefined);
+  return new Promise((resolve, reject) => {
+    const box = document.createElement('div');
+    box.style.cssText = 'position:fixed;inset:0;z-index:200;background:#000c;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:#f4e9dc;font:15px system-ui;text-align:center;padding:20px';
+    box.innerHTML = '<div id="cfBox"></div><div id="cfMsg">Memeriksa keamanan…</div>';
+    document.body.append(box);
+    const done = (fn, v) => { box.remove(); fn(v) };
+    const draw = () => window.turnstile.render('#cfBox', {
+      sitekey: TURNSTILE_SITE_KEY, theme: 'dark', appearance: 'interaction-only',
+      callback: t => done(resolve, t),
+      'error-callback': () => { box.querySelector('#cfMsg').textContent = 'Verifikasi gagal. Muat ulang halaman, atau buka lewat alamat resmi.' },
+      'timeout-callback': () => { box.querySelector('#cfMsg').textContent = 'Verifikasi kedaluwarsa. Muat ulang halaman.' }
+    });
+    if (window.turnstile) return draw();
+    const sc = document.createElement('script'); sc.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'; sc.async = true;
+    sc.onload = draw; sc.onerror = () => done(reject, new Error('Gagal memuat CAPTCHA'));
+    document.head.append(sc);
+  });
+}
+if (session?.user?.id) uid = session.user.id;
+else {
+  try {
+    const captchaToken = await getCaptchaToken();
+    const r = await sb.auth.signInAnonymously(captchaToken ? { options: { captchaToken } } : undefined);
+    uid = r.data?.user?.id;
+    if (r.error) console.warn('Login anonim:', r.error.message);
+  } catch (e) { console.warn('Login anonim:', e?.message || e) }
+}
+if (!uid) toast('Gagal login. Pastikan CAPTCHA & Anonymous Sign-Ins sudah diatur di Supabase.');
 /* Fitur border butuh kolom baru (border_migration.sql). Jika belum dijalankan, fitur dimatikan tanpa merusak yang lain. */
 let HAS_BORDER = false;
 try { HAS_BORDER = !(await sb.from('profiles').select('avatar_border,borders').limit(1)).error } catch {}
@@ -1215,6 +1264,7 @@ H.panel = async () => {
    ${[5,6,7,8,9,10,11].map(n => `<div class="mrow" style="align-items:flex-start"><span style="flex:1"><b>${tierName(n)} · ${esc(ENTRANCE[n].t)}</b><small style="display:block;color:#a99d92;overflow-wrap:anywhere">${entranceVideos[n]?.name || (entranceVideos[n]?.url ? 'Video tersimpan' : 'Belum ada video — memakai animasi bawaan')}</small></span><div class="bt"><button class="sm" onclick="H.uploadEntrance(${n})"><span class="ms">upload</span> Upload</button><button class="sm o" onclick="H.previewEnt(${n})"><span class="ms">play_arrow</span> Preview</button>${entranceVideos[n]?.url ? `<button class="sm o" onclick="H.removeEntrance(${n})">Hapus</button>` : ''}</div></div>`).join('')}
    <p class="sub" style="margin-top:12px">Tes animasi masuk SVIP (hanya kamu yang melihat)</p>
    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">${[5, 6, 7, 8, 9, 10, 11].map(n => `<button class="sm o" onclick="H.previewEnt(${n})">${tierName(n)}</button>`).join('')}</div>
+   <h3 class="sec"><span class="ms">star</span> Ulasan Aplikasi</h3><button class="sm o" onclick="H.reviews()">Lihat ulasan & rating</button>
    <h3 class="sec"><span class="ms">auto_awesome</span> Tes Efek Gift</h3><p class="sub">Ketuk gift untuk melihat efeknya (hanya kamu yang melihat). Makin besar poin, makin megah.</p>
    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">${GIFTS.map((g, i) => `<button class="sm o" onclick="H.previewGift(${i})" title="${esc(g.name)} · ${g.points} poin">${g.e}</button>`).join('')}</div>
    <h3 class="sec"><span class="ms">movie</span> Video Gift Eksklusif</h3>
@@ -1451,6 +1501,7 @@ async function startRoom() {
 
   $('#msg').onkeydown = e => { if (e.key === 'Enter') H.sendMsg() };
   H.tab('posts'); /* masuk aplikasi = langsung ke Postingan, bukan ke room */
+  setTimeout(() => showRatePop().catch(() => {}), 1500);
 }
 /* ---------- 2B. Banyak room: daftar/buat/pengaturan ada di rooms.html (dibuka sebagai layar di dalam halaman ini) ---------- */
 function openRooms(mode, id) {
@@ -2476,6 +2527,62 @@ async function purgeMyOnce() {
   if (old.length) await sb.storage.from('media').remove(old).catch(() => {});
 }
 
+
+/* ---------- Game koin: game.html dibuka sebagai layar di dalam halaman ini (tanpa pindah halaman) ---------- */
+H.games = () => { $('#gameFrame').src = 'game.html'; $('#gameOv').classList.remove('hidden') };
+function closeGame() { $('#gameOv').classList.add('hidden'); $('#gameFrame').src = 'about:blank' }
+window.GameAPI = {
+  balance: () => Number(me?.gift_tickets || 0),
+  close: closeGame,
+  async claim(game, amount) { /* batas 30 koin per klaim + batas harian dijaga di server (game_coins.sql) */
+    const { data, error } = await sb.rpc('claim_game_coins', { p_game: String(game || '').slice(0, 20), p_amount: Math.min(30, Math.max(0, Math.floor(Number(amount) || 0))) });
+    if (error) return { error: /Could not find the function|schema cache/i.test(error.message || '') ? 'Jalankan game_coins.sql di Supabase dulu.' : error.message };
+    const bal = Number(data); me = { ...me, gift_tickets: bal }; if (prof[uid]) prof[uid] = { ...prof[uid], gift_tickets: bal };
+    try { renderProf() } catch {} syncPointsSoon(300); return { ok: true, balance: bal };
+  }
+};
+
+
+/* ---------- Rating & ulasan: pop up di tengah setiap masuk, sampai pengguna mengirim ulasan ---------- */
+let HAS_REV = null, revStars = 0;
+const REV_LABEL = ['', 'Buruk 😞', 'Kurang 😕', 'Cukup 🙂', 'Bagus 😃', 'Luar biasa 🤩'];
+async function showRatePop() {
+  if (!uid || HAS_REV === false || !$('#ratePop').classList.contains('hidden')) return;
+  const { data, error } = await sb.from('app_reviews').select('stars').eq('user_id', uid).maybeSingle();
+  if (error) { HAS_REV = false; return } /* tabel belum ada (jalankan rating.sql) → tidak menampilkan pop up */
+  HAS_REV = true; if (data) return; /* sudah pernah memberi ulasan */
+  revStars = 0;
+  const e = $('#ratePop');
+  e.innerHTML = `<div class="rc"><h3>⭐ Beri Penilaian</h3><p class="sub" style="margin:0">Berikan ulasan dan bintang untuk aplikasi ini</p>
+    <div class="stars">${[1, 2, 3, 4, 5].map(n => `<button data-s="${n}" onclick="H.revStar(${n})" title="${n} bintang"><span class="ms">star</span></button>`).join('')}</div>
+    <div class="rl" id="revLbl">Ketuk bintang untuk menilai</div>
+    <textarea id="revTxt" class="inp" rows="3" maxlength="300" placeholder="Tulis ulasanmu (opsional)..."></textarea>
+    <div class="acts"><button class="sm o" onclick="H.revClose()">Nanti saja</button><button class="btn" style="margin:0" onclick="H.revSend()">Kirim</button></div></div>`;
+  e.classList.remove('hidden');
+}
+H.revStar = n => {
+  revStars = n;
+  document.querySelectorAll('#ratePop .stars button').forEach(b => b.classList.toggle('on', Number(b.dataset.s) <= n));
+  const l = $('#revLbl'); if (l) l.textContent = REV_LABEL[n];
+};
+H.revClose = () => $('#ratePop').classList.add('hidden');
+H.revSend = async () => {
+  if (!revStars) return toast('Pilih jumlah bintang dulu ⭐');
+  if (H.revSend.busy) return; H.revSend.busy = true;
+  const { error } = await sb.from('app_reviews').upsert({ user_id: uid, stars: revStars, review: ($('#revTxt')?.value || '').trim().slice(0, 300), updated_at: new Date().toISOString() }, { onConflict: 'user_id' });
+  H.revSend.busy = false;
+  if (error) return toast(/app_reviews|relation|schema cache/i.test(error.message) ? 'Fitur ulasan belum aktif. Jalankan rating.sql di Supabase.' : error.message);
+  H.revClose(); toast('Terima kasih atas ulasanmu! 💛');
+};
+H.reviews = async () => { /* khusus Host: ringkasan & daftar ulasan */
+  if (!me?.is_host) return;
+  const { data, error } = await sb.from('app_reviews').select('user_id,stars,review,updated_at,profiles!user_id(name,avatar)').order('updated_at', { ascending: false }).limit(100);
+  if (error) return toast(error.message);
+  const rows = data || [], avg = rows.length ? rows.reduce((a, r) => a + r.stars, 0) / rows.length : 0;
+  sheet(`<h3>⭐ Ulasan Aplikasi</h3><p class="sub">${rows.length ? `Rata-rata <b>${avg.toFixed(1)}</b> / 5 dari ${rows.length} ulasan` : 'Belum ada ulasan.'}</p>
+    ${rows.map(r => `<div class="mrow" style="align-items:flex-start"><img src="${esc(r.profiles?.avatar || '')}"><span style="flex:1"><b>${esc(r.profiles?.name || 'Anggota')}</b> <span style="color:#ffc93c">${'★'.repeat(r.stars)}${'☆'.repeat(5 - r.stars)}</span><small style="display:block;color:#a99d92;overflow-wrap:anywhere">${esc(r.review || '(tanpa ulasan)')} · ${ago(r.updated_at)}</small></span></div>`).join('')}`);
+};
+
 /* ---------- 8A. Teman, permintaan pertemanan, chat pribadi ---------- */
 async function loadFriends() {
   const {data,error}=await sb.from('friends').select('friend_id,created_at').eq('user_id',uid).order('created_at',{ascending:false});
@@ -2823,7 +2930,7 @@ function checkRoomMention(m) {
 let updPending = false;
 function appUpdated() {
   if (updPending) return; updPending = true;
-  const busy = inRm || voiceRecorder || !$('#sheet').classList.contains('hidden') || !$('#storyView').classList.contains('hidden') || !$('#roomsOv').classList.contains('hidden');
+  const busy = inRm || voiceRecorder || !$('#sheet').classList.contains('hidden') || !$('#storyView').classList.contains('hidden') || !$('#roomsOv').classList.contains('hidden') || !$('#gameOv').classList.contains('hidden');
   if (!busy) { toast('Versi baru ditemukan, memperbarui…'); setTimeout(() => location.reload(), 1200); return } /* aman: tidak sedang di room / mengetik / merekam */
   $('#updBar').classList.remove('hidden'); /* sedang sibuk: biarkan pengguna memilih kapan memperbarui */
 }
