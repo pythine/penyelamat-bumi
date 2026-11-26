@@ -580,6 +580,8 @@ textarea.inp{resize:none;display:block}
 #roomsOv{position:fixed;inset:0;z-index:45;background:#0c0806}
 #gameOv{position:fixed;inset:0;z-index:46;background:#0c0806}#gameOv.hidden{display:none!important}
 #gameOv iframe{display:block;width:100%;height:100%;border:0;background:#0c0806}
+#videoOv{position:fixed;inset:0;z-index:47;background:#07060a}#videoOv.hidden{display:none!important}
+#videoOv iframe{display:block;width:100%;height:100%;border:0;background:#07060a}
 #updBar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(78px + env(safe-area-inset-bottom));z-index:58;display:flex;align-items:center;gap:10px;padding:8px 10px 8px 14px;border-radius:999px;background:rgba(20,14,12,.97);border:1.5px solid var(--gold);box-shadow:0 8px 30px #000a;font-size:14px}
 #updBar button{background:var(--gold);color:#2a1700;border-radius:999px;padding:6px 14px;font-weight:900}
 #roomsOv iframe{display:block;width:100%;height:100%;border:0;background:#0c0806}
@@ -806,11 +808,12 @@ textarea.inp{resize:none;display:block}
 <nav id="nav" class="nav hidden">
   <button data-t="room" onclick="H.tab('room')"><i><span class="ms">meeting_room</span></i>Room<em class="nb"></em></button>
   <button data-t="posts" class="on" onclick="H.tab('posts')"><i><span class="ms">newspaper</span></i>Postingan<em class="nb"></em></button>
+  <button onclick="H.videos()" title="Feed Video"><i><span class="ms">smart_display</span></i>Video</button>
   <button data-t="friends" onclick="H.tab('friends')"><i><span class="ms">group</span></i>Teman<em class="nb"></em></button>
   <button data-t="me" onclick="H.tab('me')"><i><span class="ms">person</span></i>Profil<em class="nb"></em></button>
 </nav>
 
-<div id="ratePop" class="hidden"></div><div id="gameOv" class="hidden"><iframe id="gameFrame" title="Game Koin"></iframe></div><div id="roomsOv" class="hidden"><iframe id="roomsFrame" title="Room" allow="microphone"></iframe></div><div id="sheet" class="hidden"></div><div id="fx"></div><div id="svipPop" class="hidden"></div><div id="entranceFX" class="hidden"></div><div id="chestFX" class="hidden"></div><div id="storyView" class="storyview hidden"></div><div id="toast"></div><div id="nbanner"></div><div id="updBar" class="hidden"><span class="ms">system_update</span><b>Versi baru tersedia</b><button onclick="H.reloadApp()">Perbarui</button></div>
+<div id="ratePop" class="hidden"></div><div id="videoOv" class="hidden"><iframe id="videoFrame" title="Feed Video" allow="autoplay; encrypted-media; picture-in-picture; clipboard-write; web-share"></iframe></div><div id="gameOv" class="hidden"><iframe id="gameFrame" title="Game Koin"></iframe></div><div id="roomsOv" class="hidden"><iframe id="roomsFrame" title="Room" allow="microphone"></iframe></div><div id="sheet" class="hidden"></div><div id="fx"></div><div id="svipPop" class="hidden"></div><div id="entranceFX" class="hidden"></div><div id="chestFX" class="hidden"></div><div id="storyView" class="storyview hidden"></div><div id="toast"></div><div id="nbanner"></div><div id="updBar" class="hidden"><span class="ms">system_update</span><b>Versi baru tersedia</b><button onclick="H.reloadApp()">Perbarui</button></div>
 
 <script type="module">
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
@@ -2947,6 +2950,10 @@ async function purgeMyOnce() {
 
 
 /* ---------- Game koin: game.html dibuka sebagai layar di dalam halaman ini (tanpa pindah halaman) ---------- */
+/* ---------- Feed Video: video.html dibuka sebagai layar di atas halaman ini (room/voice tidak terputus) ---------- */
+H.videos = () => { $('#videoFrame').src = 'video.html'; $('#videoOv').classList.remove('hidden') };
+function closeVideo() { $('#videoOv').classList.add('hidden'); $('#videoFrame').src = 'about:blank' } /* about:blank menghentikan suara video */
+window.VideoAPI = { close: closeVideo };
 H.games = () => { $('#gameFrame').src = 'game.html'; $('#gameOv').classList.remove('hidden') };
 function closeGame() { $('#gameOv').classList.add('hidden'); $('#gameFrame').src = 'about:blank' }
 window.GameAPI = {
@@ -3355,7 +3362,7 @@ function checkRoomMention(m) {
 let updPending = false;
 function appUpdated() {
   if (updPending) return; updPending = true;
-  const busy = inRm || voiceRecorder || !$('#sheet').classList.contains('hidden') || !$('#storyView').classList.contains('hidden') || !$('#roomsOv').classList.contains('hidden') || !$('#gameOv').classList.contains('hidden');
+  const busy = inRm || voiceRecorder || !$('#sheet').classList.contains('hidden') || !$('#storyView').classList.contains('hidden') || !$('#roomsOv').classList.contains('hidden') || !$('#gameOv').classList.contains('hidden') || !$('#videoOv').classList.contains('hidden');
   if (!busy) { toast('Versi baru ditemukan, memperbarui…'); setTimeout(() => location.reload(), 1200); return } /* aman: tidak sedang di room / mengetik / merekam */
   $('#updBar').classList.remove('hidden'); /* sedang sibuk: biarkan pengguna memilih kapan memperbarui */
 }
