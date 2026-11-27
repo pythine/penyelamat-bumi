@@ -9,7 +9,6 @@
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="icon" type="image/png" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
-<script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,0..1,0&display=block" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
 <style>
@@ -224,6 +223,19 @@ textarea.inp{resize:none;display:block}
 .dmline.typ i:nth-child(2){animation-delay:.15s}.dmline.typ i:nth-child(3){animation-delay:.3s}
 @keyframes tdot{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-5px);opacity:1}}
 .dmcomposer .inp{min-width:0}
+/* Lihat foto profil */
+.pf img.pav,.dmhead img{cursor:zoom-in}
+#avView{position:fixed;inset:0;z-index:78;background:#000f;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:calc(14px + env(safe-area-inset-top)) 14px calc(14px + env(safe-area-inset-bottom))}
+#avView img{width:min(92vw,520px);max-height:76dvh;object-fit:contain;border-radius:18px}
+#avView b{color:var(--gold);font-size:17px;text-align:center}
+/* GIF di chat teman */
+.gifbtn{font-weight:800;font-size:12px}
+#gifPanel{flex:none;margin-top:6px;padding:8px;border-radius:14px;background:#1c1410;border:1px solid #ffffff1f}
+#gifPanel.hidden{display:none!important}
+#gifGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-height:28dvh;overflow:auto;margin-top:8px}
+#gifGrid img{width:100%;height:84px;object-fit:cover;border-radius:8px;cursor:pointer}
+#gifGrid p{grid-column:1/-1}
+.gifmsg{display:block;width:200px;max-width:100%;min-height:80px;max-height:240px;object-fit:contain;border-radius:10px}
 .replyhint{display:flex;justify-content:space-between;align-items:center;background:#5b431e88;border-radius:10px;padding:7px 10px;margin:5px 0;font-size:12px;color:#ffe0a0}
 /* Stories 24 jam */
 .storybar{display:flex;gap:12px;overflow-x:auto;padding:8px 2px 14px;scrollbar-width:none}
@@ -580,6 +592,8 @@ textarea.inp{resize:none;display:block}
 #roomsOv{position:fixed;inset:0;z-index:45;background:#0c0806}
 #gameOv{position:fixed;inset:0;z-index:46;background:#0c0806}#gameOv.hidden{display:none!important}
 #gameOv iframe{display:block;width:100%;height:100%;border:0;background:#0c0806}
+#videoOv{position:fixed;inset:0;z-index:47;background:#07060a}#videoOv.hidden{display:none!important}
+#videoOv iframe{display:block;width:100%;height:100%;border:0;background:#07060a}
 #updBar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(78px + env(safe-area-inset-bottom));z-index:58;display:flex;align-items:center;gap:10px;padding:8px 10px 8px 14px;border-radius:999px;background:rgba(20,14,12,.97);border:1.5px solid var(--gold);box-shadow:0 8px 30px #000a;font-size:14px}
 #updBar button{background:var(--gold);color:#2a1700;border-radius:999px;padding:6px 14px;font-weight:900}
 #roomsOv iframe{display:block;width:100%;height:100%;border:0;background:#0c0806}
@@ -700,6 +714,227 @@ textarea.inp{resize:none;display:block}
 .tcard b{color:#fff1c2}.tcard.warn{border-color:#ff6a6a;box-shadow:0 0 12px #ff6a6a55}
 .tcard .prog{width:100%}.tcard .sm{margin-top:4px}
 @media (prefers-reduced-motion:reduce){.svip.s12 span,.svip.s13 span,.svip.s12 .gem,.svip.s13 .wg,.ring.vip9.bd-svip13,#entranceFX .lx-beams b,#entranceFX .lx-fall i{animation:none}}
+.qtybar{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:6px 0 10px}
+.qtybar button{padding:6px 12px;border-radius:99px;background:#ffffff14;border:1px solid #ffffff22;font-weight:900;color:#f4e9dc}
+.qtybar button.on{background:linear-gradient(#ffd886,#d9962f);color:#2a1700;border-color:#fff1a8}
+.qtybar input{width:76px;padding:6px 10px;border-radius:99px;background:#0006;border:1px solid #ffd36e77;color:#fff;font:inherit;text-align:center}
+/* ===== 3 border mewah ===== */
+.bd-lux-kaisar{--bg:conic-gradient(transparent 0 55%,#fff 70%,transparent 85%),repeating-conic-gradient(#fff6c9 0 12deg,#e8a317 12deg 24deg,#b3122f 24deg 36deg);--glow:#ffcf4a;--deco:'';--spd:3s}
+.bd-lux-galaksi{--bg:conic-gradient(transparent 0 58%,#fff 73%,transparent 88%),conic-gradient(#8ef6ff,#4b5bff,#b44bff,#ff6ad5,#2a1268,#8ef6ff);--glow:#9d7bff;--deco:'';--spd:2.2s}
+.bd-lux-phoenix{--bg:conic-gradient(transparent 0 55%,#fff6c9 72%,transparent 86%),conic-gradient(#ffe66a,#ff8a1f,#e0123f,#ff2f92,#ff8a1f,#ffe66a);--glow:#ff5a2f;--deco:'';--spd:1.7s}
+.bdx-lux-kaisar{animation:luxK 1.8s ease-in-out infinite}
+.bdx-lux-galaksi{animation:luxG 2.4s ease-in-out infinite}
+.bdx-lux-phoenix{animation:luxP .9s ease-in-out infinite alternate}
+@keyframes luxK{0%,100%{filter:drop-shadow(0 0 4px #ffd34d) drop-shadow(0 0 10px #e0162faa)}50%{filter:drop-shadow(0 0 7px #fff6c9) drop-shadow(0 0 18px #ffb52b)}}
+@keyframes luxG{0%,100%{filter:drop-shadow(0 0 4px #8ef6ff) drop-shadow(0 0 11px #8a4bff)}50%{filter:drop-shadow(0 0 7px #fff) drop-shadow(0 0 18px #ff6ad5)}}
+@keyframes luxP{from{filter:drop-shadow(0 0 4px #ffb52b) drop-shadow(0 0 10px #e0123f)}to{filter:drop-shadow(0 0 8px #ffe66a) drop-shadow(0 0 19px #ff4a1f)}}
+.bdx .halo2{transform-origin:90px 80px;animation:av9spin 9s linear infinite reverse}
+/* Video masuk milik pengguna: tampil utuh, tanpa efek tembus pandang */
+#entranceFX .ent-video.own{object-fit:contain;mix-blend-mode:normal;opacity:1;filter:none;animation:none;background:#000d}
+.erow.sel{background:#ffd36e1f;border-radius:12px;padding-left:8px}
+
+/* Postingan diperbesar (ketuk postingan) */
+.post{cursor:pointer}.post .postbar,.post .del{cursor:default}
+#postView{position:fixed;inset:0;z-index:75;background:#000c;display:flex;justify-content:center;align-items:stretch;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+#postView.hidden{display:none!important}
+#postView .pvc{width:100%;max-width:520px;height:100dvh;display:flex;flex-direction:column;background:#150f0b;border-left:1px solid rgba(245,193,90,.2);border-right:1px solid rgba(245,193,90,.2)}
+#postView .pvh{flex:none;display:flex;align-items:center;gap:10px;padding:calc(10px + env(safe-area-inset-top)) 12px 10px;border-bottom:1px solid #ffffff14}
+#postView .pvh b{font-size:17px;color:var(--gold)}
+#postView .pvs{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:12px 14px calc(24px + env(safe-area-inset-bottom))}
+#postView .hd{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+#postView .hd>div:last-child,#postView .hd>b{min-width:0}
+#postView .hd small{display:block;color:#9a8f86;font-weight:700;font-size:12px}
+#postView .pvimg{width:100%;height:auto;display:block;border-radius:14px;background:#1c1410;margin:6px 0 10px}
+#postView .pvtxt{margin:0 0 12px;white-space:pre-wrap;overflow-wrap:anywhere;font-size:16px;line-height:1.5;font-weight:700}
+/* Pengunjung terakhir (khusus Host) */
+.vis{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid #ffffff14}
+.vis:first-child{border-top:0}
+.vis img{width:34px;height:34px;border-radius:50%;object-fit:cover;background:#1c1410;flex:none}
+.vis span{flex:1;min-width:0}.vis small{display:block;color:#a99d92}
+.vis .new{font-style:normal;font-size:10px;background:linear-gradient(#ffd886,#d9962f);color:#2a1700;border-radius:8px;padding:1px 7px;margin-left:6px;font-weight:900}
+
+.dmnote{margin:0 0 4px;text-align:center;font-size:11px;color:#a99d92}
+/* Pandu: bot pemandu pengguna baru */
+#botFab{position:fixed;right:10px;bottom:calc(150px + env(safe-area-inset-bottom));z-index:28;width:44px;height:44px;border-radius:50%;background:linear-gradient(#a98bff,#6a4bff);color:#fff;display:grid;place-items:center;font-size:22px;box-shadow:0 4px 16px #000a,0 0 0 2px #ffffff22;opacity:.93}
+#botFab.hidden{display:none!important}
+#botHello{position:fixed;right:10px;bottom:calc(204px + env(safe-area-inset-bottom));z-index:29;width:min(84vw,290px);padding:14px;border-radius:18px;background:#150f0b;border:1.5px solid var(--gold2);box-shadow:0 8px 30px #000a;animation:svipPopIn .35s ease both}
+#botHello.hidden{display:none!important}
+#botHello p{margin:6px 0 10px;font-size:13.5px;color:#e8d8c4}#botHello div{display:flex;gap:8px}
+.botfeed{max-height:44dvh;min-height:140px;overflow-y:auto;overscroll-behavior:contain;display:flex;flex-direction:column;gap:8px;padding:6px 2px}
+.bb{max-width:90%;padding:9px 12px;border-radius:15px;white-space:pre-wrap;overflow-wrap:anywhere;font-size:14px;line-height:1.45}
+.bb.bot{align-self:flex-start;background:#ffffff12}.bb.me{align-self:flex-end;background:#76501f88}
+.botchips{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 2px}
+.botchips button{padding:6px 12px;border-radius:99px;background:#ffffff14;border:1px solid #ffd36e55;font-size:12.5px;color:#ffe3a6}
+/* ===== SVIP 14 IMMORTAL (obsidian, rubi, api abadi) & 15 GLORY (gading, emas, cahaya) ===== */
+.svip.s14,.svip.s15{display:inline-flex;align-items:center;position:relative;font-weight:900;isolation:isolate;letter-spacing:.24em;border:1.5px solid transparent}
+.svip.s14{padding:3px 7px;margin:0 10px 0 6px;border-radius:6px 16px;background:linear-gradient(135deg,#0b0204,#4a0714 48%,#14030a) padding-box,linear-gradient(90deg,#ffd36e,#ff3b4e,#fff0c0,#ff3b4e,#ffd36e) border-box;box-shadow:0 0 12px #ff3b4ecc,0 0 28px #b0002a99,inset 0 0 10px #ff8a3c88;animation:imAura 2s ease-in-out infinite}
+.svip.s15{padding:3px 8px;margin:0 11px 0 7px;border-radius:99px;background:linear-gradient(180deg,#fffdf4,#fbe7ad 55%,#fff6d8) padding-box,linear-gradient(90deg,#b8760f,#fff2b0,#d99a22,#fff2b0,#b8760f) border-box;box-shadow:0 0 12px #fff3b0,0 0 28px #ffc94acc,0 0 46px #ffe9a877,inset 0 0 8px #fff}
+.svip.s14::before,.svip.s15::before{position:absolute;left:50%;top:-1em;transform:translateX(-50%);line-height:1}
+.svip.s14::before{content:'\221E';font-size:1.25em;color:#ffd36e;text-shadow:0 0 8px #ff3b4e,0 0 14px #ff8a3c}
+.svip.s15::before{content:'\2600';font-size:1.05em;color:#ffd76a;text-shadow:0 0 6px #fff,0 0 12px #ffb52b,0 0 20px #ffb52b}
+.svip.s14 .wg,.svip.s15 .wg{display:block;flex:none;width:3.1em;height:2.1em;margin:-.25em -.25em;background:center/contain no-repeat}
+.svip.s14 .wg{background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2060%2040%27%3E%3Cdefs%3E%3ClinearGradient%20id%3D%27g%27%20x1%3D%270%27%20y1%3D%270%27%20x2%3D%271%27%20y2%3D%271%27%3E%3Cstop%20offset%3D%270%27%20stop-color%3D%27%23fff0b0%27/%3E%3Cstop%20offset%3D%270.45%27%20stop-color%3D%27%23ff6a2a%27/%3E%3Cstop%20offset%3D%271%27%20stop-color%3D%27%23b0002a%27/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg%20fill%3D%27url%28%23g%29%27%20stroke%3D%27%235a0014%27%20stroke-width%3D%27.7%27%3E%3Cpath%20d%3D%27M58%2022C46%208%2034%2012%2022%202C24%2012%2016%2012%203%208C14%2018%2028%2018%2044%2025Z%27/%3E%3Cpath%20d%3D%27M58%2026C44%2018%2030%2024%2010%2018C20%2028%2032%2028%2046%2030Z%27/%3E%3Cpath%20d%3D%27M58%2030C46%2028%2036%2036%2020%2032C30%2040%2044%2038%2056%2033Z%27/%3E%3C/g%3E%3C/svg%3E")}.svip.s14 .wg.r{background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2060%2040%27%3E%3Cdefs%3E%3ClinearGradient%20id%3D%27g%27%20x1%3D%270%27%20y1%3D%270%27%20x2%3D%271%27%20y2%3D%271%27%3E%3Cstop%20offset%3D%270%27%20stop-color%3D%27%23fff0b0%27/%3E%3Cstop%20offset%3D%270.45%27%20stop-color%3D%27%23ff6a2a%27/%3E%3Cstop%20offset%3D%271%27%20stop-color%3D%27%23b0002a%27/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg%20transform%3D%27matrix%28-1%200%200%201%2060%200%29%27%20fill%3D%27url%28%23g%29%27%20stroke%3D%27%235a0014%27%20stroke-width%3D%27.7%27%3E%3Cpath%20d%3D%27M58%2022C46%208%2034%2012%2022%202C24%2012%2016%2012%203%208C14%2018%2028%2018%2044%2025Z%27/%3E%3Cpath%20d%3D%27M58%2026C44%2018%2030%2024%2010%2018C20%2028%2032%2028%2046%2030Z%27/%3E%3Cpath%20d%3D%27M58%2030C46%2028%2036%2036%2020%2032C30%2040%2044%2038%2056%2033Z%27/%3E%3C/g%3E%3C/svg%3E")}
+.svip.s15 .wg{background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2060%2040%27%3E%3Cdefs%3E%3ClinearGradient%20id%3D%27g%27%20x1%3D%270%27%20y1%3D%270%27%20x2%3D%271%27%20y2%3D%271%27%3E%3Cstop%20offset%3D%270%27%20stop-color%3D%27%23ffffff%27/%3E%3Cstop%20offset%3D%270.5%27%20stop-color%3D%27%23ffeaa0%27/%3E%3Cstop%20offset%3D%271%27%20stop-color%3D%27%23d99a22%27/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg%20fill%3D%27url%28%23g%29%27%20stroke%3D%27%23a8700c%27%20stroke-width%3D%27.7%27%3E%3Cpath%20d%3D%27M58%2018C44%202%2026%200%202%202C16%208%2030%2010%2044%2020Z%27/%3E%3Cpath%20d%3D%27M58%2022C42%2011%2024%2010%205%2014C20%2018%2032%2019%2046%2025Z%27/%3E%3Cpath%20d%3D%27M58%2026C44%2020%2028%2021%2012%2027C26%2028%2036%2028%2047%2030Z%27/%3E%3Cpath%20d%3D%27M58%2030C46%2028%2034%2031%2024%2038C36%2037%2046%2035%2055%2033Z%27/%3E%3C/g%3E%3C/svg%3E")}.svip.s15 .wg.r{background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2060%2040%27%3E%3Cdefs%3E%3ClinearGradient%20id%3D%27g%27%20x1%3D%270%27%20y1%3D%270%27%20x2%3D%271%27%20y2%3D%271%27%3E%3Cstop%20offset%3D%270%27%20stop-color%3D%27%23ffffff%27/%3E%3Cstop%20offset%3D%270.5%27%20stop-color%3D%27%23ffeaa0%27/%3E%3Cstop%20offset%3D%271%27%20stop-color%3D%27%23d99a22%27/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg%20transform%3D%27matrix%28-1%200%200%201%2060%200%29%27%20fill%3D%27url%28%23g%29%27%20stroke%3D%27%23a8700c%27%20stroke-width%3D%27.7%27%3E%3Cpath%20d%3D%27M58%2018C44%202%2026%200%202%202C16%208%2030%2010%2044%2020Z%27/%3E%3Cpath%20d%3D%27M58%2022C42%2011%2024%2010%205%2014C20%2018%2032%2019%2046%2025Z%27/%3E%3Cpath%20d%3D%27M58%2026C44%2020%2028%2021%2012%2027C26%2028%2036%2028%2047%2030Z%27/%3E%3Cpath%20d%3D%27M58%2030C46%2028%2034%2031%2024%2038C36%2037%2046%2035%2055%2033Z%27/%3E%3C/g%3E%3C/svg%3E")}
+.svip.s14 span,.svip.s15 span{display:block;padding:.14em .22em;line-height:1.3;background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;text-shadow:none;animation:lxSheen 2.4s linear infinite}
+.svip.s14 span{background-image:linear-gradient(100deg,#ffb347,#fff3c4 22%,#ff5a5f 40%,#fff 52%,#ffd36e 66%,#fff3c4 80%,#ffb347);filter:drop-shadow(0 0 4px #ff3b4e)}
+.svip.s15 span{background-image:linear-gradient(100deg,#8a5200,#d99a22 22%,#7a4600 40%,#f0b62e 52%,#8a5200 66%,#d99a22 80%,#8a5200);filter:drop-shadow(0 1px 0 #fff)}
+@keyframes imAura{0%,100%{box-shadow:0 0 10px #ff3b4ecc,0 0 22px #b0002a88,inset 0 0 10px #ff8a3c88}50%{box-shadow:0 0 18px #ffb347,0 0 38px #ff1f3dcc,inset 0 0 14px #ffd36eaa}}
+.nm .svip.s14,.nm .svip.s15{display:flex;width:max-content;max-width:100%;margin:0 auto 2px;font-size:7px}
+.nm2 .svip.s14,.nm2 .svip.s15{display:flex;margin:4px 0 0;font-size:5.4px;padding:2px 3px;letter-spacing:.08em}
+.bd-svip14{--bg:conic-gradient(transparent 0 58%,#fff0c0 73%,transparent 88%),conic-gradient(#ffd36e,#ff3b4e,#4a0714,#0b0204,#b0002a,#ff8a3c,#ffd36e);--glow:#ff3b4ecc;--deco:'';--spd:1.8s}
+.bd-svip15{--bg:conic-gradient(transparent 0 55%,#fff 72%,transparent 89%),conic-gradient(#fff,#ffe9a0,#d99a22,#fffdf4,#ffc94a,#fff);--glow:#ffe08a;--deco:'';--spd:2.4s}
+.bdx-svip14{filter:drop-shadow(0 0 4px #ff3b4e) drop-shadow(0 0 12px #ff8a3caa)}
+.bdx-svip15{filter:drop-shadow(0 0 4px #fff3b0) drop-shadow(0 0 13px #ffc94a)}
+.ring.vip9.bd-svip14{animation:imRing 1.8s ease-in-out infinite}.ring.vip9.bd-svip15{animation:glRing 2.4s ease-in-out infinite}
+.ring.vip9.bd-svip14.talk,.ring.vip9.bd-svip15.talk{animation:pulse .7s ease-in-out infinite}
+@keyframes imRing{0%,100%{box-shadow:0 0 14px #ff3b4e,0 0 26px #b0002a99}50%{box-shadow:0 0 22px #ffd36e,0 0 42px #ff1f3dcc}}
+@keyframes glRing{0%,100%{box-shadow:0 0 14px #ffe08a,0 0 28px #ffc94a99}50%{box-shadow:0 0 22px #fff,0 0 46px #ffd76a}}
+.pf>.av9w.bd-svip14,.pf>.av9w.bd-svip15{margin:40px 0 20px}
+
+/* Popup naik */
+#svipPop .svip-card.p14{border:2px solid transparent;background:radial-gradient(circle at 50% 0%,#8a0f26,#2a040c 56%,#070102) padding-box,linear-gradient(120deg,#ffd36e,#ff3b4e,#fff0c0,#b0002a,#ffd36e) border-box}
+#svipPop .svip-card.p15{border:2px solid transparent;background:radial-gradient(circle at 50% 0%,#b98a2a,#4a3408 56%,#171003) padding-box,linear-gradient(120deg,#fff,#ffd76a,#fff,#d99a22,#fff) border-box}
+
+/* Banner nama saat masuk */
+.lx-ban.l14,.lx-ban.l15{border:2px solid transparent;overflow:visible}
+.lx-ban.l14{background:linear-gradient(160deg,#100204,#4a0714 50%,#16030a 80%,#070102) padding-box,linear-gradient(120deg,#ffd36e,#ff3b4e,#fff0c0,#b0002a,#ffd36e) border-box;box-shadow:0 0 34px #ff3b4eaa,0 0 80px #b0002a66,inset 0 0 28px #ff8a3c33}
+.lx-ban.l15{background:linear-gradient(160deg,#2c2008,#6b4d10 50%,#3a2a09 80%,#1b1304) padding-box,linear-gradient(120deg,#fff,#ffd76a,#fff,#d99a22,#fff) border-box;box-shadow:0 0 36px #ffe08acc,0 0 90px #ffc94a77,inset 0 0 30px #fff3b055}
+.lx-ban.l14::after,.lx-ban.l15::after{content:'';position:absolute;inset:0;border-radius:inherit;background:linear-gradient(105deg,transparent 38%,#ffffff55 50%,transparent 62%);background-size:260% 100%;animation:lxSheen 2.8s linear infinite;pointer-events:none}
+
+/* ---- Entrance Immortal & Glory ---- */
+#entranceFX .ent14,#entranceFX .ent15{overflow:hidden}
+#entranceFX .ent14 .ent-bg{background:radial-gradient(circle at 50% 40%,#8a0f26e8,#25030af5 40%,#040001fa 76%);animation:lxVeil var(--dur) ease both}
+#entranceFX .ent15 .ent-bg{background:radial-gradient(circle at 50% 36%,#e8c56af2,#8a6418ee 22%,#33240af7 52%,#100b02fa 80%);animation:lxVeil var(--dur) ease both}
+#entranceFX .ent14 .ent-rays,#entranceFX .ent15 .ent-rays{display:block;width:170vmax;height:170vmax;margin:-85vmax 0 0 -85vmax;-webkit-mask-image:radial-gradient(circle,#000,transparent 60%);mask-image:radial-gradient(circle,#000,transparent 60%);animation:lxSpin var(--dur) linear both}
+#entranceFX .ent14 .ent-rays{background:repeating-conic-gradient(#ff3b4e55 0 2deg,transparent 2deg 11deg,#ffd36e33 11deg 12deg,transparent 12deg 24deg)}
+#entranceFX .ent15 .ent-rays{background:repeating-conic-gradient(#fff8d83d 0 3deg,transparent 3deg 8deg,#ffd76a2e 8deg 10deg,transparent 10deg 18deg)}
+#entranceFX .ent14 .ent-burst,#entranceFX .ent15 .ent-burst{display:block;width:46vmin;height:46vmin;margin:-23vmin 0 0 -23vmin;border-radius:50%;border:2px solid var(--c1);box-shadow:0 0 40px var(--c1),inset 0 0 40px var(--c1);opacity:0;animation:entBurst 2.2s ease-out 1.6s 4 both}
+#entranceFX .ent14 .ent-move,#entranceFX .ent15 .ent-move{margin-bottom:24vh}
+#entranceFX .ent14 .ent-move{animation:imArrive var(--dur) cubic-bezier(.2,.8,.2,1) both}
+#entranceFX .ent15 .ent-move{animation:glArrive var(--dur) cubic-bezier(.2,.8,.2,1) both}
+#entranceFX .ent14 .ent-art svg,#entranceFX .ent15 .ent-art svg,#entranceFX .ent14 .ent-art img,#entranceFX .ent15 .ent-art img{width:min(98vw,52vh,560px);overflow:visible}
+#entranceFX .ent14 .ent-art{animation:glow14 1.6s ease-in-out infinite}
+#entranceFX .ent15 .ent-art{animation:glow15 2s ease-in-out infinite}
+#entranceFX .ent14 .wl,#entranceFX .ent15 .wl{transform-box:fill-box;transform-origin:100% 60%;animation:wing11L 1.8s ease-in-out infinite}
+#entranceFX .ent14 .wr,#entranceFX .ent15 .wr{transform-box:fill-box;transform-origin:0 60%;animation:wing11R 1.8s ease-in-out infinite}
+#entranceFX .spin{transform-origin:100px 104px;animation:av9spin 16s linear infinite}
+#entranceFX .spin.rv{animation-direction:reverse;animation-duration:11s}
+#entranceFX .ent14 .lx-frame{border-color:#ff5a5f;box-shadow:0 0 28px #ff3b4ecc,inset 0 0 34px #b0002aaa}
+#entranceFX .ent15 .lx-frame{border-color:#ffe9a8;box-shadow:0 0 30px #fff3b0,inset 0 0 36px #ffc94a99}
+#entranceFX .ent14 .ent-label,#entranceFX .ent15 .ent-label{bottom:5%;z-index:5;animation:lxRise var(--dur) cubic-bezier(.2,.8,.2,1) both}
+#entranceFX .lx-title{position:absolute;left:0;right:0;top:7%;z-index:5;text-align:center;font-weight:900;font-size:clamp(30px,11vw,76px);line-height:1.1;letter-spacing:.2em;padding-left:.2em;font-family:Georgia,'Times New Roman',serif;background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:lxWord var(--dur) ease both,lxSheen 3s linear infinite}
+#entranceFX .ent14 .lx-title{background-image:linear-gradient(100deg,#ff8a3c,#fff3c4 25%,#ff3b4e 45%,#fff 55%,#ffd36e 75%,#ff8a3c);filter:drop-shadow(0 0 14px #ff1f3d)}
+#entranceFX .ent15 .lx-title{background-image:linear-gradient(100deg,#ffd76a,#fff 25%,#ffc94a 45%,#fff 55%,#ffe9a8 75%,#ffd76a);filter:drop-shadow(0 2px 2px #6b4500) drop-shadow(0 0 18px #ffd76a)}
+/* api naik (Immortal) */
+#entranceFX .lx-rise i{position:absolute;bottom:-4vh;left:var(--x);width:var(--s);height:var(--s);z-index:3;border-radius:50% 0 50% 50%;background:radial-gradient(circle,#fff3c4,#ff8a3c 45%,#e0123f 75%,transparent);box-shadow:0 0 12px #ff5a2f;opacity:0;animation:lxUp var(--fd) ease-in var(--dl) infinite}
+/* bulu emas jatuh (Glory) */
+#entranceFX .lx-fall i.fth{width:calc(var(--s)*.5);height:calc(var(--s)*1.7);border-radius:100% 0 100% 0;background:linear-gradient(160deg,#fff,#ffe9a8 50%,#d99a22);box-shadow:0 0 10px #ffd76a}
+/* gerbang emas terbuka (Glory) */
+#entranceFX .lx-gate b{position:absolute;top:0;bottom:0;width:50.5%;z-index:6;background:repeating-linear-gradient(90deg,#00000000 0 22px,#fff3b033 22px 24px),linear-gradient(90deg,#4a3408,#a87a1c 55%,#fff0b8);animation:gateL 2.2s cubic-bezier(.7,0,.2,1) .35s both}
+#entranceFX .lx-gate b:first-child{left:0;border-right:3px solid #fff}
+#entranceFX .lx-gate b:last-child{right:0;border-left:3px solid #fff;background:repeating-linear-gradient(90deg,#00000000 0 22px,#fff3b033 22px 24px),linear-gradient(270deg,#4a3408,#a87a1c 55%,#fff0b8);animation-name:gateR}
+/* tebasan cahaya (Immortal) */
+#entranceFX .lx-slash{position:absolute;left:-20vw;top:38%;width:140vw;height:4px;z-index:4;background:linear-gradient(90deg,transparent,#ff3b4e,#fff,#ff3b4e,transparent);box-shadow:0 0 30px 8px #ff3b4e;transform:rotate(-14deg) scaleX(0);animation:slash 1.2s ease-out .2s both}
+@keyframes imArrive{0%{opacity:0;transform:scale(1.9);filter:blur(22px) brightness(3)}10%{opacity:0}24%{opacity:1;transform:scale(.94);filter:blur(0) brightness(1.5)}34%{transform:scale(1);filter:blur(0) brightness(1)}86%{opacity:1;transform:scale(1.07);filter:blur(0) brightness(1)}100%{opacity:0;transform:scale(1.25) translateY(-8vh);filter:blur(10px) brightness(1)}}
+@keyframes glArrive{0%,9%{opacity:0;transform:translateY(-34vh) scale(.55);filter:blur(16px) brightness(2.4)}32%{opacity:1;transform:translateY(1vh) scale(1.05);filter:blur(0) brightness(1.1)}42%{transform:translateY(0) scale(1);filter:blur(0) brightness(1)}86%{opacity:1;transform:translateY(-1vh) scale(1.05);filter:blur(0) brightness(1)}100%{opacity:0;transform:translateY(-12vh) scale(1.18);filter:blur(9px) brightness(1)}}
+@keyframes lxRise{0%,16%{opacity:0;transform:translateY(60px)}28%,86%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-20px)}}
+@keyframes lxWord{0%,18%{opacity:0;letter-spacing:.8em}34%,85%{opacity:1;letter-spacing:.2em}100%{opacity:0;letter-spacing:.3em}}
+@keyframes lxUp{0%{opacity:0;transform:translate(0,0) rotate(-45deg) scale(.5)}15%{opacity:1}100%{opacity:0;transform:translate(6vw,-108vh) rotate(-45deg) scale(1.1)}}
+@keyframes gateL{to{transform:translateX(-102%)}}
+@keyframes gateR{to{transform:translateX(102%)}}
+@keyframes slash{0%{transform:rotate(-14deg) scaleX(0);opacity:1}45%{transform:rotate(-14deg) scaleX(1);opacity:1}100%{transform:rotate(-14deg) scaleX(1);opacity:0}}
+@keyframes glow14{0%,100%{filter:drop-shadow(0 0 18px #ff3b4e) drop-shadow(0 0 50px #8a0f26)}50%{filter:drop-shadow(0 0 28px #ffd36e) drop-shadow(0 0 90px #ff1f3d)}}
+@keyframes glow15{0%,100%{filter:drop-shadow(0 0 6px #ffe9a8) drop-shadow(0 0 24px #d99a22)}50%{filter:drop-shadow(0 0 10px #fff3b0) drop-shadow(0 0 40px #e0a52c)}}
+
+/* ===== Level hubungan 7-12 & Border Couple ===== */
+.rl7{--rc:#ff7a7a;--rg:#ff4d4d66}.rl8{--rc:#ff6ad5;--rg:#ff2fb866}.rl9{--rc:#8ef6ff;--rg:#3fd8ff77}.rl10{--rc:#c9a6ff;--rg:#9d6bff88}.rl11{--rc:#ff9b5c;--rg:#ff3b4e99}.rl12{--rc:#fff0b0;--rg:#ffd76acc}
+.cplbox{margin-top:8px;padding:8px;border-radius:12px;border:1px dashed var(--rc,#ffd36e);text-align:center;font-size:12px;font-weight:800;color:#ffe9c4}
+.cplpair{display:flex;justify-content:center;align-items:center;gap:30px;padding:26px 0 16px}
+.cplpair>em{font-style:normal;font-size:22px;animation:cplBeat 1.2s ease-in-out infinite}
+@keyframes cplBeat{0%,100%{transform:scale(1)}50%{transform:scale(1.35)}}
+.bd-cpl-pasangan{--bg:conic-gradient(transparent 0 58%,#fff 73%,transparent 88%),conic-gradient(#fff0e6,#ffb3c7,#e0245e,#ffd0a8,#ff6a9a,#fff0e6);--glow:#ff6a9a;--deco:'';--spd:2.6s}
+.bd-cpl-sahabat{--bg:conic-gradient(transparent 0 58%,#fff 73%,transparent 88%),conic-gradient(#fff6c9,#ffc93c,#ff8a1f,#6fd6ff,#ffc93c,#fff6c9);--glow:#ffc93c;--deco:'';--spd:2.4s}
+.bd-cpl-saudara{--bg:conic-gradient(transparent 0 58%,#fff 73%,transparent 88%),conic-gradient(#e8fff6,#35e6a0,#0a6a8a,#9fd0ff,#0fae6e,#e8fff6);--glow:#35e6c0;--deco:'';--spd:3s}
+.bd-cpl-duet{--bg:conic-gradient(transparent 0 58%,#fff 73%,transparent 88%),conic-gradient(#8ef6ff,#8a4bff,#ff4fd8,#4b5bff,#8ef6ff);--glow:#b36bff;--deco:'';--spd:1.8s}
+.bdx-cpl-pasangan{filter:drop-shadow(0 0 4px #ffb3c7) drop-shadow(0 0 11px #e0245eaa)}
+.bdx-cpl-sahabat{filter:drop-shadow(0 0 4px #ffe66a) drop-shadow(0 0 11px #ff8a1faa)}
+.bdx-cpl-saudara{filter:drop-shadow(0 0 4px #8fffd0) drop-shadow(0 0 11px #0a6a8a)}
+.bdx-cpl-duet{filter:drop-shadow(0 0 4px #8ef6ff) drop-shadow(0 0 11px #ff4fd8aa)}
+.pf>.av9w[class*="bd-cpl-"]{margin:40px 0 20px}
+@media (prefers-reduced-motion:reduce){.svip.s14,.svip.s15,.svip.s14 span,.svip.s15 span,.lx-ban::after,.cplpair>em,.ring.vip9.bd-svip14,.ring.vip9.bd-svip15,#entranceFX .lx-rise i,#entranceFX .spin,#entranceFX .lx-slash{animation:none!important}#entranceFX .lx-gate{display:none}}
+/* ===== Musik room ===== */
+#musicBar{flex:none;display:flex;align-items:center;gap:8px;margin:4px 0;padding:6px 10px;border-radius:16px;background:linear-gradient(120deg,#2a1a45cc,#3a1630cc);border:1px solid #ffd36e55;min-width:0}
+#musicBar.hidden{display:none!important}
+#musicBar .md{flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#ffd36e,#ff6ad5,#8a6bff,#ffd36e);color:#1a0f00}
+#musicBar.on .md{animation:av9spin 3s linear infinite}
+#musicBar .mt{flex:1;min-width:0;line-height:1.2}
+#musicBar .mt b,#musicBar .mt small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#musicBar .mt b{font-size:13px;color:#ffe9c4}#musicBar .mt small{font-size:10px;color:#c9b8d8}
+#musicBar button{flex:none;width:32px;height:32px;border-radius:50%;background:#ffffff1a;display:grid;place-items:center;color:#fff}
+#musicBar button.act{background:#ffd36e;color:#2a1700}
+#musicBar button.wide{width:auto;padding:0 12px;border-radius:99px;font-size:12px;font-weight:900;background:#ffd36e;color:#2a1700}
+#musicBar button .ms{font-size:19px}
+@media(prefers-reduced-motion:reduce){#musicBar.on .md{animation:none}}
+</style>
+<style>
+/* Reset dasar (pengganti Tailwind CDN) */
+*,::before,::after{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}
+::before,::after{--tw-content:''}
+html{line-height:1.5;-webkit-text-size-adjust:100%;tab-size:4;font-family:ui-sans-serif,system-ui,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji"}
+body{margin:0;line-height:inherit}
+hr{height:0;color:inherit;border-top-width:1px}
+h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}
+a{color:inherit;text-decoration:inherit}
+b,strong{font-weight:bolder}
+code,kbd,samp,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:1em}
+small{font-size:80%}
+sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}
+table{text-indent:0;border-color:inherit;border-collapse:collapse}
+button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}
+button,select{text-transform:none}
+button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}
+progress{vertical-align:baseline}
+summary{display:list-item}
+blockquote,dl,dd,h1,h2,h3,h4,h5,h6,hr,figure,p,pre{margin:0}
+fieldset{margin:0;padding:0}legend{padding:0}
+ol,ul,menu{list-style:none;margin:0;padding:0}
+dialog{padding:0}
+textarea{resize:vertical}
+input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}
+button,[role=button]{cursor:pointer}
+:disabled{cursor:default}
+img,svg,video,canvas,audio,iframe,embed,object{display:block;vertical-align:middle}
+img,video{max-width:100%;height:auto}
+[hidden]:where(:not([hidden=until-found])){display:none}
+.hidden{display:none}
+</style>
+<style>
+/* ===== HEMAT TENAGA (HP kentang): tanpa cahaya/blur beranimasi, bentuk dan warna tetap ===== */
+/* Border avatar: tanpa glow, cukup cincin warna */
+.av9w,.bdx,.av9w::after,.ring.vip9::after{filter:none!important}
+.ring.vip9,.ring.vip9[class*="bd-"]{box-shadow:none!important;animation:none!important}
+.av9w,.bdx{animation:none!important;box-shadow:none!important}
+.ring.talk,.ring.vip9.talk{animation:none!important;outline:3px solid #6be07a;outline-offset:2px}
+/* Hiasan SVG hanya bergerak di profil; di kursi, chat, dan daftar diam */
+:not(.pf)>.av9w>.bdx *,.ring>.bdx *{animation:none!important}
+/* Cincin berputar hanya di kursi dan profil */
+:not(.pf)>.av9w::before{animation:none!important}
+/* Banner gelar: kilau hanya pada ukuran besar */
+.svip:not(.big),.svip:not(.big) *,.svip:not(.big)::before{animation:none!important;filter:none!important;text-shadow:none!important}
+.svip:not(.big){box-shadow:none!important}
+.svip.big span{filter:none!important}
+.relcard,#svipPop .svip-card,.lx-ban{box-shadow:none!important}
+.lx-ban::after{display:none!important}
+/* Blur latar sangat berat di GPU lemah */
+*{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+/* Entrance, efek gift, popup: tanpa filter dan tanpa lapisan raksasa yang berputar */
+#entranceFX *,#fx *,#svipPop *{filter:none!important}
+#entranceFX .ent-rays,#entranceFX .spin,#fx .rays,#svipPop .svip-rays{animation:none!important}
+#entranceFX .ent-rays{opacity:.3;-webkit-mask-image:none!important;mask-image:none!important;background:none!important}
+#fx .rays,#svipPop .svip-rays{display:none!important}
+#entranceFX .ent-burst,#entranceFX .lx-frame,#entranceFX .ent-sparks i,#entranceFX .lx-rise i,#entranceFX .lx-fall i,#entranceFX .lx-slash,#svipPop .svip-spark{box-shadow:none!important}
+#svipPop .svip-card{animation:svipPopIn .4s ease both!important}
+#svipPop{background:rgba(0,0,0,.72)}
 </style>
 </head>
 <body>
@@ -708,6 +943,10 @@ textarea.inp{resize:none;display:block}
 <linearGradient id="gPlat" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".5" stop-color="#cfdcff"/><stop offset="1" stop-color="#9a8ad8"/></linearGradient>
 <linearGradient id="gRose" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe3f0"/><stop offset=".5" stop-color="#ff8fc4"/><stop offset="1" stop-color="#b8347a"/></linearGradient>
 <linearGradient id="gSaph" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d8ecff"/><stop offset=".5" stop-color="#5a9bff"/><stop offset="1" stop-color="#2a2f9a"/></linearGradient>
+<linearGradient id="gRuby" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffd0d8"/><stop offset=".5" stop-color="#f01c46"/><stop offset="1" stop-color="#6a001c"/></linearGradient>
+<linearGradient id="gPhx" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff3a0"/><stop offset=".5" stop-color="#ff7a1f"/><stop offset="1" stop-color="#c2064a"/></linearGradient>
+<linearGradient id="gNeb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b8fbff"/><stop offset=".5" stop-color="#7a5bff"/><stop offset="1" stop-color="#c23aa8"/></linearGradient>
+<mask id="mFace" maskUnits="userSpaceOnUse" x="-60" y="-60" width="300" height="280"><rect x="-60" y="-60" width="300" height="280" fill="#fff"/><circle cx="90" cy="80" r="47" fill="#000"/></mask>
 <linearGradient id="gGold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6c9"/><stop offset=".5" stop-color="#ffc247"/><stop offset="1" stop-color="#b8802a"/></linearGradient>
 <linearGradient id="gFire" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3a0"/><stop offset=".45" stop-color="#ff8a1f"/><stop offset="1" stop-color="#c41500"/></linearGradient>
 <linearGradient id="gFlame" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffffff"/><stop offset=".35" stop-color="#ffe45c"/><stop offset=".7" stop-color="#ff6a1f"/><stop offset="1" stop-color="#d11f00" stop-opacity=".25"/></linearGradient>
@@ -738,6 +977,7 @@ textarea.inp{resize:none;display:block}
   <div class="chips"><span class="chip"><span class="ms">emoji_events</span> PENYELAMAT BUMI</span><button class="chip chestchip" id="chestChip" onclick="H.chest()" title="Peti Room"><span class="em">🪎</span><span class="cl">Lv.1</span><i class="cbar"><b></b></i></button><span class="mini" id="mini"></span><span class="chip" id="onl" style="margin-left:auto"></span><button class="chip emochip" onclick="H.emojiMenu()" title="Emoji gerak"><span class="ms">add_reaction</span></button></div>
   <div id="grid"></div>
   <div class="listen" id="listen"></div>
+  <div id="musicBar" class="hidden"></div>
   <div id="chatw"><div id="chat"></div></div>
   <div id="roomReplyHint"></div>
   <div class="bar">
@@ -784,11 +1024,12 @@ textarea.inp{resize:none;display:block}
 <nav id="nav" class="nav hidden">
   <button data-t="room" onclick="H.tab('room')"><i><span class="ms">meeting_room</span></i>Room<em class="nb"></em></button>
   <button data-t="posts" class="on" onclick="H.tab('posts')"><i><span class="ms">newspaper</span></i>Postingan<em class="nb"></em></button>
+  <button onclick="H.videos()" title="Feed Video"><i><span class="ms">smart_display</span></i>Video</button>
   <button data-t="friends" onclick="H.tab('friends')"><i><span class="ms">group</span></i>Teman<em class="nb"></em></button>
   <button data-t="me" onclick="H.tab('me')"><i><span class="ms">person</span></i>Profil<em class="nb"></em></button>
 </nav>
 
-<div id="ratePop" class="hidden"></div><div id="gameOv" class="hidden"><iframe id="gameFrame" title="Game Koin"></iframe></div><div id="roomsOv" class="hidden"><iframe id="roomsFrame" title="Room" allow="microphone"></iframe></div><div id="sheet" class="hidden"></div><div id="fx"></div><div id="svipPop" class="hidden"></div><div id="entranceFX" class="hidden"></div><div id="chestFX" class="hidden"></div><div id="storyView" class="storyview hidden"></div><div id="toast"></div><div id="nbanner"></div><div id="updBar" class="hidden"><span class="ms">system_update</span><b>Versi baru tersedia</b><button onclick="H.reloadApp()">Perbarui</button></div>
+<button id="botFab" class="hidden" onclick="H.bot()" title="Tanya Pandu (pemandu)"><span class="ms">smart_toy</span></button><div id="botHello" class="hidden"></div><div id="postView" class="hidden" onclick="H.closePost()"></div><div id="ratePop" class="hidden"></div><div id="videoOv" class="hidden"><iframe id="videoFrame" title="Feed Video" allow="autoplay; encrypted-media; picture-in-picture; clipboard-write; web-share"></iframe></div><div id="gameOv" class="hidden"><iframe id="gameFrame" title="Game Koin"></iframe></div><div id="roomsOv" class="hidden"><iframe id="roomsFrame" title="Room" allow="microphone"></iframe></div><div id="sheet" class="hidden"></div><div id="fx"></div><div id="svipPop" class="hidden"></div><div id="entranceFX" class="hidden"></div><div id="chestFX" class="hidden"></div><div id="storyView" class="storyview hidden"></div><div id="toast"></div><div id="nbanner"></div><div id="updBar" class="hidden"><span class="ms">system_update</span><b>Versi baru tersedia</b><button onclick="H.reloadApp()">Perbarui</button></div>
 
 <script type="module">
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
@@ -806,6 +1047,8 @@ const SUPABASE_KEY = 'sb_publishable__KXfm9Yv6VRXStTap-DFyQ_sNOPCLrG';
 const OWNER_WA = '6285946186508';
 /* Opsional: URL gambar bingkai khusus HOST (PNG/GIF/WebP transparan, bagian tengah bolong). Kosong = pakai efek CSS saja. */
 const HOST_BORDER_IMG = '';
+/* Opsional: API key GIPHY (developers.giphy.com) untuk cari GIF di chat teman. Kosong = hanya bisa kirim GIF dari galeri. */
+const GIPHY_KEY = '';
 /* Gift: isi `img` dengan URL GIF publik (mis. dari GIPHY). Kosong = pakai emoji animasi. */
 const GIFTS = [
   {name:'Api Cinta',e:'🔥',img:'',points:10},{name:'Mahkota',e:'👑',img:'',points:25},{name:'Roket',e:'🚀',img:'',points:50},
@@ -827,8 +1070,16 @@ const REL = {
   pasangan:{name:'Pasangan',e:'💍',desc:'Anniversary dihitung otomatis. Maksimal 1 pasangan.'},
   saudara:{name:'Kakak-Adik',e:'🤝',desc:'Keluarga di dalam room.'},
   duet:{name:'Partner Duet',e:'🎤',desc:'Teman bernyanyi dan ngobrol di kursi.'}};
-const REL_LV = [0, 300, 1500, 5000, 15000, 40000];
-const REL_TITLES = ['Baru Kenal', 'Akrab', 'Dekat', 'Erat', 'Setia', 'Abadi'];
+const REL_LV = [0, 300, 1500, 5000, 15000, 40000, 100000, 250000, 600000, 1500000, 3000000, 6000000];
+const REL_TITLES = ['Baru Kenal', 'Akrab', 'Dekat', 'Erat', 'Setia', 'Abadi', 'Istimewa', 'Sehati', 'Belahan Jiwa', 'Legenda', 'Keabadian', 'Takhta Tertinggi'];
+const REL_MAX = REL_LV.length;
+/* Hadiah level hubungan tertinggi: border couple, temanya mengikuti jenis hubungan */
+const COUPLE_BD = {
+  pasangan:{name:'Cinta Abadi',desc:'Sepasang cincin berlian, sayap merah muda, dan mawar.'},
+  sahabat:{name:'Bintang Persahabatan',desc:'Matahari emas, bintang kembar, dan pita persahabatan.'},
+  saudara:{name:'Ikatan Keluarga',desc:'Perisai zamrud, sayap pelindung, dan daun kemenangan.'},
+  duet:{name:'Harmoni Duet',desc:'Headphone neon, not balok, dan gelombang suara.'}};
+const coupleKind = id => String(id || '').startsWith('cpl-') && COUPLE_BD[id.slice(4)] ? id.slice(4) : '';
 const relLvl = s => REL_LV.reduce((l, t, i) => (s || 0) >= t ? i + 1 : l, 1);
 const relDays = t => Math.floor((Date.now() - Date.parse(t)) / 864e5) + 1;
 let HAS_REL = false, myRel = [], relNoted = false, relChannel = null;
@@ -844,6 +1095,9 @@ const THEMES = [
   {id:'gold',name:'Emas',bg:'linear-gradient(160deg,#2a1700,#8a5a12 60%,#f5c15a)'}];
 /* Border avatar koleksi: semua terkunci, dibuka satu per satu oleh host (lihat border_migration.sql) */
 const BORDERS = [
+  {id:'lux-kaisar',lux:1,name:'Kaisar Surya',desc:'Matahari emas, sayap berlapis, mahkota kekaisaran bertabur rubi.'},
+  {id:'lux-galaksi',lux:1,name:'Ratu Galaksi',desc:'Cincin orbit berputar, tiara kristal, bulan sabit, dan taburan bintang.'},
+  {id:'lux-phoenix',lux:1,name:'Phoenix Abadi',desc:'Sayap api membentang, jambul menyala, dan ekor phoenix menjuntai.'},
   {id:'aurora',name:'Aurora',desc:'Cahaya utara hijau-ungu yang mengalir.'},
   {id:'sakura',name:'Sakura',desc:'Kelopak merah muda yang lembut.'},
   {id:'api',name:'Api Abadi',desc:'Nyala api oranye yang tak pernah padam.'},
@@ -869,19 +1123,21 @@ const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;
 const hash = id => [...id].reduce((a, c) => a + c.charCodeAt(0), 0);
 const ago = t => { const s = (Date.now() - new Date(t)) / 1000; return s < 60 ? 'baru saja' : s < 3600 ? Math.floor(s / 60) + ' mnt lalu' : s < 86400 ? Math.floor(s / 3600) + ' jam lalu' : new Date(t).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }) };
 /* Gelar SVIP dihitung dari poin hadiah yang DITERIMA. Ambang bisa diubah. */
-const SVIP = [100, 500, 1500, 3500, 7000, 15000, 30000, 60000, 100000, 250000, 600000, 1500000, 4000000]; /* SVIP 1..9, 10 = EKSKLUSIF, 11 = SULTAN, 12 = MYTHIC, 13 = LEGEND */
-const TIER_NAME = { 10: 'EKSKLUSIF', 11: 'SULTAN', 12: 'MYTHIC', 13: 'LEGEND' };
-const MAX_LV = 13;
+const SVIP = [100, 500, 1500, 3500, 7000, 15000, 30000, 60000, 100000, 250000, 600000, 1500000, 4000000, 10000000, 25000000]; /* SVIP 1..9, 10 = EKSKLUSIF, 11 = SULTAN, 12 = MYTHIC, 13 = LEGEND, 14 = IMMORTAL, 15 = GLORY */
+const TIER_NAME = { 10: 'EKSKLUSIF', 11: 'SULTAN', 12: 'MYTHIC', 13: 'LEGEND', 14: 'IMMORTAL', 15: 'GLORY' };
+const MAX_LV = 15;
 /* Masa berlaku gelar. Nilai di sini hanya cadangan: angka resmi dibaca dari tabel title_rules (title_migration.sql). */
 const TITLE_DAYS = 30;
-const RENEW_COST = [50, 200, 500, 1000, 2000, 4000, 7000, 12000, 20000, 40000, 80000, 150000, 300000];
+const RENEW_COST = [50, 200, 500, 1000, 2000, 4000, 7000, 12000, 20000, 40000, 80000, 150000, 300000, 750000, 1800000];
 let HAS_TITLE = false, lastTitle = null;
 const TC = () => HAS_TITLE ? ',title_expires_at,title_renew' : '';
 const tierName = l => TIER_NAME[l] || `SVIP ${l}`;
 const lvl = n => SVIP.reduce((l, t, i) => (n || 0) >= t ? i + 1 : l, 0);
 /* Banner gelar. 10 = Eksklusif, 11 = Sultan, 12 = Mythic (zamrud-emas bertabur permata), 13 = Legend (platinum, bersayap, bermahkota) */
 const badgeOf = (l, big) => { const b = big ? ' big' : '';
-  return l >= 13 ? `<i class="svip s13${b}"><b class="wg"></b><span>LEGEND</span><b class="wg r"></b></i>`
+  return l >= 15 ? `<i class="svip s15${b}"><b class="wg"></b><span>GLORY</span><b class="wg r"></b></i>`
+    : l === 14 ? `<i class="svip s14${b}"><b class="wg"></b><span>IMMORTAL</span><b class="wg r"></b></i>`
+    : l === 13 ? `<i class="svip s13${b}"><b class="wg"></b><span>LEGEND</span><b class="wg r"></b></i>`
     : l === 12 ? `<i class="svip s12${b}"><b class="gem">◆</b><span>MYTHIC</span><b class="gem">◆</b></i>`
     : l === 11 ? `<i class="svip s11${b}"><b class="wg"></b><span>SULTAN</span><b class="wg r"></b></i>`
     : l === 10 ? `<i class="svip s10${b}"><span>EKSKLUSIF</span></i>`
@@ -890,7 +1146,10 @@ const badge = n => badgeOf(lvl(n));
 const isV9 = p => lvl(p) >= 9;
 /* Avatar: SVIP 9 mendapat border eksklusif (pembungkus .av9w) */
 /* Border aktif: pilihan koleksi (jika valid) > bawaan SVIP 9 > tidak ada */
-const bdOf = (points, border, host) => (BORDERS.some(b => b.id === border) || (host && HOST_BORDERS.some(b => b.id === border))) ? border : host ? 'host' : lvl(points) >= 9 ? 'svip' + lvl(points) : '';
+/* Border gelar di menu: terbuka kalau gelarnya sudah diraih (Host selalu boleh). Gelar habis = otomatis tidak dipakai. */
+const TITLE_BORDERS = [{ id: 'svip12', lv: 12, name: 'Mythic' }, { id: 'svip13', lv: 13, name: 'Legend' }, { id: 'svip14', lv: 14, name: 'Immortal' }, { id: 'svip15', lv: 15, name: 'Glory' }];
+const titleBdOk = (id, points, host) => TITLE_BORDERS.some(b => b.id === id && (host || lvl(points) >= b.lv));
+const bdOf = (points, border, host) => titleBdOk(border, points, host) || coupleKind(border) ? border : (BORDERS.some(b => b.id === border) || (host && HOST_BORDERS.some(b => b.id === border))) ? border : host ? 'host' : lvl(points) >= 9 ? 'svip' + lvl(points) : '';
 const ringBd = (points, border, host) => { const x = bdOf(points, border, host); return x ? ` vip9 bd-${x}` : '' };
 /* Ilustrasi border eksklusif (SVG inline, beranimasi lewat CSS). Kotak 180x154: cincin avatar = pusat (90,80), jari-jari 50 */
 const BD_ART = (() => {
@@ -916,7 +1175,75 @@ const BD_ART = (() => {
     <circle class="halo" cx="90" cy="80" r="54" fill="none" stroke="url(#gPlat)" stroke-width="2.4" stroke-dasharray="14 4 2 4"/>
     ${laurel}<g transform="translate(180 0) scale(-1 1)">${laurel}</g>${rose(46, 122)}${rose(134, 122)}${gem(90, 133, 1.7, 'gSaph')}${crown(20, 1.15, 'gSaph')}${glint([[14, 28], [166, 28], [60, 8], [122, 6], [24, 128], [158, 128]])}`;
   const wrapBd = b => `<svg viewBox="0 0 180 154" aria-hidden="true">${b}</svg>`;
+  const both = g => `${g}<g transform="translate(180 0) scale(-1 1)">${g}</g>`;
+  const feathers = (list, fill, k, stroke) => list.map(x => `<path d="M0 0C-8-6-30-10-48-2C-34 5-14 7 0 0Z" fill="url(#${fill})" stroke="${stroke}" stroke-width=".6" transform="translate(46 78) rotate(${x[0]}) scale(${x[1] * k})"/>`).join('');
+  const jewel = (x, y, r, fill) => `<circle cx="${x}" cy="${y}" r="${r}" fill="url(#${fill})" stroke="#ffe9a8" stroke-width="1.2"/><circle cx="${x - r * .35}" cy="${y - r * .35}" r="${r * .25}" fill="#fff"/>`;
+  /* Kaisar Surya */
+  const sunRays = Array.from({ length: 24 }, (_, i) => `<path d="M90 ${i % 2 ? 14 : 4}L${i % 2 ? 93 : 94} 28 ${i % 2 ? 87 : 86} 28Z" fill="url(#gGold)" transform="rotate(${i * 15} 90 80)"/>`).join('');
+  const pearls = Array.from({ length: 28 }, (_, i) => { const a = i * Math.PI / 14; return `<circle cx="${(90 + Math.cos(a) * 55).toFixed(1)}" cy="${(80 + Math.sin(a) * 55).toFixed(1)}" r="2.4" fill="#fffaf0" stroke="#d9a12f" stroke-width=".6"/>` }).join('');
+  const kWing = `<g class="wg">${feathers(F, 'gGold', 1.45, '#8a5a12')}${feathers(F, 'gRuby', 1.05, '#ffe9a8')}${feathers(I, 'gGold', .95, '#fff6c9')}</g>`;
+  const kaisar = `<g class="halo">${sunRays}</g>${both(kWing)}<g class="halo2">${pearls}</g>
+    <g transform="translate(90 20)"><path d="M-30 14L-36-12-20-1-16-22-6-4 0-30 6-4 16-22 20-1 36-12 30 14Z" fill="url(#gGold)" stroke="#fff" stroke-width="1"/><rect x="-31" y="13" width="62" height="9" rx="3" fill="url(#gGold)" stroke="#8a5a12" stroke-width=".7"/>${jewel(0, 2, 6, 'gRuby')}${jewel(-18, 17.5, 3, 'gSaph')}${jewel(0, 17.5, 3.6, 'gRuby')}${jewel(18, 17.5, 3, 'gEmer')}${jewel(0, -31, 3.4, 'gPlat')}${jewel(-36, -13, 2.6, 'gRuby')}${jewel(36, -13, 2.6, 'gRuby')}</g>
+    ${both('<path d="M52 118C58 136 72 144 90 146L84 134C72 134 62 128 52 118Z" fill="url(#gGold)" stroke="#8a5a12" stroke-width=".6"/>')}
+    ${gem(90, 134, 1.8, 'gRuby')}${jewel(66, 136, 4.5, 'gRuby')}${jewel(114, 136, 4.5, 'gRuby')}${glint([[6, 22], [174, 22], [52, 2], [128, 2], [10, 122], [170, 122], [90, 158]])}`;
+  /* Ratu Galaksi */
+  const orbit = (rot, fill, r) => `<g transform="rotate(${rot} 90 80)"><ellipse cx="90" cy="80" rx="80" ry="27" fill="none" stroke="url(#${fill})" stroke-width="2.2" stroke-dasharray="120 8 3 8"/><circle cx="10" cy="80" r="${r}" fill="url(#${fill})" stroke="#fff" stroke-width=".8"></circle></g>`;
+  const shard = (x, y, h, rot) => `<path d="M0 ${-h}L5 ${-h * .3} 0 6-5 ${-h * .3}Z" fill="url(#gNeb)" stroke="#fff" stroke-width=".8" transform="translate(${x} ${y}) rotate(${rot})"/>`;
+  const gWing = `<g class="wg">${feathers(F, 'gNeb', 1.3, '#d8f6ff')}${feathers(I, 'gPlat', 1, '#7a5bff')}</g>`;
+  const galaksi = `${both(gWing)}<circle class="halo" cx="90" cy="80" r="57" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="1 9" stroke-linecap="round"/>
+    <g mask="url(#mFace)">${orbit(-24, 'gNeb', 6)}${orbit(24, 'gSaph', 4.5)}</g>
+    ${shard(90, 24, 34, 0)}${shard(74, 28, 25, -18)}${shard(106, 28, 25, 18)}${shard(60, 36, 18, -36)}${shard(120, 36, 18, 36)}
+    <path d="M58 34Q90 16 122 34" fill="none" stroke="url(#gPlat)" stroke-width="4" stroke-linecap="round"/>${jewel(90, 24, 5.5, 'gSaph')}${jewel(70, 29, 3, 'gRose')}${jewel(110, 29, 3, 'gRose')}
+    <path d="M62 126C70 150 110 150 118 126C108 138 72 138 62 126Z" fill="url(#gPlat)" stroke="#fff" stroke-width=".8"/>${gem(90, 140, 1.5, 'gNeb')}
+    ${glint([[10, 30], [170, 30], [34, 8], [146, 8], [4, 100], [176, 100], [46, 140], [134, 140], [90, -16]])}`;
+  /* Phoenix Abadi */
+  const pWing = `<g class="wg">${feathers([[78,.7],[62,.9],[46,1.05],[28,1.2],[10,1.28],[-8,1.2],[-24,1]], 'gPhx', 1.4, '#fff3a0')}${feathers(F, 'gRuby', 1, '#ffb347')}${feathers(I, 'gGold', .85, '#fff6c9')}</g>`;
+  const tail = '<path d="M84 128C66 138 54 150 38 150C50 158 70 154 90 136Z" fill="url(#gPhx)" stroke="#fff3a0" stroke-width=".7"/><path d="M87 130C80 146 70 158 62 170C78 166 90 150 92 134Z" fill="url(#gRuby)" stroke="#ffb347" stroke-width=".7"/><circle cx="46" cy="150" r="3" fill="#ffe66a"/>';
+  const crest = [[-34,.7],[-17,.9],[0,1.15],[17,.9],[34,.7]].map(c => `<path d="M0 0C-10-10-8-26 0-36C2-24 12-14 0 0Z" fill="url(#gPhx)" stroke="#fff3a0" stroke-width=".8" transform="translate(90 30) rotate(${c[0]}) scale(${c[1]})"/>`).join('');
+  const embers = [[26,10],[154,10],[8,60],[172,60],[40,130],[140,130],[66,-4],[114,-4]].map((p, i) => `<circle class="em" cx="${p[0]}" cy="${p[1]}" r="2.2" style="animation-delay:${i * .22}s"/>`).join('');
+  const phoenix = `${both(pWing)}${both(tail)}<circle class="halo" cx="90" cy="80" r="55" fill="none" stroke="url(#gGold)" stroke-width="3.5" stroke-dasharray="16 5 3 5"/>
+    ${crest}<g transform="translate(90 30)"><path d="M-9-2C-9-12 9-12 9-2L0 12Z" fill="url(#gGold)" stroke="#8a2a00" stroke-width=".8"/><circle cx="-3.6" cy="-3" r="1.5" fill="#5a0010"/><circle cx="3.6" cy="-3" r="1.5" fill="#5a0010"/></g>
+    ${gem(90, 134, 1.9, 'gRuby')}${jewel(70, 129, 3.5, 'gGold')}${jewel(110, 129, 3.5, 'gGold')}${embers}${glint([[16, 30], [164, 30], [90, -14]])}`;
+  /* Immortal: sayap api hitam-rubi, cincin keabadian, mahkota bertanduk */
+  const imWing = `<g class="wg">${feathers([[80,.75],[64,.95],[46,1.1],[28,1.25],[10,1.32],[-8,1.22],[-26,1]], 'gPhx', 1.42, '#fff0c0')}${feathers(F, 'gRuby', 1.12, '#ffd36e')}${feathers(I, 'gGold', .82, '#fff0c0')}</g>`;
+  const infinity = (y, k, c) => `<path transform="translate(90 ${y}) scale(${k})" d="M0 0C8-12 24-12 24 0S8 12 0 0C-8-12-24-12-24 0S-8 12 0 0Z" fill="none" stroke="url(#${c})" stroke-width="4.5"/>`;
+  const immortalBd = `${both(imWing)}<circle class="halo" cx="90" cy="80" r="56" fill="none" stroke="url(#gRuby)" stroke-width="4" stroke-dasharray="18 5 3 5"/><circle class="halo2" cx="90" cy="80" r="61" fill="none" stroke="url(#gGold)" stroke-width="1.4" stroke-dasharray="1 7" stroke-linecap="round"/>
+    ${both('<path d="M66 30C50 24 44 8 50-6C54 10 66 16 78 22Z" fill="url(#gGold)" stroke="#5a0014" stroke-width=".8"/>')}${crown(20, 1.15, 'gRuby')}${infinity(137, 1.15, 'gGold')}${gem(90, 137, 1.1, 'gRuby')}${jewel(38, 80, 5, 'gRuby')}${jewel(142, 80, 5, 'gRuby')}${glint([[8, 20], [172, 20], [56, -6], [124, -6], [16, 128], [164, 128], [90, 156]])}`;
+  /* Glory: sinar matahari, tiga lapis sayap putih-emas, lingkar cahaya */
+  const glRays = Array.from({ length: 32 }, (_, i) => `<path d="M90 ${i % 2 ? 12 : -2}L92 27 88 27Z" fill="url(#gGold)" transform="rotate(${i * 11.25} 90 80)"/>`).join('');
+  const glWing = `<g class="wg">${feathers([[74,1],[56,1.2],[38,1.36],[20,1.46],[2,1.4],[-16,1.2],[-32,.95]], 'gGold', 1.4, '#fff')}${feathers(F, 'gPlat', 1.2, '#d9a12f')}${feathers(I, 'gGold', .9, '#fff')}</g>`;
+  const gloryBd = `<g class="halo">${glRays}</g>${both(glWing)}<circle class="halo2" cx="90" cy="80" r="55" fill="none" stroke="url(#gPlat)" stroke-width="4.5"/><circle cx="90" cy="80" r="59" fill="none" stroke="url(#gGold)" stroke-width="2"/>
+    <ellipse cx="90" cy="-8" rx="26" ry="6" fill="none" stroke="url(#gGold)" stroke-width="3"/>${crown(20, 1.2, 'gPlat')}${laurel}<g transform="translate(180 0) scale(-1 1)">${laurel}</g>${gem(90, 135, 2, 'gPlat')}${jewel(68, 135, 4, 'gGold')}${jewel(112, 135, 4, 'gGold')}${glint([[4, 26], [176, 26], [48, -8], [132, -8], [8, 112], [172, 112], [50, 150], [130, 150]])}`;
+  /* ---- Border couple ---- */
+  const heart = (x, y, k, fill) => `<path transform="translate(${x} ${y}) scale(${k})" d="M0 9C-14-1-10-12-4-10Q0-8 0-4Q0-8 4-10C10-12 14-1 0 9Z" fill="url(#${fill})" stroke="#fff" stroke-width=".7"/>`;
+  const star = (x, y, k) => `<path transform="translate(${x} ${y}) scale(${k})" d="M0-12L3.5-4 12-3.5 5.5 2 7.5 11 0 6-7.5 11-5.5 2-12-3.5-3.5-4Z" fill="url(#gGold)" stroke="#fff" stroke-width=".8"/>`;
+  const ringArt = fill => `<circle class="halo" cx="90" cy="80" r="55" fill="none" stroke="url(#${fill})" stroke-width="3.5" stroke-dasharray="20 4 3 4"/>`;
+  /* Pasangan */
+  const cpWing = `<g class="wg">${feathers(F, 'gRose', 1.3, '#fff')}${feathers(I, 'gPlat', .95, '#ff8fc4')}</g>`;
+  const cpPas = `${both(cpWing)}${ringArt('gRose')}
+    <g fill="none" stroke="url(#gGold)" stroke-width="4"><circle cx="80" cy="136" r="12"/><circle cx="100" cy="136" r="12"/></g>${gem(80, 123, .6, 'gPlat')}${gem(100, 123, .6, 'gPlat')}
+    ${rose(46, 120)}${rose(134, 120)}${rose(58, 132)}${rose(122, 132)}${heart(90, 20, 1.9, 'gRuby')}${heart(66, 30, .9, 'gRose')}${heart(114, 30, .9, 'gRose')}${glint([[14, 30], [166, 30], [64, 6], [116, 6], [22, 128], [158, 128]])}`;
+  /* Sahabat */
+  const cpRays = Array.from({ length: 20 }, (_, i) => `<path d="M90 ${i % 2 ? 16 : 8}L93 28 87 28Z" fill="url(#gGold)" transform="rotate(${i * 18} 90 80)"/>`).join('');
+  const cpSah = `<g class="halo">${cpRays}</g>${ringArt('gGold')}
+    ${both('<path d="M46 108C26 120 22 140 10 148C30 148 36 140 40 152C46 134 56 128 66 130Z" fill="url(#gSaph)" stroke="#fff" stroke-width=".8"/>')}
+    ${star(90, 20, 1.6)}${star(58, 30, .9)}${star(122, 30, .9)}${star(34, 80, .8)}${star(146, 80, .8)}${heart(82, 136, 1.2, 'gGold')}${heart(98, 136, 1.2, 'gSaph')}${glint([[12, 34], [168, 34], [44, 8], [136, 8], [90, 156]])}`;
+  /* Kakak-Adik */
+  const cpSauW = `<g class="wg">${feathers(F, 'gEmer', 1.35, '#e8fff6')}${feathers(I, 'gSaph', 1, '#fff')}</g>`;
+  const cpSau = `${both(cpSauW)}${ringArt('gEmer')}${laurel}<g transform="translate(180 0) scale(-1 1)">${laurel}</g>
+    <path d="M90 122L110 130V142Q108 154 90 160Q72 154 70 142V130Z" fill="url(#gEmer)" stroke="url(#gGold)" stroke-width="2.5"/>${star(90, 141, .8)}${crown(21, .95, 'gEmer')}${jewel(38, 80, 4.5, 'gEmer')}${jewel(142, 80, 4.5, 'gEmer')}${glint([[14, 28], [166, 28], [58, 8], [122, 8], [24, 130], [156, 130]])}`;
+  /* Partner Duet */
+  const note = (x, y, d) => `<g transform="translate(${x} ${y})" fill="url(#gNeb)" stroke="#fff" stroke-width=".7"><g class="tw13" style="animation-delay:${d}s;fill:url(#gNeb)"><ellipse cx="-3" cy="7" rx="5" ry="3.8"/><path d="M0 7V-10Q8-7 9 1Q5-3 2-3V7Z"/></g></g>`;
+  const eq = Array.from({ length: 11 }, (_, i) => { const h = 6 + [4, 10, 7, 15, 11, 19, 11, 15, 7, 10, 4][i]; return `<rect x="${62 + i * 5.2}" y="${146 - h / 2}" width="3.4" height="${h}" rx="1.7" fill="url(#gNeb)"/>` }).join('');
+  const cpDuet = `${ringArt('gNeb')}<path d="M32 82C30 4 150 4 148 82" fill="none" stroke="url(#gNeb)" stroke-width="7" stroke-linecap="round"/>
+    ${both('<rect x="24" y="64" width="17" height="36" rx="8" fill="url(#gSaph)" stroke="#fff" stroke-width="1.2"/><rect x="29" y="70" width="7" height="24" rx="3.5" fill="url(#gNeb)"/>')}
+    ${eq}${note(14, 40, 0)}${note(166, 40, .5)}${note(10, 118, .9)}${note(170, 118, .3)}${heart(90, 24, 1.3, 'gNeb')}${glint([[44, 8], [136, 8], [90, -6], [40, 138], [140, 138]])}`;
   return {
+    'cpl-pasangan': wrapBd(cpPas), 'cpl-sahabat': wrapBd(cpSah), 'cpl-saudara': wrapBd(cpSau), 'cpl-duet': wrapBd(cpDuet),
+    svip14: wrapBd(immortalBd), svip15: wrapBd(gloryBd),
+    'lux-kaisar': wrapBd(kaisar),
+    'lux-galaksi': wrapBd(galaksi),
+    'lux-phoenix': wrapBd(phoenix),
     svip12: wrapBd(mythicBd),
     svip13: wrapBd(legendBd),
     sayap: `<svg viewBox="0 0 180 154" aria-hidden="true">${wing}<g transform="translate(180 0) scale(-1 1)">${wing}</g>${tw}</svg>`,
@@ -951,6 +1278,7 @@ function repaintAvatars(id) {
 }
 /* Satu user bisa punya >1 entri presence (sambung ulang jaringan meninggalkan entri lama). Selalu pakai entri TERBARU (t terbesar),
    bukan v[0] yang bisa basi dan menimpa border yang benar sehingga border "hilang" padahal orangnya masih di room. */
+const seatBd = id => { const p = prof[id]; return p && p.avatar_border !== undefined ? p.avatar_border : pmeta(online[id])?.border || null };
 const pmeta = v => (v || []).reduce((a, b) => (b.t || 0) >= (a.t || 0) ? b : a, v?.[0]);
 /* Database = sumber kebenaran border/host orang lain. Presence hanya mempercepat tampilan, lalu diverifikasi ke database. */
 let bdDbBusy = false;
@@ -1090,7 +1418,7 @@ const renderedMessageIds = new Set();
 const msgCache = new Map();
 let tagNames = [];
 /* notifikasi + sinkron border */
-let notifs = [], nSeen = new Set(), nBannerQ = [], nBannerBusy = false, nLastBeep = 0, nSound = true, bdBusy = 0, nAC = null;
+let notifs = [], nSeen = new Set(), nBannerQ = [], nBannerBusy = false, nLastBeep = 0, nSound = true, bdBusy = 0, bdLock = 0, nAC = null; /* bdLock: selama border baru dipakai, abaikan data lama dari realtime/polling */
 const acceptedIds = new Set(), pinfo = {};
 try { nSound = localStorage.getItem('nt_snd') !== '0' } catch {}
 
@@ -1109,8 +1437,8 @@ const GFX_DUR = [3.6, 4.2, 4.8, 5.6, 6.8, 8.5];
 const GFX_COL = [['#ffd36e','#3a2a0066'],['#ffd36e','#3a2a0066'],['#ffd36e','#5b3a0099'],['#ffd36e','#8a5a1299'],['#ff8ad8','#6a1b5a99'],['#fff1a8','#b8420099']];
 const tierOf = p => p >= 15000 ? 5 : p >= 5000 ? 4 : p >= 1000 ? 3 : p >= 250 ? 2 : p >= 50 ? 1 : 0;
 /* Efek gift: gerakan khas tiap item (g.fx) + lapisan megah sesuai poin (tier 0-5). Efek kecil tidak memotong efek besar. */
-function showFx(g, who, to, giftIndex) {
-  const named = !!g?.name, points = Number(g?.points || 0), tier = named ? tierOf(points) : 0;
+function showFx(g, who, to, giftIndex, qty = 1) {
+  const named = !!g?.name, points = Number(g?.points || 0) * qty, tier = named ? tierOf(points) : 0;
   const video = named ? (giftVideos?.[giftIndex]?.url || '') : '', hasVid = /^https:\/\//i.test(video);
   if (showFx.until > Date.now() && tier < (showFx.tier ?? 0)) return;
   const gd = hasVid ? 12 : GFX_DUR[tier], [gc, gc2] = GFX_COL[tier], mot = hasVid ? 'vid' : (g?.fx || 'pop');
@@ -1119,13 +1447,13 @@ function showFx(g, who, to, giftIndex) {
   const burst = n => Array.from({ length: n }, () => { const a = Math.random() * 6.283, r = rnd(18, 48);
     return `<i class="p" style="--tx:${Math.round(Math.cos(a) * r)}vmin;--ty:${Math.round(Math.sin(a) * r)}vmin;--dl:${rnd(.2, 1.8).toFixed(2)}s;--s:${Math.round(rnd(14, 30))}px">${pick1(['✨','⭐','💫','✦'])}</i>` }).join('');
   const rain = (n, set) => Array.from({ length: n }, () => `<i class="r" style="--x:${Math.round(rnd(2, 96))}vw;--dl:${rnd(0, 2.8).toFixed(2)}s;--rd:${rnd(2.2, 3.6).toFixed(2)}s;--s:${Math.round(rnd(18, 34))}px;--rot:${Math.round(rnd(-360, 360))}deg">${pick1(set)}</i>`).join('');
-  const nR = [0, 0, 0, 12, 24, 40][tier], set = tier >= 5 ? ['🪙','💎','👑','✨'] : tier >= 4 ? ['🪙','✨','💎'] : ['✨','⭐'];
+  const nR = [0, 0, 0, 6, 10, 16][tier], set = tier >= 5 ? ['🪙','💎','👑','✨'] : tier >= 4 ? ['🪙','✨','💎'] : ['✨','⭐'];
   const layers = (tier >= 2 ? '<div class="vig"></div>' : '') + (tier >= 3 ? '<div class="rays"></div>' : '') + (tier >= 4 ? '<div class="flash"></div>' : '')
-    + burst([0, 8, 14, 20, 24, 30][tier]) + (nR ? rain(nR, set) : '');
+    + burst([0, 5, 7, 9, 11, 14][tier]) + (nR ? rain(nR, set) : '');
   const visual = hasVid
     ? `<video class="gift-fx-video" src="${esc(video)}" autoplay muted playsinline preload="auto" onended="H.hideGiftFx()" onerror="H.hideGiftFx()"></video>`
     : (g?.img ? `<img src="${esc(g.img)}">` : `<div class="big">${g?.e || '🎁'}</div>`);
-  const label = named ? `${esc(who)} mengirim ${esc(g.name)}${to ? ' ke ' + esc(to) : ''} · ${points.toLocaleString('id-ID')} poin!` : esc(who);
+  const label = named ? `${esc(who)} mengirim ${qty > 1 ? qty + '× ' : ''}${esc(g.name)}${to ? ' ke ' + esc(to) : ''} · ${points.toLocaleString('id-ID')} poin!` : esc(who);
   $('#fx').innerHTML = `<div class="gs t${tier}" style="--gd:${gd}s;--gc:${gc};--gc2:${gc2}">${layers}<div class="gm" style="animation-name:m-${mot}">${visual}</div><div class="gban"><span class="ban">${label}</span></div></div>`;
   clearTimeout(showFx.t); showFx.t = setTimeout(() => { $('#fx').innerHTML = ''; showFx.until = 0 }, hasVid ? 12000 : gd * 1000 + 500);
   const player = $('#fx video'); if (player) player.play().catch(() => {});
@@ -1142,7 +1470,9 @@ const ENTRANCE = {
   10: { img: '', t: 'EXCLUSIVE ROYAL CROWN', c1: '#e6c8ff', c2: '#7a2fe0', dur: 6 },
   11: { img: '', t: 'SULTAN · WINGS OF GOLD', c1: '#ffe27a', c2: '#e0162f', dur: 7 },
   12: { img: '', t: 'MYTHIC · THE ROYAL TREASURY', c1: '#ffe08a', c2: '#0fae6e', dur: 8.5 },
-  13: { img: '', t: 'LEGEND · ETERNAL MAJESTY', c1: '#f1e4ff', c2: '#8a5cff', dur: 10.5 }};
+  13: { img: '', t: 'LEGEND · ETERNAL MAJESTY', c1: '#f1e4ff', c2: '#8a5cff', dur: 10.5 },
+  14: { img: '', t: 'IMMORTAL · API KEABADIAN', c1: '#ffcf8a', c2: '#e0123f', dur: 11.5 },
+  15: { img: '', t: 'GLORY · GERBANG CAHAYA', c1: '#fff3b0', c2: '#e0a52c', dur: 13 }};
 const SVG_DEFS = '<defs><linearGradient id="eg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset=".45" style="stop-color:var(--c1)"/><stop offset="1" style="stop-color:var(--c2)"/></linearGradient><linearGradient id="eg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--c1)"/><stop offset="1" style="stop-color:var(--c2)"/></linearGradient><linearGradient id="egm" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ff7ab8"/><stop offset=".5" stop-color="#a259ff"/><stop offset="1" stop-color="#3fb4ff"/></linearGradient></defs>';
 const svgWrap = b => `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">${SVG_DEFS}${b}</svg>`;
 function phoenixSVG() {
@@ -1227,7 +1557,31 @@ function legendSVG() {
     <path d="M100 76L128 104 100 162 72 104Z" fill="url(#lgs)" stroke="#fff" stroke-width="1.6"/><path d="M72 104H128M100 76L87 104 100 162 113 104Z" fill="none" stroke="#fff" stroke-width=".9" opacity=".85"/>
     <g transform="translate(100 44) scale(.5) translate(-100 -109)">${crownG()}</g>${rose(62,160,.9)}${rose(138,160,.9)}${rose(100,182,1.15)}${SPARKS}`);
 }
-const ART = { 12: mythicSVG, 13: legendSVG, 5: phoenixSVG, 6: () => dragonSVG(), 7: unicornSVG, 8: () => dragonSVG({ wings: 1, bolts: 1 }), 9: () => dragonSVG({ wings: 1, crown: 1, halo: 1 }), 10: exclusiveSVG, 11: sultanSVG };
+/* 14 Immortal: sayap api, cincin keabadian ganda, kristal rubi */
+function immortalSVG() {
+  const feather = (fill, k) => WING_F.map(d => `<path d="${d}" fill="url(#${fill})" stroke="#fff0c0" stroke-opacity=".8" stroke-width=".8" transform="translate(92 110) scale(${k}) translate(-92 -110)"/>`).join('');
+  const wing = `<g transform="rotate(14 92 110)">${feather('imF', 1.28)}</g>` + feather('imR', .94) + feather('imF', .54);
+  return svgWrap(`${GOLD_DEFS}<defs><linearGradient id="imF" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3c4"/><stop offset=".4" stop-color="#ff7a2a"/><stop offset="1" stop-color="#8a0020"/></linearGradient><linearGradient id="imR" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff8a8f"/><stop offset=".5" stop-color="#c4082e"/><stop offset="1" stop-color="#2a0208"/></linearGradient></defs>
+    <circle class="spin" cx="100" cy="104" r="98" fill="none" stroke="#ff5a5f" stroke-width="1.4" stroke-dasharray="16 5 2 5"/><circle class="spin rv" cx="100" cy="104" r="68" fill="none" stroke="url(#egw)" stroke-width="2.6" stroke-dasharray="40 6 4 6"/>
+    <g class="wl">${wing}</g><g class="wr"><g transform="matrix(-1 0 0 1 200 0)">${wing}</g></g>
+    <path d="M100 66L122 104 100 168 78 104Z" fill="url(#imR)" stroke="url(#egw)" stroke-width="2.4"/><path d="M78 104H122M100 66L90 104 100 168 110 104Z" fill="none" stroke="#ffd36e" stroke-width=".9"/>
+    <path d="M100 118C108 104 124 104 124 118S108 132 100 118C92 104 76 104 76 118S92 132 100 118Z" fill="none" stroke="url(#egw)" stroke-width="5"/>
+    <g transform="translate(100 40) scale(.52) translate(-100 -109)">${crownG()}</g>${SPARKS}`);
+}
+/* 15 Glory: matahari mahkota, enam sayap gading-emas, halo, dan karangan kemenangan */
+function glorySVG() {
+  const feather = (fill, k) => WING_F.map(d => `<path d="${d}" fill="url(#${fill})" stroke="#7a4a05" stroke-width="1.1" transform="translate(92 110) scale(${k}) translate(-92 -110)"/>`).join('');
+  const wing = `<g transform="rotate(28 92 106)">${feather('glG', 1.18)}</g><g transform="rotate(-24 92 112)">${feather('glG', 1.02)}</g>` + feather('glW', 1.16) + feather('glG', .6);
+  const rays = Array.from({ length: 36 }, (_, i) => `<path d="M100 ${i % 2 ? 14 : -6}L102 62 98 62Z" fill="url(#egw)" opacity=".85" transform="rotate(${i * 10} 100 104)"/>`).join('');
+  const laurel = [[50,142,5],[56,156,20],[66,168,36],[79,177,54],[93,181,70]].map(p => `<path d="M0 0C-5-11-17-13-25-7C-17 1-7 4 0 0Z" fill="url(#egw)" stroke="#8a5a12" stroke-width=".5" transform="translate(${p[0]} ${p[1]}) rotate(${p[2]})"/>`).join('');
+  return svgWrap(`${GOLD_DEFS}<defs><linearGradient id="glW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset=".45" stop-color="#ffedb0"/><stop offset="1" stop-color="#c8881a"/></linearGradient><linearGradient id="glG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe9a0"/><stop offset=".5" stop-color="#d99a22"/><stop offset="1" stop-color="#7a4a05"/></linearGradient></defs>
+    <g class="spin">${rays}</g>
+    <g class="wl">${wing}</g><g class="wr"><g transform="matrix(-1 0 0 1 200 0)">${wing}</g></g>
+    <circle cx="100" cy="106" r="42" fill="#4a3408" stroke="url(#egw)" stroke-width="4"/><circle class="spin rv" cx="100" cy="104" r="54" fill="none" stroke="#fff" stroke-width="1.6" stroke-dasharray="2 6"/>
+    <g transform="translate(100 108) scale(.52) translate(-100 -109)">${crownG()}</g>
+    <ellipse cx="100" cy="14" rx="30" ry="7" fill="none" stroke="url(#egw)" stroke-width="4"/>${laurel}<g transform="matrix(-1 0 0 1 200 0)">${laurel}</g>${SPARKS}`);
+}
+const ART = { 14: immortalSVG, 15: glorySVG, 12: mythicSVG, 13: legendSVG, 5: phoenixSVG, 6: () => dragonSVG(), 7: unicornSVG, 8: () => dragonSVG({ wings: 1, bolts: 1 }), 9: () => dragonSVG({ wings: 1, crown: 1, halo: 1 }), 10: exclusiveSVG, 11: sultanSVG };
 const artHTML = lv => ENTRANCE[lv].img ? `<img src="${ENTRANCE[lv].img}" alt="">` : ART[lv]();
 const entQueue = []; let entBusy = false, entResolve = null, entLoadedAt = 0; const entSeen = {};
 function hideEntranceFx() {
@@ -1244,46 +1598,54 @@ H.entVideoFail = () => {
   clearTimeout(playEntrance.t); playEntrance.t = setTimeout(hideEntranceFx, ENTRANCE[lv].dur * 1000);
 };
 /* Entrance masuk antrean: beberapa SVIP yang masuk bersamaan tampil bergantian, tidak saling menimpa */
-function showEntranceFx(name, level, avatarUrl) {
-  entQueue.push({ name, level, avatarUrl }); if (entQueue.length > 5) entQueue.shift();
+function showEntranceFx(name, level, avatarUrl, opts) {
+  entQueue.push({ name, level, avatarUrl, opts }); if (entQueue.length > 5) entQueue.shift();
   pumpEntrance();
 }
 async function pumpEntrance() {
   if (entBusy) return; entBusy = true;
-  try { while (entQueue.length) { const x = entQueue.shift(); await playEntrance(x.name, x.level, x.avatarUrl); } }
+  try { while (entQueue.length) { const x = entQueue.shift(); await playEntrance(x.name, x.level, x.avatarUrl, x.opts); } }
   finally { entBusy = false; }
 }
 /* Lapisan latar entrance. Mythic menambah hujan koin & permata; Legend menambah pilar cahaya, kelopak, dan berlian. */
 function entLayers(lv) {
-  const sp = Array.from({ length: 18 }, () => { const a = Math.random() * 6.283, r = 22 + Math.random() * 40;
+  const sp = Array.from({ length: 8 }, () => { const a = Math.random() * 6.283, r = 22 + Math.random() * 40;
     return `<i style="--tx:${Math.round(Math.cos(a) * r)}vmin;--ty:${Math.round(Math.sin(a) * r)}vmin;--dl:${(Math.random() * 2).toFixed(2)}s"></i>` }).join('');
   let extra = '';
-  if (lv >= 12) {
+  const rnd = (a, b) => a + Math.random() * (b - a);
+  if (lv === 14) {
+    const up = Array.from({ length: 16 }, () => `<i style="--x:${Math.round(rnd(0, 96))}vw;--s:${Math.round(rnd(7, 18))}px;--fd:${rnd(2.2, 4.2).toFixed(2)}s;--dl:${rnd(0, 3).toFixed(2)}s"></i>`).join('');
+    extra = `<div class="lx-rise">${up}</div><div class="lx-slash"></div><div class="lx-frame"></div><div class="lx-title">IMMORTAL</div>`;
+  } else if (lv === 15) {
+    const fth = Array.from({ length: 14 }, (_, i) => `<i class="${i % 3 ? 'fth' : ''}" style="--x:${Math.round(rnd(0, 94))}vw;--s:${Math.round(rnd(14, 28))}px;--fd:${rnd(3.4, 5.6).toFixed(2)}s;--dl:${rnd(1, 4.5).toFixed(2)}s">${i % 3 ? '' : '✨'}</i>`).join('');
+    extra = `<div class="lx-beams"><b></b><b></b><b></b></div><div class="lx-fall">${fth}</div><div class="lx-frame"></div><div class="lx-title">GLORY</div><div class="lx-gate"><b></b><b></b></div>`;
+  } else if (lv >= 12) {
     const set = lv === 13 ? ['🌸', '💎', '✨', '✨', '🌹'] : ['coin', 'coin', '💎', '✨'];
-    const fall = Array.from({ length: lv === 13 ? 34 : 30 }, (_, i) => { const x = set[i % set.length];
+    const fall = Array.from({ length: 14 }, (_, i) => { const x = set[i % set.length];
       return `<i${x === 'coin' ? ' class="coin"' : ''} style="--x:${Math.round(Math.random() * 94)}vw;--s:${Math.round(14 + Math.random() * 16)}px;--fd:${(2.6 + Math.random() * 2).toFixed(2)}s;--dl:${(Math.random() * 3).toFixed(2)}s">${x === 'coin' ? '' : x}</i>` }).join('');
     extra = `${lv === 13 ? '<div class="lx-beams"><b></b><b></b><b></b></div>' : ''}<div class="lx-fall">${fall}</div><div class="lx-frame"></div>`;
   }
   return `<div class="ent-bg"></div><div class="ent-rays"></div><div class="ent-burst"></div><div class="ent-sparks">${sp}</div>${extra}`;
 }
-async function playEntrance(name, level, avatarUrl) {
+async function playEntrance(name, level, avatarUrl, opts = {}) {
   const lv = Math.min(MAX_LV, Math.max(5, Number(level) || 5)), v = ENTRANCE[lv];
-  if (!entranceVideos?.[lv]?.url && Date.now() - entLoadedAt > 30000) { entLoadedAt = Date.now(); await loadEntranceVideos(); }
-  const video = entranceVideos?.[lv]?.url || '', ok = /^https:\/\//i.test(video), alpha = /\.webm(\?|$)/i.test(video);
+  const L = opts.title ?? lv; /* gelar ASLI pemilik: animasi boleh bebas, banner gelar tidak */
+  if (!opts.video && !entranceVideos?.[lv]?.url && Date.now() - entLoadedAt > 30000) { entLoadedAt = Date.now(); await loadEntranceVideos(); }
+  const video = opts.video || entranceVideos?.[lv]?.url || '', ok = /^https:\/\//i.test(video), alpha = /\.webm(\?|$)/i.test(video);
   const visual = ok
-    ? `<div class="ent-video-wrap"><video class="ent-video${alpha ? ' alpha' : ''}" src="${esc(video)}" autoplay muted playsinline preload="auto" onended="H.hideEntranceFx()" onerror="H.entVideoFail()"></video></div>`
+    ? `<div class="ent-video-wrap"><video class="ent-video${alpha ? ' alpha' : ''}${opts.video ? ' own' : ''}" src="${esc(video)}" autoplay muted playsinline preload="auto" onended="H.hideEntranceFx()" onerror="H.entVideoFail()"></video></div>`
     : `<div class="ent-move"><div class="ent-art">${artHTML(lv)}</div></div>`;
   const e = $('#entranceFX');
   await new Promise(res => {
     entResolve = res;
-    const sub = ok ? 'SPECIAL VIDEO ENTRANCE' : v.t;
+    const sub = ok ? 'SPECIAL VIDEO ENTRANCE' : L === lv ? v.t : entTitle(lv);
     const label = lv >= 12
-      ? `<div class="lx-ban l${lv}">${avatarUrl ? `<div class="lx-av">${avatarHTML(avatarUrl, SVIP[lv - 1], '', 60, '', '', false)}</div>` : ''}${badgeOf(lv, true)}<span class="lx-name">${esc(name)}</span><small>${sub}</small></div>`
-      : `${lv >= 10 ? `<div class="ent-ban">${badgeOf(lv, true)}</div>${esc(name)}` : `${esc(name)} · SVIP ${lv}`}<small>${sub}</small>`;
+      ? `<div class="lx-ban l${lv}">${avatarUrl ? `<div class="lx-av">${avatarHTML(avatarUrl, L ? SVIP[L - 1] : 0, '', 60, '', '', false)}</div>` : ''}${badgeOf(L, true)}<span class="lx-name">${esc(name)}</span><small>${sub}</small></div>`
+      : `${L >= 10 ? `<div class="ent-ban">${badgeOf(L, true)}</div>${esc(name)}` : L ? `${esc(name)} · SVIP ${L}` : esc(name)}<small>${sub}</small>`;
     e.innerHTML = `<div class="ent ent${lv}" data-lv="${lv}" style="--dur:${ok && lv < 12 ? 6 : v.dur}s;--c1:${v.c1};--c2:${v.c2}">${ok ? '' : entLayers(lv)}${visual}<div class="ent-label">${label}</div></div>`;
     if (lv >= 12 && nSound) levelChime();
     e.classList.remove('hidden');
-    clearTimeout(playEntrance.t); playEntrance.t = setTimeout(hideEntranceFx, (ok ? 45 : v.dur) * 1000);
+    clearTimeout(playEntrance.t); playEntrance.t = setTimeout(hideEntranceFx, (opts.video ? OWN_VIDEO_SEC : ok ? 45 : v.dur) * 1000);
     const player = e.querySelector('video'); if (player) player.play().catch(() => H.entVideoFail());
   });
 }
@@ -1292,8 +1654,9 @@ async function entranceFor(id, name, claimed) {
   if (!id || Date.now() - (entSeen[id] || 0) < 20000) return;
   entSeen[id] = Date.now();
   await ensureProf([id], true);
-  const pts = prof[id]?.points, lv = Math.min(MAX_LV, pts === undefined ? Number(claimed) || 0 : lvl(pts));
-  if (lv >= 5) showEntranceFx(name || prof[id]?.name || 'Anggota', lv, id === uid ? me?.avatar : pmeta(online[id])?.avatar);
+  const pts = prof[id]?.points, L = Math.min(MAX_LV, pts === undefined ? Number(claimed) || 0 : lvl(pts));
+  const plan = entPlan((await loadMyEnt(id)).row, L, !!prof[id]?.is_host);
+  if (plan) showEntranceFx(name || prof[id]?.name || 'Anggota', plan.anim, id === uid ? me?.avatar : pmeta(online[id])?.avatar, { title: L, video: plan.video });
 }
 function showRelPopup(text) {
   const e = $('#svipPop');
@@ -1314,8 +1677,8 @@ function levelChime() {
 }
 function showSvipPopup(name, level, mine) {
   const e = $('#svipPop');
-  const sp = Array.from({ length: 16 }, () => { const a = Math.random() * Math.PI * 2, d = 90 + Math.random() * 170; return `<i class="svip-spark" style="--dx:${Math.round(Math.cos(a) * d)}px;--dy:${Math.round(Math.sin(a) * d)}px;animation-delay:${(Math.random() * 1.6).toFixed(2)}s"></i>` }).join('');
-  e.innerHTML = `<div class="svip-rays"></div>${sp}<div class="svip-card${level >= 12 ? ' p' + level : ''}"><div class="svip-crown">${level >= 13 ? '👑💎👑' : level === 12 ? '💎👑💎' : '👑✨'}</div><div class="svip-title">${mine ? 'KAMU NAIK GELAR!' : 'SELAMAT ATAS PENINGKATAN GELAR'}</div>${level >= 10 ? `<div class="svip-ban">${badgeOf(level, true)}</div>` : `<div class="svip-level">SVIP ${level}</div>`}<div class="svip-name">${esc(name)}</div><div class="svip-desc">berhasil naik ke ${level >= 10 ? 'tingkat' : 'level'} ${tierName(level)}!</div></div><div class="svip-flash"></div>`;
+  const sp = Array.from({ length: 8 }, () => { const a = Math.random() * Math.PI * 2, d = 90 + Math.random() * 170; return `<i class="svip-spark" style="--dx:${Math.round(Math.cos(a) * d)}px;--dy:${Math.round(Math.sin(a) * d)}px;animation-delay:${(Math.random() * 1.6).toFixed(2)}s"></i>` }).join('');
+  e.innerHTML = `<div class="svip-rays"></div>${sp}<div class="svip-card${level >= 12 ? ' p' + level : ''}"><div class="svip-crown">${level >= 15 ? '☀️👑☀️' : level === 14 ? '🔥♾️🔥' : level === 13 ? '👑💎👑' : level === 12 ? '💎👑💎' : '👑✨'}</div><div class="svip-title">${mine ? 'KAMU NAIK GELAR!' : 'SELAMAT ATAS PENINGKATAN GELAR'}</div>${level >= 10 ? `<div class="svip-ban">${badgeOf(level, true)}</div>` : `<div class="svip-level">SVIP ${level}</div>`}<div class="svip-name">${esc(name)}</div><div class="svip-desc">berhasil naik ke ${level >= 10 ? 'tingkat' : 'level'} ${tierName(level)}!</div></div><div class="svip-flash"></div>`;
   e.classList.remove('hidden'); clearTimeout(showSvipPopup.t);
   showSvipPopup.t = setTimeout(() => { e.classList.add('hidden'); e.innerHTML = ''; }, 6000);
   if (nSound) levelChime();
@@ -1335,8 +1698,37 @@ async function upImg(file, max) {
   return sb.storage.from('media').getPublicUrl(path).data.publicUrl;
 }
 function pickVideo(cb) {
-  const i = document.createElement('input'); i.type = 'file'; i.accept = 'video/mp4,video/webm,.mp4,.webm';
-  i.onchange = () => i.files?.[0] && cb(i.files[0]); i.click();
+  document.getElementById('vidPick')?.remove();
+  const i = document.createElement('input'); i.id = 'vidPick'; i.type = 'file'; i.accept = 'video/mp4,video/webm,.mp4,.webm';
+  i.style.cssText = 'position:fixed;left:-9999px;opacity:0';
+  i.onchange = () => { const f = i.files?.[0]; i.remove(); if (f) cb(f) };
+  document.body.append(i); i.click();
+}
+/* Pesan gagal upload ditampilkan lewat alert (toast terlalu cepat hilang) beserta penyebabnya */
+function videoFail(e) {
+  const m = e?.message || String(e);
+  const hint = /mime|not supported|row-level|policy|bucket|does not exist|schema cache|Could not find/i.test(m) ? '\n\nJalankan video_fix.sql di Supabase > SQL Editor, lalu coba lagi.'
+    : /size|too large|exceeded|413/i.test(m) ? '\n\nFile terlalu besar. Perkecil videonya.' : '';
+  alert('Upload video gagal: ' + m + hint);
+}
+/* ---------- Animasi masuk room pilihan sendiri ---------- */
+const OWN_VIDEO_MB = 15, OWN_VIDEO_SEC = 15;
+const entTitle = lv => ENTRANCE[lv].t.split('· ').pop();
+async function loadMyEnt(id) {
+  const { data, error } = await sb.from('user_entrance').select('user_id,choice,video_url,video_path,video_name').eq('user_id', id).maybeSingle();
+  return { row: error ? null : data, error };
+}
+/* Aturan kunci: animasi bawaan terbuka sampai level gelarmu; video sendiri khusus Sultan ke atas. Host bebas. */
+const VIDEO_LV = 11;
+const canAnim = (n, L, host) => host || n <= L;
+const canVideo = (L, host) => host || L >= VIDEO_LV;
+/* Tentukan apa yang diputar. Pilihan yang sudah tidak terbuka (mis. gelar habis) kembali ke bawaan gelar. */
+function entPlan(row, L, host) {
+  const c = row?.choice || '';
+  if (c === 'off') return null;
+  if (c === 'video' && canVideo(L, host) && /^https:\/\//i.test(row.video_url || '')) return { anim: Math.max(5, L), video: row.video_url, custom: true };
+  if (+c >= 5 && +c <= MAX_LV && canAnim(+c, L, host)) return { anim: +c, custom: true };
+  return L >= 5 ? { anim: L } : null;
 }
 async function upEntranceVideo(file, level) {
   if (!/video\/(mp4|webm)/i.test(file.type) && !/\.(mp4|webm)$/i.test(file.name))
@@ -1374,6 +1766,71 @@ async function upGiftVideo(file, giftIndex) {
   const {data} = sb.storage.from('media').getPublicUrl(path);
   return {url:data.publicUrl,path,name:file.name};
 }
+
+H.entMenu = async () => {
+  const { row, error } = await loadMyEnt(uid);
+  if (error) return sheet(`<h3>Animasi Masuk Room</h3><p class="sub">Fitur ini belum aktif. Jalankan <b>video_fix.sql</b> di Supabase &gt; SQL Editor.<br><small>${esc(error.message)}</small></p><button class="sm" onclick="H.close()">Mengerti</button>`);
+  H.entMenu.row = row;
+  const L = lvl(me.points), host = !!me.is_host, vOk = canVideo(L, host);
+  const saved = row?.choice || '';
+  const open = v => v === 'video' ? vOk : +v ? canAnim(+v, L, host) : true;
+  const cur = open(saved) ? saved : ''; /* pilihan yang terkunci lagi dianggap Otomatis */
+  const item = (val, title, desc, extra = '', need = 0) => `<div class="mrow erow ${cur === val ? 'sel' : ''}"><span style="flex:1"><b>${title}</b><br><small style="color:#a99d92;overflow-wrap:anywhere">${desc}</small></span><div class="bt">${extra}${!open(val) ? `<span class="sm o">🔒 ${tierName(need)}</span>` : cur === val ? '<span class="sm o">✔ Dipakai</span>' : `<button class="sm" onclick="H.setEnt('${val}')">Pakai</button>`}</div></div>`;
+  const play = call => `<button class="sm o" onclick="${call}"><span class="ms">play_arrow</span></button>`;
+  const has = !!row?.video_url;
+  sheet(`<h3>Animasi Masuk Room</h3><p class="sub">${host ? '👑 Host: semua terbuka' : `Gelarmu: <b>${L ? tierName(L) : 'belum ada'}</b>. Animasi terbuka sampai level gelarmu.`}</p>
+   ${item('', 'Otomatis', 'Mengikuti gelarmu (mulai SVIP 5)')}
+   ${item('off', 'Tanpa animasi', 'Masuk diam-diam')}
+   <h3 class="sec"><span class="ms">movie</span> Video Sendiri</h3>
+   ${vOk ? `${has ? item('video', 'Videoku', esc(row.video_name || 'Video tersimpan'), play('H.tryOwnVideo()')) : ''}
+   <p class="sub">MP4 atau WebM, maksimal ${OWN_VIDEO_MB} MB. Diputar tanpa suara, paling lama ${OWN_VIDEO_SEC} detik.</p>
+   <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="sm" onclick="H.upOwnVideo()"><span class="ms">upload</span> ${has ? 'Ganti video' : 'Upload video'}</button>${has ? '<button class="sm o" onclick="H.delOwnVideo()">Hapus video</button>' : ''}</div>`
+   : `<p class="sub">🔒 Terkunci. Upload video sendiri khusus gelar ${tierName(VIDEO_LV)} ke atas.</p>${has ? '<button class="sm o" onclick="H.delOwnVideo()">Hapus video lamaku</button>' : ''}`}
+   <h3 class="sec"><span class="ms">auto_awesome</span> Animasi Bawaan</h3>
+   ${Object.keys(ENTRANCE).map(Number).map(n => item(String(n), entTitle(n), 'Gaya ' + tierName(n), play(`H.tryEnt(${n})`), n)).join('')}`);
+};
+async function saveEnt(patch) {
+  const { error } = await sb.from('user_entrance').upsert({ user_id: uid, ...patch, updated_at: new Date().toISOString() }, { onConflict: 'user_id' });
+  return error;
+}
+H.setEnt = async choice => {
+  const L = lvl(me.points), host = !!me.is_host;
+  if (choice === 'video' ? !canVideo(L, host) : +choice && !canAnim(+choice, L, host)) return toast('Masih terkunci 🔒');
+  const error = await saveEnt({ choice }); if (error) return toast(error.message); toast('Animasi masuk disimpan ✅'); H.entMenu() };
+H.tryEnt = n => { H.close(); showEntranceFx(me.name, n, me.avatar, { title: lvl(me.points) }) };
+H.tryOwnVideo = () => { const url = H.entMenu.row?.video_url; if (!url) return; H.close(); showEntranceFx(me.name, Math.max(5, lvl(me.points)), me.avatar, { title: lvl(me.points), video: url }) };
+H.upOwnVideo = () => !canVideo(lvl(me.points), !!me.is_host) ? toast(`Upload video khusus ${tierName(VIDEO_LV)} ke atas 🔒`) : pickVideo(async file => {
+  try {
+    if (!/\.(mp4|webm)$/i.test(file.name) && !/video\/(mp4|webm)/i.test(file.type)) throw new Error('Format harus MP4 atau WebM (video .mov dari iPhone perlu diubah dulu).');
+    if (file.size > OWN_VIDEO_MB * 1024 * 1024) throw new Error(`Ukuran video ${(file.size / 1048576).toFixed(1)} MB, maksimal ${OWN_VIDEO_MB} MB (file too large).`);
+    toast('Mengunggah video…');
+    const old = H.entMenu.row?.video_path;
+    const up = await upEntranceVideo(file, 'own');
+    const error = await saveEnt({ choice: 'video', video_url: up.url, video_path: up.path, video_name: up.name.slice(0, 80) });
+    if (error) { await sb.storage.from('media').remove([up.path]); throw error }
+    if (old) sb.storage.from('media').remove([old]).then(() => {});
+    toast('Video masuk disimpan dan dipakai ✅'); H.entMenu();
+  } catch (e) { videoFail(e) }
+});
+H.delOwnVideo = async () => {
+  if (!confirm('Hapus video masukmu?')) return;
+  const old = H.entMenu.row?.video_path;
+  const error = await saveEnt({ choice: '', video_url: null, video_path: null, video_name: null });
+  if (error) return toast(error.message);
+  if (old) sb.storage.from('media').remove([old]).then(() => {});
+  toast('Video dihapus'); H.entMenu();
+};
+/* Host bisa mencabut video masuk anggota yang tidak pantas */
+H.hostDelEnt = async id => {
+  if (!me?.is_host || !confirm('Hapus video masuk anggota ini?')) return;
+  const { row, error: e0 } = await loadMyEnt(id);
+  if (e0) return toast(e0.message);
+  if (!row?.video_url) return toast('Anggota ini tidak punya video masuk');
+  const { error } = await sb.from('user_entrance').delete().eq('user_id', id);
+  if (error) return toast(error.message);
+  if (row.video_path) sb.storage.from('media').remove([row.video_path]).then(() => {});
+  toast('Video masuk anggota dihapus');
+};
 
 /* ---------- 1. Auth anonim + setup profil ---------- */
 const { data: { session } } = await sb.auth.getSession();
@@ -1450,6 +1907,119 @@ H.doHost = async () => {
   me.is_host = true; toast('Mode Host aktif 👑'); H.close(); prof[uid] = { ...prof[uid], is_host: true };
   if (inRoom) { room?.track(presence()); renderSeats(); H.panel(); renderProf() }
 };
+
+
+/* ---------- Pandu: bot pemandu pengguna baru ----------
+   Jawaban AI diambil dari fungsi server /api/guide (lihat api/guide.js, kunci API aman di server).
+   Jika fungsi itu belum dipasang / gagal, Pandu otomatis memakai jawaban bawaan di bawah. Kosongkan GUIDE_API untuk mematikan AI. */
+const GUIDE_API = '/api/guide';
+const GUIDE_KB = [
+  { k: ['mulai', 'pemula', 'bingung', 'baru', 'cara pakai', 'fungsi', 'apa ini', 'panduan'], a: 'Aplikasi ini punya 5 menu di bawah:\n• Room: ruang suara dengan kursi, chat, dan gift\n• Postingan: feed, story 24 jam, game koin\n• Video: feed video pendek\n• Teman: chat pribadi, radar orang online\n• Profil: foto, nama, border, check-in harian\nMau tur singkat? Ketuk "Tur aplikasi".' },
+  { k: ['kursi', 'duduk', 'mic', 'mikrofon', 'bicara', 'suara', 'ngomong', 'turun'], a: 'Di tab Room, ketuk kursi kosong (tanda ＋) untuk duduk. Setelah duduk kamu bisa bicara lewat mikrofon, dan emoji gerak muncul di fotomu. Ketuk kursimu lagi untuk turun. Ketuk kursi orang lain untuk lihat profil atau kirim gift. Jika mic tidak bunyi, izinkan akses mikrofon di browser/HP.' },
+  { k: ['chat', 'pesan', 'kirim pesan', 'ketik', 'balas', 'tag', 'teruskan', 'voice note', 'rekam'], a: 'Di tab Room, tulis pesan di kolom bawah lalu kirim. Di pesan ada opsi balas, tag (@nama), dan teruskan ke teman. Ada juga tombol rekam suara, tombol tema chat, dan tombol gift. Kirim foto sekali lihat tersedia di kolom chat.' },
+  { k: ['gift', 'hadiah', 'kirim hadiah', 'poin', 'level', 'svip', 'gelar', 'exp'], a: 'Cara kirim gift: ketuk tombol gift di Room, atau ketuk kursi/profil orang lalu pilih Kirim Gift, pilih hadiah dan jumlahnya. Gift memakai Koin Emas. Penerima mendapat poin, dan poin yang DITERIMA menaikkan level SVIP (1 sampai 15, puncaknya Immortal lalu Glory). Gelar level punya masa berlaku, jadi perlu diperpanjang.' },
+  { k: ['koin', 'coin', 'dapat koin', 'gratis', 'check', 'absen', 'harian', 'game', 'main', 'peti'], a: 'Cara dapat Koin Emas:\n• Check-in harian: tab Profil, tombol Check-in Harian\n• Game koin: ikon gamepad di tab Postingan (maksimal 30 koin per game)\n• Peti room: naik level lewat gift di room\nHost juga kadang membagikan koin.' },
+  { k: ['postingan', 'posting', 'story', 'status', 'upload', 'unggah', 'komentar', 'like', 'suka'], a: 'Tab Postingan: ketuk tombol + untuk buat postingan (teks/foto). Ketuk postingan untuk memperbesar dan membaca lengkap. Kamu bisa like dan komentar. Story (bulatan di atas) hanya hidup 24 jam, bisa foto atau video, dan bisa di-like serta dikomentari.' },
+  { k: ['teman', 'tambah teman', 'pertemanan', 'follow', 'ikuti', 'radar', 'dm', 'pribadi', 'online'], a: 'Tab Teman: radar menampilkan semua orang yang sedang online. Ketuk fotonya untuk lihat profil, lalu ajukan pertemanan atau ikuti. Setelah berteman, ketuk nama teman untuk chat pribadi layar penuh. Catatan: pesan pribadi yang sudah dibaca terhapus otomatis setelah 24 jam.' },
+  { k: ['border', 'bingkai', 'frame', 'avatar', 'terkunci', 'buka border'], a: 'Border avatar: tab Profil, bagian Border Avatar, ketuk border yang ingin dipakai. Border yang terkunci dibuka oleh Host: ketuk border itu lalu "Buka Border (Chat Host)". Border gelar (Mythic/Legend) terbuka otomatis saat gelarnya diraih.' },
+  { k: ['tema', 'warna chat', 'theme'], a: 'Tema chat terkunci di awal. Chat Host dulu untuk meminta dibuka; setelah itu semua tema bebas dipakai lewat tombol tema di bar chat Room.' },
+  { k: ['foto', 'nama', 'profil', 'ganti nama', 'ganti foto', 'akun'], a: 'Tab Profil: di sana kamu bisa lihat foto, nama, level, border, dan check-in harian. Untuk mengganti foto atau nama, gunakan tombol ubah di halaman Profil.' },
+  { k: ['notifikasi', 'lonceng', 'bell', 'pemberitahuan'], a: 'Ikon lonceng di bagian atas menampilkan notifikasi pesan, like, follow, dan lainnya. Ketuk satu notifikasi untuk langsung membukanya.' },
+  { k: ['video', 'feed video', 'shorts', 'tiktok'], a: 'Menu Video menampilkan video pendek yang bisa digeser ke atas. Ada tombol like, komentar, dan bagikan. Tombol Kembali membawamu ke room tanpa keluar.' },
+  { k: ['host', 'owner', 'admin', 'laporan', 'bantuan', 'masalah', 'error', 'bug'], a: 'Untuk hal yang tidak bisa kujawab (membuka border/tema, laporan masalah), hubungi Host lewat WhatsApp: ketuk border/tema yang terkunci lalu tombol Chat Host, atau sebutkan masalahnya kepadaku dulu.' },
+  { k: ['ulasan', 'rating', 'bintang', 'review'], a: 'Saat masuk, akan muncul pop up untuk memberi ulasan dan bintang. Pilih bintang, tulis ulasan singkat, lalu kirim. Ulasanmu membantu Host memperbaiki aplikasi.' }
+];
+const GUIDE_CHIPS = [{ l: 'Cara mulai', q: 'cara mulai' }, { l: 'Duduk & bicara', q: 'cara duduk di kursi dan bicara' }, { l: 'Kirim gift', q: 'cara kirim gift' }, { l: 'Dapat koin', q: 'cara dapat koin' }, { l: 'Pakai border', q: 'cara pakai border' }, { l: '🧭 Tur aplikasi', tour: 1 }];
+const GUIDE_TOUR = [
+  { go: 'room', a: '1/6 · ROOM\nIni ruang suara. Ketuk kursi kosong (＋) untuk duduk dan bicara. Di bawahnya ada chat, tombol gift, rekam suara, dan tema.' },
+  { go: 'posts', a: '2/6 · POSTINGAN\nLihat postingan semua anggota. Ketuk postingan untuk memperbesar. Story bulat bertahan 24 jam. Ikon gamepad di pojok atas berisi game pengumpul koin.' },
+  { a: '3/6 · VIDEO\nFeed video pendek: geser ke atas untuk video berikutnya.' },
+  { go: 'friends', a: '4/6 · TEMAN\nRadar menampilkan siapa saja yang online. Ketuk profilnya untuk berteman atau ikuti, lalu chat pribadi. Pesan yang sudah dibaca terhapus otomatis setelah 24 jam.' },
+  { go: 'me', a: '5/6 · PROFIL\nDi sini ada fotomu, level, Border Avatar, dan Check-in Harian untuk koin gratis.' },
+  { a: '6/6 · GIFT & LEVEL\nKirim gift memakai Koin Emas. Poin gift yang kamu TERIMA menaikkan level SVIP. Makin tinggi levelnya, makin megah efek masukmu!' }
+];
+let botHist = [], botChips = [], botBusy = false, botAiOff = false;
+const botNorm = t => String(t || '').toLowerCase().replace(/[^a-z0-9\s]/g, ' ');
+function botLocal(q) { const n = botNorm(q); let best = null, sc = 0; for (const e of GUIDE_KB) { const s = e.k.reduce((a, w) => a + (n.includes(w) ? 1 : 0), 0); if (s > sc) { sc = s; best = e } } return best }
+function botDraw() {
+  const f = $('#botFeed'); if (!f) return;
+  f.innerHTML = botHist.map(m => `<div class="bb ${m.r}">${esc(m.t)}</div>`).join('') + (botBusy ? '<div class="bb bot" style="opacity:.7">Pandu mengetik…</div>' : '');
+  f.scrollTop = f.scrollHeight;
+  const c = $('#botChips'); if (c) c.innerHTML = botBusy ? '' : botChips.map((x, i) => `<button onclick="H.botChip(${i})">${esc(x.l)}</button>`).join('');
+}
+function botSay(t, chips) { botHist.push({ r: 'bot', t }); botChips = chips || []; botDraw() }
+H.bot = noWelcome => {
+  $('#botHello')?.classList.add('hidden');
+  sheet(`<div class="dmhead"><button class="ib" onclick="H.close()" title="Tutup"><span class="ms">close</span></button><span class="ms" style="font-size:32px;color:#a98bff">smart_toy</span><div style="flex:1;min-width:0"><h3 style="margin:0">Pandu</h3><p class="sub" style="margin:0">Pemandu untuk pengguna baru</p></div></div>
+    <div class="botfeed" id="botFeed"></div><div class="botchips" id="botChips"></div>
+    <div class="dmcomposer"><input id="botInput" class="inp" maxlength="200" placeholder="Tanya apa saja soal aplikasi…" onkeydown="if(event.key==='Enter')H.botSend()"><button class="ib sendb" onclick="H.botSend()"><span class="ms">send</span></button></div>`);
+  if (!botHist.length && !noWelcome) botSay('Hai! Aku Pandu 🤖, pemandu aplikasi ini. Tanyakan apa saja: cara duduk di kursi, kirim gift, dapat koin, pakai border, dan lainnya. Atau pilih topik di bawah.', GUIDE_CHIPS);
+  else botDraw();
+};
+H.botChip = i => {
+  const x = botChips[i]; if (!x) return;
+  if (x.tour) return H.botTour(0);
+  if (x.next != null) return H.botTour(x.next);
+  if (x.go) { H.close(); return H.tab(x.go) }
+  if (x.menu) return botSay('Oke! Tanya apa saja, atau pilih topik:', GUIDE_CHIPS);
+  botAsk(x.q || x.l);
+};
+H.botTour = i => {
+  const s = GUIDE_TOUR[i];
+  if (!s) return botSay('Tur selesai 🎉 Sekarang kamu siap. Kalau masih bingung, tanya aku kapan saja lewat tombol robot di layar.', GUIDE_CHIPS);
+  const chips = []; if (s.go) chips.push({ l: 'Lihat menunya', go: s.go });
+  chips.push({ l: i + 1 < GUIDE_TOUR.length ? 'Lanjut ➜' : 'Selesai', next: i + 1 }, { l: 'Berhenti', menu: 1 });
+  botSay(s.a, chips);
+};
+H.botSend = () => { const i = $('#botInput'); if (!i || botBusy) return; const q = i.value.trim(); if (!q) return; i.value = ''; botAsk(q) };
+async function botAsk(q) {
+  botHist.push({ r: 'me', t: q }); botChips = []; botBusy = true; botDraw();
+  let reply = null;
+  if (GUIDE_API && !botAiOff) {
+    try {
+      const msgs = botHist.slice(-8).map(m => ({ role: m.r === 'me' ? 'user' : 'assistant', content: m.t }));
+      while (msgs.length && msgs[0].role !== 'user') msgs.shift();
+      const ac = new AbortController(), to = setTimeout(() => ac.abort(), 15000);
+      const r = await fetch(GUIDE_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: msgs, name: me?.name || '' }), signal: ac.signal });
+      clearTimeout(to);
+      if (r.ok) { const j = await r.json(); if (j?.reply) reply = String(j.reply) } else if (r.status === 404 || r.status === 500) botAiOff = true;
+    } catch { /* jaringan/timeout: pakai jawaban bawaan */ }
+  }
+  botBusy = false;
+  if (!reply) { const e = botLocal(q); reply = e ? e.a : 'Maaf, aku belum paham pertanyaan itu 🙏 Coba pilih salah satu topik di bawah, atau tanyakan dengan kata lain. Untuk masalah lain, hubungi Host.' }
+  botSay(reply, GUIDE_CHIPS.slice(0, 4).concat([GUIDE_CHIPS[5]]));
+}
+function botWelcome() {
+  let seen = false; try { seen = localStorage.getItem('guide_seen') === '1' } catch {}
+  if (seen) return;
+  setTimeout(() => { if (!inRoom) return; const h = $('#botHello'); if (!h) return;
+    h.innerHTML = `<b>Hai ${esc(me?.name || '')}! 👋</b><p>Aku Pandu, pemandu aplikasi ini. Masih bingung? Yuk ikut tur singkat!</p><div><button class="sm" onclick="H.botHelloGo()">Mulai tur</button><button class="sm o" onclick="H.botHelloGo(1)">Nanti saja</button></div>`;
+    h.classList.remove('hidden') }, 2500);
+}
+H.botHelloGo = skip => { try { localStorage.setItem('guide_seen', '1') } catch {} $('#botHello')?.classList.add('hidden'); if (!skip) { H.bot(true); H.botTour(0) } };
+
+/* ---------- Pengunjung terakhir: tercatat di tabel room_visits, hanya Host yang bisa membaca (lihat visitor_migration.sql) ---------- */
+let HAS_VIS = null;
+async function logVisit() {
+  if (!uid || !me || me.is_host || logVisit.done || HAS_VIS === false) return; logVisit.done = true;
+  const { error } = await sb.from('room_visits').insert({ user_id: uid });
+  if (error && /room_visits|relation|schema cache|does not exist/i.test(error.message || '')) HAS_VIS = false;
+}
+async function loadVisitors() {
+  const box = $('#visBox'); if (!box || !me?.is_host) return;
+  const { data, error } = await sb.from('room_visits').select('user_id,visited_at').order('visited_at', { ascending: false }).limit(300);
+  if (error) { HAS_VIS = false; box.innerHTML = '<p class="sub">Fitur pengunjung belum aktif. Jalankan visitor_migration.sql di Supabase.</p>'; return }
+  HAS_VIS = true;
+  const last = new Map(), cnt = {};
+  (data || []).forEach(r => { cnt[r.user_id] = (cnt[r.user_id] || 0) + 1; if (!last.has(r.user_id)) last.set(r.user_id, r.visited_at) });
+  const ids = [...last.keys()].slice(0, 20);
+  if (!ids.length) { box.innerHTML = '<p class="sub">Belum ada pengunjung tercatat.</p>'; return }
+  const { data: ps } = await sb.from('profiles').select('id,name,avatar').in('id', ids);
+  const pm = Object.fromEntries((ps || []).map(x => [x.id, x]));
+  if (!$('#visBox')) return;
+  $('#visBox').innerHTML = ids.map((id, i) => { const u = pm[id] || {}, t = last.get(id);
+    return `<div class="vis"><img src="${esc(u.avatar || '')}" alt=""><span><b>${esc(u.name || 'Anggota')}</b>${i === 0 ? '<i class="new">TERAKHIR</i>' : ''}<small>${ago(t)} · ${new Date(t).toLocaleString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })} · ${cnt[id]}× masuk</small></span><button class="sm" onclick="H.view('${id}')">Profil</button></div>` }).join('');
+}
 H.panel = async () => {
   if (!me.is_host) return H.hostLogin();
   const ids = Object.keys(online);
@@ -1458,9 +2028,10 @@ H.panel = async () => {
    <div class="cnt"><button onclick="H.seatN(-1)">−</button><b id="sc" style="font-size:24px">${settings.seat_count}</b><button onclick="H.seatN(1)">+</button></div>
    <h3 class="sec"><span class="ms">movie</span> Video Entrance SVIP</h3>
    <p class="sub">Upload MP4/WebM maksimal 30 MB per level. Video akan diputar untuk semua anggota saat pemilik level bergabung.</p>
-   ${[5,6,7,8,9,10,11,12,13].map(n => `<div class="mrow" style="align-items:flex-start"><span style="flex:1"><b>${tierName(n)} · ${esc(ENTRANCE[n].t)}</b><small style="display:block;color:#a99d92;overflow-wrap:anywhere">${esc(entranceVideos[n]?.name) || (entranceVideos[n]?.url ? 'Video tersimpan' : 'Belum ada video — memakai animasi bawaan')}</small></span><div class="bt"><button class="sm" onclick="H.uploadEntrance(${n})"><span class="ms">upload</span> Upload</button><button class="sm o" onclick="H.previewEnt(${n})"><span class="ms">play_arrow</span> Preview</button>${entranceVideos[n]?.url ? `<button class="sm o" onclick="H.removeEntrance(${n})">Hapus</button>` : ''}</div></div>`).join('')}
+   ${[5,6,7,8,9,10,11,12,13,14,15].map(n => `<div class="mrow" style="align-items:flex-start"><span style="flex:1"><b>${tierName(n)} · ${esc(ENTRANCE[n].t)}</b><small style="display:block;color:#a99d92;overflow-wrap:anywhere">${esc(entranceVideos[n]?.name) || (entranceVideos[n]?.url ? 'Video tersimpan' : 'Belum ada video — memakai animasi bawaan')}</small></span><div class="bt"><button class="sm" onclick="H.uploadEntrance(${n})"><span class="ms">upload</span> Upload</button><button class="sm o" onclick="H.previewEnt(${n})"><span class="ms">play_arrow</span> Preview</button>${entranceVideos[n]?.url ? `<button class="sm o" onclick="H.removeEntrance(${n})">Hapus</button>` : ''}</div></div>`).join('')}
    <p class="sub" style="margin-top:12px">Tes animasi masuk SVIP (hanya kamu yang melihat)</p>
-   <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">${[5, 6, 7, 8, 9, 10, 11, 12, 13].map(n => `<button class="sm o" onclick="H.previewEnt(${n})">${tierName(n)}</button>`).join('')}</div>
+   <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">${[5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map(n => `<button class="sm o" onclick="H.previewEnt(${n})">${tierName(n)}</button>`).join('')}</div>
+   <h3 class="sec"><span class="ms">schedule</span> Pengunjung Terakhir <small style="color:#a99d92;font-weight:400">(hanya Host)</small></h3><div id="visBox"><p class="sub">Memuat…</p></div>
    <h3 class="sec"><span class="ms">star</span> Ulasan Aplikasi</h3><button class="sm o" onclick="H.reviews()">Lihat ulasan & rating</button>
    <h3 class="sec"><span class="ms">auto_awesome</span> Tes Efek Gift</h3><p class="sub">Ketuk gift untuk melihat efeknya (hanya kamu yang melihat). Makin besar poin, makin megah.</p>
    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">${GIFTS.map((g, i) => `<button class="sm o" onclick="H.previewGift(${i})" title="${esc(g.name)} · ${g.points} poin">${g.e}</button>`).join('')}</div>
@@ -1469,13 +2040,14 @@ H.panel = async () => {
    ${GIFTS.slice(EXCLUSIVE_GIFT_START).map((g,j)=>{const i=j+EXCLUSIVE_GIFT_START;return `<div class="mrow" style="align-items:flex-start"><span style="flex:1"><b>${g.e} ${esc(g.name)}</b><small style="display:block;color:#a99d92">${esc(giftVideos[i]?.name) || (giftVideos[i]?.url ? 'Video tersimpan' : 'Belum ada video')}</small></span><div class="bt"><button class="sm" onclick="H.uploadGiftVideo(${i})"><span class="ms">upload</span> Video</button>${giftVideos[i]?.url ? `<button class="sm o" onclick="H.previewGift(${i})"><span class="ms">play_arrow</span></button><button class="sm o" onclick="H.removeGiftVideo(${i})">Hapus</button>` : ''}</div></div>`}).join('')}
    <p class="sub">Anggota online</p>
    ${(data || []).map(u => `<div class="mrow"><img src="${esc(u.avatar)}"><span>${esc(u.name)} <small style="color:#a99d92">🪙${Number(u.gift_tickets || 0).toLocaleString('id-ID')} ${u.theme_ok ? '🎨✔' : ''}</small></span>
-     <div class="bt"><button class="sm" onclick="H.tix('${u.id}',100)">+100 🪙</button><button class="sm" onclick="H.tix('${u.id}',1000)">+1rb</button><button class="sm" onclick="H.tix('${u.id}',10000)">+10rb</button><button class="sm" onclick="H.tix('${u.id}',50000)">+50rb</button><button class="sm" onclick="H.hostBorder('${u.id}')"><span class="ms">image</span> Border</button>${u.theme_ok ? '' : `<button class="sm" onclick="H.thm('${u.id}')"><span class="ms">palette</span> Buka Tema</button>`}</div></div>`).join('')}
+     <div class="bt"><button class="sm" onclick="H.tix('${u.id}',100)">+100 🪙</button><button class="sm" onclick="H.tix('${u.id}',1000)">+1rb</button><button class="sm" onclick="H.tix('${u.id}',10000)">+10rb</button><button class="sm" onclick="H.tix('${u.id}',50000)">+50rb</button><button class="sm" onclick="H.hostBorder('${u.id}')"><span class="ms">image</span> Border</button><button class="sm o" onclick="H.hostDelEnt('${u.id}')">Hapus video masuk</button>${u.theme_ok ? '' : `<button class="sm" onclick="H.thm('${u.id}')"><span class="ms">palette</span> Buka Tema</button>`}</div></div>`).join('')}
    <div style="display:flex;gap:8px;margin-top:14px"><button class="sm o" onclick="H.reset()">Kosongkan kursi</button><button class="sm o" onclick="H.clear()">Bersihkan chat</button></div>
    <button class="btn" style="margin-top:16px;background:linear-gradient(#e0646b,#9c2a33);color:#fff" onclick="H.unhost()"><span class="ms">logout</span> Keluar Host</button>`);
+  loadVisitors();
 };
 H.previewEnt = n => { H.close(); showEntranceFx(me.name, n, me.avatar) };
 H.uploadEntrance = level => {
-  if (!me?.is_host || ![5,6,7,8,9,10,11,12,13].includes(Number(level))) return;
+  if (!me?.is_host || ![5,6,7,8,9,10,11,12,13,14,15].includes(Number(level))) return;
   pickVideo(async file => {
     try {
       toast(`Mengunggah video ${tierName(Number(level))}…`);
@@ -1485,13 +2057,13 @@ H.uploadEntrance = level => {
       }, { onConflict: 'level' });
       if (error) {
         await sb.storage.from('media').remove([uploaded.path]);
-        throw new Error(error.message.includes('svip_entrances') ? 'Tabel svip_entrances belum dibuat. Jalankan SQL migrasi yang saya sertakan.' : error.message);
+        throw error;
       }
       const previous = entranceVideos[level];
       entranceVideos = { ...(entranceVideos || {}), [level]: uploaded };
       if (previous?.path) sb.storage.from('media').remove([previous.path]).then(() => {});
       toast(`Video ${tierName(Number(level))} berhasil disimpan untuk semua anggota ✅`); H.panel();
-    } catch (e) { toast(e.message || 'Gagal mengunggah video'); }
+    } catch (e) { videoFail(e); }
   });
 };
 H.removeEntrance = async level => {
@@ -1510,11 +2082,11 @@ H.uploadGiftVideo = giftIndex => {
       toast(`Mengunggah video ${GIFTS[giftIndex].name}…`);
       const uploaded = await upGiftVideo(file, giftIndex);
       const {error} = await sb.from('gift_videos').upsert({gift_index:giftIndex,video_url:uploaded.url,video_path:uploaded.path,video_name:uploaded.name,updated_by:uid},{onConflict:'gift_index'});
-      if(error){await sb.storage.from('media').remove([uploaded.path]);throw new Error(error.message.includes('gift_videos')?'Tabel gift_videos belum dibuat. Jalankan SQL migrasi tambahan.':error.message);}
+      if(error){await sb.storage.from('media').remove([uploaded.path]);throw error;}
       const old=giftVideos[giftIndex]; giftVideos={...giftVideos,[giftIndex]:uploaded};
       if(old?.path) sb.storage.from('media').remove([old.path]).then(()=>{});
       toast('Video gift eksklusif berhasil disimpan ✅'); H.panel();
-    } catch(e){toast(e.message||'Gagal mengunggah video gift');}
+    } catch(e){videoFail(e);}
   });
 };
 H.previewGift = i => { H.close(); showFx(GIFTS[i],me.name,'Preview',i); };
@@ -1556,10 +2128,11 @@ async function syncRecentMessages() {
     rows.forEach(m => addRoomMessage(m, msgReady && Date.now() - Date.parse(m.created_at) < 20000));
   } finally { msgSyncBusy = false; }
 }
+new MutationObserver(() => { const c = $('#chat'); while (c.childElementCount > 100) c.firstElementChild.remove() }).observe($('#chat'), { childList: true });
 function startMessageSync() {
   clearInterval(messageSyncTimer);
   // Fallback for projects where messages is not enabled in supabase_realtime.
-  messageSyncTimer = setInterval(syncRecentMessages, 2000);
+  messageSyncTimer = setInterval(() => { if (!document.hidden) syncRecentMessages() }, 3000);
 }
 async function stopMessageSync() {
   clearInterval(messageSyncTimer); messageSyncTimer = null;
@@ -1567,7 +2140,9 @@ async function stopMessageSync() {
 async function startRoom() {
   if (inRoom) return;
   $('#setup').classList.add('hidden'); $('#room').style.display = 'flex'; $('#nav').classList.remove('hidden'); inRoom = true;
-  prof[uid] = { ...prof[uid], ...me }; applyTheme(); nLoad();
+  prof[uid] = { ...prof[uid], ...me }; applyTheme(); nLoad(); logVisit();
+  $('#botFab')?.classList.remove('hidden'); botWelcome();
+  setTimeout(cleanupDMs, 6000); clearInterval(startRoom.dc); startRoom.dc = setInterval(cleanupDMs, 30 * 60 * 1000);
   settings = (await sb.from('room_settings').select('*').single()).data || settings;
   await loadTitleRules();
   if (HAS_TITLE) {
@@ -1637,8 +2212,7 @@ async function startRoom() {
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'stories' }, () => loadStories())
     .on('postgres_changes', { event: '*', schema: 'public', table: 'post_likes' }, p => { loadPosts(true); if (p.eventType === 'INSERT' && p.new?.user_id !== uid) notifyLike(p.new) })
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'gift_log', filter: `to_id=eq.${uid}` }, p => {
-      loadMyGifts(); syncPointsSoon(300);
-      if (p.new.from_id !== uid) { const g = GIFTS[p.new.gift]; pushNotif({ key: 'gift:' + p.new.id, type: 'gift', icon: g?.e || '🎁', from: p.new.from_id, text: `mengirim ${g?.name || 'hadiah'} untukmu`, tab: 'me', act: { k: 'user', id: p.new.from_id } }) }
+      onGiftReceived(p.new);
     })
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, p => {
       if (!inRm || (RID && p.new.room_id !== RID)) return; /* hanya pesan dari room yang sedang dimasuki */
@@ -1675,23 +2249,24 @@ async function startRoom() {
       if (fromPeer && !dmMessages.some(x => x.id === p.new.id)) dmMessages.push(p.new);
       if (fromPeer) { clearTimeout(typIn[p.new.sender_id]); delete typIn[p.new.sender_id] }
       if (fromPeer && dmVisible()) { renderDM(); markDMRead() } /* hanya gambar ulang jika jendela chat memang sedang terbuka */
-      else pushNotif({ key: 'dm:' + p.new.id, type: 'dm', icon: '💬', from: p.new.sender_id, text: String(p.new.body || '').startsWith('[ONCE]') ? '📷 Mengirim foto sekali lihat' : (String(p.new.body || '').slice(0, 80) || 'Pesan baru'), tab: 'friends', act: { k: 'dm', id: p.new.sender_id } });
+      else pushNotif({ key: 'dm:' + p.new.id, type: 'dm', icon: '💬', from: p.new.sender_id, text: String(p.new.body || '').startsWith('[ONCE]') ? '📷 Mengirim foto sekali lihat' : (dmText(p.new.body).slice(0, 80) || 'Pesan baru'), tab: 'friends', act: { k: 'dm', id: p.new.sender_id } });
     })
     .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'room_settings' }, p => { if (HAS_ROOMS) return; settings = p.new; renderSeats(); renderTop() })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'svip_entrances' }, () => { loadEntranceVideos(); })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'gift_videos' }, () => { loadGiftVideos(); })
     .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'profiles' }, p => {
+      const bdKeep = p.new.id === uid && (bdBusy > 0 || Date.now() < bdLock); /* border yang baru kupakai tidak boleh ditimpa data lama */
       const previous = p.new.id === uid ? me : (prof[p.new.id] || null);
       const knownPts = previous?.points ?? pmeta(online[p.new.id])?.points;
       const oldLevel = lvl(knownPts), newLevel = lvl(p.new.points);
-      prof[p.new.id] = { ...prof[p.new.id], ...p.new }; delete pinfo[p.new.id]; refreshBubbles(p.new.id); repaintAvatars(p.new.id);
+      prof[p.new.id] = { ...prof[p.new.id], ...p.new }; if (bdKeep) prof[uid].avatar_border = me.avatar_border; delete pinfo[p.new.id]; refreshBubbles(p.new.id); repaintAvatars(p.new.id);
       // Popup ditampilkan di tengah layar seluruh anggota yang sedang berada di room.
       if (knownPts !== undefined && newLevel > oldLevel) { showSvipPopup(p.new.name || (p.new.id === uid ? me.name : 'Anggota'), newLevel, p.new.id === uid); if (p.new.id === uid) pushNotif({ key: 'lv:' + newLevel + ':' + new Date().toDateString(), type: 'level', icon: '⭐', title: 'Selamat! 🎉', text: `Kamu naik ke ${tierName(newLevel)}`, tab: 'me', act: { k: 'tab', t: 'me' } }) }
       if (p.new.id === uid) {
         if (p.new.gift_tickets > me.gift_tickets && Date.now() > chestQuiet) { const add = (p.new.gift_tickets - (me.gift_tickets || 0)).toLocaleString('id-ID'); showFx({ e: '🎉' }, `Kamu dapat +${add} Koin Emas 🪙 dari Host`); pushNotif({ type: 'host', icon: '🪙', title: 'Host 👑', text: `memberimu +${add} Koin Emas`, tab: 'me', act: { k: 'tab', t: 'me' } }) }
         if (p.new.theme_ok && !me.theme_ok) { showFx({ e: '🎨' }, 'Tema chat terbuka! Semua tema bebas dipakai'); pushNotif({ type: 'host', icon: '🎨', title: 'Host 👑', text: 'membuka semua tema chat untukmu', tab: 'me', act: { k: 'tab', t: 'me' } }) }
         if ((p.new.borders || []).length > (me.borders || []).length) pushNotif({ type: 'host', icon: '🖼️', title: 'Host 👑', text: 'membuka border baru untukmu', tab: 'me', act: { k: 'tab', t: 'me' } });
-        me = { ...me, ...p.new }; room?.track(presence()); renderProf();
+        me = { ...me, ...p.new, ...(bdKeep ? { avatar_border: me.avatar_border } : {}) }; room?.track(presence()); renderProf();
       }
       renderSeats(); renderTop();
     }).subscribe(async status => {
@@ -1751,9 +2326,10 @@ async function enterRoom(rid, pass) {
         sb.from('seats').delete().eq('user_id', key).then(() => {}); /* dan di database */
       })
       .on('broadcast', { event: 'sig' }, ({ payload }) => onSig(payload))
+      .on('broadcast', { event: 'mus' }, () => musicLoad())
       .on('broadcast', { event: 'bd' }, ({ payload }) => { if (payload?.uid === uid) refreshMyBorders() })
       .on('broadcast', { event: 'emo' }, ({ payload }) => payload?.uid && showEmo(String(payload.uid), Number(payload.i)))
-      .on('broadcast', { event: 'ent' }, ({ payload }) => payload?.uid && entranceFor(payload.uid, String(payload.name || 'Anggota'), Number(payload.level) || 5))
+      .on('broadcast', { event: 'ent' }, ({ payload }) => payload?.uid && entranceFor(payload.uid, String(payload.name || 'Anggota'), Number(payload.level) || 0))
       .subscribe(async s => {
         if (s !== 'SUBSCRIBED') return;
         await room.track(presence());
@@ -1765,18 +2341,161 @@ async function enterRoom(rid, pass) {
         await sb.from('messages').insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'join', ...ridp() });
         /* Entrance SVIP 5-9: broadcast langsung ke semua anggota + pesan type 'chat' bertanda [ENT] (lolos RLS seperti pesan suara) */
         const myLevel = Math.min(MAX_LV, lvl(me.points || 0));
-        if (myLevel >= 5) {
+        const plan = entPlan((await loadMyEnt(uid)).row, myLevel, !!me.is_host);
+        if (plan && room) {
+          const sent = plan.custom ? 0 : myLevel; /* 0 = efek pilihan sendiri */
           entranceFor(uid, me.name, myLevel);
-          room.send({ type: 'broadcast', event: 'ent', payload: { uid, name: me.name, level: myLevel } });
-          const { error: entErr } = await sb.from('messages').insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'chat', body: '[ENT]' + myLevel, ...ridp() });
+          room.send({ type: 'broadcast', event: 'ent', payload: { uid, name: me.name, level: sent } });
+          const { error: entErr } = await sb.from('messages').insert({ user_id: uid, name: me.name, avatar: me.avatar, type: 'chat', body: '[ENT]' + sent, ...ridp() });
           if (entErr) console.warn('Entrance message:', entErr.message);
         }
       });
-    closeRooms(); H.tab('room'); renderTop(); gpTrack();
+    closeRooms(); H.tab('room'); renderTop(); gpTrack(); musicStart();
     chest = { level: 1, progress: 0 }; renderChest(); loadChestSoon(150); /* peti tiap room berdiri sendiri: tampil Lv.1 dulu sampai data room ini dimuat */
   } finally { enterRoom.busy = false }
 }
+/* ---------- 2C. Musik room: HANYA pembuat room yang mengatur, anggota lain mendengarkan ----------
+   Sumber kebenaran = tabel room_music (room_music.sql). RLS menolak tulisan selain dari pemilik room.
+   Broadcast 'mus' hanya "colekan" agar anggota segera membaca ulang; isinya tidak dipercaya. */
+const MUSIC_MB = 15, musicAu = new Audio();
+musicAu.preload = 'auto'; musicAu.setAttribute('playsinline', '');
+let mus = null, musReady = false, musMuted = false, musBlocked = false, musTimer = null, musChan = null, musSeq = 0, musBusy = false;
+const isRoomOwner = () => !!(inRm && RID && curRoom?.owner_id === uid);
+const musPing = () => room?.send({ type: 'broadcast', event: 'mus', payload: {} });
+const musTarget = () => { if (!mus) return 0; let t = mus.pos + (mus.playing ? mus.age + (performance.now() - mus.at) / 1000 : 0); const d = musicAu.duration; return mus.repeat && d > 0 ? t % d : t };
+async function musicStart() {
+  musicReset(); if (!HAS_ROOMS || !RID) return;
+  const rid = RID;
+  musChan = sb.channel('music:' + rid).on('postgres_changes', { event: '*', schema: 'public', table: 'room_music', filter: `room_id=eq.${rid}` }, () => musicLoad()).subscribe();
+  musTimer = setInterval(() => { if (!document.hidden) musicLoad() }, 10000); /* cadangan kalau realtime terlewat + koreksi sinkron */
+  await musicLoad();
+}
+async function musicLoad() {
+  if (!inRm || !RID) return;
+  const rid = RID, seq = ++musSeq;
+  const { data, error } = await sb.rpc('get_room_music', { p_room: String(rid) });
+  if (rid !== RID || seq !== musSeq) return; /* sudah pindah room / ada bacaan lebih baru */
+  if (error) { musReady = false; return renderMusic() } /* gangguan sesaat: lagu yang sedang jalan dibiarkan */
+  musReady = true;
+  mus = data ? { ...data, pos: Number(data.pos) || 0, age: Number(data.age) || 0, at: performance.now() } : null;
+  musicApply();
+}
+function musicApply() {
+  if (!mus || !/^https:\/\//i.test(mus.url || '')) { mus = null; musicSilence(); return renderMusic() }
+  if (musicAu.dataset.url !== mus.url) { musicAu.dataset.url = mus.url; musicAu.src = mus.url }
+  musicAu.loop = !!mus.repeat; musicAu.muted = !spk || musMuted;
+  const t = musTarget(), d = musicAu.duration;
+  if (d > 0 && !mus.repeat && t >= d - .3) { musicAu.pause(); return renderMusic() }
+  if (musicAu.readyState >= 1 && Math.abs(musicAu.currentTime - t) > (mus.playing ? 2 : .5)) musicAu.currentTime = t;
+  if (!mus.playing) { musicAu.pause(); musBlocked = false }
+  else if (musicAu.paused) musicAu.play().then(() => { if (musBlocked) { musBlocked = false; renderMusic() } })
+    .catch(e => { if (e?.name === 'NotAllowedError') { musBlocked = true; renderMusic() } });
+  renderMusic();
+}
+function musicSilence() { musicAu.pause(); delete musicAu.dataset.url; musicAu.removeAttribute('src'); musicAu.load(); musBlocked = false }
+function musicReset() {
+  clearInterval(musTimer); if (musChan) sb.removeChannel(musChan); musChan = null; musSeq++;
+  mus = null; musReady = false; musMuted = false; musicSilence(); renderMusic();
+}
+/* Pemilik keluar room: lagu dijeda untuk semua orang */
+async function musicLeave() {
+  if (isRoomOwner() && mus?.playing) {
+    const { error } = await sb.from('room_music').update({ playing: false, pos: musicAu.currentTime || musTarget() }).eq('room_id', RID);
+    if (!error) musPing();
+  }
+  musicReset();
+}
+musicAu.addEventListener('loadedmetadata', () => mus && musicApply());
+musicAu.addEventListener('ended', () => { if (isRoomOwner() && mus && !mus.repeat) musicSet({ playing: false, pos: 0 }); else renderMusic() });
+musicAu.addEventListener('error', () => { if (mus && musicAu.dataset.url) toast('Lagu tidak bisa diputar di perangkat ini') });
+document.addEventListener('pointerdown', () => { if (mus?.playing && musicAu.paused && musBlocked) musicApply() });
+document.addEventListener('visibilitychange', () => { if (!document.hidden && inRm) musicLoad() });
+function renderMusic() {
+  const b = $('#musicBar'); if (!b) return;
+  const own = isRoomOwner();
+  if (!inRm || !RID || (!mus && !own)) { b.classList.add('hidden'); b.innerHTML = ''; return }
+  b.classList.remove('hidden');
+  const ended = mus && !mus.repeat && musicAu.duration > 0 && musTarget() >= musicAu.duration - .3;
+  const playing = !!mus?.playing && !ended;
+  b.classList.toggle('on', playing && !musBlocked);
+  const btn = (call, icon, label, cls = '') => `<button class="${cls}" onclick="${call}" title="${label}" aria-label="${label}">${ms(icon)}</button>`;
+  const ctl = !mus ? '<button class="wide" onclick="H.musicMenu()">+ Pilih lagu</button>'
+    : (musBlocked ? '<button class="wide" onclick="H.musicUnlock()">Dengarkan</button>' : '')
+      + (own ? btn('H.musicToggle()', playing ? 'pause' : 'play_arrow', playing ? 'Jeda' : 'Putar', 'act') + btn('H.musicRepeat()', 'repeat', 'Ulangi lagu', mus.repeat ? 'act' : '') + btn('H.musicMenu()', 'queue_music', 'Ganti lagu') + btn('H.musicOff()', 'close', 'Matikan musik') : '')
+      + btn('H.musicMute()', musMuted || !spk ? 'volume_off' : 'volume_up', musMuted ? 'Bunyikan' : 'Bisukan di HP-ku');
+  const html = `<div class="md">${ms('music_note')}</div><div class="mt"><b>${mus ? esc(mus.title) : 'Musik room'}</b><small>${!mus ? 'Hanya kamu yang bisa memutar' : playing ? (own ? 'Sedang kamu putar' : 'Diputar pemilik room') : ended ? 'Lagu selesai' : 'Dijeda'}</small></div>${ctl}`;
+  if (b.dataset.h !== html || !b.innerHTML) { b.innerHTML = html; b.dataset.h = html } /* jangan gambar ulang tanpa perubahan */
+}
+/* Semua perubahan lewat sini */
+async function musicSet(patch, isNew) {
+  if (!isRoomOwner()) { toast('Hanya pembuat room yang bisa mengatur musik'); return false }
+  if (musBusy) return false; musBusy = true;
+  const rid = RID;
+  try {
+    const q = sb.from('room_music');
+    const { data, error } = await (isNew ? q.upsert({ room_id: rid, ...patch }, { onConflict: 'room_id' }) : q.update(patch).eq('room_id', rid)).select('room_id');
+    if (error || !data?.length) { toast('Gagal mengatur musik: ' + (error?.message || 'tidak diizinkan server')); return false }
+    musPing(); await musicLoad(); return true;
+  } finally { musBusy = false }
+}
+const musNow = () => musicAu.readyState >= 1 ? musicAu.currentTime : musTarget();
+H.musicToggle = () => {
+  if (!mus) return;
+  const d = musicAu.duration, ended = !mus.repeat && d > 0 && musTarget() >= d - .3;
+  musicSet(ended ? { playing: true, pos: 0 } : { playing: !mus.playing, pos: musNow() });
+};
+H.musicRepeat = () => mus && musicSet({ repeat: !mus.repeat, pos: musNow() });
+H.musicMute = () => { if (!spk) return toast('Speaker room sedang mati. Nyalakan tombol speaker di atas.'); musMuted = !musMuted; musicAu.muted = musMuted; renderMusic() };
+H.musicUnlock = () => { musBlocked = false; musicApply() };
+/* Hapus file lama milikku dari Storage (gagal tidak masalah) */
+const musDrop = url => { const m = String(url || '').split('/object/public/media/')[1]; if (m && m.startsWith(uid + '/music/')) sb.storage.from('media').remove([decodeURIComponent(m)]).then(() => {}, () => {}) };
+H.musicOff = async () => {
+  if (!isRoomOwner() || !confirm('Matikan musik untuk semua orang?')) return;
+  const old = mus?.url, { error } = await sb.from('room_music').delete().eq('room_id', RID);
+  if (error) return toast(error.message);
+  musDrop(old); musPing(); await musicLoad();
+};
+H.musicMenu = () => {
+  if (!isRoomOwner()) return toast('Hanya pembuat room yang bisa mengatur musik');
+  if (!musReady) { musicLoad(); return toast('Musik belum aktif. Jalankan room_music.sql di Supabase.') }
+  sheet(`<h3>${ms('music_note')} Putar Musik</h3><p class="sub">Semua anggota room ikut mendengar. Hanya kamu yang bisa mengatur.</p>
+   <button class="btn" onclick="H.musicUpload()">${ms('upload')} Pilih lagu dari HP (maks. ${MUSIC_MB} MB)</button>
+   <p class="sub" style="margin-top:14px">Atau tempel link file audio langsung (https, berakhiran .mp3 atau sejenisnya). Link YouTube dan Spotify tidak bisa.</p>
+   <input id="musUrl" class="inp" placeholder="https://…/lagu.mp3" autocomplete="off" style="width:100%">
+   <button class="btn" style="margin-top:8px" onclick="H.musicFromUrl()">Putar link</button>`);
+};
+async function musicNew(url, title) {
+  const old = mus?.url;
+  const ok = await musicSet({ url, title: title.slice(0, 80) || 'Musik', playing: true, pos: 0, repeat: !!mus?.repeat }, true);
+  if (ok) { if (old !== url) musDrop(old); H.close(); toast('Musik diputar 🎵') }
+  return ok;
+}
+H.musicFromUrl = () => {
+  const url = $('#musUrl').value.trim();
+  if (!/^https:\/\/\S+\.(mp3|m4a|aac|ogg|wav)(\?\S*)?$/i.test(url)) return toast('Link harus https dan langsung ke file audio');
+  let name = url.split('?')[0].split('/').pop(); try { name = decodeURIComponent(name) } catch {}
+  musicNew(url, name.replace(/\.\w+$/, ''));
+};
+H.musicUpload = () => {
+  const rid = RID, i = document.createElement('input'); i.type = 'file'; i.accept = 'audio/*,.mp3,.m4a,.aac,.ogg,.wav';
+  i.onchange = async () => {
+    const f = i.files[0]; if (!f) return;
+    const ext = (f.name.match(/\.(mp3|m4a|aac|ogg|wav)$/i)?.[1] || '').toLowerCase();
+    if (!ext) return toast('Pilih file MP3, M4A, AAC, OGG, atau WAV');
+    if (f.size > MUSIC_MB * 1024 * 1024) return toast(`Ukuran lagu maksimal ${MUSIC_MB} MB`);
+    toast('Mengunggah lagu…');
+    const path = `${uid}/music/${Date.now()}.${ext}`;
+    const type = { mp3: 'audio/mpeg', m4a: 'audio/mp4', aac: 'audio/aac', ogg: 'audio/ogg', wav: 'audio/wav' }[ext];
+    const { error } = await sb.storage.from('media').upload(path, f, { contentType: type, upsert: false });
+    if (error) return toast('Gagal mengunggah: ' + error.message);
+    const url = sb.storage.from('media').getPublicUrl(path).data.publicUrl;
+    if (RID !== rid || !await musicNew(url, f.name.replace(/\.\w+$/, ''))) musDrop(url);
+  };
+  i.click();
+};
+
 async function leaveRoomCore(noRpc) {
+  await musicLeave().catch(() => musicReset());
   clearInterval(enterRoom.hb); clearInterval(enterRoom.sw);
   await stopMessageSync();
   try { await sb.from('seats').delete().eq('user_id', uid) } catch {}
@@ -1966,7 +2685,7 @@ function renderSeats() {
   for (let i = 1; i <= settings.seat_count; i++) {
     const s = seats[i], d = document.createElement('div'); d.className = 'seat';
     d.innerHTML = s
-      ? `<div class="ring r${hash(s.user_id) % 5}${ringBd(prof[s.user_id]?.points, prof[s.user_id]?.avatar_border, prof[s.user_id]?.is_host)}" data-uid="${s.user_id}"><img src="${esc(s.avatar)}">${bdImg(bdOf(prof[s.user_id]?.points, prof[s.user_id]?.avatar_border, prof[s.user_id]?.is_host))}${emoState[s.user_id] ? emoHTML(emoState[s.user_id].i) : ''}<span class="mic">${ms(s.muted ? 'mic_off' : 'mic')}</span></div>${lvl(prof[s.user_id]?.points) >= 10 ? `<div class="nm2">${badge(prof[s.user_id]?.points)}</div><div class="nm" style="margin-top:2px">${esc(s.name)}</div>` : `<div class="nm">${badge(prof[s.user_id]?.points)}${esc(s.name)}</div>`}<div class="pill">${prof[s.user_id]?.points ?? 0}</div>`
+      ? `<div class="ring r${hash(s.user_id) % 5}${ringBd(prof[s.user_id]?.points, seatBd(s.user_id), prof[s.user_id]?.is_host)}" data-uid="${s.user_id}"><img src="${esc(s.avatar)}">${bdImg(bdOf(prof[s.user_id]?.points, seatBd(s.user_id), prof[s.user_id]?.is_host))}${emoState[s.user_id] ? emoHTML(emoState[s.user_id].i) : ''}<span class="mic">${ms(s.muted ? 'mic_off' : 'mic')}</span></div>${lvl(prof[s.user_id]?.points) >= 10 ? `<div class="nm2">${badge(prof[s.user_id]?.points)}</div><div class="nm" style="margin-top:2px">${esc(s.name)}</div>` : `<div class="nm">${badge(prof[s.user_id]?.points)}${esc(s.name)}</div>`}<div class="pill">${prof[s.user_id]?.points ?? 0}</div>`
       : `<div class="ring empty">＋</div><div class="nm dim">${i}</div>`;
     /* tap kursi sendiri = turun; tap kursi orang lain = menu (lihat profil / kirim gift); tap kursi kosong = duduk */
     d.onclick = () => s ? (s.user_id === uid ? leaveSeat() : H.seatMenu(s.user_id)) : sit(i);
@@ -2223,7 +2942,35 @@ function postHTML(p) {
     ${p.body ? `<p>${esc(p.body)}</p>` : ''}${p.image ? `<img class="pi" loading="lazy" src="${esc(p.image)}">` : ''}
     <div class="postbar"><button class="likebtn ${liked ? 'on' : ''}" onclick="H.like(${p.id})">${ms('favorite', liked ? '' : 'o')} ${n}</button><button class="likebtn" onclick="H.comments(${p.id})">${ms('chat_bubble', 'o')} ${cmtCount[p.id] || 0}</button>${HAS_PV === false ? '' : `<span class="viewchip" title="Penonton">${ms('visibility', 'o')} <b data-pv="${p.id}">${kfmt(pvCount[p.id] || 0)}</b></span>`}</div></article>`;
 }
-function renderPosts() { $('#plist').innerHTML = posts.map(postHTML).join('') || '<p class="empty-t">Belum ada postingan. Jadilah yang pertama! 📝</p>'; observePosts() }
+function renderPosts() { $('#plist').innerHTML = posts.map(postHTML).join('') || '<p class="empty-t">Belum ada postingan. Jadilah yang pertama! 📝</p>'; observePosts(); renderPostView() }
+/* ---------- Postingan: ketuk untuk memperbesar, isi bisa di-scroll ---------- */
+let openPostId = null;
+function postViewHTML(p) {
+  const u = p.profiles || {}, L = p.post_likes || [], n = L.length, liked = L.some(l => l.user_id === uid);
+  return `<div class="pvc" onclick="event.stopPropagation()">
+    <div class="pvh"><button class="ib" onclick="H.closePost()" title="Tutup"><span class="ms">arrow_back</span></button><b>Postingan</b></div>
+    <div class="pvs" id="pvScroll">
+      <div class="hd">${avatarHTML(u.avatar, u.points, '', 40, ` onclick="H.closePost();H.view('${p.user_id}')" style="cursor:pointer"`, u.avatar_border, u.is_host, p.user_id)}<div><b>${u.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(u.points)}${esc(u.name)}</b><small>${ago(p.created_at)}</small></div></div>
+      ${p.image ? `<img class="pvimg" src="${esc(p.image)}" alt="">` : ''}${p.body ? `<p class="pvtxt">${esc(p.body)}</p>` : ''}
+      <div class="postbar"><button class="likebtn ${liked ? 'on' : ''}" onclick="H.like(${p.id})">${ms('favorite', liked ? '' : 'o')} ${n}</button><button class="likebtn" onclick="H.closePost();H.comments(${p.id})">${ms('chat_bubble', 'o')} ${cmtCount[p.id] || 0}</button>${HAS_PV === false ? '' : `<span class="viewchip" title="Penonton">${ms('visibility', 'o')} <b>${kfmt(pvCount[p.id] || 0)}</b></span>`}</div>
+    </div></div>`;
+}
+function renderPostView() {
+  const box = $('#postView'); if (!box || openPostId == null) return;
+  const p = posts.find(x => String(x.id) === String(openPostId));
+  if (!p) return H.closePost(); /* postingan sudah dihapus */
+  const old = $('#pvScroll'), top = old ? old.scrollTop : 0;
+  box.innerHTML = postViewHTML(p);
+  const s = $('#pvScroll'); if (s) s.scrollTop = top;
+}
+H.openPost = id => { openPostId = id; $('#postView').classList.remove('hidden'); renderPostView(); const s = $('#pvScroll'); if (s) s.scrollTop = 0 };
+H.closePost = () => { openPostId = null; const b = $('#postView'); if (b) { b.classList.add('hidden'); b.innerHTML = '' } };
+$('#plist').addEventListener('click', e => {
+  if (e.target.closest('button,a,input,textarea,[onclick],.viewchip')) return; /* tombol like/komentar/hapus & avatar punya aksi sendiri */
+  const art = e.target.closest('article.post'); if (art) H.openPost(art.dataset.pid);
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && openPostId != null) H.closePost() });
+
 /* Penonton postingan: dihitung 1x per orang, setelah postingan terlihat ±1 detik (postingan sendiri tidak dihitung) */
 let HAS_PV = null, pvCount = {}, pvIO = null, pvTimers = {}; const pvSent = new Set();
 async function loadPostViews() {
@@ -2285,6 +3032,20 @@ async function getGifts(id) {
   const { data } = await sb.from('gift_log').select('from_id,gift,profiles!from_id(name,avatar,is_host,gifts_sent,points' + BC() + ')').eq('to_id', id).order('id', { ascending: false }).limit(1000);
   return data || [];
 }
+/* Kiriman banyak menghasilkan banyak baris gift_log: kumpulkan dulu, lalu muat ulang & beri notifikasi sekali */
+const giftIn = {}; let giftInT = null;
+function onGiftReceived(row) {
+  if (row.from_id !== uid) { const k = row.from_id + ':' + row.gift; (giftIn[k] ??= { row, n: 0 }).n++ }
+  clearTimeout(giftInT);
+  giftInT = setTimeout(() => {
+    loadMyGifts(); syncPointsSoon(300);
+    for (const [k, { row: r, n }] of Object.entries(giftIn)) {
+      delete giftIn[k];
+      const g = GIFTS[r.gift];
+      pushNotif({ key: 'gift:' + r.id, type: 'gift', icon: g?.e || '🎁', from: r.from_id, text: `mengirim ${n > 1 ? n + '× ' : ''}${g?.name || 'hadiah'} untukmu`, tab: 'me', act: { k: 'user', id: r.from_id } });
+    }
+  }, 700);
+}
 async function loadMyGifts() { myGifts = await getGifts(uid); renderProf() }
 function giftHTML(rows) {
   if (!rows.length) return '<p class="empty-t">Belum ada hadiah diterima 🎁</p>';
@@ -2326,7 +3087,7 @@ H.view = async id => {
     <div class="stats" style="flex-wrap:wrap"><span class="chip">${seated ? ms('mic') + ' Di kursi' : on ? ms('circle', 'on') + ' Online' : ms('circle', 'o off') + ' Offline'}</span><span class="chip"><span class="ms">group</span> ${social.friends ?? '—'} Teman</span><span class="chip"><span class="ms">person</span> ${social.followers ?? '—'} Followers</span><span class="chip"><span class="ms">star</span> ${u.points ?? 0}</span><span class="chip"><span class="ms">redeem</span> ${u.gifts_sent ?? 0} dikirim</span><span class="chip"><span class="ms">edit_note</span> ${list.length}</span></div></div>
     <div class="acts">${isFriend ? `<button class="btn" onclick="H.openDM('${u.id}')"><span class="ms">chat</span> Chat</button>` : `<button class="btn" onclick="H.requestFriend('${u.id}')"><span class="ms">add</span> Tambah Teman</button>`}
       <button class="btn" onclick="H.toggleFollow('${u.id}',${isFollowing})">${isFollowing ? ms('check') + ' Mengikuti' : ms('person_add') + ' Follow'}</button>
-      <button class="btn" onclick="H.giftView()"><span class="ms">redeem</span> Kirim Gift</button>${HAS_REL ? `<button class="btn" onclick="H.relPick('${u.id}')"><span class="ms">favorite</span> Ajak Hubungan</button>` : ''}</div>
+      <button class="btn" onclick="H.giftView()"><span class="ms">redeem</span> Kirim Gift</button><button class="btn" onclick="H.viewUserPhoto()"><span class="ms">account_circle</span> Lihat Foto</button>${HAS_REL ? `<button class="btn" onclick="H.relPick('${u.id}')"><span class="ms">favorite</span> Ajak Hubungan</button>` : ''}</div>
     ${me.is_host ? `<button class="btn" style="margin-bottom:6px;background:linear-gradient(#a98bff,#6a4bff);color:#fff" onclick="H.hostBorder('${u.id}')"><span class="ms">image</span> Beri Border</button>` : ''}
     ${HAS_REL ? `<h3 class="sec"><span class="ms">favorite</span> Hubungan</h3>${(rels || []).map(r => relCardHTML(r, false)).join('') || '<p class="empty-t">Belum ada hubungan.</p>'}` : ''}<h3 class="sec"><span class="ms">redeem</span> Koleksi Hadiah</h3>${giftHTML(rows)}
     <h3 class="sec"><span class="ms">edit_note</span> Postingan</h3>${list.map(q => `<div class="post"><p>${esc(q.body || '')}</p>${q.image ? `<img class="pi" loading="lazy" src="${esc(q.image)}">` : ''}<small style="color:#9a8f86">${ago(q.created_at)}</small></div>`).join('') || '<p class="empty-t">Belum ada postingan.</p>'}`);
@@ -2336,6 +3097,17 @@ H.seatMenu = id => {
   sheet(`<div class="dmhead"><img src="${esc(x.avatar)}"><div style="flex:1"><h3 style="margin:0">${esc(x.name)}</h3><p class="sub" style="margin:0">Sedang di kursi</p></div></div>
     <div class="acts"><button class="btn" onclick="H.view('${id}')"><span class="ms">person</span> Lihat Profil</button><button class="btn" onclick="H.giftTo('${id}')"><span class="ms">redeem</span> Kirim Gift</button></div>`);
 };
+/* Gift hadiah dari chat teman: setelah kirim atau batal, kembali ke chat yang sama */
+H.giftDM = () => {
+  if (!dmPeer) return;
+  gT = { id: dmPeer.id, name: dmPeer.name, avatar: dmPeer.avatar, dm: true, draft: $('#dmInput')?.value || '' };
+  H.dmStopTyping(); giftSheet();
+};
+async function backToDM(t) {
+  await H.openDM(t.id);
+  const i = $('#dmInput'); if (i && t.draft && !i.value) i.value = t.draft;
+}
+H.backToDM = () => { if (gT?.dm) backToDM(gT) };
 H.giftView = () => { if (viewU) { gT = { id: viewU.id, name: viewU.name, avatar: viewU.avatar }; giftSheet() } };
 function renderProf() {
   if (!me) return;
@@ -2344,14 +3116,15 @@ function renderProf() {
   $('#pfBox').innerHTML = `<div class="pf">${avatarHTML(me.avatar, me.points, 'pav', 112, '', me.avatar_border, me.is_host, uid)}
     <h2>${me.is_host ? '<i class="bdg">👑 HOST</i>' : ''}${badge(me.points)}${esc(me.name)}</h2>${titleHTML(me.points, me, true)}
     <div class="stats" style="flex-wrap:wrap"><span class="chip"><span class="ms">group</span> ${mySocialStats.friends ?? '—'} Teman</span><span class="chip"><span class="ms">person</span> ${mySocialStats.followers ?? '—'} Followers</span><span class="chip">🪙 ${Number(me.gift_tickets ?? 0).toLocaleString('id-ID')}</span><span class="chip"><span class="ms">star</span> ${me.points ?? 0}</span><span class="chip"><span class="ms">edit_note</span> ${mine.length}</span></div></div>
-    <div class="acts"><button class="btn" onclick="H.editAv()"><span class="ms">photo_camera</span> Ubah Foto</button><button class="btn" onclick="H.editNm()"><span class="ms">edit</span> Ubah Nama</button></div>
+    <div class="acts"><button class="btn" onclick="H.viewMyPhoto()"><span class="ms">account_circle</span> Lihat Foto</button><button class="btn" onclick="H.editAv()"><span class="ms">photo_camera</span> Ubah Foto</button><button class="btn" onclick="H.editNm()"><span class="ms">edit</span> Ubah Nama</button></div>
     <button class="btn" onclick="H.compose()"><span class="ms">add</span> Buat Postingan</button>
     <button class="btn" style="margin-top:8px" onclick="H.checkin()">📅 Check-in Harian</button>
+    <button class="btn" style="margin-top:8px" onclick="H.entMenu()">✨ Animasi Masuk Room</button>
     ${relSectionHTML()}${borderGridHTML()}
     <h3 class="sec"><span class="ms">redeem</span> Koleksi Hadiah</h3>${giftHTML(myGifts)}
     <h3 class="sec">Postingan Saya</h3>${mine.map(postHTML).join('') || '<p class="empty-t">Belum ada postingan.</p>'}`;
 }
-H.editAv = () => pick(async f => { toast('Mengunggah foto…'); try { setAvatar(await upImg(f, 256)) } catch (e) { toast(e.message || 'Gagal mengunggah foto') } });
+H.editAv = () => pick(async f => { toast('Mengunggah foto…'); try { setAvatar(await upImg(f, 720)) } catch (e) { toast(e.message || 'Gagal mengunggah foto') } });
 async function setAvatar(url) {
   const { error } = await sb.from('profiles').update({ avatar: url }).eq('id', uid);
   if (error) return toast(error.message);
@@ -2396,28 +3169,58 @@ function borderGridHTML() {
   const cur = me.avatar_border || '';
   return `<h3 class="sec"><span class="ms">image</span> Border Avatar</h3><p class="sub">${me.is_host ? '👑 Host: semua border terbuka' : '🔒 Semua border terkunci. Chat host untuk membuka; setiap konfirmasi host membuka 1 border.'}</p>
    <div class="gg"><button class="gi ${!cur ? 'sel' : ''}" onclick="H.useBorder('')"><div style="display:grid;place-items:center;padding:14px 0 6px">${avatarHTML(me.avatar, me.points, 'bp', 52, '', '', me.is_host)}</div><small>${me.is_host ? 'Bawaan Host 👑' : lvl(me.points) >= 9 ? 'Bawaan ' + tierName(lvl(me.points)) : 'Tanpa border'}</small></button>
+   ${TITLE_BORDERS.map(b => { const o = titleBdOk(b.id, me.points, me.is_host);
+     return `<button class="gi ${o ? '' : 'lk'} ${cur === b.id && o ? 'sel' : ''}" onclick="${o ? `H.useBorder('${b.id}')` : `H.titleBdLocked('${b.id}')`}"><div style="display:grid;place-items:center;padding:20px 0 12px">${avatarHTML(me.avatar, SVIP[b.lv - 1], 'bp', 52, '', b.id)}</div><small>${b.name}</small><small style="display:block;color:#d7b6ff">✦ GELAR</small></button>` }).join('')}
+   ${Object.entries(COUPLE_BD).map(([k, c]) => { const id = 'cpl-' + k, o = coupleOk(id);
+     return `<button class="gi ${o ? '' : 'lk'} ${cur === id && o ? 'sel' : ''}" onclick="${o ? `H.useBorder('${id}')` : `H.couplePreview('${k}')`}"><div style="display:grid;place-items:center;padding:20px 0 12px">${avatarHTML(me.avatar, 0, 'bp', 52, '', id)}</div><small>${c.name}</small><small style="display:block;color:#ff9fcf">${REL[k].e} COUPLE</small></button>` }).join('')}
    ${BORDERS.map(b => { const o = ownsBorder(b.id);
-     return `<button class="gi ${o ? '' : 'lk'} ${cur === b.id ? 'sel' : ''}" onclick="${o ? `H.useBorder('${b.id}')` : `H.borderLocked('${b.id}')`}"><div style="display:grid;place-items:center;padding:14px 0 6px">${avatarHTML(me.avatar, 0, 'bp', 52, '', b.id)}</div><small>${b.name}</small></button>` }).join('')}</div>${me.is_host ? `<h3 class="sec"><span class="ms">workspace_premium</span> Eksklusif Host</h3><div class="gg">${HOST_BORDERS.map(b => `<button class="gi ${cur === b.id ? 'sel' : ''}" onclick="H.useBorder('${b.id}')"><div style="display:grid;place-items:center;padding:14px 0 6px">${avatarHTML(me.avatar, 0, 'bp', 52, '', b.id, true)}</div><small>${b.name}</small></button>`).join('')}</div>` : ''}`;
+     return `<button class="gi ${o ? '' : 'lk'} ${cur === b.id ? 'sel' : ''}" onclick="${o ? `H.useBorder('${b.id}')` : `H.borderLocked('${b.id}')`}"><div style="display:grid;place-items:center;padding:${b.lux ? '22px 0 14px' : '14px 0 6px'}">${avatarHTML(me.avatar, 0, 'bp', 52, '', b.id)}</div><small>${b.name}</small>${b.lux ? '<small style="display:block;color:#ffd886">✦ MEWAH</small>' : ''}</button>` }).join('')}</div>${me.is_host ? `<h3 class="sec"><span class="ms">workspace_premium</span> Eksklusif Host</h3><div class="gg">${HOST_BORDERS.map(b => `<button class="gi ${cur === b.id ? 'sel' : ''}" onclick="H.useBorder('${b.id}')"><div style="display:grid;place-items:center;padding:14px 0 6px">${avatarHTML(me.avatar, 0, 'bp', 52, '', b.id, true)}</div><small>${b.name}</small></button>`).join('')}</div>` : ''}`;
 }
 /* Langsung tampil di layar (optimistis), server menyusul; jika gagal dikembalikan lagi */
 H.useBorder = async id => {
   const prev = me.avatar_border || null, nb = id || null;
-  bdBusy++;
+  bdBusy++; bdLock = Date.now() + 10000;
   me = { ...me, avatar_border: nb }; prof[uid] = { ...prof[uid], avatar_border: nb };
   room?.track(presence()); repaintMine();
-  const { error } = await sb.rpc('set_border', { b: id });
+  const isTitle = TITLE_BORDERS.some(b => b.id === id);
+  const isLux = BORDERS.some(b => b.lux && b.id === id);
+  const isCpl = !!coupleKind(id);
+  const saved = async () => { const { data } = await sb.from('profiles').select('avatar_border').eq('id', uid).maybeSingle(); return !data || (data.avatar_border || null) === nb };
+  let error = null;
+  try {
+    const r = await sb.rpc(isCpl ? 'set_couple_border' : isTitle ? 'set_title_border' : isLux ? 'set_lux_border' : 'set_border', { b: id });
+    error = r.error;
+    const noFn = error && (error.code === 'PGRST202' || /Could not find the function/i.test(error.message || ''));
+    if (noFn && isCpl) error = { message: 'Jalankan level_up_migration.sql di Supabase dulu.' };
+    else if (noFn && isLux) error = { message: 'Jalankan lux_border.sql di Supabase dulu.' };
+    else if (noFn && isTitle) error = { message: 'Jalankan title_border.sql di Supabase dulu.' };
+    else {
+      /* Server bisa menolak/mengabaikan border yang daftarnya belum diperbarui (mis. border baru atau border Host).
+         Cek hasil sebenarnya di database; kalau belum tersimpan, coba simpan langsung ke profil sendiri. */
+      const serverMsg = error?.message;
+      if (!error && !(await saved())) error = { message: 'Border belum tersimpan di server.' };
+      const mayUse = me.is_host || !id || (isCpl ? coupleOk(id) : isTitle ? titleBdOk(id, me.points, me.is_host) : ownsBorder(id));
+      if (error && mayUse) {
+        const u = await sb.from('profiles').update({ avatar_border: nb }).eq('id', uid);
+        if (!u.error && await saved()) error = null;
+        else error = { message: `Border belum bisa disimpan. Detail server: ${[serverMsg, u.error?.message].filter(Boolean).join(' | ') || 'perubahan diabaikan tanpa pesan error'}` };
+      }
+    }
+  } catch (e) { error = { message: e?.message || 'Gagal menyimpan border' } }
   bdBusy--;
   if (error) {
+    bdLock = 0;
     me = { ...me, avatar_border: prev }; prof[uid] = { ...prof[uid], avatar_border: prev };
-    room?.track(presence()); repaintMine(); return toast(error.message);
+    room?.track(presence()); repaintMine(); return toast('Gagal memakai border: ' + error.message);
   }
+  bdLock = Date.now() + 4000; /* beri waktu event realtime lama lewat sebelum polling boleh membaca lagi */
   toast(id ? 'Border dipakai ✨' : 'Border dilepas');
 };
 /* Ambil ulang border & daftar border terbuka milikku (dipanggil oleh broadcast Host, polling ringan, dan saat tab aktif lagi) */
 async function refreshMyBorders() {
-  if (!HAS_BORDER || !me || !uid || bdBusy) return;
+  if (!HAS_BORDER || !me || !uid || bdBusy || Date.now() < bdLock) return;
   const { data } = await sb.from('profiles').select('avatar_border,borders').eq('id', uid).maybeSingle();
-  if (!data || bdBusy) return;
+  if (!data || bdBusy || Date.now() < bdLock) return;
   const nb = data.borders || [], ob = me.borders || [];
   if (JSON.stringify(nb) === JSON.stringify(ob) && (data.avatar_border || null) === (me.avatar_border || null)) return;
   const more = nb.length > ob.length;
@@ -2425,6 +3228,11 @@ async function refreshMyBorders() {
   if (more) pushNotif({ type: 'host', icon: '🖼️', title: 'Host 👑', text: 'membuka border baru untukmu', tab: 'me', act: { k: 'tab', t: 'me' } });
   room?.track(presence()); repaintMine();
 }
+H.titleBdLocked = id => {
+  const b = TITLE_BORDERS.find(x => x.id === id); if (!b) return;
+  sheet(`<h3><span class="ms">lock</span> Border ${b.name}</h3><div style="display:grid;place-items:center;padding:40px 0 30px">${avatarHTML(me.avatar, SVIP[b.lv - 1], 'bp', 96, '', b.id)}</div>
+   <p class="sub" style="text-align:center">Terbuka otomatis saat kamu meraih gelar ${b.name} (${kfmt(SVIP[b.lv - 1])} poin hadiah). Poinmu sekarang ${kfmt(me.points)}.</p><button class="btn" onclick="H.close()">Mengerti</button>`);
+};
 H.borderLocked = id => {
   const b = BORDERS.find(x => x.id === id); if (!b) return;
   sheet(`<h3><span class="ms">lock</span> ${b.name}</h3><p class="sub">${b.desc}</p>
@@ -2442,8 +3250,12 @@ H.hostBorder = async id => {
    ${BORDERS.map(b => `<div class="mrow"><div>${avatarHTML(u.avatar, 0, '', 34, '', b.id)}</div><span>${b.name}<br><small style="color:#a99d92">${b.desc}</small></span>${own.includes(b.id) ? '<span class="sm o">✔ Terbuka</span>' : `<button class="sm" onclick="H.giveBorder('${u.id}','${b.id}')">Buka</button>`}</div>`).join('')}`);
 };
 H.giveBorder = async (id, b) => {
-  const { error } = await sb.rpc('give_border', { target: id, b });
-  if (error) return toast(error.message);
+  const isLux = BORDERS.some(x => x.lux && x.id === b);
+  const { error } = await sb.rpc(isLux ? 'give_lux_border' : 'give_border', { target: id, b });
+  if (error) return toast(isLux && (error.code === 'PGRST202' || /Could not find the function/i.test(error.message || '')) ? 'Jalankan lux_border.sql di Supabase dulu.' : error.message);
+  /* Jangan percaya "tanpa error" saja: baca ulang profil penerima */
+  const cek = await sb.from('profiles').select('borders').eq('id', id).maybeSingle();
+  if (cek.error || !(cek.data?.borders || []).includes(b)) return alert('Border BELUM tersimpan di server. Jalankan perbaikan_buka_border.sql di Supabase > SQL Editor, lalu coba lagi.');
   try { room?.send({ type: 'broadcast', event: 'bd', payload: { uid: id } }) } catch {} /* beri tahu penerima agar langsung terbuka, tanpa refresh */
   toast('Border dibuka ✅'); H.hostBorder(id);
 };
@@ -2468,14 +3280,15 @@ function addMsg(m, live) {
   if (m.type === 'join') d.innerHTML = `<div class="bub">${hb}<b>${esc(m.name)}</b> sedang bergabung</div>`;
   else if (m.type === 'leave') d.innerHTML = `<div class="bub sys">🚪 <b>${esc(m.name)}</b> keluar dari room</div>`;
   else if (m.type === 'entrance' || (m.type === 'chat' && String(m.body || '').startsWith('[ENT]'))) {
-    const claimed = Math.min(MAX_LV, Number(String(m.body || '').replace('[ENT]', '')) || 5);
-    d.innerHTML = `<div class="bub sys">✨ ${esc(m.name)} memasuki room dengan efek ${tierName(claimed)}!</div>`;
+    const claimed = Math.min(MAX_LV, Number(String(m.body || '').replace('[ENT]', '')) || 0);
+    d.innerHTML = `<div class="bub sys">✨ ${esc(m.name)} memasuki room dengan efek ${claimed ? tierName(claimed) : 'spesial'}!</div>`;
     if (live) entranceFor(m.user_id, m.name, claimed);
   }
   else if (m.type === 'gift') {
     const g = GIFTS[m.gift] || GIFTS[0];
-    d.innerHTML = `${head}<div>${meta}<div class="gbub"><span>Kirim ${esc(g.name)}${m.to_name ? `<small>untuk ${esc(m.to_name)}</small>` : ''}</span><span class="e">${g.e}</span><b class="x">x1</b></div></div>`;
-    if (live) showFx(g, m.name, m.to_name, Number(m.gift));
+    const qty = clampQty(m.qty);
+    d.innerHTML = `${head}<div>${meta}<div class="gbub"><span>Kirim ${esc(g.name)}${m.to_name ? `<small>untuk ${esc(m.to_name)}</small>` : ''}</span><span class="e">${g.e}</span><b class="x">x${qty}</b></div></div>`;
+    if (live) showFx(g, m.name, m.to_name, Number(m.gift), qty);
   } else if (m.type === 'chat' && String(m.body || '').startsWith('[CHEST]')) {
     const [evId, lv] = String(m.body).slice(7).split('|');
     d.innerHTML = `<div class="bub sys">${'📦'} Peti ${Number(lv) >= 10 ? 'EKSKLUSIF' : 'Level ' + Number(lv)} terbuka! Semua anggota room mendapat hadiah</div>`;
@@ -2521,22 +3334,54 @@ async function loadGiftCatalog() {
   return true;
 }
 const kfmt = n => Number(n || 0).toLocaleString('id-ID');
+/* Jumlah gift sekali kirim (1 sampai MAX_QTY). Batas ini juga dijaga di server (gift_qty.sql). */
+const MAX_QTY = 99, QTY_PRESET = [1, 5, 10, 25, 50, 99];
+let giftQty = 1;
+const clampQty = v => Math.min(MAX_QTY, Math.max(1, Math.floor(Number(v)) || 1));
+/* Perbarui total harga, EXP, dan kunci tiap gift tanpa menggambar ulang layar (posisi gulir & ketikan tetap) */
+function paintGiftQty() {
+  const own = me.gift_tickets || 0;
+  document.querySelectorAll('#sheet [data-gi]').forEach(b => {
+    const g = GIFTS[+b.dataset.gi];
+    b.classList.toggle('lk', !me.is_host && own < g.coin * giftQty);
+    b.querySelector('.gx').textContent = `+${kfmt(g.points * giftQty)} EXP`;
+    b.querySelector('.tkc').textContent = `🪙 ${kfmt(g.coin * giftQty)}`;
+  });
+  document.querySelectorAll('#sheet [data-q]').forEach(b => b.classList.toggle('on', +b.dataset.q === giftQty));
+}
+H.setQty = v => { giftQty = clampQty(v); const i = $('#qtyIn'); if (i) i.value = giftQty; paintGiftQty() };
+H.typeQty = el => { if (el.value === '') return; giftQty = clampQty(el.value); if (+el.value > MAX_QTY || +el.value < 1) el.value = giftQty; paintGiftQty() };
 function giftSheet() {
+  giftQty = 1;
   const own = me.gift_tickets || 0, cheapest = Math.min(...GIFTS.map(g => g.coin));
   sheet(`<h3>Kirim Gift</h3><p class="sub">${me.is_host ? '👑 Host: unlimited gratis' : `🪙 Koin emasmu: ${kfmt(own)} · makin mahal gift, makin besar EXP`}</p>
-   <div class="mrow" style="border-top:0;padding-top:0"><img src="${esc(gT.avatar)}"><span>Untuk: <b>${esc(gT.name)}</b></span><button class="sm o" onclick="H.gift()">Ganti</button></div>
-   <div class="gg">${GIFTS.map((g, i) => { const lock = !me.is_host && own < g.coin; return `<button class="gi ${lock ? 'lk' : ''}" onclick="H.send(${i})">${g.img ? `<img src="${esc(g.img)}">` : `<span class="e">${g.e}</span>`}<small>${g.name}</small>${i >= EXCLUSIVE_GIFT_START ? '<small style="display:block;color:#d7b6ff">✦ EKSKLUSIF</small>' : ''}<small style="display:block;color:#ffd886">+${kfmt(g.points)} EXP</small><small class="tkc" style="display:block">🪙 ${kfmt(g.coin)}</small></button>` }).join('')}</div>
+   <div class="mrow" style="border-top:0;padding-top:0"><img src="${esc(gT.avatar)}"><span>Untuk: <b>${esc(gT.name)}</b></span>${gT.dm ? '<button class="sm o" onclick="H.backToDM()">Kembali</button>' : '<button class="sm o" onclick="H.gift()">Ganti</button>'}</div>
+   <p class="sub" style="margin:8px 0 0">Jumlah (maksimal ${MAX_QTY}), lalu ketuk gift</p>
+   <div class="qtybar">${QTY_PRESET.map(n => `<button data-q="${n}" class="${n === 1 ? 'on' : ''}" onclick="H.setQty(${n})">${n}</button>`).join('')}<input id="qtyIn" type="number" inputmode="numeric" min="1" max="${MAX_QTY}" value="1" aria-label="Jumlah gift" oninput="H.typeQty(this)" onblur="H.setQty(this.value)"></div>
+   <div class="gg">${GIFTS.map((g, i) => { const lock = !me.is_host && own < g.coin; return `<button data-gi="${i}" class="gi ${lock ? 'lk' : ''}" onclick="H.send(${i})">${g.img ? `<img src="${esc(g.img)}">` : `<span class="e">${g.e}</span>`}<small>${g.name}</small>${i >= EXCLUSIVE_GIFT_START ? '<small style="display:block;color:#d7b6ff">✦ EKSKLUSIF</small>' : ''}<small class="gx" style="display:block;color:#ffd886">+${kfmt(g.points)} EXP</small><small class="tkc" style="display:block">🪙 ${kfmt(g.coin)}</small></button>` }).join('')}</div>
    ${!me.is_host && own < cheapest ? `<button class="btn" onclick="H.wa('Hay Host, mau isi koin emas dong!')">Isi Koin Emas (Chat Owner)</button>` : ''}`);
 }
 H.send = async i => {
   if (!gT) return H.gift();
   const g = GIFTS[i]; if (!g) return;
-  if (!me.is_host && (me.gift_tickets || 0) < g.coin) return toast(`Koin emas kurang 🔒 Butuh ${kfmt(g.coin)}, kamu punya ${kfmt(me.gift_tickets)}`);
-  if (H.send.busy) return; H.send.busy = true;
+  const qty = giftQty, total = g.coin * qty, to = gT;
+  if (!me.is_host && (me.gift_tickets || 0) < total) return toast(`Koin emas kurang 🔒 Butuh ${kfmt(total)}, kamu punya ${kfmt(me.gift_tickets)}`);
+  if (H.send.busy) return;
+  if (qty > 1 && !confirm(`Kirim ${qty}× ${g.name} ke ${to.name}?${me.is_host ? '' : ` Total ${kfmt(total)} koin.`}`)) return;
+  H.send.busy = true;
   let error;
-  try { ({ error } = await sb.rpc('send_gift_v2', { g: i, target: gT.id, ...(RID ? { rid: RID } : {}) })) } finally { H.send.busy = false }
-  if (error && (error.code === 'PGRST202' || /Could not find the function/i.test(error.message || ''))) return toast('Jalankan gift_relation_migration.sql terbaru dulu 🪙');
-  error ? toast(error.message) : (H.close(), syncPointsSoon(500), setTimeout(syncTitle, 700));
+  try {
+    const room_ = RID ? { rid: RID } : {};
+    ({ error } = qty > 1 ? await sb.rpc('send_gift_qty', { g: i, target: to.id, qty, ...room_ }) : await sb.rpc('send_gift_v2', { g: i, target: to.id, ...room_ }));
+  } finally { H.send.busy = false }
+  if (error && (error.code === 'PGRST202' || /Could not find the function/i.test(error.message || ''))) return toast(qty > 1 ? 'Jalankan gift_qty.sql di Supabase dulu untuk kirim lebih dari 1 🪙' : 'Jalankan gift_relation_migration.sql terbaru dulu 🪙');
+  if (error) return toast(error.message);
+  H.close(); syncPointsSoon(500); setTimeout(syncTitle, 700);
+  if (to.dm) {
+    toast(`${qty > 1 ? qty + '× ' : ''}${g.name} terkirim ke ${to.name} 🎁`);
+    if (!inRoom) showFx(g, me.name, to.name, i, qty); /* di dalam room, efek sudah muncul dari pesan room */
+    await backToDM(to);
+  }
 };
 
 /* ---------- 8B. Hubungan: Sahabat, Pasangan (anniversary), Kakak-Adik, Partner Duet ---------- */
@@ -2553,7 +3398,38 @@ function relCardHTML(r, mine) {
   const ann = days > 1 && days % 365 === 0 ? `🎉 Anniversary ${days / 365} tahun!` : days > 1 && days % 100 === 0 ? `🎉 ${days} hari bersama!` : '';
   return `<div class="relcard rl${l}"><div class="rh"><img src="${esc(p.avatar || '')}"${p.id ? ` onclick="H.view('${p.id}')" style="cursor:pointer"` : ''}><div><b>${esc(p.name || 'Anggota')}</b><br><i class="relk">${k.e} ${k.name} · Lv.${l} ${REL_TITLES[l - 1]}</i></div>${mine ? `<button class="sm o" onclick="H.endRel(${Number(r.id)})">Akhiri</button>` : ''}</div>
     <div class="prog"><i style="width:${pct}%"></i></div>
-    <small>${next ? `${Number(r.score).toLocaleString('id-ID')} / ${next.toLocaleString('id-ID')} poin hubungan` : 'Level tertinggi 👑'} · Hari ke-${days}${ann ? ' · ' + ann : ''}</small></div>`;
+    <small>${next ? `${Number(r.score).toLocaleString('id-ID')} / ${next.toLocaleString('id-ID')} poin hubungan` : 'Level tertinggi 👑'} · Hari ke-${days}${ann ? ' · ' + ann : ''}</small>${coupleRewardHTML(r, mine, l)}</div>`;
+}
+/* Kotak hadiah di kartu hubungan: pratinjau sebelum Lv. tertinggi, tombol pakai sesudahnya */
+function coupleRewardHTML(r, mine, l) {
+  const kind = REL[r.kind] ? r.kind : 'sahabat', c = COUPLE_BD[kind], id = 'cpl-' + kind;
+  if (l < REL_MAX) return `<div class="cplbox">🎁 Hadiah Lv.${REL_MAX}: Border Couple “${c.name}” <button class="sm o" onclick="H.couplePreview('${kind}',${Number(r.id)})">Lihat</button></div>`;
+  return `<div class="cplbox">👑 Border Couple “${c.name}” terbuka ${mine ? (me.avatar_border === id ? '<span class="sm o">✔ Dipakai</span>' : `<button class="sm" onclick="H.useCouple('${id}')">Pakai</button>`) : ''} <button class="sm o" onclick="H.couplePreview('${kind}',${Number(r.id)})">Lihat</button></div>`;
+}
+const coupleOk = id => { const k = coupleKind(id); return !!k && (!!me.is_host || myRel.some(x => x.kind === k && relLvl(x.score) >= REL_MAX)) };
+const couplePair = (kind, a, b) => `<div class="cplpair">${avatarHTML(a || me.avatar, 0, '', 72, '', 'cpl-' + kind)}<em>${REL[kind].e}</em>${avatarHTML(b || a || me.avatar, 0, '', 72, '', 'cpl-' + kind)}</div>`;
+H.couplePreview = (kind, relId) => {
+  const r = myRel.find(x => x.id === relId), other = relId && !r && viewU ? viewU.avatar : null, c = COUPLE_BD[kind];
+  sheet(`<h3><span class="ms">favorite</span> ${c.name}</h3><p class="sub">Border couple ${REL[kind].name}. ${c.desc}</p>${couplePair(kind, other || me.avatar, r?.partner?.avatar)}
+   <p class="sub" style="text-align:center">Terbuka untuk kalian berdua saat hubungan mencapai Lv.${REL_MAX} (${kfmt(REL_LV[REL_MAX - 1])} poin hubungan).</p><button class="btn" onclick="H.close()">Mengerti</button>`);
+};
+H.useCouple = async id => { if (!coupleOk(id)) return toast('Masih terkunci 🔒'); await H.useBorder(id); renderProf() };
+function showCouplePopup(r) {
+  const e = $('#svipPop'), c = COUPLE_BD[r.kind];
+  e.innerHTML = `<div class="svip-rays"></div><div class="svip-card rel-card"><div class="svip-title">LEVEL HUBUNGAN TERTINGGI</div>${couplePair(r.kind, me.avatar, r.partner?.avatar)}<div class="svip-name">Border “${c.name}”</div><div class="svip-desc">Hadiah untukmu dan ${esc(r.partner?.name || 'pasanganmu')}. Pakai lewat tab Profil.</div></div><div class="svip-flash"></div>`;
+  e.classList.remove('hidden'); clearTimeout(showSvipPopup.t);
+  showSvipPopup.t = setTimeout(() => { e.classList.add('hidden'); e.innerHTML = ''; }, 7000);
+  if (nSound) levelChime();
+}
+/* Rayakan hadiah baru (sekali per hubungan) dan lepas border couple yang haknya sudah hilang */
+function checkCoupleReward() {
+  myRel.filter(x => COUPLE_BD[x.kind] && relLvl(x.score) >= REL_MAX).forEach(x => {
+    const key = `cplGift:${uid}:${x.id}`;
+    try { if (localStorage.getItem(key)) return; localStorage.setItem(key, '1') } catch { return }
+    showCouplePopup(x);
+    pushNotif({ key, type: 'rel', icon: '🎁', title: 'Hadiah Couple', text: `Border “${COUPLE_BD[x.kind].name}” terbuka`, tab: 'me', act: { k: 'tab', t: 'me' } });
+  });
+  if (coupleKind(me.avatar_border) && !coupleOk(me.avatar_border)) H.useBorder('');
 }
 function relSectionHTML() {
   if (!HAS_REL) return '<h3 class="sec"><span class="ms">favorite</span> Hubungan</h3><p class="sub">Fitur hubungan belum aktif. Jalankan gift_relation_migration.sql di Supabase.</p>';
@@ -2562,7 +3438,7 @@ function relSectionHTML() {
 async function loadMyRelations() {
   if (!HAS_REL) return;
   const r = await loadRelations(uid); if (!r) return;
-  myRel = r; renderProf();
+  myRel = r; renderProf(); checkCoupleReward();
   if (!relNoted) { relNoted = true; r.forEach(x => { const d = relDays(x.created_at);
     if (d > 1 && (d % 100 === 0 || d % 365 === 0)) toast(`🎉 Hari ini ${d % 365 === 0 ? d / 365 + ' tahun' : d + ' hari'} ${REL[x.kind]?.name || 'hubungan'} dengan ${x.partner?.name || 'dia'}!`) }) }
 }
@@ -2736,6 +3612,10 @@ async function purgeMyOnce() {
 
 
 /* ---------- Game koin: game.html dibuka sebagai layar di dalam halaman ini (tanpa pindah halaman) ---------- */
+/* ---------- Feed Video: video.html dibuka sebagai layar di atas halaman ini (room/voice tidak terputus) ---------- */
+H.videos = () => { $('#videoFrame').src = 'video.html'; $('#videoOv').classList.remove('hidden') };
+function closeVideo() { $('#videoOv').classList.add('hidden'); $('#videoFrame').src = 'about:blank' } /* about:blank menghentikan suara video */
+window.VideoAPI = { close: closeVideo };
 H.games = () => { $('#gameFrame').src = 'game.html'; $('#gameOv').classList.remove('hidden') };
 function closeGame() { $('#gameOv').classList.add('hidden'); $('#gameFrame').src = 'about:blank' }
 window.GameAPI = {
@@ -2846,7 +3726,7 @@ async function syncDM(){
     const {data,error}=await sb.from('direct_messages').select('*').or(`and(sender_id.eq.${uid},recipient_id.eq.${id}),and(sender_id.eq.${id},recipient_id.eq.${uid})`).order('created_at',{ascending:false}).limit(30);
     if(error||dmPeer?.id!==id||!dmVisible())return;
     let ch=false;const known=new Map(dmMessages.map(x=>[x.id,x]));
-    (data||[]).reverse().forEach(m=>{const o=known.get(m.id);if(!o){dmMessages.push(m);ch=true}else if(m.read_at&&!o.read_at){o.read_at=m.read_at;ch=true}});
+    (data||[]).reverse().forEach(m=>{if(dmExpired(m))return;const o=known.get(m.id);if(!o){dmMessages.push(m);ch=true}else if(m.read_at&&!o.read_at){o.read_at=m.read_at;ch=true}});
     if(ch){dmMessages.sort((a,b)=>Date.parse(a.created_at)-Date.parse(b.created_at));renderDM();markDMRead()}
   }finally{syncDM.busy=false}
 }
@@ -2857,24 +3737,48 @@ H.openDM=async id=>{
   const {data,error}=await sb.from('direct_messages').select('*').or(`and(sender_id.eq.${uid},recipient_id.eq.${id}),and(sender_id.eq.${id},recipient_id.eq.${uid})`).order('created_at',{ascending:false}).limit(100);
   if(error)return toast('Chat pribadi: '+error.message);
   if(dmPeer?.id!==id)return; /* pengguna sudah pindah ke chat lain */
-  const got=(data||[]).reverse(),ids=new Set(got.map(x=>x.id));
+  const got=(data||[]).reverse().filter(m=>!dmExpired(m)),ids=new Set(got.map(x=>x.id));
   dmMessages=[...got,...dmMessages.filter(x=>!ids.has(x.id)&&(x.sender_id===id||x.recipient_id===id)&&Date.parse(x.created_at)>=Date.parse(got[0]?.created_at||0))];
   renderDM();markDMRead();
 };
+/* Pesan yang sudah dibaca otomatis hilang setelah DM_TTL_MS (dihapus juga dari database supaya data tidak menumpuk).
+   Pesan yang belum dibaca TIDAK pernah dihapus. Ubah angka ini untuk mengganti durasi. */
+const DM_TTL_MS = 24 * 3600 * 1000;
+const dmExpired = m => !!(HAS_READ && m && m.read_at && Date.now() - Date.parse(m.read_at) > DM_TTL_MS);
+async function cleanupDMs() {
+  if (!HAS_READ || !uid || cleanupDMs.busy) return; cleanupDMs.busy = true;
+  try {
+    const cutoff = new Date(Date.now() - DM_TTL_MS).toISOString();
+    await sb.from('direct_messages').delete().not('read_at', 'is', null).lt('read_at', cutoff).or(`sender_id.eq.${uid},recipient_id.eq.${uid}`);
+    if (dmPeer && dmVisible()) renderDM();
+  } catch {} finally { cleanupDMs.busy = false }
+}
 function renderDM(){
   if(!dmPeer)return;
-  const keep=$('#dmInput')?.value||'',foc=document.activeElement?.id==='dmInput';
+  const inp0=$('#dmInput'),keep=inp0?.value||'',foc=document.activeElement?.id==='dmInput';
+  /* urutkan & buang pesan ganda: pesan realtime bisa masuk tidak berurutan */
+  const seen=new Set();dmMessages=dmMessages.filter(m=>{const k=String(m.id);if(seen.has(k)||dmExpired(m))return false;seen.add(k);return true}).sort((a,b)=>Date.parse(a.created_at)-Date.parse(b.created_at)||(a.id>b.id?1:-1));
   const lines=dmMessages.map(m=>{try{
     const mine=m.sender_id===uid,quoted=m.reply_to_id?dmMessages.find(x=>x.id===m.reply_to_id):null;
-    const isOnce=String(m.body||'').startsWith(ONCE_TAG);
-    const body=isOnce?onceBubble(String(m.body).slice(ONCE_TAG.length),mine,'dm',m.created_at):esc(m.body??'').replace(/(@[\w.-]+)/g,'<span class="tagged">$1</span>')||'<i style="opacity:.6">(pesan tanpa teks)</i>';
-    return `<div class="dmline ${mine?'mine':''}">${quoted?`<div class="replybox"><b>${ms('reply')} ${quoted.sender_id===uid?'Kamu':esc(dmPeer.name)}</b>${esc(String(quoted.body??'').slice(0,100))}</div>`:''}${m.forwarded_from_id?`<small>${ms('forward')} Pesan diteruskan</small>`:''}${body}<small>${new Date(m.created_at).toLocaleString('id-ID',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'short'})}${mine?`<span class="tk${m.read_at?' rd':''}" data-tk="${m.id}">${m.read_at?'✓✓ Dibaca':'✓ Terkirim'}</span>`:''}</small><div class="msgtools"><button onclick="H.replyDM('${m.id}')">${ms('reply')} Balas</button><button onclick="H.forwardDM('${m.id}')">${ms('forward')} Teruskan</button></div></div>`;
+    const isOnce=String(m.body||'').startsWith(ONCE_TAG),gif=gifUrl(m.body);
+    const body=gif?`<img class="gifmsg" src="${esc(gif)}" alt="GIF" onload="H.gifLoaded()">`:isOnce?onceBubble(String(m.body).slice(ONCE_TAG.length),mine,'dm',m.created_at):esc(m.body??'').replace(/(@[\w.-]+)/g,'<span class="tagged">$1</span>')||'<i style="opacity:.6">(pesan tanpa teks)</i>';
+    return `<div class="dmline ${mine?'mine':''}">${quoted?`<div class="replybox"><b>${ms('reply')} ${quoted.sender_id===uid?'Kamu':esc(dmPeer.name)}</b>${esc(dmText(quoted.body).slice(0,100))}</div>`:''}${m.forwarded_from_id?`<small>${ms('forward')} Pesan diteruskan</small>`:''}${body}<small>${new Date(m.created_at).toLocaleString('id-ID',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'short'})}${mine?`<span class="tk${m.read_at?' rd':''}" data-tk="${m.id}">${m.read_at?'✓✓ Dibaca':'✓ Terkirim'}</span>`:''}</small><div class="msgtools"><button onclick="H.replyDM('${m.id}')">${ms('reply')} Balas</button><button onclick="H.forwardDM('${m.id}')">${ms('forward')} Teruskan</button></div></div>`;
   }catch(err){console.warn('DM render',m?.id,err);return ''}}).join('');
-  sheet(`<div class="dmhead"><button class="ib" onclick="H.close()" title="Kembali"><span class="ms">arrow_back</span></button><img src="${esc(dmPeer.avatar||'')}"><div style="flex:1;min-width:0"><h3 style="margin:0">${esc(dmPeer.name)}</h3><p class="sub fst off" id="dmStatus" data-fst="${esc(dmPeer.id)}" style="margin:0"></p></div></div><div class="dmfeed" id="dmFeed">${lines||'<p class="empty-t">Belum ada pesan. Mulai percakapan! 👋</p>'}<div class="dmline typ hidden" id="dmTyp"><i></i><i></i><i></i></div></div><div id="dmReplyHint"></div><div class="dmcomposer"><button class="ib" onclick="H.tagDM()" title="Tag teman"><span class="ms">alternate_email</span></button><button class="ib" onclick="H.onceDM()" title="Kirim foto sekali lihat"><span class="ms">photo_camera</span></button><input id="dmInput" class="inp" maxlength="200" placeholder="Tulis pesan..." oninput="H.dmTyping()" onkeydown="if(event.key==='Enter')H.sendDM()"><button class="ib sendb" onclick="H.sendDM()"><span class="ms">send</span></button></div>`, true);
-  const f=$('#dmFeed');if(f)f.scrollTop=f.scrollHeight;renderDMReplyHint();const di=$('#dmInput');if(di&&keep){di.value=keep;if(foc)di.focus()}
+  /* Jika chat teman yang sama sudah terbuka: perbarui daftar pesan SAJA. Kolom ketik tidak dibuat ulang,
+     jadi kursor tidak lompat ke awal (penyebab huruf terketik terbalik) dan keyboard tidak tertutup. */
+  { const feed=$('#dmFeed');
+    if(feed&&inp0&&feed.dataset.peer===String(dmPeer.id)&&dmVisible()){
+      const nearEnd=feed.scrollHeight-feed.scrollTop-feed.clientHeight<90,last=dmMessages[dmMessages.length-1];
+      const typHidden=$('#dmTyp')?.classList.contains('hidden')!==false;
+      feed.innerHTML=(lines||'<p class="empty-t">Belum ada pesan. Mulai percakapan! 👋</p>')+`<div class="dmline typ ${typHidden?'hidden':''}" id="dmTyp"><i></i><i></i><i></i></div>`;
+      if(nearEnd||last?.sender_id===uid)feed.scrollTop=feed.scrollHeight;
+      renderDMReplyHint();refreshFriendStatus();return;
+    } }
+  sheet(`<div class="dmhead"><button class="ib" onclick="H.close()" title="Kembali"><span class="ms">arrow_back</span></button><img src="${esc(dmPeer.avatar||'')}"><div style="flex:1;min-width:0"><h3 style="margin:0">${esc(dmPeer.name)}</h3><p class="sub fst off" id="dmStatus" data-fst="${esc(dmPeer.id)}" style="margin:0"></p></div><button class="sm" onclick="H.giftDM()" title="Kirim gift hadiah"><span class="ms">redeem</span> Gift</button></div><p class="dmnote">🧹 Pesan yang sudah dibaca terhapus otomatis setelah 24 jam</p><div class="dmfeed" id="dmFeed" data-peer="${esc(dmPeer.id)}">${lines||'<p class="empty-t">Belum ada pesan. Mulai percakapan! 👋</p>'}<div class="dmline typ hidden" id="dmTyp"><i></i><i></i><i></i></div></div><div id="dmReplyHint"></div><div id="gifPanel" class="hidden"></div><div class="dmcomposer"><button class="ib" onclick="H.tagDM()" title="Tag teman"><span class="ms">alternate_email</span></button><button class="ib" onclick="H.onceDM()" title="Kirim foto sekali lihat"><span class="ms">photo_camera</span></button><button class="ib gifbtn" onclick="H.gifDM()" title="Kirim GIF">GIF</button><input id="dmInput" class="inp" maxlength="200" placeholder="Tulis pesan..." oninput="H.dmTyping()" onkeydown="if(event.key==='Enter')H.sendDM()"><button class="ib sendb" onclick="H.sendDM()"><span class="ms">send</span></button></div>`, true);
+  const f=$('#dmFeed');if(f)f.scrollTop=f.scrollHeight;renderDMReplyHint();const di=$('#dmInput');if(di&&keep){di.value=keep;if(foc){di.focus();try{di.setSelectionRange(keep.length,keep.length)}catch{}}}
   refreshFriendStatus();
 }
-function renderDMReplyHint(){const e=$('#dmReplyHint');if(!e)return;const m=dmMessages.find(x=>x.id===dmReply);e.innerHTML=m?`<div class="replyhint">↩ Membalas: ${esc(String(m.body??'').slice(0,70))}<button onclick="H.cancelReplyDM()"><span class="ms">close</span></button></div>`:'';}
+function renderDMReplyHint(){const e=$('#dmReplyHint');if(!e)return;const m=dmMessages.find(x=>x.id===dmReply);e.innerHTML=m?`<div class="replyhint">↩ Membalas: ${esc(dmText(m.body).slice(0,70))}<button onclick="H.cancelReplyDM()"><span class="ms">close</span></button></div>`:'';}
 H.replyDM=id=>{dmReply=id;renderDMReplyHint();$('#dmInput')?.focus()};
 H.cancelReplyDM=()=>{dmReply=null;renderDMReplyHint()};
 H.tagDM=()=>{if(!dmPeer)return;const i=$('#dmInput');i.value=(i.value?i.value+' ':'')+'@'+String(dmPeer.name||'').replace(/\s+/g,'')+' ';i.focus()};
@@ -2889,6 +3793,90 @@ H.sendDM=async()=>{
     dmReply=null;const now=$('#dmInput');if(now&&now.value.trim()===body)now.value='';H.dmStopTyping();renderDM();
   }finally{H.sendDM.busy=false}
 };
+/* ---------- GIF di chat teman: isi pesan = "[GIF]" + URL ---------- */
+const GIF_TAG = '[GIF]', GIF_MAX_MB = 5;
+/* Hanya tampilkan GIF dari storage aplikasi sendiri atau GIPHY, supaya tautan sembarang tidak ikut dimuat */
+function gifUrl(body) {
+  const t = String(body || ''); if (!t.startsWith(GIF_TAG)) return '';
+  try {
+    const u = new URL(t.slice(GIF_TAG.length));
+    const own = u.host === new URL(SUPABASE_URL).host && u.pathname.startsWith('/storage/v1/object/public/media/');
+    return u.protocol === 'https:' && (own || /^(media\d*|i)\.giphy\.com$/.test(u.host)) ? u.href : '';
+  } catch { return '' }
+}
+const dmText = body => gifUrl(body) ? '🎞️ GIF' : String(body || '').startsWith(ONCE_TAG) ? '📷 Foto sekali lihat' : String(body || '');
+H.gifLoaded = () => { const f = $('#dmFeed'); if (f && f.scrollHeight - f.scrollTop - f.clientHeight < 340) f.scrollTop = f.scrollHeight };
+async function sendGif(url, peer) {
+  if (!dmPeer || dmPeer.id !== peer || sendGif.busy) return;
+  const reply = dmReply; sendGif.busy = true;
+  try {
+    const { data, error } = await sb.from('direct_messages').insert({ sender_id: uid, recipient_id: peer, body: GIF_TAG + url, reply_to_id: reply || null }).select().single();
+    if (error) return toast('GIF gagal dikirim: ' + error.message);
+    if (dmPeer?.id !== peer) return;
+    if (!dmMessages.some(x => x.id === data.id)) dmMessages.push(data);
+    dmReply = null; $('#gifPanel')?.classList.add('hidden'); renderDM();
+    const f = $('#dmFeed'); if (f) f.scrollTop = f.scrollHeight;
+  } finally { sendGif.busy = false }
+}
+H.gifDM = () => {
+  const p = $('#gifPanel'); if (!p || !dmPeer) return;
+  if (!p.classList.contains('hidden')) return p.classList.add('hidden');
+  p.innerHTML = `<button class="sm" onclick="H.gifFile()"><span class="ms">upload</span> GIF dari galeri</button>${GIPHY_KEY ? `<input class="inp" placeholder="Cari di GIPHY..." maxlength="50" autocomplete="off" oninput="H.gifSearch(this.value)" style="margin-top:8px"><div id="gifGrid"></div><p class="sub" style="margin:6px 0 0;font-size:11px">Powered by GIPHY</p>` : ''}`;
+  p.classList.remove('hidden');
+  if (GIPHY_KEY) loadGifs('');
+};
+H.gifSearch = q => { clearTimeout(H.gifSearch.t); H.gifSearch.t = setTimeout(() => loadGifs(q.trim()), 600) };
+const gifCache = new Map();
+async function loadGifs(q) {
+  const g = $('#gifGrid'); if (!g) return;
+  const seq = loadGifs.seq = (loadGifs.seq || 0) + 1;
+  try {
+    let list = gifCache.get(q);
+    if (!list) {
+      g.innerHTML = '<p class="empty-t">Memuat...</p>';
+      const r = await fetch(`https://api.giphy.com/v1/gifs/${q ? 'search' : 'trending'}?api_key=${encodeURIComponent(GIPHY_KEY)}&limit=24&rating=g${q ? '&q=' + encodeURIComponent(q) : ''}`);
+      if (!r.ok) throw new Error(r.status === 429 ? 'Batas pencarian GIF tercapai, coba lagi nanti.' : 'GIF tidak bisa dimuat.');
+      list = ((await r.json()).data || []).filter(x => /^[a-zA-Z0-9]+$/.test(x.id)).map(x => x.id);
+      gifCache.set(q, list);
+    }
+    if (seq !== loadGifs.seq || !g.isConnected) return;
+    g.innerHTML = list.map(id => `<img loading="lazy" alt="GIF" src="https://media.giphy.com/media/${id}/200w.gif" onclick="H.gifPick('${id}')">`).join('') || '<p class="empty-t">GIF tidak ditemukan.</p>';
+  } catch (e) { if (seq === loadGifs.seq && g.isConnected) g.innerHTML = `<p class="empty-t">${esc(e.message || 'GIF tidak bisa dimuat.')}</p>` }
+}
+H.gifPick = id => { if (dmPeer) sendGif(`https://media.giphy.com/media/${id}/200w.gif`, dmPeer.id) };
+/* File GIF diunggah apa adanya (tanpa canvas) supaya animasinya tidak hilang */
+H.gifFile = () => {
+  const peer = dmPeer?.id; if (!peer) return;
+  const i = document.createElement('input'); i.type = 'file'; i.accept = 'image/gif';
+  i.onchange = async () => {
+    const f = i.files?.[0]; if (!f) return;
+    if (f.type !== 'image/gif') return toast('Pilih file berformat GIF');
+    if (f.size > GIF_MAX_MB * 1048576) return toast(`GIF maksimal ${GIF_MAX_MB} MB`);
+    toast('Mengunggah GIF…');
+    try {
+      const path = `${uid}/gif-${Date.now()}.gif`;
+      const { error } = await sb.storage.from('media').upload(path, f, { contentType: 'image/gif' });
+      if (error) throw error;
+      await sendGif(sb.storage.from('media').getPublicUrl(path).data.publicUrl, peer);
+    } catch (e) { toast('Upload GIF gagal: ' + (e.message || e)) }
+  };
+  i.click();
+};
+/* ---------- Lihat foto profil ukuran penuh ---------- */
+function showPhoto(src, name) {
+  if (!src) return toast('Belum ada foto profil');
+  document.getElementById('avView')?.remove();
+  const o = document.createElement('div'); o.id = 'avView';
+  o.innerHTML = `<b>${esc(name || '')}</b><img src="${esc(src)}" alt="Foto profil"><button class="sm">Tutup</button>`;
+  o.onclick = e => { if (e.target.tagName !== 'IMG') o.remove() };
+  document.body.append(o);
+}
+H.viewMyPhoto = () => showPhoto(me?.avatar, me?.name);
+H.viewUserPhoto = () => showPhoto(viewU?.avatar, viewU?.name);
+document.addEventListener('click', e => {
+  const im = e.target.closest?.('.pf img.pav, .dmhead img:not(.bdimg)'); if (!im) return;
+  showPhoto(im.src, im.closest('.pf, .dmhead')?.querySelector('h2, h3')?.textContent);
+});
 H.forwardDM=async id=>{
   const m=dmMessages.find(x=>x.id===id);if(!m)return;
   const {data,error}=await sb.from('direct_messages').insert({sender_id:uid,recipient_id:dmPeer.id,body:m.body,forwarded_from_id:m.id}).select().single();
@@ -3144,7 +4132,7 @@ function checkRoomMention(m) {
 let updPending = false;
 function appUpdated() {
   if (updPending) return; updPending = true;
-  const busy = inRm || voiceRecorder || !$('#sheet').classList.contains('hidden') || !$('#storyView').classList.contains('hidden') || !$('#roomsOv').classList.contains('hidden') || !$('#gameOv').classList.contains('hidden');
+  const busy = inRm || voiceRecorder || !$('#sheet').classList.contains('hidden') || !$('#storyView').classList.contains('hidden') || !$('#roomsOv').classList.contains('hidden') || !$('#gameOv').classList.contains('hidden') || !$('#videoOv').classList.contains('hidden');
   if (!busy) { toast('Versi baru ditemukan, memperbarui…'); setTimeout(() => location.reload(), 1200); return } /* aman: tidak sedang di room / mengetik / merekam */
   $('#updBar').classList.remove('hidden'); /* sedang sibuk: biarkan pengguna memilih kapan memperbarui */
 }
@@ -3210,7 +4198,7 @@ const GUM = { audio: { echoCancellation: true, noiseSuppression: true, autoGainC
 const W = {}, ACS = new Set();
 let spk = true; /* speaker: dengar suara orang lain. Terpisah dari mic. */
 H.spk = () => {
-  spk = !spk; document.querySelectorAll('audio.rtc').forEach(a => a.muted = !spk);
+  spk = !spk; document.querySelectorAll('audio.rtc').forEach(a => a.muted = !spk); musicAu.muted = !spk || musMuted; renderMusic();
   const b = $('#spkb'); b.innerHTML = ms(spk ? 'volume_up' : 'volume_off'); b.classList.toggle('off', !spk);
   toast(spk ? 'Speaker aktif 🔊' : 'Speaker dimatikan: kamu tidak mendengar suara');
 };
@@ -3227,7 +4215,7 @@ function watch(st, id) {
     if (!st.active) { stop(); return }
     an.getByteFrequencyData(b); const v = b.reduce((a, c) => a + c, 0) / b.length;
     document.querySelectorAll(`[data-uid="${id}"]`).forEach(e => e.classList.toggle('talk', v > 12));
-  }, 150);
+  }, 300);
 }
 /* HP sering memblokir suara otomatis: setiap sentuhan pertama membuka semua audio */
 const wake = () => { ACS.forEach(c => c.state === 'suspended' && c.resume().catch(() => {})); document.querySelectorAll('audio.rtc').forEach(a => { a.muted = !spk; a.paused && a.play().catch(() => {}) }) };

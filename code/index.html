@@ -9,7 +9,6 @@
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="icon" type="image/png" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
-<script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,0..1,0&display=block" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
 <style>
@@ -877,6 +876,66 @@ textarea.inp{resize:none;display:block}
 #musicBar button .ms{font-size:19px}
 @media(prefers-reduced-motion:reduce){#musicBar.on .md{animation:none}}
 </style>
+<style>
+/* Reset dasar (pengganti Tailwind CDN) */
+*,::before,::after{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}
+::before,::after{--tw-content:''}
+html{line-height:1.5;-webkit-text-size-adjust:100%;tab-size:4;font-family:ui-sans-serif,system-ui,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji"}
+body{margin:0;line-height:inherit}
+hr{height:0;color:inherit;border-top-width:1px}
+h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}
+a{color:inherit;text-decoration:inherit}
+b,strong{font-weight:bolder}
+code,kbd,samp,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:1em}
+small{font-size:80%}
+sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}
+table{text-indent:0;border-color:inherit;border-collapse:collapse}
+button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}
+button,select{text-transform:none}
+button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}
+progress{vertical-align:baseline}
+summary{display:list-item}
+blockquote,dl,dd,h1,h2,h3,h4,h5,h6,hr,figure,p,pre{margin:0}
+fieldset{margin:0;padding:0}legend{padding:0}
+ol,ul,menu{list-style:none;margin:0;padding:0}
+dialog{padding:0}
+textarea{resize:vertical}
+input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}
+button,[role=button]{cursor:pointer}
+:disabled{cursor:default}
+img,svg,video,canvas,audio,iframe,embed,object{display:block;vertical-align:middle}
+img,video{max-width:100%;height:auto}
+[hidden]:where(:not([hidden=until-found])){display:none}
+.hidden{display:none}
+</style>
+<style>
+/* ===== HEMAT TENAGA (HP kentang): tanpa cahaya/blur beranimasi, bentuk dan warna tetap ===== */
+/* Border avatar: tanpa glow, cukup cincin warna */
+.av9w,.bdx,.av9w::after,.ring.vip9::after{filter:none!important}
+.ring.vip9,.ring.vip9[class*="bd-"]{box-shadow:none!important;animation:none!important}
+.av9w,.bdx{animation:none!important;box-shadow:none!important}
+.ring.talk,.ring.vip9.talk{animation:none!important;outline:3px solid #6be07a;outline-offset:2px}
+/* Hiasan SVG hanya bergerak di profil; di kursi, chat, dan daftar diam */
+:not(.pf)>.av9w>.bdx *,.ring>.bdx *{animation:none!important}
+/* Cincin berputar hanya di kursi dan profil */
+:not(.pf)>.av9w::before{animation:none!important}
+/* Banner gelar: kilau hanya pada ukuran besar */
+.svip:not(.big),.svip:not(.big) *,.svip:not(.big)::before{animation:none!important;filter:none!important;text-shadow:none!important}
+.svip:not(.big){box-shadow:none!important}
+.svip.big span{filter:none!important}
+.relcard,#svipPop .svip-card,.lx-ban{box-shadow:none!important}
+.lx-ban::after{display:none!important}
+/* Blur latar sangat berat di GPU lemah */
+*{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+/* Entrance, efek gift, popup: tanpa filter dan tanpa lapisan raksasa yang berputar */
+#entranceFX *,#fx *,#svipPop *{filter:none!important}
+#entranceFX .ent-rays,#entranceFX .spin,#fx .rays,#svipPop .svip-rays{animation:none!important}
+#entranceFX .ent-rays{opacity:.3;-webkit-mask-image:none!important;mask-image:none!important;background:none!important}
+#fx .rays,#svipPop .svip-rays{display:none!important}
+#entranceFX .ent-burst,#entranceFX .lx-frame,#entranceFX .ent-sparks i,#entranceFX .lx-rise i,#entranceFX .lx-fall i,#entranceFX .lx-slash,#svipPop .svip-spark{box-shadow:none!important}
+#svipPop .svip-card{animation:svipPopIn .4s ease both!important}
+#svipPop{background:rgba(0,0,0,.72)}
+</style>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
@@ -1128,7 +1187,7 @@ const BD_ART = (() => {
     ${both('<path d="M52 118C58 136 72 144 90 146L84 134C72 134 62 128 52 118Z" fill="url(#gGold)" stroke="#8a5a12" stroke-width=".6"/>')}
     ${gem(90, 134, 1.8, 'gRuby')}${jewel(66, 136, 4.5, 'gRuby')}${jewel(114, 136, 4.5, 'gRuby')}${glint([[6, 22], [174, 22], [52, 2], [128, 2], [10, 122], [170, 122], [90, 158]])}`;
   /* Ratu Galaksi */
-  const orbit = (rot, fill, r) => `<g transform="rotate(${rot} 90 80)"><ellipse cx="90" cy="80" rx="80" ry="27" fill="none" stroke="url(#${fill})" stroke-width="2.2" stroke-dasharray="120 8 3 8"/><circle r="${r}" fill="url(#${fill})" stroke="#fff" stroke-width=".8"><animateMotion dur="${5 + r / 2}s" repeatCount="indefinite" path="M10 80a80 27 0 1 0 160 0a80 27 0 1 0-160 0"/></circle></g>`;
+  const orbit = (rot, fill, r) => `<g transform="rotate(${rot} 90 80)"><ellipse cx="90" cy="80" rx="80" ry="27" fill="none" stroke="url(#${fill})" stroke-width="2.2" stroke-dasharray="120 8 3 8"/><circle cx="10" cy="80" r="${r}" fill="url(#${fill})" stroke="#fff" stroke-width=".8"></circle></g>`;
   const shard = (x, y, h, rot) => `<path d="M0 ${-h}L5 ${-h * .3} 0 6-5 ${-h * .3}Z" fill="url(#gNeb)" stroke="#fff" stroke-width=".8" transform="translate(${x} ${y}) rotate(${rot})"/>`;
   const gWing = `<g class="wg">${feathers(F, 'gNeb', 1.3, '#d8f6ff')}${feathers(I, 'gPlat', 1, '#7a5bff')}</g>`;
   const galaksi = `${both(gWing)}<circle class="halo" cx="90" cy="80" r="57" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="1 9" stroke-linecap="round"/>
@@ -1388,9 +1447,9 @@ function showFx(g, who, to, giftIndex, qty = 1) {
   const burst = n => Array.from({ length: n }, () => { const a = Math.random() * 6.283, r = rnd(18, 48);
     return `<i class="p" style="--tx:${Math.round(Math.cos(a) * r)}vmin;--ty:${Math.round(Math.sin(a) * r)}vmin;--dl:${rnd(.2, 1.8).toFixed(2)}s;--s:${Math.round(rnd(14, 30))}px">${pick1(['✨','⭐','💫','✦'])}</i>` }).join('');
   const rain = (n, set) => Array.from({ length: n }, () => `<i class="r" style="--x:${Math.round(rnd(2, 96))}vw;--dl:${rnd(0, 2.8).toFixed(2)}s;--rd:${rnd(2.2, 3.6).toFixed(2)}s;--s:${Math.round(rnd(18, 34))}px;--rot:${Math.round(rnd(-360, 360))}deg">${pick1(set)}</i>`).join('');
-  const nR = [0, 0, 0, 12, 24, 40][tier], set = tier >= 5 ? ['🪙','💎','👑','✨'] : tier >= 4 ? ['🪙','✨','💎'] : ['✨','⭐'];
+  const nR = [0, 0, 0, 6, 10, 16][tier], set = tier >= 5 ? ['🪙','💎','👑','✨'] : tier >= 4 ? ['🪙','✨','💎'] : ['✨','⭐'];
   const layers = (tier >= 2 ? '<div class="vig"></div>' : '') + (tier >= 3 ? '<div class="rays"></div>' : '') + (tier >= 4 ? '<div class="flash"></div>' : '')
-    + burst([0, 8, 14, 20, 24, 30][tier]) + (nR ? rain(nR, set) : '');
+    + burst([0, 5, 7, 9, 11, 14][tier]) + (nR ? rain(nR, set) : '');
   const visual = hasVid
     ? `<video class="gift-fx-video" src="${esc(video)}" autoplay muted playsinline preload="auto" onended="H.hideGiftFx()" onerror="H.hideGiftFx()"></video>`
     : (g?.img ? `<img src="${esc(g.img)}">` : `<div class="big">${g?.e || '🎁'}</div>`);
@@ -1550,19 +1609,19 @@ async function pumpEntrance() {
 }
 /* Lapisan latar entrance. Mythic menambah hujan koin & permata; Legend menambah pilar cahaya, kelopak, dan berlian. */
 function entLayers(lv) {
-  const sp = Array.from({ length: 18 }, () => { const a = Math.random() * 6.283, r = 22 + Math.random() * 40;
+  const sp = Array.from({ length: 8 }, () => { const a = Math.random() * 6.283, r = 22 + Math.random() * 40;
     return `<i style="--tx:${Math.round(Math.cos(a) * r)}vmin;--ty:${Math.round(Math.sin(a) * r)}vmin;--dl:${(Math.random() * 2).toFixed(2)}s"></i>` }).join('');
   let extra = '';
   const rnd = (a, b) => a + Math.random() * (b - a);
   if (lv === 14) {
-    const up = Array.from({ length: 42 }, () => `<i style="--x:${Math.round(rnd(0, 96))}vw;--s:${Math.round(rnd(7, 18))}px;--fd:${rnd(2.2, 4.2).toFixed(2)}s;--dl:${rnd(0, 3).toFixed(2)}s"></i>`).join('');
+    const up = Array.from({ length: 16 }, () => `<i style="--x:${Math.round(rnd(0, 96))}vw;--s:${Math.round(rnd(7, 18))}px;--fd:${rnd(2.2, 4.2).toFixed(2)}s;--dl:${rnd(0, 3).toFixed(2)}s"></i>`).join('');
     extra = `<div class="lx-rise">${up}</div><div class="lx-slash"></div><div class="lx-frame"></div><div class="lx-title">IMMORTAL</div>`;
   } else if (lv === 15) {
-    const fth = Array.from({ length: 30 }, (_, i) => `<i class="${i % 3 ? 'fth' : ''}" style="--x:${Math.round(rnd(0, 94))}vw;--s:${Math.round(rnd(14, 28))}px;--fd:${rnd(3.4, 5.6).toFixed(2)}s;--dl:${rnd(1, 4.5).toFixed(2)}s">${i % 3 ? '' : '✨'}</i>`).join('');
+    const fth = Array.from({ length: 14 }, (_, i) => `<i class="${i % 3 ? 'fth' : ''}" style="--x:${Math.round(rnd(0, 94))}vw;--s:${Math.round(rnd(14, 28))}px;--fd:${rnd(3.4, 5.6).toFixed(2)}s;--dl:${rnd(1, 4.5).toFixed(2)}s">${i % 3 ? '' : '✨'}</i>`).join('');
     extra = `<div class="lx-beams"><b></b><b></b><b></b></div><div class="lx-fall">${fth}</div><div class="lx-frame"></div><div class="lx-title">GLORY</div><div class="lx-gate"><b></b><b></b></div>`;
   } else if (lv >= 12) {
     const set = lv === 13 ? ['🌸', '💎', '✨', '✨', '🌹'] : ['coin', 'coin', '💎', '✨'];
-    const fall = Array.from({ length: lv === 13 ? 34 : 30 }, (_, i) => { const x = set[i % set.length];
+    const fall = Array.from({ length: 14 }, (_, i) => { const x = set[i % set.length];
       return `<i${x === 'coin' ? ' class="coin"' : ''} style="--x:${Math.round(Math.random() * 94)}vw;--s:${Math.round(14 + Math.random() * 16)}px;--fd:${(2.6 + Math.random() * 2).toFixed(2)}s;--dl:${(Math.random() * 3).toFixed(2)}s">${x === 'coin' ? '' : x}</i>` }).join('');
     extra = `${lv === 13 ? '<div class="lx-beams"><b></b><b></b><b></b></div>' : ''}<div class="lx-fall">${fall}</div><div class="lx-frame"></div>`;
   }
@@ -1618,7 +1677,7 @@ function levelChime() {
 }
 function showSvipPopup(name, level, mine) {
   const e = $('#svipPop');
-  const sp = Array.from({ length: 16 }, () => { const a = Math.random() * Math.PI * 2, d = 90 + Math.random() * 170; return `<i class="svip-spark" style="--dx:${Math.round(Math.cos(a) * d)}px;--dy:${Math.round(Math.sin(a) * d)}px;animation-delay:${(Math.random() * 1.6).toFixed(2)}s"></i>` }).join('');
+  const sp = Array.from({ length: 8 }, () => { const a = Math.random() * Math.PI * 2, d = 90 + Math.random() * 170; return `<i class="svip-spark" style="--dx:${Math.round(Math.cos(a) * d)}px;--dy:${Math.round(Math.sin(a) * d)}px;animation-delay:${(Math.random() * 1.6).toFixed(2)}s"></i>` }).join('');
   e.innerHTML = `<div class="svip-rays"></div>${sp}<div class="svip-card${level >= 12 ? ' p' + level : ''}"><div class="svip-crown">${level >= 15 ? '☀️👑☀️' : level === 14 ? '🔥♾️🔥' : level === 13 ? '👑💎👑' : level === 12 ? '💎👑💎' : '👑✨'}</div><div class="svip-title">${mine ? 'KAMU NAIK GELAR!' : 'SELAMAT ATAS PENINGKATAN GELAR'}</div>${level >= 10 ? `<div class="svip-ban">${badgeOf(level, true)}</div>` : `<div class="svip-level">SVIP ${level}</div>`}<div class="svip-name">${esc(name)}</div><div class="svip-desc">berhasil naik ke ${level >= 10 ? 'tingkat' : 'level'} ${tierName(level)}!</div></div><div class="svip-flash"></div>`;
   e.classList.remove('hidden'); clearTimeout(showSvipPopup.t);
   showSvipPopup.t = setTimeout(() => { e.classList.add('hidden'); e.innerHTML = ''; }, 6000);
@@ -2069,10 +2128,11 @@ async function syncRecentMessages() {
     rows.forEach(m => addRoomMessage(m, msgReady && Date.now() - Date.parse(m.created_at) < 20000));
   } finally { msgSyncBusy = false; }
 }
+new MutationObserver(() => { const c = $('#chat'); while (c.childElementCount > 100) c.firstElementChild.remove() }).observe($('#chat'), { childList: true });
 function startMessageSync() {
   clearInterval(messageSyncTimer);
   // Fallback for projects where messages is not enabled in supabase_realtime.
-  messageSyncTimer = setInterval(syncRecentMessages, 2000);
+  messageSyncTimer = setInterval(() => { if (!document.hidden) syncRecentMessages() }, 3000);
 }
 async function stopMessageSync() {
   clearInterval(messageSyncTimer); messageSyncTimer = null;
@@ -2307,7 +2367,7 @@ async function musicStart() {
   musicReset(); if (!HAS_ROOMS || !RID) return;
   const rid = RID;
   musChan = sb.channel('music:' + rid).on('postgres_changes', { event: '*', schema: 'public', table: 'room_music', filter: `room_id=eq.${rid}` }, () => musicLoad()).subscribe();
-  musTimer = setInterval(musicLoad, 10000); /* cadangan kalau realtime terlewat + koreksi sinkron */
+  musTimer = setInterval(() => { if (!document.hidden) musicLoad() }, 10000); /* cadangan kalau realtime terlewat + koreksi sinkron */
   await musicLoad();
 }
 async function musicLoad() {
@@ -3143,7 +3203,7 @@ H.useBorder = async id => {
       if (error && mayUse) {
         const u = await sb.from('profiles').update({ avatar_border: nb }).eq('id', uid);
         if (!u.error && await saved()) error = null;
-        else error = { message: serverMsg || 'Border belum bisa disimpan. Pastikan border_migration.sql / lux_border.sql sudah dijalankan di Supabase.' };
+        else error = { message: `Border belum bisa disimpan. Detail server: ${[serverMsg, u.error?.message].filter(Boolean).join(' | ') || 'perubahan diabaikan tanpa pesan error'}` };
       }
     }
   } catch (e) { error = { message: e?.message || 'Gagal menyimpan border' } }
@@ -4155,7 +4215,7 @@ function watch(st, id) {
     if (!st.active) { stop(); return }
     an.getByteFrequencyData(b); const v = b.reduce((a, c) => a + c, 0) / b.length;
     document.querySelectorAll(`[data-uid="${id}"]`).forEach(e => e.classList.toggle('talk', v > 12));
-  }, 150);
+  }, 300);
 }
 /* HP sering memblokir suara otomatis: setiap sentuhan pertama membuka semua audio */
 const wake = () => { ACS.forEach(c => c.state === 'suspended' && c.resume().catch(() => {})); document.querySelectorAll('audio.rtc').forEach(a => { a.muted = !spk; a.paused && a.play().catch(() => {}) }) };
